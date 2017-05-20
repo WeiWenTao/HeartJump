@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_topic_catgory"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.JourneyAndTopic.TopicCatgoryActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        >
+
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_topic_catgory_back"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+
+        <ImageView
+            android:id="@+id/iv_topic_icon"
+            android:layout_marginLeft="40dp"
+            android:layout_centerVertical="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/topic2"
+            />
+        <TextView
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentRight="true"
+            android:text="加关注"
+            android:textSize="@dimen/sp_13"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:background="@drawable/shape_focud_bg"
+            />
+
+        <RelativeLayout
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_topic_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/tv_topic_catgory_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_15"
+                android:text="#杨幂绣春刀修罗战场#"
+                />
+            <TextView
+                android:id="@+id/tv_topic_catgory_comment"
+                android:layout_below="@+id/tv_topic_catgory_title"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                android:text="5.6万评论"
+                />
+
+            <TextView
+                android:id="@+id/tv_topic_catgory_read"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@+id/tv_topic_catgory_comment"
+                android:layout_below="@+id/tv_topic_catgory_title"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                android:text="204万阅读"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/tv_topic_catgory_fans"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@+id/tv_topic_catgory_read"
+                android:layout_below="@+id/tv_topic_catgory_title"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                android:text="1.9万粉丝"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                android:text="创建人：杨幂官方粉丝团"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_below="@id/tv_topic_catgory_comment"
+                />
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator_topic_catgory"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:background="@color/white"
+        android:id="@+id/view_pager_topic_catgory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></android.support.v4.view.ViewPager>
+
+</LinearLayout>

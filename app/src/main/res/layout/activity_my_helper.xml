@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_my_helper"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.setting.MyHelperActivity"
+    >
+
+    <RelativeLayout
+        android:background="@color/pink"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_helper_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:id="@+id/rl_home_search"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="我的助手"
+            >
+
+        </TextView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <ImageView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:src="@drawable/icon_help"
+            />
+        <TextView
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热点问题"
+            android:textColor="#666"
+            android:textSize="@dimen/sp_15"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f6f6f6"/>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="如何认证"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_more"
+            />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#ebebeb"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="如何预约"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_more"
+            />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#ebebeb"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="怎么完成每日任务"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_more"
+            />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#ebebeb"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="如何发布活动"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_more"
+            />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#ebebeb"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="如何找回密码"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_more"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f6f6f6"/>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="联系客服"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f6f6f6"/>
+
+</LinearLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_setting_account_safe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.setting.SettingAccountSafeActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_account_safe_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:id="@+id/rl_home_search"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="账号安全"
+            >
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="账号"
+            />
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#333"
+            android:text="13912345678"
+            />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#ebebeb"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_modify_psw"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="修改密码"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_more"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lvbg"
+        ></LinearLayout>
+
+</LinearLayout>

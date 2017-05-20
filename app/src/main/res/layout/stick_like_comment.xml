@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+<TextView
+    android:clickable="true"
+    android:id="@+id/tv_comment_stick"
+    android:textSize="@dimen/sp_16"
+    android:layout_width="0dp"
+    android:layout_height="45dp"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:text="评论122"
+    android:textColor="@color/pink"
+    />
+
+<TextView
+    android:clickable="true"
+    android:id="@+id/tv_like_stick"
+    android:textSize="@dimen/sp_16"
+    android:gravity="center"
+    android:layout_width="0dp"
+    android:layout_height="45dp"
+    android:layout_weight="1"
+    android:text="点赞122"
+    android:textColor="@color/text_selector"
+    />
+</LinearLayout>

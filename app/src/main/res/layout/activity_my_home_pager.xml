@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_my_home_page"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.home.PersonalHomePageActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        >
+        <ImageView
+            android:id="@+id/iv_my_icon"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true"
+            android:layout_width="67dp"
+            android:layout_height="67dp"
+            android:src="@drawable/img_user"
+            />
+        <TextView
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentRight="true"
+            android:text="加关注"
+            android:textSize="@dimen/sp_13"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:background="@drawable/shape_focud_bg"
+            />
+
+        <RelativeLayout
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_my_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="浅笑mm"
+                android:textSize="@dimen/sp_15"
+                android:textColor="@color/white"
+                />
+
+            <TextView
+                android:layout_below="@id/tv_id"
+                android:id="@+id/tv_focus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关注 45265"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                />
+
+            <TextView
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_alignBottom="@id/tv_focus"
+                android:layout_toRightOf="@id/tv_focus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="粉丝 45265"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                />
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator_my_page"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:background="@color/white"
+        android:id="@+id/my_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></android.support.v4.view.ViewPager>
+</LinearLayout>

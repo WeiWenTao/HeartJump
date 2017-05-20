@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/lvbg"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="@dimen/dp_10"
+            >
+
+            <ImageView
+                android:id="@+id/iv_king1"
+                android:layout_width="61dp"
+                android:layout_height="80dp"
+                android:src="@drawable/king1"
+                />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0.5dp"
+                android:layout_marginLeft="0.5dp"
+                android:src="@drawable/pic2_live"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:layout_alignBottom="@id/iv_king1"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/iv_king1"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="我是陈先森啊"
+                    android:textColor="@color/pink"
+                    android:textSize="@dimen/sp_16"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="第1名"
+                    android:textColor="#666"
+                    android:textSize="@dimen/sp_13"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="38dp"
+                android:background="@drawable/btn_bg_nor"
+                android:gravity="center"
+                android:text="加关注"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#d5d5d5"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="@dimen/dp_10"
+            >
+
+            <ImageView
+                android:id="@+id/iv_king2"
+                android:layout_width="61dp"
+                android:layout_height="80dp"
+                android:src="@drawable/king2"
+                />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0.5dp"
+                android:layout_marginLeft="0.5dp"
+                android:src="@drawable/pic3_live"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:layout_alignBottom="@id/iv_king2"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/iv_king2"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="我是陈先森啊"
+                    android:textColor="@color/pink"
+                    android:textSize="@dimen/sp_16"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="第2名"
+                    android:textColor="#666"
+                    android:textSize="@dimen/sp_13"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="38dp"
+                android:background="@drawable/btn_bg_sel"
+                android:gravity="center"
+                android:text="已关注"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_12"
+                />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="#d5d5d5"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="@dimen/dp_10"
+            >
+
+            <ImageView
+                android:id="@+id/iv_king3"
+                android:layout_width="61dp"
+                android:layout_height="80dp"
+                android:src="@drawable/king3"
+                />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0.5dp"
+                android:layout_marginLeft="0.5dp"
+                android:src="@drawable/pic4_live"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:layout_alignBottom="@id/iv_king3"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/iv_king3"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="我是陈先森啊"
+                    android:textColor="@color/pink"
+                    android:textSize="@dimen/sp_16"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="第3名"
+                    android:textColor="#666"
+                    android:textSize="@dimen/sp_13"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="38dp"
+                android:background="@drawable/btn_bg_sel"
+                android:gravity="center"
+                android:text="已关注"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_12"
+                />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:background="@color/lvbg"
+            />
+
+
+
+</LinearLayout>

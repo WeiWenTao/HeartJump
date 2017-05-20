@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyProject.iml" filepath="$PROJECT_DIR$/MyProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib-convenientbanner/lib-convenientbanner.iml" filepath="$PROJECT_DIR$/lib-convenientbanner/lib-convenientbanner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_svpi/lib_svpi.iml" filepath="$PROJECT_DIR$/lib_svpi/lib_svpi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_wheelView/lib_wheelView.iml" filepath="$PROJECT_DIR$/lib_wheelView/lib_wheelView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-quick-return/library-quick-return.iml" filepath="$PROJECT_DIR$/library-quick-return/library-quick-return.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_start_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:id="@+id/iv_pic"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/pic2_ym"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tv_neckname"
+                android:layout_marginTop="15dp"
+                android:textSize="@dimen/sp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="杨幂"
+                android:textColor="@color/pink"
+                />
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:textColor="#929292"
+                    android:textSize="@dimen/sp_12"
+                    android:text="1月27日 17：28 来自微博"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="10dp"
+                    >
+                    <ImageView
+                        android:layout_marginTop="1dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="12dp"
+                        android:layout_height="9dp"
+                        android:src="@drawable/icon_pv_nor"
+                        />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6534"
+                        android:textSize="@dimen/sp_12"
+                        android:textColor="#929292"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:textSize="@dimen/sp_15"
+        android:textColor="#333"
+        android:text="大家应该都被姑姑的大片迷倒啦！是不是也被她的惊艳的妆容种草了呢？春风拂面，桃花相掩，快涂上美美的#甜幂桃花唇#  跟姑姑一起去十里桃林遇到属于你的桃花吧！"
+        android:ellipsize="end"
+        android:id="@+id/textView"
+        />
+
+    <LinearLayout
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="115dp"
+            android:src="@drawable/img2_ym"
+            android:id="@+id/imageView2"
+            />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="115dp"
+            android:src="@drawable/img3_ym"
+            android:layout_marginRight="@dimen/dp_5"
+            />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="115dp"
+            android:src="@drawable/img4_ym"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rl_share"
+            >
+
+
+
+            <ImageView
+                android:id="@+id/iv_share3"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_35"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_10"
+                android:src="@drawable/icon_s_nor"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_share3"
+                android:text="分享"
+                android:textColor="#929292"
+                android:textSize="@dimen/sp_13"
+                />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="1249"
+            android:textColor="#929292"
+            android:textSize="@dimen/sp_13"
+            />
+
+
+
+        <TextView
+            android:id="@+id/tv_session"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="50dp"
+            android:layout_toLeftOf="@id/iv_favorite3"
+            android:text="789"
+            android:textColor="#929292"
+            android:textSize="@dimen/sp_13"
+            />
+
+        <ImageView
+            android:id="@+id/iv_session3"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_35"
+            android:layout_centerVertical="true"
+
+            android:layout_toLeftOf="@id/tv_session"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_10"
+            android:src="@drawable/icon_cm_nor"
+            />
+
+        <ImageView
+
+            android:id="@+id/iv_favorite3"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="33dp"
+
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_10"
+            android:src="@drawable/icon_good_nor"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_favorite"
+            android:layout_toStartOf="@+id/tv_favorite"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

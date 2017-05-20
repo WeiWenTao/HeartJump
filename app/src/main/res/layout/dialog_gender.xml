@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="150dp"
+              android:background="@drawable/shape_publish_dialog_bg"
+              android:layout_height="101dp">
+
+    <TextView
+        android:id="@+id/tv_boy"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:text="男"
+        android:textSize="@dimen/sp_15"
+        android:textColor="#666"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <View
+        android:id="@+id/line"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="1dp"
+        android:background="#ccc"/>
+
+
+    <TextView
+        android:id="@+id/tv_girl"
+        android:layout_below="@id/line"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:text="女"
+        android:textSize="@dimen/sp_15"
+        android:textColor="#666"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/activity_star_money"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.myHomePager.PayCenterActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_my_pay_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="充值中心"
+            >
+
+        </TextView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_10"
+        >
+        <TextView
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="充值账号:"
+            />
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="创联凯尔"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="#ebebeb"/>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_10"
+        >
+        <TextView
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="余额:"
+            />
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/lvbg"/>
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#666"
+        android:textSize="@dimen/sp_12"
+        android:text="1元等于十星币"
+        />
+    
+    <RadioGroup
+        android:id="@+id/rg_base"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <RadioGroup
+            android:id="@+id/rg1"
+            android:orientation="horizontal"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+            <RadioButton
+                android:id="@+id/rg1_rb1"
+                style="@style/StarMoneyRB"
+                android:text="50星币"
+                />
+            <RadioButton
+                android:id="@+id/rg1_rb2"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="3dp"
+                style="@style/StarMoneyRB"
+                android:text="100星币"
+                />
+            <RadioButton
+                android:id="@+id/rg1_rb3"
+                style="@style/StarMoneyRB"
+                android:text="200星币"
+                />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg2"
+            android:orientation="horizontal"
+
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+            <RadioButton
+                android:id="@+id/rg2_rb1"
+                style="@style/StarMoneyRB"
+                android:text="300星币"
+                />
+            <RadioButton
+                android:id="@+id/rg2_rb2"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="3dp"
+                style="@style/StarMoneyRB"
+                android:text="500星币"
+                />
+            <RadioButton
+                android:id="@+id/rg2_rb3"
+                style="@style/StarMoneyRB"
+                android:text="800星币"
+                />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg3"
+            android:orientation="horizontal"
+
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+            <RadioButton
+                android:id="@+id/rg3_rb1"
+                style="@style/StarMoneyRB"
+                android:text="1000星币"
+                />
+            <RadioButton
+                android:id="@+id/rg3_rb2"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="3dp"
+                style="@style/StarMoneyRB"
+                android:text="5000星币"
+                />
+            <RadioButton
+                android:id="@+id/rg3_rb3"
+                style="@style/StarMoneyRB"
+                android:text="10000星币"
+                />
+        </RadioGroup>
+        
+
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/shape_bg_star_money_nor"
+        android:gravity="center"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:text="其他数量"
+        android:textSize="@dimen/sp_15"
+        android:textColor="#666"
+        />
+    
+    <TextView
+        android:id="@+id/tv_pay_now"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:text="立即充值"
+        android:layout_width="300dp"
+        android:layout_height="@dimen/dp_40"
+        android:background="@drawable/shape_immediately_pay_bg"
+        />
+    
+
+
+</LinearLayout>

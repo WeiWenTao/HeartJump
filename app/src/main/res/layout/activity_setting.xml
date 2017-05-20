@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_setting"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.setting.SettingActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_setting_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:id="@+id/rl_home_search"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="设置"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_account_manager"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        >
+
+        <TextView
+            style="@style/Setting_tv"
+            android:text="账号管理"
+            />
+        <ImageView
+            style="@style/My_Arrow"
+            android:src="@drawable/icon_more"
+            />
+
+        <include layout="@layout/horizontal_line_for10dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_account_safe"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        >
+
+        <TextView
+            style="@style/Setting_tv"
+            android:text="账号安全"
+            />
+        <ImageView
+            style="@style/My_Arrow"
+            android:src="@drawable/icon_more"
+            />
+        <include layout="@layout/horizontal_line_for10dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:id="@+id/rl_message_setting"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        >
+
+        <TextView
+            style="@style/Setting_tv"
+            android:text="消息设置"
+            />
+        <ImageView
+            style="@style/My_Arrow"
+            android:src="@drawable/icon_more"
+            />
+        <include layout="@layout/horizontal_line_for10dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_above_us"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        >
+
+        <TextView
+            style="@style/Setting_tv"
+            android:text="关于我们"
+            />
+        <ImageView
+            style="@style/My_Arrow"
+            android:src="@drawable/icon_more"
+            />
+        <include layout="@layout/horizontal_line_for10dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_clean_cache"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        >
+
+        <TextView
+            style="@style/Setting_tv"
+            android:text="清除缓存"
+            />
+        <ImageView
+            style="@style/My_Arrow"
+            android:src="@drawable/icon_more"
+            />
+
+        <include layout="@layout/horizontal_line_for10dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        >
+
+        <TextView
+            style="@style/Setting_tv"
+            android:text="退出"
+            />
+        <ImageView
+            style="@style/My_Arrow"
+            android:src="@drawable/icon_more"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lvbg"
+        />
+
+</LinearLayout>

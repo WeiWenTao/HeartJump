@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_journey_catgory"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.JourneyAndTopic.JourneyCatgoryActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_journey_catgory_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:id="@+id/rl_home_search"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="行程详情"
+            />
+
+    </RelativeLayout>
+
+    <ListView
+        android:divider="@color/lvbg"
+        android:dividerHeight="@dimen/dp_10"
+        android:id="@+id/lv_journey_catgory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></ListView>
+
+</LinearLayout>

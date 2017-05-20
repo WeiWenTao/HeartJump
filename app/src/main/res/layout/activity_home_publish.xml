@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_home_lv_catgory"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.home.PublishActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_publish_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:id="@+id/rl_home_search"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="发布"
+            >
+
+        </TextView>
+        <TextView
+            android:enabled="false"
+            android:id="@+id/tv_publish_send"
+            android:padding="@dimen/dp_5"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_text_search_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/publish_send_text_selector"
+            android:textSize="@dimen/sp_15"
+            android:text="发送"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <EditText
+                android:id="@+id/et_publish"
+                android:textColorHint="#bfbfbf"
+                android:textSize="@dimen/sp_15"
+                android:background="@null"
+                android:gravity="top"
+                android:layout_margin="@dimen/dp_10"
+                android:hint="说点什么呢......"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_et_foot"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="#f9f9f9"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_img"
+                    />
+                <ImageView
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_ait"
+                    />
+                <ImageView
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_jing"
+                    />
+                <ImageView
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_emo"
+                    />
+                
+            </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

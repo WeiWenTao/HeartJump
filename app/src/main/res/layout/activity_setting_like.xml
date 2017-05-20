@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/activity_setting_like"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:toggle="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.setting.SettingLikeActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_like_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="点赞设置"
+            >
+        </TextView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="点赞提醒"
+            />
+
+        <com.zcw.togglebutton.ToggleButton
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:id="@+id/toggle_like_tip"
+            android:layout_width="35dp"
+            toggle:tbOnColor="#f68d89"
+            toggle:tbOffColor="#ddd"
+            toggle:tbSpotColor="#fff"
+            android:layout_height="20dp" >
+        </com.zcw.togglebutton.ToggleButton>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="#f6f6f6"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        >
+        <TextView
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="#999"
+            android:textSize="@dimen/sp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关闭后，将不再收到“消息”界面点赞未读消息提醒"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_15"
+            android:textColor="#666"
+            android:text="我参与的"
+            />
+
+        <com.zcw.togglebutton.ToggleButton
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:id="@+id/toggle_joined_tip"
+            android:layout_width="35dp"
+            toggle:tbOnColor="#f68d89"
+            toggle:tbOffColor="#ddd"
+            toggle:tbSpotColor="#fff"
+            android:layout_height="20dp" >
+        </com.zcw.togglebutton.ToggleButton>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f6f6f6"
+        >
+        <TextView
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="#999"
+            android:textSize="@dimen/sp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="打开后，将收到我关注的人也同时参与了这条动态的提醒"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

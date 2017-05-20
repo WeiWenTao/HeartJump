@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="200dp"
+              android:background="@drawable/shape_publish_dialog_bg"
+              android:layout_height="110dp">
+<TextView
+    android:layout_marginTop="@dimen/dp_20"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:textSize="@dimen/sp_15"
+    android:text="是否放弃当前编辑的内容？"
+    android:textColor="#333"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        >
+        <TextView
+            android:id="@+id/tv_dialog_cancel"
+            android:paddingLeft="@dimen/dp_5"
+            android:textColor="#78ceb7"
+            android:textSize="@dimen/sp_15"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="取消"
+            />
+        <TextView
+            android:id="@+id/tv_dialog_confirm"
+            android:paddingRight="@dimen/dp_5"
+            android:textColor="#78ceb7"
+            android:textSize="@dimen/sp_15"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="确定"
+            />
+    </LinearLayout>
+</LinearLayout>

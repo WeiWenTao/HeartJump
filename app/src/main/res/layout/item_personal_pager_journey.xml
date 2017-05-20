@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/lvbg"
+        />
+    <com.lantouzi.wheelview.WheelView
+        android:id="@+id/wheelview"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:lwvHighlightColor="#f68d89"
+        app:lwvIntervalFactor="1.2"
+        android:layout_marginLeft="53dp"
+        android:layout_marginRight="53dp"
+        />
+
+    <ListView
+        android:divider="@drawable/list_divider_line"
+        android:id="@+id/lv_journey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></ListView>
+
+</LinearLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@drawable/shape_publish_dialog_bg"
+              android:layout_width="320dp"
+              android:layout_height="wrap_content">
+
+    <DatePicker
+        android:id="@+id/dp"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/dp_30"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:id="@+id/tv_birthday_cancle"
+            android:layout_marginLeft="36dp"
+            android:background="@drawable/shape_bg_birthday_bt_nor"
+            android:textColor="#666"
+            android:textSize="@dimen/sp_15"
+            android:gravity="center"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:text="取消"
+            />
+        <TextView
+            android:id="@+id/tv_birthday_complete"
+            android:layout_marginLeft="128dp"
+            android:background="@drawable/shape_bg_birthday_bt_sel"
+            android:textColor="@color/pink"
+            android:textSize="@dimen/sp_15"
+            android:gravity="center"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:text="完成"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

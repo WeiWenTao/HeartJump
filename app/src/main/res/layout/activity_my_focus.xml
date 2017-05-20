@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.myHomePager.FocusActivity"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_my_focus_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="我的关注"
+            >
+
+        </TextView>
+    </RelativeLayout>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator_focus"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/lvbg"/>
+    <android.support.v4.view.ViewPager
+        android:background="@color/white"
+        android:id="@+id/view_pager_focus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></android.support.v4.view.ViewPager>
+
+</LinearLayout>

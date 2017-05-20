@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <ImageView
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/bg_hot_fentuan"
+        />
+
+    <ImageView
+        android:id="@+id/iv_hot_fentuan_headpic"
+        android:layout_marginTop="69dp"
+        android:layout_marginLeft="21dp"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:src="@drawable/pic2_ym"
+        />
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/iv_hot_fentuan_headpic"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_alignTop="@+id/iv_hot_fentuan_headpic"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        >
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="杨幂"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginBottom="@dimen/dp_5"
+            />
+
+        <TextView
+            android:id="@+id/tv_fentuan_focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:layout_below="@id/tv_name"
+            android:text="658万人关注"
+            />
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/tv_fentuan_focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:layout_below="@+id/tv_name"
+            android:text="265万人内容"
+            />
+
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_margin="@dimen/dp_20"
+        android:layout_width="60dp"
+        android:layout_height="@dimen/dp_25"
+        android:layout_alignParentRight="true"
+        android:text="加关注"
+        android:textSize="@dimen/sp_13"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:background="@drawable/shape_topic_classify_sel"
+        />
+</RelativeLayout>

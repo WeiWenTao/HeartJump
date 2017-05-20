@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="240dp"
+                android:layout_height="125dp"
+                android:background="@drawable/shape_publish_dialog_bg"
+                android:orientation="vertical"
+    >
+
+    <TextView
+        android:clickable="true"
+        android:id="@+id/tv_clean_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_25"
+        android:text="确定清除缓存？"
+        android:textColor="#333"
+        android:textSize="@dimen/sp_15"
+        />
+
+    <TextView
+        android:clickable="true"
+        android:id="@+id/tv_clean_cancle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_clean_title"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="@dimen/dp_40"
+        android:text="取消"
+        android:textColor="#999"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_clean_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_clean_title"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="@dimen/dp_40"
+        android:text="确定"
+        android:textColor="#78ceb7"
+        android:textSize="18sp"
+        />
+</RelativeLayout>

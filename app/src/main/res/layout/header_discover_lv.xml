@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+    >
+<ImageView
+    android:scaleType="fitXY"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:src="@drawable/banner_discover"
+    />
+<LinearLayout
+    android:background="#f6f6f6"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    >
+    <TextView
+        android:id="@+id/tv_hot"
+        style="@style/LeftTv"
+        android:text="热门"
+        />
+    <TextView
+        android:id="@+id/tv_fan_tuan"
+        style="@style/RightTv"
+        android:text="粉团"
+        />
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#f6f6f6"
+    >
+    <TextView
+        style="@style/LeftTv"
+        android:text="福利"
+        />
+
+    <TextView
+        android:id="@+id/tv_topic"
+        style="@style/RightTv"
+        android:text="话题"
+        />
+</LinearLayout>
+
+</LinearLayout>

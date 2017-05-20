@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_setting_changeheader_pic"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.SettingChangeheaderPic"
+    >
+
+    <ImageView
+        android:id="@+id/image_header"
+        android:layout_centerInParent="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        />
+
+    <Button
+        android:id="@+id/btn_selectimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="selectimage"
+        />
+
+    <Button
+        android:layout_alignParentRight="true"
+        android:id="@+id/btn_takephoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="takephoto"
+        />
+
+</RelativeLayout>
