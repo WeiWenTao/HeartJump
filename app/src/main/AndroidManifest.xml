@@ -129,6 +129,8 @@
         </activity>
         <activity android:name=".activity.fenTuan.FenTuanActivity">
         </activity>
+        <activity android:name=".activity.home.HomeStarActivity">
+        </activity>
     </application>
 
 </manifest>

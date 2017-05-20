@@ -13,6 +13,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.home.CommentAndLikeActivity;
+import com.cucr.myapplication.activity.home.HomeStarActivity;
 import com.cucr.myapplication.activity.home.PublishActivity;
 import com.cucr.myapplication.activity.home.SignActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
@@ -41,6 +42,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     private ConvenientBanner convenientBanner;
     private List<Integer> localImages = new ArrayList<>();
     private LinearLayout mLl_sign_in;
+    private LinearLayout mLl_star;
 
     @Override
     protected void initView(View childView) {
@@ -74,6 +76,10 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         mLl_sign_in = (LinearLayout) headerView.findViewById(R.id.ll_sign_in);
         mLl_sign_in.setOnClickListener(this);
 
+        //明星
+        mLl_star = (LinearLayout) headerView.findViewById(R.id.ll_star);
+        mLl_star.setOnClickListener(this);
+
         //首页轮播图
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
         initARL();
@@ -94,9 +100,18 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()){
+
+            //签到
             case R.id.ll_sign_in:
                 startActivity(new Intent(mContext,SignActivity.class));
                 break;
+
+            //明星
+            case R.id.ll_star:
+                startActivity(new Intent(mContext,HomeStarActivity.class));
+                break;
+
+
         }
 
     }

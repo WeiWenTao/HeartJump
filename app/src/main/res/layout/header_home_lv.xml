@@ -56,18 +56,22 @@
 
         <!--明星-->
         <LinearLayout
+            android:id="@+id/ll_star"
             android:layout_margin="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_height="match_parent"
             >
+
             <ImageView
                 android:layout_gravity="center"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/star_icon"
+                android:id="@+id/imageView4"
                 />
+
             <TextView
                 android:textColor="#666"
                 android:textSize="@dimen/sp_13"
