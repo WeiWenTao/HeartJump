@@ -34,4 +34,5 @@ dependencies {
     compile project(':library-quick-return')
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':lib_wheelView')
+    compile 'com.joooonho:selectableroundedimageview:1.0.1'
 }

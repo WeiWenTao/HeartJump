@@ -69,6 +69,10 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 	private int mMinSelectableIndex = Integer.MIN_VALUE;
 	private int mMaxSelectableIndex = Integer.MAX_VALUE;
 
+	//设置额外的颜色和字体
+	private int firstColor = Color.parseColor("#f68d89"), secondCorlor = Color.parseColor("#999999"), thirdColor = Color.parseColor("#999999");
+	private float centerTextSize, normalTextSize;
+
 	public WheelView(Context context) {
 		super(context);
 		init(null);
@@ -82,6 +86,18 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 	public WheelView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(attrs);
+	}
+
+
+	public void setAttrs(boolean isSet) {
+		if (isSet) {
+			float density = getResources().getDisplayMetrics().density;
+			mCenterTextSize = density * 16;
+			normalTextSize = density * 14;
+			this.firstColor = Color.parseColor("#87c7ca");
+			this.secondCorlor = Color.parseColor("#999999");
+			this.thirdColor = Color.parseColor("#cccccc");
+		}
 	}
 
 	protected void init(AttributeSet attrs) {
@@ -98,6 +114,9 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 		mCenterTextSize = density * 13;
 		mNormalTextSize = density * 13;
 		mBottomSpace = density * 15;
+		//默认不设置，使用默认属性
+		setAttrs(false);
+
 
 		TypedArray ta = attrs == null ? null : getContext().obtainStyledAttributes(attrs, R.styleable.lwvWheelView);
 		if (ta != null) {
@@ -300,9 +319,15 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 			// mark text
 			if (mMarkCount > 0 && i >= 0 && i < mMarkCount) {
 				CharSequence temp = mItems.get(i);
-				if (mCenterIndex == i) {
-					mMarkTextPaint.setColor(mHighlightColor);
-					mMarkTextPaint.setTextSize(mCenterTextSize);
+//				if (mCenterIndex == i) {
+				if (mCenterIndex >= i - 1 && mCenterIndex <= i + 1) {
+//					mMarkTextPaint.setColor(mHighlightColor);
+					mMarkTextPaint.setColor(secondCorlor);
+//					mMarkTextPaint.setTextSize(mCenterTextSize);
+					if (mCenterIndex == i) {
+						mMarkTextPaint.setColor(firstColor);
+						mMarkTextPaint.setTextSize(mCenterTextSize);
+					}
 					if (!TextUtils.isEmpty(mAdditionCenterMark)) {
 						float off = mAdditionCenterMarkWidth / 2f;
 						float tsize = mMarkTextPaint.measureText(temp, 0, temp.length());
@@ -313,7 +338,8 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 						canvas.drawText(temp, 0, temp.length(), x, mHeight - mBottomSpace, mMarkTextPaint);
 					}
 				} else {
-					mMarkTextPaint.setColor(mMarkTextColor);
+//					mMarkTextPaint.setColor(mMarkTextColor);
+					mMarkTextPaint.setColor(thirdColor);
 					mMarkTextPaint.setTextSize(mNormalTextSize);
 					canvas.drawText(temp, 0, temp.length(), x, mHeight - mBottomSpace, mMarkTextPaint);
 				}

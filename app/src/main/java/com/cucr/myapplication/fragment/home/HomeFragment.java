@@ -90,10 +90,10 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         mLv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //跳转到评论和喜欢界面
                 startActivity(new Intent(mContext, CommentAndLikeActivity.class));
             }
         });
-
     }
 
     @Override

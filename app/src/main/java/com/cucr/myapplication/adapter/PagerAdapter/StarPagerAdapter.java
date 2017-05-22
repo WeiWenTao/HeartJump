@@ -64,6 +64,8 @@ public class StarPagerAdapter extends PagerAdapter {
                        itemView = View.inflate(mContext,R.layout.item_personal_pager_journey,null);
                        mLv_journey = (ListView) itemView.findViewById(R.id.lv_journey);
                        mWheelview = (WheelView) itemView.findViewById(R.id.wheelview);
+                       //设置单位（没啥用，设置属性的时候才有用 ）
+                       mWheelview.setAdditionCenterMark(" ");
                        initWheelView();
                        break;
 

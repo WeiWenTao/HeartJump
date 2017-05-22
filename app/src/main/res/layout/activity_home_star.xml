@@ -1,15 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    android:orientation="vertical"
     android:id="@+id/activity_home_star"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cucr.myapplication.activity.home.HomeStarActivity"
+    android:background="@color/lvbg"
     >
 
-</RelativeLayout>
+    <RelativeLayout
+        android:background="@drawable/shape_bg_commen_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:paddingRight="19dp"
+            android:id="@+id/iv_home_star_back"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="22dp"
+            android:src="@drawable/icon_back"
+            />
+
+        <TextView
+            android:id="@+id/rl_home_search"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="明星"
+            >
+
+        </TextView>
+
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        >
+        <LinearLayout
+            android:id="@+id/ll_star_recommend"
+            android:background="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@drawable/like_icon"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_15"
+                android:textColor="#666"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:text="推荐"
+                />
+            
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_star_classify"
+            android:background="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/classify_icon"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_15"
+                android:textColor="#666"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:text="分类"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="#ccc"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+
+
+
+    <FrameLayout
+        android:id="@+id/fl_star_continer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>
