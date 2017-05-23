@@ -46,6 +46,7 @@ public class PersonalHomePageActivity extends Activity {
         mViewPager.setAdapter(new StarPagerAdapter(mDataList,this));
     }
 
+    //初始化标签栏
     private void initIndicator() {
         MagicIndicator magicIndicator = (MagicIndicator) findViewById(R.id.magic_indicator_personal_page);
         magicIndicator.setBackgroundColor(Color.parseColor("#ffffff"));

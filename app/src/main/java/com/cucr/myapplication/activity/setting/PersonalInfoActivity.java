@@ -89,9 +89,6 @@ public class PersonalInfoActivity extends Activity {
 
         initHead();
 
-
-        initLocation();
-
         initDialog();
     }
 
@@ -105,9 +102,14 @@ public class PersonalInfoActivity extends Activity {
         photoSaveName =System.currentTimeMillis()+ ".png";
     }
 
-    private void initLocation() {
 
+    //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
         LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
+
         if (location != null) {
             String city = location.getName();
 
@@ -119,6 +121,8 @@ public class PersonalInfoActivity extends Activity {
 
     }
 
+
+    //初始化对话框
     private void initDialog() {
         mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme);
 
@@ -137,6 +141,7 @@ public class PersonalInfoActivity extends Activity {
     }
 
 
+    //选择生日
     @OnClick(R.id.rl_birthday)
     public void selectBirthday(View view) {
         dateText = tv_birthday_edit.getText().toString().trim();
@@ -318,4 +323,11 @@ public class PersonalInfoActivity extends Activity {
             return null;
         }
     }
+
+    //返回
+    @OnClick(R.id.iv_personal_info_back)
+    public void back(View view){
+        finish();
+    }
+
 }

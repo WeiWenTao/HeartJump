@@ -13,12 +13,13 @@ import com.cucr.myapplication.bean.LocationData;
 import com.cucr.myapplication.dao.CityDao;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.List;
 
 public class LocalityCityActivity extends Activity {
 
-
+    //市区列表
     @ViewInject(R.id.lv_city)
     ListView lv_city;
     private List<LocationData> mLocationDatas;
@@ -52,6 +53,13 @@ public class LocalityCityActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+
+    //返回
+    @OnClick(R.id.iv_location_back)
+    public void back(View view){
+        finish();
     }
 
 }

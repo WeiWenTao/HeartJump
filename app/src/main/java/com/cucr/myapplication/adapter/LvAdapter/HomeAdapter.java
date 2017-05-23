@@ -204,6 +204,8 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
     public void onClick(View v) {
     Intent intent;
         switch (v.getId()){
+
+            //分享
             case R.id.rl_share:
                 int position = (int) v.getTag();
 //                showShare();
@@ -218,12 +220,13 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                 mShareDialog.show();
                 break;
 
+            //评论
             case R.id.rl_comment:
 
                 Toast.makeText(mContext,"评论",Toast.LENGTH_SHORT).show();
                 break;
 
-
+            //明星界面
             case R.id.ll_star_page:
 
                 mContext.startActivity(new Intent(mContext, PersonalHomePageActivity.class));

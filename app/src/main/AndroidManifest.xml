@@ -87,7 +87,7 @@
         </activity>
         <activity android:name=".activity.home.PersonalHomePageActivity">
         </activity>
-        <activity android:name=".activity.setting.PersonalInfoActivity">
+        <activity android:name=".activity.setting.PersonalInfoActivity" android:launchMode="singleTask">
         </activity>
         <activity android:name=".activity.setting.SettingActivity">
         </activity>

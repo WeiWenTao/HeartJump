@@ -11,6 +11,8 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
 import com.cucr.myapplication.bean.LocationData;
 import com.cucr.myapplication.dao.CityDao;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class LocalityProvienceActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_provience);
+        ViewUtils.inject(this);
 
         mLv_provience = (ListView) findViewById(R.id.lv_provience);
         initData();
@@ -55,5 +58,9 @@ public class LocalityProvienceActivity extends Activity {
         });
     }
 
-
+    //返回
+    @OnClick(R.id.iv_location_back)
+    public void back(View view){
+        finish();
+    }
 }
