@@ -29,9 +29,10 @@ public class SignActivity extends Activity {
         date = formatter.format(curDate);
 
         mTv = (TextView) findViewById(R.id.tv);
-
         calendar = (SignCalendar) findViewById(R.id.sc_main);
 
+        //初始化标题日期
+        mTv.setText(calendar.getCalendarYear()+" - "+calendar.getCalendarMonth());
 
                 List<String> list = new ArrayList<String>();
                 list.add(date);

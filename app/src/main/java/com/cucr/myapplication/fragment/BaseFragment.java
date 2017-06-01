@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.lidroid.xutils.ViewUtils;
 
 /**
  * Created by 911 on 2017/4/11.
@@ -30,8 +29,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ViewUtils.inject(getActivity());
-        mContext = container.getContext();
+//        ViewUtils.inject(getActivity());
+        mContext = inflater.getContext();
+
         // 五星级重要，复用View
         if (mRootView == null) {
             if (needHeader()) {

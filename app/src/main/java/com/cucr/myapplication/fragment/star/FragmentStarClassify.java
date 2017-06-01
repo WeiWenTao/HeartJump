@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlAdapter.StarClassifyRlAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.lantouzi.wheelview.WheelView;
 
 import java.util.ArrayList;
@@ -59,8 +59,9 @@ public class FragmentStarClassify extends Fragment {
 
             @Override
             public void onWheelItemSelected(WheelView wheelView, int position) {
-                Toast.makeText(wheelView.getContext(),"Selected"+position,Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(wheelView.getContext(),position+"");
             }
+
         });
     }
 
