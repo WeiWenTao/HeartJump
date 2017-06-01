@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.GvAdapter.StarClassifyAdapter;
+import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 
 /**
  * Created by 911 on 2017/5/22.
@@ -20,7 +20,7 @@ import com.cucr.myapplication.adapter.GvAdapter.StarClassifyAdapter;
 public class FragmentStarRecommend extends Fragment {
 
     private GridView gv_star_recommend;
-    private StarClassifyAdapter mGvAdapter;
+    private StarRecommendAdapter mGvAdapter;
     View view;
 
     @Nullable
@@ -37,7 +37,7 @@ public class FragmentStarRecommend extends Fragment {
     }
 
     private void initGV(Context context) {
-        mGvAdapter = new StarClassifyAdapter(context);
+        mGvAdapter = new StarRecommendAdapter(context);
         gv_star_recommend.setAdapter(mGvAdapter);
         gv_star_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

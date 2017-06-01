@@ -38,79 +38,98 @@
         </TextView>
 
     </RelativeLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        >
-        <LinearLayout
-            android:id="@+id/ll_star_recommend"
-            android:background="@color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            >
-            <ImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:src="@drawable/like_icon"
-                />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_15"
-                android:textColor="#666"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:text="推荐"
-                />
-            
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_star_classify"
-            android:background="@color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            >
-
-            <ImageView
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:src="@drawable/classify_icon"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_15"
-                android:textColor="#666"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:text="分类"
-                />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="#ccc"
-            android:layout_gravity="center_vertical"
-            />
-
-    </LinearLayout>
-
-
-
-    <FrameLayout
-        android:id="@+id/fl_star_continer"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        >
+
+        <FrameLayout
+            android:layout_marginTop="37dp"
+            android:id="@+id/fl_star_continer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_star_header"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:background="@drawable/class2_bg"
+            >
+
+            <LinearLayout
+                android:layout_marginLeft="1dp"
+                android:id="@+id/ll_star_recommend"
+                android:background="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="3dp"
+                >
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:src="@drawable/like_icon"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_15"
+                    android:textColor="#666"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="推荐"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="30dp"
+                android:background="#ccc"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="3dp"
+                />
+
+            <LinearLayout
+                android:layout_marginRight="1dp"
+                android:id="@+id/ll_star_classify"
+                android:background="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="3dp"
+                >
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:src="@drawable/classify_icon"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_15"
+                    android:textColor="#666"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="分类"
+                    />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
 
 </LinearLayout>

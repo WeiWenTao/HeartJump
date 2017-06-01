@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,14 +122,15 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     private void copyLink() {
         ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         cmb.setText("测试内容...");
-        Toast toast = Toast.makeText(context, "已复制链接", Toast.LENGTH_SHORT);
-        TextView tv = new TextView(context);
-        tv.setText("已复制链接");
-        tv.setTextColor(Color.WHITE);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,15f);
-        tv.setBackgroundResource(R.drawable.shape_toast_bg);
-        toast.setView(tv);
-        toast.show();
+        Toast.makeText(context, "已复制链接", Toast.LENGTH_SHORT).show();
+//        Toast toast = Toast.makeText(context, "已复制链接", Toast.LENGTH_SHORT);
+//        TextView tv = new TextView(context);
+//        tv.setText("已复制链接");
+//        tv.setTextColor(Color.WHITE);
+//        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,15f);
+//        tv.setBackgroundResource(R.drawable.shape_toast_bg);
+//        toast.setView(tv);
+//        toast.show();
         dismiss();
     }
 

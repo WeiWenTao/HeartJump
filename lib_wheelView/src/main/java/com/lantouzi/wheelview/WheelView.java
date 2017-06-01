@@ -226,12 +226,14 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 		return result;
 	}
 
+	//猛滑
 	public void fling(int velocityX, int velocityY) {
 		mScroller.fling(getScrollX(), getScrollY(),
 				velocityX, velocityY,
 				(int) (-mMaxOverScrollDistance + mMinSelectableIndex * mIntervalDis), (int) (mContentRectF.width() - mMaxOverScrollDistance - (mMarkCount - 1 - mMaxSelectableIndex) * mIntervalDis),
 				0, 0,
-				(int) mMaxOverScrollDistance, 0);
+				//越过的距离
+				(int) mMaxOverScrollDistance , 0);
 		ViewCompat.postInvalidateOnAnimation(this);
 	}
 

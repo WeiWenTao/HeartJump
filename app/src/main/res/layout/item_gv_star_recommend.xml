@@ -3,21 +3,22 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:paddingRight="@dimen/dp_10"
+              android:layout_width="wrap_content"
+              android:layout_height="150dp">
 
     <FrameLayout
-        android:layout_width="110dp"
+        android:layout_width="match_parent"
         android:layout_height="110dp"
         >
     <com.joooonho.SelectableRoundedImageView
         android:id="@+id/image"
         android:src="@drawable/star1"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:sriv_left_top_corner_radius="10dp"
-        app:sriv_right_top_corner_radius="10dp"
+        app:sriv_left_top_corner_radius="5dp"
+        app:sriv_right_top_corner_radius="5dp"
         app:sriv_left_bottom_corner_radius="0dp"
         app:sriv_right_bottom_corner_radius="0dp"/>
 
@@ -41,7 +42,7 @@
         android:id="@+id/rl_goto_starpager"
         android:clickable="true"
         android:background="@drawable/shape_home_star_bg"
-        android:layout_width="110dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
         >
@@ -84,8 +85,7 @@
             android:layout_height="wrap_content"
             android:text="45893"
             />
-        
-        
+
     </RelativeLayout>
 
 </LinearLayout>

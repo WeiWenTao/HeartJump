@@ -26,6 +26,14 @@ public class HomeStarActivity extends Activity {
     //明星分类
     @ViewInject(R.id.ll_star_classify)
     LinearLayout ll_star_classify;
+
+    //导航栏
+    @ViewInject(R.id.ll_star_header)
+    LinearLayout ll_star_header;
+
+    //上次的fragment
+    private int preFragment = -1;
+
     private List<Fragment> mFragments;
 
 
@@ -45,7 +53,12 @@ public class HomeStarActivity extends Activity {
     }
 
     private void initFragment(int which) {
-        getFragmentManager().beginTransaction().replace(R.id.fl_star_continer,mFragments.get(which)).commit();
+        //如果点击的是当前的Fragment则不进行切换
+        if (preFragment != which){
+            getFragmentManager().beginTransaction().replace(R.id.fl_star_continer,mFragments.get(which)).commit();
+            ll_star_header.setBackgroundResource(which == 1 ? R.drawable.class1_bg :R.drawable.class2_bg);
+        }
+       preFragment = which;
     }
 
     //推荐明星
@@ -60,5 +73,10 @@ public class HomeStarActivity extends Activity {
         initFragment(1);
     }
 
+    //返回
+    @OnClick(R.id.iv_home_star_back)
+    public void back(View view){
+        finish();
+    }
 
 }

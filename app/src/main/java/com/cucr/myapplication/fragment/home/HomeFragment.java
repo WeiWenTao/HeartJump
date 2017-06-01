@@ -69,7 +69,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     }
 
     private void initLv() {
-        //添加头
+        //添加头部
         View headerView = View.inflate(mContext, R.layout.header_home_lv, null);
 
         //签到

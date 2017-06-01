@@ -3,7 +3,7 @@
                 android:layout_width="240dp"
                 android:layout_height="125dp"
                 android:background="@drawable/shape_publish_dialog_bg"
-                android:orientation="vertical"
+
     >
 
     <TextView

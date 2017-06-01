@@ -3,14 +3,16 @@ package com.cucr.myapplication.fragment.star;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.GvAdapter.StarClassifyAdapter;
+import com.cucr.myapplication.adapter.RlAdapter.StarClassifyRlAdapter;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.lantouzi.wheelview.WheelView;
 
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ import java.util.List;
 
 public class FragmentStarClassify extends Fragment {
 
-    private GridView mGv_star_classify;
-    private StarClassifyAdapter mGvAdapter;
+    private RecyclerView rl_star_classify;
+    private StarClassifyRlAdapter mRlAdapter;
     List<String> items;
     View view;
 
@@ -33,10 +35,10 @@ public class FragmentStarClassify extends Fragment {
        if (view == null){
            view = inflater.inflate(R.layout.fragment_star_classify, container, false);
        }
-        mGv_star_classify = (GridView) view.findViewById(R.id.gv_star_classify);
+        rl_star_classify = (RecyclerView) view.findViewById(R.id.rl_star_classify);
         WheelView wheelview = (WheelView) view.findViewById(R.id.wheelview);
         initWheelView(wheelview);
-        initGV(inflater.getContext());
+        initRl(inflater.getContext());
         return view;
     }
 
@@ -44,8 +46,22 @@ public class FragmentStarClassify extends Fragment {
         initItems();
         wheelview.setItems(items);
         wheelview.selectIndex(2);
+        //设置单位 避免bug
         wheelview.setAdditionCenterMark("  ");
         wheelview.setAttrs(true);
+
+        //设置监听
+        wheelview.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onWheelItemChanged(WheelView wheelView, int position) {
+
+            }
+
+            @Override
+            public void onWheelItemSelected(WheelView wheelView, int position) {
+                Toast.makeText(wheelView.getContext(),"Selected"+position,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initItems() {
@@ -63,14 +79,13 @@ public class FragmentStarClassify extends Fragment {
         }
     }
 
-    private void initGV(Context context) {
-        mGvAdapter = new StarClassifyAdapter(context);
-        mGv_star_classify.setAdapter(mGvAdapter);
-        mGv_star_classify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mGvAdapter.setCheck(position);
-            }
-        });
+    private void initRl(Context context) {
+        mRlAdapter = new StarClassifyRlAdapter(context);
+        GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+        rl_star_classify.setLayoutManager(layoutManager);
+        int dp_10 = CommonUtils.px2dip(context, 10.0f);
+//        rl_star_classify.addItemDecoration(new SpaceItemDecoration(dp_10,dp_10));
+        rl_star_classify.setAdapter(mRlAdapter);
+
     }
 }
