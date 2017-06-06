@@ -55,7 +55,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     protected String initHeadText(){
         return "三生三世十里桃花";
-    };
+    }
 
     //询问子类是否需要头部
     protected boolean needHeader() {

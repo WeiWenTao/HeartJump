@@ -26,6 +26,9 @@ public class FragmentStarClassify extends Fragment {
 
     private RecyclerView rl_star_classify;
     private StarClassifyRlAdapter mRlAdapter;
+    //定义一个变量记录初始化的页面角标
+    private int initIndex = 2;
+
     List<String> items;
     View view;
 
@@ -45,7 +48,7 @@ public class FragmentStarClassify extends Fragment {
     private void initWheelView(WheelView wheelview) {
         initItems();
         wheelview.setItems(items);
-        wheelview.selectIndex(2);
+        wheelview.selectIndex(initIndex);
         //设置单位 避免bug
         wheelview.setAdditionCenterMark("  ");
         wheelview.setAttrs(true);
@@ -59,7 +62,15 @@ public class FragmentStarClassify extends Fragment {
 
             @Override
             public void onWheelItemSelected(WheelView wheelView, int position) {
-                ToastUtils.showToast(wheelView.getContext(),position+"");
+
+                //第一次进来的时候
+                if (position == initIndex){
+
+                }else {
+                    ToastUtils.showToast(wheelView.getContext(),position+"");
+                    initIndex = -1;
+                }
+
             }
 
         });
