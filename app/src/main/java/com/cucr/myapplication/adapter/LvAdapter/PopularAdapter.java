@@ -1,69 +1,47 @@
 package com.cucr.myapplication.adapter.LvAdapter;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.utils.CommonViewHolder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by 911 on 2017/4/19.
  */
-public class PopularAdapter extends BaseAdapter {
-
-    Map<Integer, Boolean> isFocus = new HashMap<>();
-
-    {
-        for (int i = 0; i <= 20; i++) {
-            isFocus.put(i, true);
-            if (i == 3) {
-                isFocus.put(i, false);
-            }
-        }
+public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.MyViewHolder> {
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lv_popularity,parent,false);
+        MyViewHolder vh = new MyViewHolder(view);
+        return vh;
     }
 
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        holder.tv_num.setText("第 "+position+" 名");
 
-    private TextView mTv_focus;
+    }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return 20;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
+
+
+    class  MyViewHolder extends RecyclerView.ViewHolder{
+        public  TextView tv_focus_popularity;
+        public  TextView tv_num;
+
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            tv_num = (TextView) itemView.findViewById(R.id.tv_num);
+            tv_focus_popularity = (TextView) itemView.findViewById(R.id.tv_focus_popularity);
+        }
     }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-
-        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout.item_lv_popularity, null);
-        TextView tv_num = cvh.getView(R.id.tv_num, TextView.class);
-        tv_num.setText("第" + (position + 4) + "名");
-
-        mTv_focus = cvh.getView(R.id.tv_focus_popularity, TextView.class);
-        mTv_focus.setText(isFocus.get(position)?"已关注":"加关注");
-        mTv_focus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(parent.getContext(), position + "", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return cvh.convertView;
-    }
-
 
 }

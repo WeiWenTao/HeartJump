@@ -54,29 +54,41 @@ public class HomeStarActivity extends Activity {
 
     private void initFragment(int which) {
         //如果点击的是当前的Fragment则不进行切换
-        if (preFragment != which){
-            getFragmentManager().beginTransaction().replace(R.id.fl_star_continer,mFragments.get(which)).commit();
-            ll_star_header.setBackgroundResource(which == 1 ? R.drawable.class1_bg :R.drawable.class2_bg);
+        if (preFragment != which) {
+            getFragmentManager().beginTransaction().replace(R.id.fl_star_continer, mFragments.get(which)).commit();
+            ll_star_header.setBackgroundResource(which == 1 ? R.drawable.class1_bg : R.drawable.class2_bg);
         }
-       preFragment = which;
+        preFragment = which;
     }
 
     //推荐明星
     @OnClick(R.id.ll_star_recommend)
-    public void recommendStar(View view){
+    public void recommendStar(View view) {
         initFragment(0);
     }
 
     //明星分类
     @OnClick(R.id.ll_star_classify)
-    public void starClassify(View view){
+    public void starClassify(View view) {
         initFragment(1);
     }
 
     //返回
     @OnClick(R.id.iv_home_star_back)
-    public void back(View view){
+    public void back(View view) {
         finish();
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

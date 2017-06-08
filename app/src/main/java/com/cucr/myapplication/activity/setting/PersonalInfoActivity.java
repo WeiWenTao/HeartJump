@@ -21,8 +21,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.bean.BirthdayDate;
-import com.cucr.myapplication.bean.LocationData;
+import com.cucr.myapplication.bean.setting.BirthdayDate;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;

@@ -1,6 +1,5 @@
 package com.cucr.myapplication.fragment.live;
 
-import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.PagerAdapter.LivePagerAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 
@@ -37,7 +35,7 @@ import java.util.List;
 public class TvFragment extends BaseFragment {
     private static final String[] CHANNELS = new String[]{"我关注的", "热门直播", "人气主播"};
     private List<String> mDataList = Arrays.asList(CHANNELS);
-    private LivePagerAdapter mExamplePagerAdapter = new LivePagerAdapter(mDataList);
+//    private LivePagerAdapter mExamplePagerAdapter = new LivePagerAdapter(mDataList);
     private ViewPager mViewPager;
     private MagicIndicator mMagicIndicator;
     List<Fragment> mList = new ArrayList<>();
@@ -46,45 +44,30 @@ public class TvFragment extends BaseFragment {
     @Override
     protected void initView(View childView) {
 
-
-
         //初始化vp和vpi
         mViewPager = (ViewPager) childView.findViewById(R.id.view_pager);
         mViewPager.setAdapter(new SectionsPagerAdapter(getFragmentManager()));
+
         mMagicIndicator = (MagicIndicator) childView.findViewById(R.id.magic_indicator7);
 
 
+        mList.add(new HotAndFocusFragment());
+        mList.add(new HotAndFocusFragment());
+        mList.add(new HotPopolarFragment());
 
-        mList.add(new HotAndFocusFragment(mMagicIndicator));
-        mList.add(new HotAndFocusFragment(mMagicIndicator));
-        mList.add(new HotPopolarFragment(mMagicIndicator));
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mMagicIndicator.clearAnimation();
-                ObjectAnimator anim = ObjectAnimator.ofFloat(mMagicIndicator, "translationY",mMagicIndicator.getTranslationY(), 0);
-                anim.setDuration(800);
-                anim.start();
-                mMagicIndicator.clearAnimation();
-
-//                mMagicIndicator.setTranslationY(0);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         initMagicIndicator(childView);
+        mViewPager.setCurrentItem(0);
     }
 
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
+    }
 
     //初始化标签栏
     private void initMagicIndicator(View childView) {

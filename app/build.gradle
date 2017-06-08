@@ -31,10 +31,11 @@ dependencies {
     compile 'com.zcw:togglebutton-library:1.0.0'
     //    compile 'com.github.lawloretienne:quickreturn:0.0.3'
     compile 'com.android.support:support-v13:25.2.0'
-    compile project(':library-quick-return')
+//    compile project(':library-quick-return')
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':lib_wheelView')
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+    compile 'com.bigkoo:quicksidebar:1.0.3'
 }

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.MyfocusAdapter;
-import com.cucr.myapplication.adapter.LvAdapter.PopularAdapter;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class LivePagerAdapter extends PagerAdapter {
             ListView lv_popularity = (ListView) itemView.findViewById(R.id.lv_popularity);
             //添加热门主播的listView的头
             lv_popularity.addHeaderView(View.inflate(container.getContext(),R.layout.header_popularity_lv,null));
-            lv_popularity.setAdapter(new PopularAdapter());
+//            lv_popularity.setAdapter(new PopularAdapter());
 
         } else {
             itemView = View.inflate(container.getContext(), R.layout.pager_my_focus, null);

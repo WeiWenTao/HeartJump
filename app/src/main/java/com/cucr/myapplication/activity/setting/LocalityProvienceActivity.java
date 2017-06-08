@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
-import com.cucr.myapplication.bean.LocationData;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.dao.CityDao;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.event.OnClick;

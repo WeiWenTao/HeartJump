@@ -3,7 +3,7 @@ package com.cucr.myapplication.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.cucr.myapplication.bean.LocationData;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.constants.Constans;
 
 import java.util.ArrayList;

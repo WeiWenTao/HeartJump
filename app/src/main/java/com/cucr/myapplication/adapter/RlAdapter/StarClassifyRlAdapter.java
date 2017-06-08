@@ -15,6 +15,8 @@ import com.cucr.myapplication.widget.dialog.DialogCanaleFocusStyle;
 
 /**
  * Created by 911 on 2017/5/25.
+ *
+ * StarClassifyRlAdapter_all代替  后期可以删除
  */
 public class StarClassifyRlAdapter extends RecyclerView.Adapter<StarClassifyRlAdapter.MyHolder> implements View.OnClickListener {
 
@@ -76,7 +78,7 @@ public class StarClassifyRlAdapter extends RecyclerView.Adapter<StarClassifyRlAd
                     mFl.setVisibility(View.VISIBLE);
                 } else if (mFl.getVisibility() == View.VISIBLE) {
                     mDialogCanaleFocusStyle.show();
-                    mDialogCanaleFocusStyle.initTitle("黄晓明");
+                    mDialogCanaleFocusStyle.initTitle("林更新");
 
                 }
                 break;

@@ -36,7 +36,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         if (mRootView == null) {
             if (needHeader()) {
                 mRootView = inflater.inflate(R.layout.fragment_base, container, false);
-
                 ViewGroup childContainer = (ViewGroup) mRootView.findViewById(R.id.base_fragment_child_container);
                 View childView = inflater.inflate(getContentLayoutRes(), childContainer, true);
                 //返回view给子类
