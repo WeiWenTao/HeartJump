@@ -2,10 +2,13 @@ package com.cucr.myapplication.activity.home;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.widget.signcalendar.SignCalendar;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ public class SignActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
-
+        ViewUtils.inject(this);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
@@ -45,6 +48,12 @@ public class SignActivity extends Activity {
                 mTv.setText(year+" - "+month);
             }
         });
+    }
+
+    //点击返回
+    @OnClick(R.id.iv_my_sign_back)
+    public void back(View view){
+        finish();
     }
 
 }
