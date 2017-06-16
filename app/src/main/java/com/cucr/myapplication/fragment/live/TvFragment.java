@@ -4,15 +4,21 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
+import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ThreadUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -35,7 +41,7 @@ import java.util.List;
 public class TvFragment extends BaseFragment {
     private static final String[] CHANNELS = new String[]{"我关注的", "热门直播", "人气主播"};
     private List<String> mDataList = Arrays.asList(CHANNELS);
-//    private LivePagerAdapter mExamplePagerAdapter = new LivePagerAdapter(mDataList);
+    //    private LivePagerAdapter mExamplePagerAdapter = new LivePagerAdapter(mDataList);
     private ViewPager mViewPager;
     private MagicIndicator mMagicIndicator;
     List<Fragment> mList = new ArrayList<>();
@@ -46,6 +52,26 @@ public class TvFragment extends BaseFragment {
 
         //初始化vp和vpi
         mViewPager = (ViewPager) childView.findViewById(R.id.view_pager);
+
+        ThreadUtils.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mViewPager.getLayoutParams();
+
+                //      通过setLayoutParams方式，给ViewPager动态设置高度
+                layoutParams.height = ((WindowManager) mContext
+                        .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight()
+                        - CommonUtils.dip2px(mContext, 100.0f)   //100dp 是顶部导航和底部菜单的高度
+                        - CommonUtils.getStatusBarHeight(mContext);     //  减去状态栏高度
+
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                layoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+
+                mViewPager.setLayoutParams(layoutParams);
+            }
+        });
+
+
         mViewPager.setAdapter(new SectionsPagerAdapter(getFragmentManager()));
 
         mMagicIndicator = (MagicIndicator) childView.findViewById(R.id.magic_indicator7);
@@ -60,11 +86,9 @@ public class TvFragment extends BaseFragment {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
-
 
 
     }
@@ -84,7 +108,7 @@ public class TvFragment extends BaseFragment {
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
                 // 3.0f 表示3个标签占一个屏幕大小
-                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context,3.0f);
+                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 3.0f);
                 simplePagerTitleView.setText(mDataList.get(index));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#929292"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#f68d89"));
@@ -124,7 +148,6 @@ public class TvFragment extends BaseFragment {
     protected String initHeadText() {
         return "搜索你喜欢的主播";
     }
-
 
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

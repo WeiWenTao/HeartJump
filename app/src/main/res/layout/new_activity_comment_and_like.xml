@@ -95,6 +95,7 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginTop="45dp"/>
+
     </FrameLayout>
 
     <LinearLayout

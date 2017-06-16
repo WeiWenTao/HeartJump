@@ -87,7 +87,10 @@
         </activity>
         <activity android:name=".activity.home.PersonalHomePageActivity">
         </activity>
-        <activity android:name=".activity.setting.PersonalInfoActivity" android:launchMode="singleTask">
+        <activity
+            android:name=".activity.setting.PersonalInfoActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
         <activity android:name=".activity.setting.SettingActivity">
         </activity>
@@ -129,7 +132,9 @@
         </activity>
         <activity android:name=".activity.fenTuan.FenTuanActivity">
         </activity>
-        <activity android:name=".activity.home.HomeStarActivity" >
+        <activity android:name=".activity.home.HomeStarActivity">
+        </activity>
+        <activity android:name=".activity.setting.RenZhenngActivity">
         </activity>
     </application>
 

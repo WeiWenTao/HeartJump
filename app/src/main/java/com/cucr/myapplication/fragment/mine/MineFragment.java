@@ -7,15 +7,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.myHomePager.FansActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
-import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.setting.MyHelperActivity;
 import com.cucr.myapplication.activity.myHomePager.MyHomePagerActivity;
 import com.cucr.myapplication.activity.myHomePager.PayCenterActivity;
-import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
-import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.myHomePager.StarMoneyActivity;
+import com.cucr.myapplication.activity.setting.MyHelperActivity;
+import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
+import com.cucr.myapplication.activity.setting.RenZhenngActivity;
+import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.fragment.BaseFragment;
 
 /**
@@ -36,6 +37,8 @@ public class MineFragment extends BaseFragment {
         LinearLayout ll_pay = (LinearLayout) childView.findViewById(R.id.ll_pay);
         RelativeLayout rl_my_helper = (RelativeLayout) childView.findViewById(R.id.rl_my_helper);
         RelativeLayout rl_pay_center = (RelativeLayout) childView.findViewById(R.id.rl_pay_center);
+        RelativeLayout rl_ren_zheng = (RelativeLayout) childView.findViewById(R.id.rl_ren_zheng);
+
 
 
         iv_user.setOnClickListener(this);
@@ -48,6 +51,8 @@ public class MineFragment extends BaseFragment {
         ll_pay.setOnClickListener(this);
         rl_my_helper.setOnClickListener(this);
         rl_pay_center.setOnClickListener(this);
+        rl_ren_zheng.setOnClickListener(this);
+
     }
 
     @Override
@@ -101,6 +106,10 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_pay_center:
                 mContext.startActivity(new Intent(mContext, PayCenterActivity.class));
                 break;
+
+            case R.id.rl_ren_zheng:
+                mContext.startActivity(new Intent(mContext, RenZhenngActivity.class));
+
         }
 
     }

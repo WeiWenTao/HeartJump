@@ -305,6 +305,7 @@ public class PersonalInfoActivity extends Activity {
 
             default:
                 break;
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
