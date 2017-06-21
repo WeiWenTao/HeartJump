@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<ScrollView
+   android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
@@ -98,13 +105,16 @@
 
         </RelativeLayout>
 
+
         <RelativeLayout
+            android:id="@+id/rl_star_shenfenzheng_positive"
             android:layout_width="325dp"
             android:layout_height="180dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_25"
             android:background="@drawable/shape_bg_ren_zheng"
             >
+
 
             <ImageView
                 android:id="@+id/iv_add_pic_positive"
@@ -126,9 +136,24 @@
                 android:layout_centerHorizontal="true"
                 />
 
+            <com.joooonho.SelectableRoundedImageView
+                android:id="@+id/img_star_positive"
+                android:layout_width="325dp"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center_horizontal"
+                app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+                app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+                app:sriv_left_top_corner_radius="@dimen/dp_5"
+                app:sriv_right_top_corner_radius="@dimen/dp_5"
+                android:background="@drawable/shape_bg_ren_zheng"
+                android:visibility="gone"
+                />
+
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_star_shenfenzheng_negative"
             android:layout_width="325dp"
             android:layout_height="180dp"
             android:layout_gravity="center_horizontal"
@@ -155,6 +180,20 @@
                 android:layout_centerHorizontal="true"
                 />
 
+            <com.joooonho.SelectableRoundedImageView
+                android:id="@+id/img_star_nagetive"
+                android:layout_width="325dp"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center_horizontal"
+                app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+                app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+                app:sriv_left_top_corner_radius="@dimen/dp_5"
+                app:sriv_right_top_corner_radius="@dimen/dp_5"
+                android:background="@drawable/shape_bg_ren_zheng"
+                android:visibility="gone"
+                />
+
         </RelativeLayout>
 
 
@@ -178,3 +217,12 @@
     </LinearLayout>
 
 </ScrollView>
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/fl_pop_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#5555"
+        />
+
+</RelativeLayout>

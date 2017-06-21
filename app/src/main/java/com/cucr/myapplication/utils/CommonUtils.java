@@ -2,8 +2,13 @@ package com.cucr.myapplication.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
@@ -137,6 +142,60 @@ public class CommonUtils {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+
+    //显示缩略图
+    public static Bitmap decodeBitmap(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        // 通过这个bitmap获取图片的宽和高
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        if (bitmap == null) {
+//            System.out.println("bitmap为空");
+        }
+        float realWidth = options.outWidth;
+        float realHeight = options.outHeight;
+//        System.out.println("真实图片高度：" + realHeight + "宽度:" + realWidth);
+        // 计算缩放比
+        int scale = (int) ((realHeight > realWidth ? realHeight : realWidth) / 1000);
+
+        if (scale <= 0) {
+            scale = 1;
+        }
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        // 注意这次要把options.inJustDecodeBounds 设为 false,这次图片是要读取出来的。
+        bitmap = BitmapFactory.decodeFile(path, options);
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+//        System.out.println("缩略图高度：" + h + "宽度:" + w);
+        return bitmap;
+    }
+
+
+    //初始化Popwindow背景
+    public static void initPopBg(boolean isIn, FrameLayout fl_pop_bg) {
+
+        //防止重复创建对象
+        AlphaAnimation animation1 = null;
+        AlphaAnimation animation2 = null;
+
+        //进入动画
+        if (animation1 == null) {
+            animation1 = new AlphaAnimation(0.0f, 1.0f);
+        }
+
+        //退出动画
+        if (animation2 == null) {
+            animation2 = new AlphaAnimation(1.0f, 0.0f);
+        }
+
+        animation1.setDuration(200);
+        animation2.setDuration(200);
+        fl_pop_bg.setAnimation(isIn ? animation1 : animation2);
+        fl_pop_bg.setVisibility(isIn ? View.VISIBLE : View.GONE);
+
     }
 
 }

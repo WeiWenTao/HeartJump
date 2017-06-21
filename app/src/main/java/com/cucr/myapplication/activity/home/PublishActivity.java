@@ -92,10 +92,11 @@ public class PublishActivity extends Activity {
     }
 
     public void showDialog() {
-        DialogPublishStyle publishDialog = new DialogPublishStyle(this,R.style.ShowAddressStyleTheme);
+        final DialogPublishStyle publishDialog = new DialogPublishStyle(this,R.style.ShowAddressStyleTheme);
         publishDialog.setOnClickConfirm(new DialogPublishStyle.OnClickConfirm() {
             @Override
             public void OnConfirm() {
+                publishDialog.dismiss();
                 finish();
             }
         });

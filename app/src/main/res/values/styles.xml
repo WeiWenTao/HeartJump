@@ -170,4 +170,10 @@
         <item name="android:gravity">center_vertical|right</item>
     </style>
 
+    <style name="AnimationFade">
+        <!--   PopupWindow左右弹出的效果-->
+        <item name="android:windowEnterAnimation">@anim/popwindow_in</item>
+        <item name="android:windowExitAnimation">@anim/popwindow_out</item>
+    </style>
+
 </resources>

@@ -1,195 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cucr.myapplication.activity.setting.PersonalInfoActivity"
     >
-    <RelativeLayout
-        android:background="@drawable/shape_bg_commen_head"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        >
-        <ImageView
-            android:paddingRight="19dp"
-            android:id="@+id/iv_personal_info_back"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:layout_height="22dp"
-            android:src="@drawable/icon_back"
-            />
 
-        <TextView
-            android:id="@+id/rl_home_search"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="个人资料"
-            >
-
-        </TextView>
-        <TextView
-            android:enabled="false"
-            android:id="@+id/tv_personal_info_save"
-            android:padding="@dimen/dp_5"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/shape_text_search_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:textSize="@dimen/sp_15"
-            android:text="保存"
-            />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_change_headpic"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-           style="@style/Left_TV"
-           android:text="头像"
-            />
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/iv_head"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:src="@drawable/img1_user"
-            android:layout_marginRight="@dimen/dp_13"
-            app:civ_border_width="1dp"
-            app:civ_border_color="#ffff"/>
-        <include layout="@layout/horizontal_line"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-            style="@style/Left_TV"
-            android:text="手机号"
-            />
-        <TextView
-            style="@style/Right_TV"
-            android:text="13512345678"
-            />
-        <include layout="@layout/horizontal_line"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-            style="@style/Left_TV"
-            android:text="昵称"
-            />
-        <TextView
-            style="@style/Right_TV"
-            android:text="瞅我干啥"
-            />
-        <include layout="@layout/horizontal_line"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_gender"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-            style="@style/Left_TV"
-            android:text="性别"
-            />
-        <TextView
-            android:id="@+id/tv_gender"
-            style="@style/Right_TV"
-            android:text="女"
-            />
-        <include layout="@layout/horizontal_line"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:background="@color/white"
-        android:id="@+id/rl_birthday"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-            style="@style/Left_TV"
-            android:text="生日"
-            />
-        <TextView
-            android:id="@+id/tv_birthday_edit"
-            style="@style/Right_TV"
-            android:hint="请选择生日"
-            />
-        <include layout="@layout/horizontal_line"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_location"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-            style="@style/Left_TV"
-            android:text="所在地"
-            />
-        <TextView
-            android:id="@+id/tv_set_location"
-            android:hint="请选择所在地"
-            style="@style/Right_TV"
-            />
-        <include layout="@layout/horizontal_line"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        >
-        <TextView
-            style="@style/Left_TV"
-            android:text="个性签名"
-            />
-        <TextView
-            style="@style/Right_TV"
-            android:hint="你好！欢迎来到我的主页！"
-            />
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f6f6f6"
+        android:orientation="vertical"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_bg_commen_head"
+            >
+
+            <ImageView
+                android:id="@+id/iv_personal_info_back"
+                android:layout_width="30dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:paddingRight="19dp"
+                android:src="@drawable/icon_back"
+                />
+
+            <TextView
+                android:id="@+id/rl_home_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="个人资料"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                >
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_personal_info_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_text_search_bg"
+                android:enabled="false"
+                android:padding="@dimen/dp_5"
+                android:text="保存"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_15"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_change_headpic"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="头像"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_head"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_13"
+                android:src="@drawable/img1_user"
+                app:civ_border_color="#ffff"
+                app:civ_border_width="1dp"
+                />
+
+            <include layout="@layout/horizontal_line"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="手机号"
+                />
+
+            <TextView
+                style="@style/Right_TV"
+                android:text="13512345678"
+                />
+
+            <include layout="@layout/horizontal_line"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="昵称"
+                />
+
+            <TextView
+                style="@style/Right_TV"
+                android:text="瞅我干啥"
+                />
+
+            <include layout="@layout/horizontal_line"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_gender"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="性别"
+                />
+
+            <TextView
+                android:id="@+id/tv_gender"
+                style="@style/Right_TV"
+                android:text="女"
+                />
+
+            <include layout="@layout/horizontal_line"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="生日"
+                />
+
+            <TextView
+                android:id="@+id/tv_birthday_edit"
+                style="@style/Right_TV"
+                android:hint="请选择生日"
+                />
+
+            <include layout="@layout/horizontal_line"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_location"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="所在地"
+                />
+
+            <TextView
+                android:id="@+id/tv_set_location"
+                style="@style/Right_TV"
+                android:hint="请选择所在地"
+                />
+
+            <include layout="@layout/horizontal_line"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/white"
+            >
+
+            <TextView
+                style="@style/Left_TV"
+                android:text="个性签名"
+                />
+
+            <TextView
+                style="@style/Right_TV"
+                android:hint="你好！欢迎来到我的主页！"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f6f6f6"
+            />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/fl_pop_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#5555"
         />
-
-
-</LinearLayout>
+</RelativeLayout>

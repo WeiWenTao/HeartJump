@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -56,6 +57,10 @@ public class PersonalInfoActivity extends Activity {
     @ViewInject(R.id.iv_head)
     CircleImageView iv_head;
 
+    //popWindow背景
+    @ViewInject(R.id.fl_pop_bg)
+    FrameLayout fl_pop_bg;
+
     private DialogBirthdayStyle mBirthdayStyle;
     private String mYear;
     private String mMon;
@@ -66,7 +71,7 @@ public class PersonalInfoActivity extends Activity {
 
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
-    private TextView photograph,albums;
+    private TextView photograph, albums;
     private LinearLayout cancel;
 
     public static final int PHOTOZOOM = 0; // 相册/拍照
@@ -90,16 +95,17 @@ public class PersonalInfoActivity extends Activity {
         initHead();
 
         initDialog();
+
     }
 
     private void initHead() {
-        layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         File file = new File(Environment.getExternalStorageDirectory(), "ClipHeadPhoto/cache");
         if (!file.exists())
             file.mkdirs();
-        photoSavePath=Environment.getExternalStorageDirectory()+"/ClipHeadPhoto/cache/";
-        photoSaveName =System.currentTimeMillis()+ ".png";
+        photoSavePath = Environment.getExternalStorageDirectory() + "/ClipHeadPhoto/cache/";
+        photoSaveName = System.currentTimeMillis() + ".png";
     }
 
 
@@ -202,29 +208,64 @@ public class PersonalInfoActivity extends Activity {
 
     //换头像
     @OnClick(R.id.rl_change_headpic)
-    public void chnagePic(View view){
+    public void chnagePic(View view) {
+        CommonUtils.initPopBg(true,fl_pop_bg);
+
         showPopupWindow(iv_head);
+
     }
+
+//    private void initPopBg(boolean isIn) {
+//
+//        //防止重复创建对象
+//        AlphaAnimation animation1 = null;
+//        AlphaAnimation animation2 = null;
+//
+//        //进入动画
+//        if (animation1 == null) {
+//            animation1 = new AlphaAnimation(0.0f, 1.0f);
+//        }
+//
+//        //退出动画
+//        if (animation2 == null) {
+//            animation2 = new AlphaAnimation(1.0f, 0.0f);
+//        }
+//
+//        animation1.setDuration(200);
+//        animation2.setDuration(200);
+//        fl_pop_bg.setAnimation(isIn ? animation1 : animation2);
+//        fl_pop_bg.setVisibility(isIn ? View.VISIBLE : View.GONE);
+//
+//    }
 
     @SuppressWarnings("deprecation")
-    private void showPopupWindow(View parent){
+    private void showPopupWindow(View parent) {
         if (popWindow == null) {
-            View view = layoutInflater.inflate(R.layout.pop_select_photo,null);
-            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,true);
+            View view = layoutInflater.inflate(R.layout.pop_select_photo, null);
+            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
             initPop(view);
         }
-        popWindow.setAnimationStyle(android.R.style.Animation_Toast);
+        popWindow.setAnimationStyle(R.style.AnimationFade);
         popWindow.setFocusable(true);
         popWindow.setOutsideTouchable(true);
+
         popWindow.setBackgroundDrawable(new BitmapDrawable());
+
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
+
+        popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                CommonUtils.initPopBg(false,fl_pop_bg);
+            }
+        });
     }
 
-    public void initPop(View view){
+    public void initPop(View view) {
         photograph = (TextView) view.findViewById(R.id.photograph);//拍照
         albums = (TextView) view.findViewById(R.id.albums);//相册
-        cancel= (LinearLayout) view.findViewById(R.id.cancel);//取消
+        cancel = (LinearLayout) view.findViewById(R.id.cancel);//取消
         view.findViewById(R.id.rl_popWindow_bg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,10 +276,10 @@ public class PersonalInfoActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 popWindow.dismiss();
-                photoSaveName =String.valueOf(System.currentTimeMillis()) + ".png";
+                photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
                 Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imageUri = Uri.fromFile(new File(photoSavePath,photoSaveName));
+                imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
                 openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(openCameraIntent, PHOTOTAKE);
@@ -263,7 +304,6 @@ public class PersonalInfoActivity extends Activity {
     }
 
 
-
     /**
      * 图片选择及拍照结果
      */
@@ -276,24 +316,24 @@ public class PersonalInfoActivity extends Activity {
         Uri uri = null;
         switch (requestCode) {
             case PHOTOZOOM://相册
-                if (data==null) {
+                if (data == null) {
                     return;
                 }
                 uri = data.getData();
-                String[] proj = { MediaStore.Images.Media.DATA };
-                Cursor cursor = managedQuery(uri, proj, null, null,null);
+                String[] proj = {MediaStore.Images.Media.DATA};
+                Cursor cursor = managedQuery(uri, proj, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 path = cursor.getString(column_index);// 图片在的路径
-                Intent intent3=new Intent(PersonalInfoActivity.this, ClipActivity.class);
+                Intent intent3 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
                 intent3.putExtra("path", path);
                 startActivityForResult(intent3, IMAGE_COMPLETE);
                 break;
 
             case PHOTOTAKE://拍照
-                path=photoSavePath+photoSaveName;
+                path = photoSavePath + photoSaveName;
                 uri = Uri.fromFile(new File(path));
-                Intent intent2=new Intent(PersonalInfoActivity.this, ClipActivity.class);
+                Intent intent2 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
                 intent2.putExtra("path", path);
                 startActivityForResult(intent2, IMAGE_COMPLETE);
                 break;
@@ -327,8 +367,16 @@ public class PersonalInfoActivity extends Activity {
 
     //返回
     @OnClick(R.id.iv_personal_info_back)
-    public void back(View view){
+    public void back(View view) {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        //TODO
+//        if (popWindow.isShowing()){
+//            cancel.performClick();
+//        }
+        super.onBackPressed();
+    }
 }
