@@ -74,7 +74,7 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                 case Constans.TYPE_ONE:
                     cvh1 = CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout.item_home_type1,null);
 
-                    rl_share = cvh1.getView(R.id.rl_share, RelativeLayout.class);
+                  /*  rl_share = cvh1.getView(R.id.rl_share, RelativeLayout.class);
                     rl_comment = cvh1.getView(R.id.rl_comment, RelativeLayout.class);
 
                     iv_favorite1 = cvh1.getView(R.id.iv_favorite3, ImageView.class);
@@ -91,7 +91,7 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                         }
                     });
 
-                    rl_share.setTag(position);
+                    rl_share.setTag(position);*/
                     return cvh1.convertView;
 
                 case Constans.TYPE_TWO:
@@ -101,7 +101,7 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
 //                    GridView gv = cvh2.getView(R.id.gridview, GridView.class);
 //                    gv.setAdapter();
 
-
+/*
                     rl_share = cvh2.getView(R.id.rl_share, RelativeLayout.class);
                     rl_comment = cvh2.getView(R.id.rl_comment, RelativeLayout.class);
 
@@ -118,13 +118,13 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                         }
                     });
 
-                    rl_share.setTag(position);
+                    rl_share.setTag(position);*/
                     return cvh2.convertView;
 
                 case Constans.TYPE_THREE:
                     cvh3= CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout.item_home_type3,null);
 
-                    rl_share = cvh3.getView(R.id.rl_share, RelativeLayout.class);
+                   /* rl_share = cvh3.getView(R.id.rl_share, RelativeLayout.class);
                     rl_comment = cvh3.getView(R.id.rl_comment, RelativeLayout.class);
 
                     iv_favorite3 = cvh3.getView(R.id.iv_favorite3, ImageView.class);
@@ -142,7 +142,7 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                         }
                     });
 
-                    rl_share.setTag(position);
+                    rl_share.setTag(position);*/
                     return cvh3.convertView;
 
             }

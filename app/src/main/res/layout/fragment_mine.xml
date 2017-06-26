@@ -19,7 +19,7 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:src="@drawable/icon_ms_nor"
+            android:src="@drawable/icon_msg"
             />
 
         <ImageView

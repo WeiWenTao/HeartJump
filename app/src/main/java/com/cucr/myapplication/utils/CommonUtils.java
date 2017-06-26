@@ -158,7 +158,7 @@ public class CommonUtils {
         float realHeight = options.outHeight;
 //        System.out.println("真实图片高度：" + realHeight + "宽度:" + realWidth);
         // 计算缩放比
-        int scale = (int) ((realHeight > realWidth ? realHeight : realWidth) / 1000);
+        int scale = (int) ((realHeight > realWidth ? realHeight : realWidth) / 800);
 
         if (scale <= 0) {
             scale = 1;

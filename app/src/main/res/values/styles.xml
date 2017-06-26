@@ -18,7 +18,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#666666</item>
-        <item name="android:background">@drawable/shape_discover</item>
+        <item name="android:background">@drawable/shape_shenqing_fentuan</item>
     </style>
 
     <style name="LeftTv" parent="BaseTextView">
@@ -64,12 +64,12 @@
 
     <!--搜索界面-->
     <style name="Search_TextView">
-        <item name="android:layout_marginRight">5dp</item>
+
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_height">25dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#666</item>
-        <item name="android:textSize">@dimen/sp_15</item>
+        <item name="android:textSize">@dimen/sp_13</item>
         <item name="android:background">@drawable/shape_search_hostory_bg</item>
     </style>
 
@@ -175,5 +175,11 @@
         <item name="android:windowEnterAnimation">@anim/popwindow_in</item>
         <item name="android:windowExitAnimation">@anim/popwindow_out</item>
     </style>
+
+    <!--flowlayout-->
+    <declare-styleable name="FlowLayout">
+        <attr name="horizontal_spacing" format="dimension" />
+        <attr name="vertical_spacing" format="dimension" />
+    </declare-styleable>
 
 </resources>

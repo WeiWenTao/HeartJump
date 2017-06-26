@@ -1,96 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_personal_home_page"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.home.PersonalHomePageActivity"
     >
 
     <RelativeLayout
-        android:background="@drawable/shape_bg_commen_head"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         >
+
         <ImageView
-            android:id="@+id/iv_personal_icon"
-            android:layout_marginLeft="50dp"
-            android:layout_centerVertical="true"
-            android:layout_width="67dp"
-            android:layout_height="67dp"
-            android:src="@drawable/pic2_ym"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/star_bg_starhome"
             />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4000"
+            />
+
+
         <TextView
-            android:layout_margin="@dimen/dp_10"
-            android:layout_width="60dp"
+            android:layout_width="70dp"
             android:layout_height="@dimen/dp_25"
             android:layout_alignParentRight="true"
-            android:text="加关注"
-            android:textSize="@dimen/sp_13"
-            android:textColor="#fff"
-            android:gravity="center"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_25"
             android:background="@drawable/shape_focud_bg"
+            android:gravity="center"
+            android:text="我要打榜"
+            android:textColor="#fff"
+            android:textSize="@dimen/sp_13"
+            />
+
+        <TextView
+            android:id="@+id/tv_star_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="45dp"
+            android:layout_marginLeft="35dp"
+            android:text="明星姓名"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"
             />
 
         <LinearLayout
-            android:layout_alignTop="@+id/iv_personal_icon"
-            android:id="@+id/ll_personal_info"
-            android:orientation="vertical"
+            android:id="@+id/ll_goft"
+            android:layout_alignBottom="@id/tv_star_name"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_personal_icon"
+            android:layout_toRightOf="@id/tv_star_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             >
             <TextView
-                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="杨幂"
-                android:textSize="@dimen/sp_15"
-                android:textColor="@color/white"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="粉丝 45265"
-                android:textSize="@dimen/sp_12"
-                android:textColor="@color/white"
-                android:id="@+id/textView5"
-                />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:gravity="center"
-            android:background="@drawable/shape_search_bg"
-            android:layout_marginTop="5dp"
-            android:layout_alignLeft="@+id/ll_personal_info"
-            android:layout_below="@+id/ll_personal_info"
-            android:layout_width="75dp"
-            android:layout_height="20dp"
-            >
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="进入粉团"
+                android:text="Ta的粉团"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_12"
                 />
+
             <ImageView
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/dp_3"
                 android:layout_gravity="center_vertical"
-                android:layout_width="7dp"
-                android:layout_height="12dp"
-                android:src="@drawable/icon_arrow"
+                android:layout_width="12dp"
+                android:layout_height="10dp"
+                android:src="@drawable/enter_ft"
                 />
+
         </LinearLayout>
 
+        <TextView
+          android:textSize="@dimen/sp_14"
+          android:textColor="@color/white"
+          android:layout_alignLeft="@id/tv_star_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_marginBottom="@dimen/dp_25"
+          android:text="粉丝 325687"
+          />
 
     </RelativeLayout>
 
@@ -99,10 +98,81 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         />
+
     <android.support.v4.view.ViewPager
-        android:background="@color/white"
         android:id="@+id/personal_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
         ></android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_18"
+                android:src="@drawable/icon_service"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="咨询"
+                android:textColor="@color/colocr_666"
+                android:textSize="@dimen/sp_18"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:background="#fbf6f6"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加关注"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_18"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_bg_commen_head"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="立即预约"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 </LinearLayout>

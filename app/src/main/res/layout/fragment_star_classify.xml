@@ -36,10 +36,10 @@
     <com.bigkoo.quicksidebar.QuickSideBarView
         android:id="@id/quickSideBarView"
         android:layout_width="20dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_marginTop="25dp"
-        app:sidebarItemHeight="18dp"
+        app:sidebarItemHeight="16dp"
         app:sidebarTextColor="#666"
         app:sidebarTextColorChoose="@color/pink"
         app:sidebarTextSize="@dimen/textSize_quicksidebar"

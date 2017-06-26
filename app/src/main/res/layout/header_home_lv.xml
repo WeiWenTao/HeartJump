@@ -20,7 +20,7 @@
         <!--/>-->
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:id="@+id/convenientBanner"
         app:canLoop="true"/>
     <LinearLayout
@@ -31,6 +31,9 @@
 
         <!--活动-->
         <LinearLayout
+            android:id="@+id/ll_active"
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
             android:layout_margin="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -54,9 +57,11 @@
                 />
         </LinearLayout>
 
-        <!--明星-->
+        <!--福利-->
         <LinearLayout
-            android:id="@+id/ll_star"
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:id="@+id/ll_fuli"
             android:layout_margin="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -79,12 +84,14 @@
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="明星"
+                android:text="福利"
                 />
         </LinearLayout>
 
         <!--签到-->
         <LinearLayout
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
             android:id="@+id/ll_sign_in"
             android:layout_margin="10dp"
             android:layout_width="0dp"
@@ -113,6 +120,9 @@
 
         <!--任务-->
         <LinearLayout
+            android:id="@+id/ll_fentuan"
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
             android:layout_margin="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -132,7 +142,7 @@
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="任务"
+                android:text="粉团"
                 />
         </LinearLayout>
 

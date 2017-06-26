@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:padding="@dimen/dp_10"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="125dp"
+        android:layout_height="80dp"
+        android:background="@color/gray"
+        />
+
+    <RelativeLayout
+        android:paddingBottom="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="此处是明星头条标题"
+            android:textSize="@dimen/sp_15"
+            android:textColor="@color/colocr_333"
+            android:maxLines="1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Color_92"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/sp_12"
+            android:text="星跳娱乐"
+            />
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="12dp"
+                android:layout_height="9dp"
+                android:src="@drawable/icon_pv_nor"
+                />
+
+            <TextView
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6534"
+                android:textSize="@dimen/sp_12"
+                android:textColor="#929292"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

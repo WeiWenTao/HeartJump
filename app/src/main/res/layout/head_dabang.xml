@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="43dp"
+                android:paddingRight="43dp"
+                android:paddingBottom="@dimen/dp_10"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_second"
+            android:layout_width="70dp"
+            android:layout_height="93dp"
+            android:layout_marginTop="29dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_king2"
+                android:layout_width="70dp"
+                android:layout_height="88dp"
+                android:src="@drawable/king2"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_head2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:src="@drawable/pic2_live"
+                app:civ_border_color="#ffd014"
+                app:civ_border_width="0.5dp"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_12"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/medal2"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_second"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_15"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创联凯尔"
+                android:textColor="@color/colocr_666"
+                android:textSize="@dimen/sp_13"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="563327星币"
+                android:textColor="@color/colocr_999"
+                android:textSize="@dimen/sp_12"
+                />
+
+            <TextView
+                android:id="@+id/tv_dabang_second"
+                android:layout_width="65dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@drawable/btn_bg_sel"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="我要打榜"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_12"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_first"
+            android:layout_width="86dp"
+            android:layout_height="118dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_5"
+            >
+
+            <ImageView
+                android:id="@+id/iv_king1"
+                android:layout_width="84dp"
+                android:layout_height="112dp"
+                android:src="@drawable/king1"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_head1"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="6dp"
+                android:src="@drawable/pic2_live"
+                app:civ_border_color="#ff1430"
+                app:civ_border_width="0.5dp"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_15"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/medal1"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_first"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_15"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创联凯尔"
+                android:textColor="@color/colocr_666"
+                android:textSize="@dimen/sp_13"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="563327星币"
+                android:textColor="@color/colocr_999"
+                android:textSize="@dimen/sp_12"
+                />
+
+            <TextView
+                android:id="@+id/tv_dabang_first"
+                android:layout_width="65dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@drawable/btn_bg_sel"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="我要打榜"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_12"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_third"
+            android:layout_width="70dp"
+            android:layout_height="93dp"
+            android:layout_marginTop="29dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_king3"
+                android:layout_width="70dp"
+                android:layout_height="88dp"
+                android:src="@drawable/king3"
+                />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_head3"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:src="@drawable/pic2_live"
+                app:civ_border_color="#14a4ff"
+                app:civ_border_width="0.5dp"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_12"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/medal3"
+                />
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_third"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_15"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创联凯尔"
+                android:textColor="@color/colocr_666"
+                android:textSize="@dimen/sp_13"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="563327星币"
+                android:textColor="@color/colocr_999"
+                android:textSize="@dimen/sp_12"
+                />
+
+            <TextView
+                android:id="@+id/tv_dabang_third"
+                android:layout_width="65dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@drawable/btn_bg_sel"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="我要打榜"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_12"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

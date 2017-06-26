@@ -5,18 +5,19 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
     >
+
+    <!--android:clipToPadding="false"-->
+    <!--android:paddingTop="@dimen/dp_10"-->
     <GridView
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/dp_15"
-        android:paddingBottom="@dimen/dp_10"
+        android:scrollbarStyle="outsideOverlay"
         android:background="@color/white"
         android:id="@+id/gv_star_recommend"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/dp_10"
-        android:verticalSpacing="8dp"
+        android:paddingRight="@dimen/dp_10"
+        android:horizontalSpacing="@dimen/dp_10"
         android:listSelector="@android:color/transparent"
-        android:numColumns="3"/>
-    <!--android:horizontalSpacing="@dimen/dp_10"-->
-    <!--android:paddingRight= "@dimen/dp_10"-->
+        android:numColumns="2"/>
+
 </LinearLayout>

@@ -37,10 +37,10 @@ public class FenTuanPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "热门粉团";
+                return "火热粉团";
 
             case 1:
-                return "我的粉团";
+                return "全部粉团";
         }
         return null;
     }

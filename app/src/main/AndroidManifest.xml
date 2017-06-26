@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -27,7 +28,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         >
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -77,7 +81,10 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
-        <activity android:name=".activity.HomeSearchActivity">
+        <activity
+            android:name=".activity.HomeSearchActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
         </activity>
         <activity android:name=".activity.home.PublishActivity">
         </activity>
@@ -132,9 +139,17 @@
         </activity>
         <activity android:name=".activity.fenTuan.FenTuanActivity">
         </activity>
-        <activity android:name=".activity.home.HomeStarActivity">
+        <activity android:name=".activity.setting.RenZhengActivity">
         </activity>
-        <activity android:name=".activity.setting.RenZhenngActivity">
+        <activity android:name=".activity.huodong.HuoDongActivity">
+        </activity>
+        <activity android:name=".activity.fuli.FuLiActiviry">
+        </activity>
+        <activity android:name=".activity.news.NewsActivity">
+        </activity>
+        <activity android:name=".activity.video.VideoActivity">
+        </activity>
+        <activity android:name=".activity.photos.PhotoActivity">
         </activity>
     </application>
 

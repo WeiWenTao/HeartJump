@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.bigkoo.quicksidebar.QuickSideBarView;
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.RlAdapter.StarClassifyAdapter_all;
+import com.cucr.myapplication.adapter.RlVAdapter.StarClassifyAdapter_all;
 import com.cucr.myapplication.bean.starClassify.StarClassif_all;
 
 import java.util.ArrayList;

@@ -9,10 +9,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.fragment.discover.DiscoverFragment;
+import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
 import com.cucr.myapplication.fragment.home.HomeFragment;
 import com.cucr.myapplication.fragment.mine.MineFragment;
-import com.cucr.myapplication.fragment.live.TvFragment;
+import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ZipUtil;
 
@@ -33,8 +33,11 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         //share sdk 初始化
         ShareSDK.initSDK(this);
+
         findView();
 
 
@@ -54,6 +57,8 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
 //        }
     }
 
+
+
     private void initZip() {
 
         try {
@@ -72,6 +77,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         RadioButton rb_3 = (RadioButton) findViewById(R.id.rb_3);
         RadioButton rb_4 = (RadioButton) findViewById(R.id.rb_4);
 
+        //底部导航栏距离
         initDrawable(rb_1, 0, 0, 22, 22);
         initDrawable(rb_2, 0, 0, 22, 20);
         initDrawable(rb_3, 0, 0, 18, 22);
@@ -96,10 +102,10 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     }
 
     private void initView() {
-        mFragments.add(new HomeFragment());
-        mFragments.add(new TvFragment());
-        mFragments.add(new DiscoverFragment());
-        mFragments.add(new MineFragment());
+        mFragments.add(new HomeFragment());              //首页
+        mFragments.add(new ApointmentFragmentA());       //预约
+        mFragments.add(new DaBangFragment());            //打榜
+        mFragments.add(new MineFragment());              //我的
 
         mRg_mian_fragments = (RadioGroup) findViewById(R.id.rg_mian_fragments);
 
@@ -114,12 +120,12 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 initFragment(0);
                 break;
 
-            //直播
+            //预约
             case R.id.rb_2:
                 initFragment(1);
                 break;
 
-            //发现
+            //打榜
             case R.id.rb_3:
                 initFragment(2);
                 break;

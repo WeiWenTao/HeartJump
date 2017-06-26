@@ -15,7 +15,7 @@ import com.cucr.myapplication.activity.myHomePager.PayCenterActivity;
 import com.cucr.myapplication.activity.myHomePager.StarMoneyActivity;
 import com.cucr.myapplication.activity.setting.MyHelperActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
-import com.cucr.myapplication.activity.setting.RenZhenngActivity;
+import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.fragment.BaseFragment;
 
@@ -108,7 +108,7 @@ public class MineFragment extends BaseFragment {
                 break;
 
             case R.id.rl_ren_zheng:
-                mContext.startActivity(new Intent(mContext, RenZhenngActivity.class));
+                mContext.startActivity(new Intent(mContext, RenZhengActivity.class));
 
         }
 

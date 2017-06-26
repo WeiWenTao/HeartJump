@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.setting.RenZhenngActivity"
+    tools:context="com.cucr.myapplication.activity.setting.RenZhengActivity"
     >
 
     <RelativeLayout

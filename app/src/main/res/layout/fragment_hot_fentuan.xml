@@ -1,15 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:orientation="vertical"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--&gt;-->
 
-    <ListView
-        android:divider="@color/lvbg"
-        android:dividerHeight="@dimen/dp_10"
-        android:id="@+id/lv_hot_fentuan"
+<!--&lt;!&ndash;android:clipToPadding="false"&ndash;&gt;-->
+<!--&lt;!&ndash;android:paddingTop="@dimen/dp_10"&ndash;&gt;-->
+<!--&lt;!&ndash;<GridView&ndash;&gt;-->
+<!--&lt;!&ndash;android:clipToPadding="false"&ndash;&gt;-->
+<!--&lt;!&ndash;android:paddingTop="@dimen/dp_8"&ndash;&gt;-->
+<!--&lt;!&ndash;android:scrollbarStyle="outsideOverlay"&ndash;&gt;-->
+<!--&lt;!&ndash;android:background="@color/white"&ndash;&gt;-->
+<!--&lt;!&ndash;android:id="@+id/gv_hot_fentuan"&ndash;&gt;-->
+<!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;android:paddingLeft="@dimen/dp_10"&ndash;&gt;-->
+<!--&lt;!&ndash;android:paddingRight="@dimen/dp_10"&ndash;&gt;-->
+<!--&lt;!&ndash;android:horizontalSpacing="13dp"&ndash;&gt;-->
+<!--&lt;!&ndash;android:verticalSpacing="@dimen/dp_3"&ndash;&gt;-->
+<!--&lt;!&ndash;android:listSelector="@android:color/transparent"&ndash;&gt;-->
+<!--&lt;!&ndash;android:numColumns="3"/>&ndash;&gt;-->
+
+
+<!--</LinearLayout>-->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10"
+        >
+
+    <LinearLayout
+        android:id="@+id/activity_main"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        tools:context="cucr.cn.mydoublelistview.MainActivity"
+        >
+
+        <com.cucr.myapplication.widget.listview.ListViewForScrollView
+            android:id="@+id/lv1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:divider="#00000000"
+            android:dividerHeight="@dimen/dp_10"
+            ></com.cucr.myapplication.widget.listview.ListViewForScrollView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="申请建团"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/shape_shenqing_fentuan"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                >
+
+                <com.cucr.myapplication.widget.listview.ListViewForScrollView
+                    android:id="@+id/lv2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="13dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:divider="#00000000"
+                    ></com.cucr.myapplication.widget.listview.ListViewForScrollView>
+
+                <com.cucr.myapplication.widget.listview.ListViewForScrollView
+                    android:id="@+id/lv3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:divider="#00000000"
+                    ></com.cucr.myapplication.widget.listview.ListViewForScrollView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

@@ -1,0 +1,45 @@
+package com.cucr.myapplication.adapter.LvAdapter;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+import com.cucr.myapplication.R;
+import com.cucr.myapplication.utils.CommonViewHolder;
+
+/**
+ * Created by 911 on 2017/6/22.
+ */
+
+public class HuoDongTaiAdapter extends BaseAdapter {
+
+    Context mContext;
+
+    public HuoDongTaiAdapter(Context context) {
+        this.mContext = context;
+    }
+
+    @Override
+    public int getCount() {
+        return 10;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_lv_dongtai, null);
+
+        return cvh.convertView;
+    }
+}

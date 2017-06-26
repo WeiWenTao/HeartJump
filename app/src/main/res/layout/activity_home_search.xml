@@ -2,6 +2,7 @@
 <LinearLayout
     android:id="@+id/activity_home_search"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,294 +12,59 @@
     >
 
     <RelativeLayout
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/pink"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
         >
 
         <ImageView
             android:id="@+id/iv_search_back"
             android:layout_width="30dp"
-            android:layout_height="22dp"
-            android:layout_centerVertical="true"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
             android:layout_marginLeft="@dimen/dp_10"
-            android:paddingRight="19dp"
+            android:paddingRight="20dp"
             android:src="@drawable/icon_back"
             />
 
-        <RelativeLayout
-            android:id="@+id/rl_home_search"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/shape_search_bg"
-            android:padding="5dp"
-            >
+            android:hint="请输入关键字"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:singleLine="true"
+            android:textColor="@color/colocr_333"
+            android:textColorHint="@color/colocr_999"
+            android:textSize="@dimen/sp_13"
+            />
 
-            <TextView
-                android:id="@+id/tv_title_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:text="请输入关键词"
-                android:textColor="#cccccc"
-                android:textSize="@dimen/sp_15"
-                />
-
-            <ImageView
-                android:layout_width="@dimen/dp_15"
-                android:layout_height="@dimen/dp_15"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/icon_search"
-                />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_header_msg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/shape_text_search_bg"
-            android:padding="@dimen/dp_5"
-            android:text="搜索"
-            android:textColor="@color/pink"
-            android:textSize="@dimen/sp_15"
+            android:layout_marginBottom="13dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/icon_msg"
             />
     </RelativeLayout>
 
-
-    <LinearLayout
+    <ListView
+        android:id="@+id/lv_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
-        >
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/dp_15"
-            android:layout_height="@dimen/dp_15"
-            android:src="@drawable/history"
-            />
-
-        <TextView
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="搜索历史"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_15"
-            />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/dp_10"
-        >
-
-        <TextView
-            style="@style/Search_TextView"
-            android:text="杨幂"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="创联凯尔"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="杨幂"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="创联凯尔"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            style="@style/Search_TextView"
-            android:text="杨幂"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="创联凯尔"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="杨幂"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="创联凯尔"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dp_20"
-        android:layout_gravity="center_horizontal"
-        >
-        
-        <ImageView
-            android:layout_width="@dimen/dp_13"
-            android:layout_height="@dimen/dp_15"
-            android:src="@drawable/delete"
-            />
-        <TextView
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="清空历史纪录"
-            android:textSize="@dimen/sp_13"
-            android:textColor="#666"
-            />
-
-    </LinearLayout>
-
-    <View
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:background="@color/lvbg"
-        android:layout_height="@dimen/dp_10"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
-        >
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/dp_13"
-            android:layout_height="@dimen/dp_15"
-            android:src="@drawable/hot"
-            />
-
-        <TextView
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="热门搜索"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_15"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            style="@style/Search_TextView"
-            android:text="择天记"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="杨紫祝福张一山"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="TFBOYS"
-            />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            style="@style/Search_TextView"
-            android:text="择天记"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="杨紫祝福张一山"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="TFBOYS"
-            />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            style="@style/Search_TextView"
-            android:text="择天记"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="杨紫祝福张一山"
-            />
-
-        <TextView
-            style="@style/Search_TextView"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="TFBOYS"
-            />
-
-
-    </LinearLayout>
-
-
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>

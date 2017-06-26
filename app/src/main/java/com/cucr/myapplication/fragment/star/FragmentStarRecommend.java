@@ -2,6 +2,7 @@ package com.cucr.myapplication.fragment.star;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.home.PersonalHomePageActivity;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 
 /**
@@ -36,13 +38,14 @@ public class FragmentStarRecommend extends Fragment {
         return view;
     }
 
-    private void initGV(Context context) {
+    private void initGV(final Context context) {
         mGvAdapter = new StarRecommendAdapter(context);
         gv_star_recommend.setAdapter(mGvAdapter);
         gv_star_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mGvAdapter.setCheck(position);
+//                mGvAdapter.setCheck(position);
+                context.startActivity(new Intent(context,PersonalHomePageActivity.class));
             }
         });
     }

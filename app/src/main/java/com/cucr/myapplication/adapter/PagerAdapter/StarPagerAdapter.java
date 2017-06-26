@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.JourneyAndTopic.JourneyCatgoryActivity;
-import com.cucr.myapplication.activity.JourneyAndTopic.TopicCatgoryActivity;
-import com.cucr.myapplication.adapter.LvAdapter.LVPersonalDongtaiAdapter;
+import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
 import com.cucr.myapplication.adapter.LvAdapter.LvPersonalJourneyAdapter;
-import com.cucr.myapplication.adapter.LvAdapter.LvPersonalTopicAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lantouzi.wheelview.WheelView;
 
@@ -52,11 +50,10 @@ public class StarPagerAdapter extends PagerAdapter {
         if (itemView == null){
                switch (position){
                    case 0:
-                       //动态
-                       itemView = View.inflate(mContext, R.layout.item_personal_pager_dongtai, null);
-                       ListView lv_dongtai = (ListView) itemView.findViewById(R.id.lv_dongtai);
-                       lv_dongtai.addHeaderView(View.inflate(mContext, R.layout.header_dongtai_lv, null));
-                       lv_dongtai.setAdapter(new LVPersonalDongtaiAdapter());
+                       //星闻
+                       itemView = View.inflate(mContext, R.layout.item_personal_pager_xingwen, null);
+                       ListView lv_dongtai = (ListView) itemView.findViewById(R.id.lv_xingwen);
+                       lv_dongtai.setAdapter(new HomeAdapter(mContext));
                        break;
 
                    case 1:
@@ -69,21 +66,6 @@ public class StarPagerAdapter extends PagerAdapter {
                        initWheelView();
                        break;
 
-                   case 2:
-                       //话题
-                       itemView = View.inflate(mContext,R.layout.item_personal_pager_topic,null);
-                       ListView lv_topic = (ListView) itemView.findViewById(R.id.lv_topic);
-                       lv_topic.addHeaderView(View.inflate(mContext,R.layout.header_gray_space,null),null,true);
-                       //去掉头部分割线
-                       lv_topic.setHeaderDividersEnabled(false);
-                       lv_topic.setAdapter(new LvPersonalTopicAdapter());
-                       lv_topic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                           @Override
-                           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                               mContext.startActivity(new Intent(mContext, TopicCatgoryActivity.class));
-                           }
-                       });
-                       break;
                }
 
         }

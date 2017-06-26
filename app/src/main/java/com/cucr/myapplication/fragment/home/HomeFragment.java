@@ -12,10 +12,13 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.home.CommentAndLikeActivity;
-import com.cucr.myapplication.activity.home.HomeStarActivity;
+import com.cucr.myapplication.activity.fuli.FuLiActiviry;
 import com.cucr.myapplication.activity.home.PublishActivity;
 import com.cucr.myapplication.activity.home.SignActivity;
+import com.cucr.myapplication.activity.huodong.HuoDongActivity;
+import com.cucr.myapplication.activity.news.NewsActivity;
+import com.cucr.myapplication.activity.photos.PhotoActivity;
+import com.cucr.myapplication.activity.video.VideoActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.temp.LocalImageHolderView;
@@ -30,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 /**
  * Created by 911 on 2017/4/10.
  */
@@ -42,7 +44,9 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     private ConvenientBanner convenientBanner;
     private List<Integer> localImages = new ArrayList<>();
     private LinearLayout mLl_sign_in;
-    private LinearLayout mLl_star;
+    private LinearLayout ll_fuli;
+    private LinearLayout ll_active;
+    private LinearLayout ll_fentuan;
 
     @Override
     protected void initView(View childView) {
@@ -76,22 +80,54 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         mLl_sign_in = (LinearLayout) headerView.findViewById(R.id.ll_sign_in);
         mLl_sign_in.setOnClickListener(this);
 
-        //明星
-        mLl_star = (LinearLayout) headerView.findViewById(R.id.ll_star);
-        mLl_star.setOnClickListener(this);
+        //福利
+        ll_fuli = (LinearLayout) headerView.findViewById(R.id.ll_fuli);
+        ll_fuli.setOnClickListener(this);
+
+
+        //活动
+        ll_active = (LinearLayout) headerView.findViewById(R.id.ll_active);
+        ll_active.setOnClickListener(this);
+
+        //粉团
+        ll_fentuan = (LinearLayout) headerView.findViewById(R.id.ll_fentuan);
+        ll_fentuan.setOnClickListener(this);
+
+
+
 
         //首页轮播图
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
         initARL();
 
-        mLv_home.addHeaderView(headerView);
+        mLv_home.addHeaderView(headerView,null,true);
+        mLv_home.addHeaderView(View.inflate(mContext,R.layout.header_home_lv_1,null),null,true);
+
+        //去掉头部分割线
+        mLv_home.setHeaderDividersEnabled(false);
+
         //用父类的Context
         mLv_home.setAdapter(new HomeAdapter(mContext));
         mLv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //跳转到评论和喜欢界面
-                startActivity(new Intent(mContext, CommentAndLikeActivity.class));
+//                startActivity(new Intent(mContext, CommentAndLikeActivity.class));
+//                startActivity(new Intent(mContext, position  == 2 ? VideoActivity.class : NewsActivity.class));
+
+                switch (position){
+                    case 2:
+                        startActivity(new Intent(mContext, VideoActivity.class));
+                        break;
+
+                    case 3:
+                        startActivity(new Intent(mContext, NewsActivity.class));
+                        break;
+
+                    default:
+                        startActivity(new Intent(mContext, PhotoActivity.class));
+                        break;
+                }
             }
         });
     }
@@ -106,9 +142,19 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                 startActivity(new Intent(mContext,SignActivity.class));
                 break;
 
-            //明星
-            case R.id.ll_star:
-                startActivity(new Intent(mContext,HomeStarActivity.class));
+            //福利
+            case R.id.ll_fuli:
+                startActivity(new Intent(mContext,FuLiActiviry.class));
+                break;
+
+            //粉团
+            case R.id.ll_fentuan:
+
+                break;
+
+            //活动
+            case R.id.ll_active:
+                startActivity(new Intent(mContext,HuoDongActivity.class));
                 break;
 
 
@@ -158,7 +204,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     * */
     private void initLocalImg() {
         //本地图片集合
-        for (int position = 1; position < 4; position++)
+        for (int position = 1; position < 3; position++)
             localImages.add(getResId("banner" + position  , R.drawable.class));
 
     }
