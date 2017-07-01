@@ -35,7 +35,7 @@ public class CommentFragmentAdapter extends BaseAdapter {
 
 
 
-        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView,parent.getContext(), R.layout.item_comment_fragment_lv,null);
+        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView,parent.getContext(), R.layout.____________item_comment_fragment_lv,null);
         LinearLayout mLl_comment_more = cvh.getView(ll_comment_more, LinearLayout.class);
 
         mLl_comment_more.setVisibility(position%2==1?View.VISIBLE:View.GONE);

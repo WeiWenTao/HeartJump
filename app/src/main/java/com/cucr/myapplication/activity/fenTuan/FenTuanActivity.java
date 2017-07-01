@@ -22,7 +22,6 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,10 +41,6 @@ public class FenTuanActivity extends Activity {
     //导航栏
     @ViewInject(R.id.tablayout_fentuan)
     TabLayout tablayout;
-
-    //标题
-    private static final String[] CHANNELS = new String[]{"热门粉团", "我的粉团"};
-    private List<String> mDataList = Arrays.asList(CHANNELS);
 
     //粉团页面的所有fragment
     private List<Fragment> mFragments = new ArrayList<>();
@@ -67,9 +62,11 @@ public class FenTuanActivity extends Activity {
 
         mFragments.add(new HotFenTuanFragment());
         mFragments.add(new HotFenTuanFragment());
+        mFragments.add(new HotFenTuanFragment());
 
         tablayout.addTab(tablayout.newTab().setText("火热粉团"));
         tablayout.addTab(tablayout.newTab().setText("全部粉团"));
+        tablayout.addTab(tablayout.newTab().setText("我的粉团"));
         tablayout.setupWithViewPager(vp_fentuan);//将导航栏和viewpager进行关联
 
         vp_fentuan.setAdapter(new FenTuanPagerAdapter(getFragmentManager(),mFragments));
@@ -77,8 +74,9 @@ public class FenTuanActivity extends Activity {
 
     //初始化头部 沉浸栏
     private void initHead() {
+        Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
             layoutParams.height = CommonUtils.dip2px(this,73.0f);
             head.setLayoutParams(layoutParams);
@@ -87,7 +85,6 @@ public class FenTuanActivity extends Activity {
 
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window =  getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);

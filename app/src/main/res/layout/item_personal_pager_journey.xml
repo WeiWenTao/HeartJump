@@ -1,31 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:background="@color/white"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <View
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+    >
 
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_10"
-        android:background="@color/lvbg"
-        />
-    <com.lantouzi.wheelview.WheelView
-        android:id="@+id/wheelview"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        app:lwvHighlightColor="#f68d89"
-        app:lwvIntervalFactor="1.2"
-        android:layout_marginLeft="53dp"
-        android:layout_marginRight="53dp"
-        />
+    <!--<android.support.design.widget.CoordinatorLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/coor"-->
+        <!--&gt;-->
 
-    <ListView
-        android:divider="@drawable/list_divider_line"
-        android:id="@+id/lv_journey"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></ListView>
+        <!--<android.support.design.widget.AppBarLayout-->
+            <!--android:id="@+id/appbar_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:fitsSystemWindows="true"-->
+            <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+            <!--&gt;-->
+
+
+            <!--<android.support.v7.widget.Toolbar-->
+                <!--android:id="@+id/toolbar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:contentInsetStart="0dp"-->
+                <!--android:minHeight="0dp"-->
+                <!--app:contentInsetStart="0dp"-->
+                <!--app:layout_scrollFlags="scroll|enterAlways|snap"-->
+                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+                <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
+                <!--&gt;-->
+
+                <LinearLayout
+                    android:id="@+id/ll"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_10"
+                        android:background="@color/lvbg"
+                        />
+
+                    <com.lantouzi.wheelview.WheelView
+                        android:id="@+id/wheelview"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="53dp"
+                        android:layout_marginRight="53dp"
+                        app:lwvHighlightColor="#f68d89"
+                        app:lwvIntervalFactor="1.2"
+                        />
+
+
+                </LinearLayout>
+
+            <!--</android.support.v7.widget.Toolbar>-->
+
+
+
+
+
+        <!--</android.support.design.widget.AppBarLayout>-->
+
+
+        <!--android:divider="@drawable/list_divider_line"-->
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/lvbg"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/dp_10"
+            android:id="@+id/rlv_journey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            ></android.support.v7.widget.RecyclerView>
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->
+
+
 
 </LinearLayout>

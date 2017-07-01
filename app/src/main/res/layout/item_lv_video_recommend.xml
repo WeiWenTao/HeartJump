@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="此处是明星头条标题"
             android:textSize="@dimen/sp_15"
-            android:textColor="@color/colocr_333"
+            android:textColor="@color/color_333"
             android:maxLines="1"
             />
 

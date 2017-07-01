@@ -1,23 +1,24 @@
 package com.cucr.myapplication.fragment.fenTuan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.LvAdapter.HotFunTuanAdapter;
-import com.cucr.myapplication.widget.listview.ListViewForScrollView;
+import com.cucr.myapplication.activity.fenTuan.FenTuanListActivity;
+import com.cucr.myapplication.adapter.RlVAdapter.HotFenTuanAdapter;
 
 /**
  * Created by 911 on 2017/6/24.
  */
 public class HotFenTuanFragment extends android.app.Fragment {
-    private ListViewForScrollView mLv1;
-    private ListViewForScrollView mLv2;
-    private ListViewForScrollView mLv3;
+
     View view;
 
     @Nullable
@@ -33,16 +34,13 @@ public class HotFenTuanFragment extends android.app.Fragment {
     }
 
     private void initLV(final Context context) {
-        mLv1 = (ListViewForScrollView) view.findViewById(R.id.lv1);
-        mLv2 = (ListViewForScrollView) view.findViewById(R.id.lv2);
-        mLv3 = (ListViewForScrollView) view.findViewById(R.id.lv3);
-
-        HotFunTuanAdapter adapter = new HotFunTuanAdapter();
-
-        mLv1.setAdapter(adapter);
-        mLv2.setAdapter(adapter);
-        mLv3.setAdapter(adapter);
-
-
+        ListView listView = (ListView) view.findViewById(R.id.lv_fen_tuan);
+        listView.setAdapter(new HotFenTuanAdapter(context));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(view.getContext(),FenTuanListActivity.class));
+            }
+        });
     }
 }

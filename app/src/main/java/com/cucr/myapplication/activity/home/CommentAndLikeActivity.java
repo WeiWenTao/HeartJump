@@ -26,7 +26,7 @@ public class CommentAndLikeActivity extends Activity implements View.OnClickList
     @ViewInject(R.id.tv_like)
     TextView tv_like;
 
-    @ViewInject(R.id.tv_comment)
+    @ViewInject(R.id.tv_comment_person)
     TextView tv_comment;
 
     @ViewInject(R.id.ll_stick)
@@ -110,7 +110,7 @@ public class CommentAndLikeActivity extends Activity implements View.OnClickList
             CURRENT_STATE = Constans.STATE_LIKE;
             Log.i("test","if"+CURRENT_STATE+"");
 
-        } else if ((v.getId()==R.id.tv_comment||v.getId()==R.id.tv_comment_stick)&&CURRENT_STATE!=Constans.STATE_COMMENT){
+        } else if ((v.getId()==R.id.tv_comment_person ||v.getId()==R.id.tv_comment_stick)&&CURRENT_STATE!=Constans.STATE_COMMENT){
             mTv_like_stick.setTextColor(Color.parseColor("#bfbfbf"));
             tv_like.setTextColor(Color.parseColor("#bfbfbf"));
             mTv_comment_stick.setTextColor(Color.parseColor("#f68d89"));

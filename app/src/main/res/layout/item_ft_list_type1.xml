@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_star_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/dp_10"
+            android:src="@drawable/pic1"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_neckname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="胡歌"
+                android:textColor="@color/pink"
+                android:textSize="@dimen/sp_16"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1月27日 17：28 来自微博"
+                    android:textColor="#929292"
+                    android:textSize="@dimen/sp_12"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="9dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="1dp"
+                        android:src="@drawable/icon_pv_nor"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:text="6534"
+                        android:textColor="#929292"
+                        android:textSize="@dimen/sp_12"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_marginLeft="@dimen/dp_10"
+        android:lineSpacingExtra="@dimen/dp_4"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_15"
+        android:textColor="@color/color_333"
+        android:text="联凯尔国际传媒机构（C.U.CR）创始于2002年，通过10余年的发展，已经成为国内一线知名公关传媒机构之一，公司集公关传播、城市营销、媒体投资、文化创意四大业务模块于一体。现在北京和武汉设有南北两大运营中心，同时上海、广州（香港）、成都等地的区域公司正在筹备中，预计在未来5年内形成全国市场五大区域精细化管理的规模。创联凯尔一直密切关注市场动向、紧随客户，凭籍公关行业领跑者的历史使命，在专业的运作系统保障下，为广大客户提供策略性、创造性、整合性和可实施性的全方位一体化的公关解决方案，矢志为政府、非政府组织、国内外知名企业提供一体化的一站式精准公关传播服务。企业独创的MMS、CMS、QMS、SMS、HMS、FMS六大运营管理系统现已成为企业持续经营的有力保障，能够高效地为客户提供360°超乎想象的即时在线服务。"
+        android:maxLines="3"
+        android:ellipsize="end"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        >
+
+        <ImageView
+            android:id="@+id/iv_video"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/video"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_video"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="15dp"
+            android:text="18:23"
+            android:textColor="@color/white"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_play"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/iv_share3"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_35"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_10"
+                android:src="@drawable/icon_s_nor"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_share3"
+                android:text="分享"
+                android:textColor="#929292"
+                android:textSize="@dimen/sp_13"
+                />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="1249"
+            android:textColor="#929292"
+            android:textSize="@dimen/sp_13"
+            />
+
+
+        <ImageView
+
+            android:id="@+id/iv_favorite3"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="33dp"
+            android:layout_centerVertical="true"
+
+            android:layout_toLeftOf="@id/tv_favorite"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_10"
+            android:src="@drawable/icon_good_nor"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rl_comment"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:layout_toLeftOf="@id/iv_favorite3"
+            >
+
+
+            <TextView
+                android:id="@+id/tv_session0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="789"
+                android:textColor="#929292"
+                android:textSize="@dimen/sp_13"
+                />
+
+            <ImageView
+                android:id="@+id/iv_session3"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_35"
+                android:layout_toLeftOf="@id/tv_session0"
+                android:paddingBottom="@dimen/dp_5"
+                android:paddingLeft="8dp"
+                android:paddingRight="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_5"
+                android:src="@drawable/icon_cm_nor"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

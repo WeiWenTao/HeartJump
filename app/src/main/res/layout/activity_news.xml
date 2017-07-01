@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
                 android:text="此处是新闻标题，字体加粗"
-                android:textColor="@color/colocr_333"
+                android:textColor="@color/color_333"
                 android:textSize="20sp"
                 />
 
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/new_auther"
                         android:text="创联凯尔"
-                        android:textColor="@color/colocr_666"
+                        android:textColor="@color/color_666"
                         android:textSize="@dimen/sp_12"
                         />
 
@@ -125,7 +125,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_15"
                 android:text="此处是新闻内此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容容"
                 android:lineSpacingExtra="5dp"
@@ -145,7 +145,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_15"
                 android:text="此处是新闻内此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容容"
                 android:lineSpacingExtra="5dp"
@@ -165,7 +165,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_15"
                 android:text="此处是新闻内此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容此处是新闻内容容"
                 android:lineSpacingExtra="5dp"

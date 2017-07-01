@@ -62,7 +62,7 @@
             >
             <TextView
                 android:clickable="true"
-                android:id="@+id/tv_comment"
+                android:id="@+id/tv_comment_person"
                 android:textSize="@dimen/sp_16"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

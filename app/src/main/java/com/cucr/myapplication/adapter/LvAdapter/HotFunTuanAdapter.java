@@ -29,7 +29,7 @@ public class HotFunTuanAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout.item_lv_hot_fentuan, null);
+        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout._____________item_lv_hot_fentuan, null);
 
         return cvh.convertView ;
     }

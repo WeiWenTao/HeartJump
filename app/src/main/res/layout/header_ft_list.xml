@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:background="#666"
+    >
+
+    <ImageView
+        android:id="@+id/iv_head_bg"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:scaleType="centerCrop"
+        />
+
+    <LinearLayout
+        android:id="@+id/iv_ft_star_pic"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:background="@color/white"
+        android:padding="1dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_25"
+        >
+        <ImageView
+            android:src="@drawable/star3_new"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_ft_fans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/iv_ft_star_pic"
+        android:text="粉丝 1235"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_ft_continer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/tv_ft_fans"
+        android:text="内容 12345"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        />
+
+    <TextView
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_20"
+        android:layout_alignLeft="@id/tv_ft_fans"
+        android:layout_below="@id/tv_ft_fans"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/shape_white_stroke_r10"
+        android:gravity="center"
+        android:text="加关注"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="打榜"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/dp_20"
+        android:textSize="@dimen/sp_13"
+        />
+
+</RelativeLayout>

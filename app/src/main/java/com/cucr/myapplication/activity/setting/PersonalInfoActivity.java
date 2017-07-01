@@ -22,6 +22,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.bean.setting.BirthdayDate;
 import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.dao.CityDao;
@@ -117,6 +118,8 @@ public class PersonalInfoActivity extends Activity {
         LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
 
         if (location != null) {
+
+
             String city = location.getName();
 
             LocationData locationData = CityDao.queryPrivnceBycode(location.getpCode());
@@ -203,13 +206,15 @@ public class PersonalInfoActivity extends Activity {
     //选择所在地
     @OnClick(R.id.rl_location)
     public void selectLocation(View view) {
-        startActivity(new Intent(this, LocalityProvienceActivity.class));
+        Intent intent = new Intent(this, LocalityProvienceActivity.class);
+        intent.putExtra("needShow", false);
+        startActivity(intent);
     }
 
     //换头像
     @OnClick(R.id.rl_change_headpic)
     public void chnagePic(View view) {
-        CommonUtils.initPopBg(true,fl_pop_bg);
+        CommonUtils.initPopBg(true, fl_pop_bg);
 
         showPopupWindow(iv_head);
 
@@ -257,7 +262,7 @@ public class PersonalInfoActivity extends Activity {
         popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                CommonUtils.initPopBg(false,fl_pop_bg);
+                CommonUtils.initPopBg(false, fl_pop_bg);
             }
         });
     }

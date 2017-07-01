@@ -93,7 +93,7 @@
             android:layout_marginLeft="@dimen/dp_5"
             android:text="热门新闻"
             android:textSize="@dimen/sp_13"
-            android:textColor="@color/colocr_333"
+            android:textColor="@color/color_333"
             />
 
     </LinearLayout>

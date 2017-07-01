@@ -1,18 +1,16 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.JourneyAndTopic.JourneyCatgoryActivity;
-import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
-import com.cucr.myapplication.adapter.LvAdapter.LvPersonalJourneyAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.RlvPersonalJourneyAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lantouzi.wheelview.WheelView;
 
@@ -25,7 +23,7 @@ import java.util.List;
 public class StarPagerAdapter extends PagerAdapter {
     private List<String> mDataList;
     private WheelView mWheelview;
-    private ListView mLv_journey;
+    private RecyclerView mRlv_journey;
     private Context mContext;
 
     public StarPagerAdapter(List<String> dataList, Context context) {
@@ -52,14 +50,15 @@ public class StarPagerAdapter extends PagerAdapter {
                    case 0:
                        //星闻
                        itemView = View.inflate(mContext, R.layout.item_personal_pager_xingwen, null);
-                       ListView lv_dongtai = (ListView) itemView.findViewById(R.id.lv_xingwen);
-                       lv_dongtai.setAdapter(new HomeAdapter(mContext));
+                       RecyclerView rlv_dongtai = (RecyclerView) itemView.findViewById(R.id.rlv_xingwen);
+                       rlv_dongtai.setLayoutManager(new LinearLayoutManager(mContext));
+                       rlv_dongtai.setAdapter(new XingWenAdapter(mContext));
                        break;
 
                    case 1:
                        //行程
                        itemView = View.inflate(mContext,R.layout.item_personal_pager_journey,null);
-                       mLv_journey = (ListView) itemView.findViewById(R.id.lv_journey);
+                       mRlv_journey = (RecyclerView) itemView.findViewById(R.id.rlv_journey);
                        mWheelview = (WheelView) itemView.findViewById(R.id.wheelview);
                        //设置单位（没啥用，设置属性的时候才有用 ）
                        mWheelview.setAdditionCenterMark(" ");
@@ -78,16 +77,14 @@ public class StarPagerAdapter extends PagerAdapter {
         List<String> dateList = CommonUtils.getDateList();
         mWheelview.setItems(dateList);
         mWheelview.selectIndex(4);
-
-
-        mLv_journey.addHeaderView(View.inflate(mContext,R.layout.header_gray_space,null));
-        mLv_journey.setAdapter(new LvPersonalJourneyAdapter());
-        mLv_journey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mContext.startActivity(new Intent(mContext, JourneyCatgoryActivity.class));
-            }
-        });
+        mRlv_journey.setLayoutManager(new LinearLayoutManager(mContext));
+        mRlv_journey.setAdapter(new RlvPersonalJourneyAdapter(mContext));
+//        mRlv_journey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                mContext.startActivity(new Intent(mContext, JourneyCatgoryActivity.class));
+//            }
+//        });
     }
 
     @Override

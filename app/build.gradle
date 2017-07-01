@@ -26,16 +26,31 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.android.support:support-v4:25.2.0'
+
     compile project(':lib_svpi')
     compile project(':lib-convenientbanner')
+
+    //开关
     compile 'com.zcw:togglebutton-library:1.0.0'
     //    compile 'com.github.lawloretienne:quickreturn:0.0.3'
+
+    //fragment相关
     compile 'com.android.support:support-v13:25.2.0'
 //    compile project(':library-quick-return')
+
+    //圆角imageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':lib_wheelView')
+
+    //圆角imageView
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
+
     compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+
+    //右侧快速导航条
     compile 'com.bigkoo:quicksidebar:1.0.3'
+
+    //模糊
+    compile 'net.qiujuer.genius:blur:2.0.0-beta4'
 }

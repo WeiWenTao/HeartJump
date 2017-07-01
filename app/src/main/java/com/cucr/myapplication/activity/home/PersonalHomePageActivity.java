@@ -1,19 +1,25 @@
 package com.cucr.myapplication.activity.home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.fenTuan.FenTuanActivity;
+import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
+import com.cucr.myapplication.widget.statusBar.StatusBarCompat;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
@@ -30,12 +36,19 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import java.util.Arrays;
 import java.util.List;
 
-public class PersonalHomePageActivity extends Activity {
+public class PersonalHomePageActivity extends AppCompatActivity {
 
     private static final String[] CHANNELS = new String[]{"星闻","行程"};
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private ViewPager mViewPager;
 
+
+    private AppBarLayout mAppBarLayout;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private Toolbar mToolbar;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +57,17 @@ public class PersonalHomePageActivity extends Activity {
 
         initVP();
         initIndicator();
+
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout.setTitle("明星姓名");
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        StatusBarCompat.setStatusBarColorForCollapsingToolbar(this, mAppBarLayout, mCollapsingToolbarLayout, mToolbar, Color.TRANSPARENT);
+
     }
 
     private void initVP() {
@@ -95,8 +119,16 @@ public class PersonalHomePageActivity extends Activity {
 
     }
 
-    @OnClick(R.id.ll_goft)
-    public void goFt(View view){
-        startActivity(new Intent(this, FenTuanActivity.class));
+
+    //返回
+    @OnClick(R.id.iv_personal_page_back)
+    public void back(View view){
+        finish();
+    }
+
+    //跳转预约界面
+    @OnClick(R.id.ll_yuyue)
+    public void goYuYue(View view){
+        startActivity(new Intent(this, YuYueCatgoryActivity.class));
     }
 }

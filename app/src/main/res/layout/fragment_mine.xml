@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
 
     <RelativeLayout
-        android:background="@drawable/nav_bg"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:background="@drawable/nav_bg"
         >
 
         <ImageView
             android:id="@+id/iv_mine_msg"
-            android:paddingLeft="8dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="5dp"
             android:src="@drawable/icon_msg"
             />
 
@@ -26,66 +27,71 @@
             android:id="@+id/iv_user_mine"
             android:layout_width="67dp"
             android:layout_height="67dp"
-            android:src="@drawable/img1_user"
-            android:layout_marginTop="54dp"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="54dp"
+            android:src="@drawable/img1_user"
             />
+
         <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_toRightOf="@id/iv_user_mine"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
-            android:layout_marginTop="40dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/iv_user_mine"
+            android:gravity="center_vertical"
             android:orientation="vertical"
             >
+
             <LinearLayout
                 android:id="@+id/ll_user_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="你瞅我干啥"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_15"
-                android:id="@+id/textView3"
-                />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="你瞅我干啥"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_15"
+                    />
 
                 <ImageView
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_gravity="center_vertical"
+                    android:id="@+id/imageView"
                     android:layout_width="10dp"
                     android:layout_height="13dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_5"
                     android:src="@drawable/icon_girl"
-                    android:id="@+id/imageView"
                     />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/enter_home_pager"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:background="@drawable/shape_search_bg"
                 android:layout_width="85dp"
                 android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_search_bg"
+                android:gravity="center"
+                android:orientation="horizontal"
                 >
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="进入主页"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
-                />
-                <ImageView
-                    android:layout_marginLeft="5dp"
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:text="进入主页"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    />
+
+                <ImageView
                     android:layout_width="7dp"
                     android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
                     android:src="@drawable/icon_arrow"
                     />
             </LinearLayout>
@@ -93,107 +99,115 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             >
+
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="vertical"
                 >
 
                 <LinearLayout
                     android:id="@+id/ll_mine_focus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="67"
-                    android:textSize="18sp"
-                    android:textColor="@color/white"
-                    />
-                <TextView
-                    android:layout_marginTop="1dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="关注"
-                    android:textSize="@dimen/sp_12"
-                    android:textColor="@color/white"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="67"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="关注"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="vertical"
                 >
 
                 <LinearLayout
                     android:id="@+id/ll_mine_fans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="234"
-                    android:textSize="18sp"
-                    android:textColor="@color/white"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="粉丝"
-                    android:textSize="@dimen/sp_12"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="1dp"
-                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="234"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="粉丝"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="vertical"
                 >
+
                 <LinearLayout
                     android:id="@+id/ll_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="500"
-                    android:textSize="18sp"
-                    android:textColor="@color/white"
-                    />
-                <TextView
-                    android:layout_marginTop="1dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="星币"
-                    android:textSize="@dimen/sp_12"
-                    android:textColor="@color/white"
-                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="500"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="星币"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
@@ -206,138 +220,152 @@
         android:layout_height="match_parent"
         android:background="#f6f6f6"
         >
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
 
-        <RelativeLayout
-            android:id="@+id/rl_ren_zheng"
-            android:background="#fff"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             >
-            <ImageView
-               style="@style/My_iv"
-                android:id="@+id/iv_ren_zheng"
-                android:src="@drawable/icon_ca"
-                />
-            <TextView
-                style="@style/My_tv"
-                android:layout_toRightOf="@id/iv_ren_zheng"
-                android:text="我的认证"
-                />
-            <ImageView
-                style="@style/My_Arrow"
-                android:src="@drawable/icon_more"
-                />
 
-            <include layout="@layout/horizontal_line"
-                />
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
 
+                <RelativeLayout
+                    android:id="@+id/rl_ren_zheng"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
 
-        <RelativeLayout
-            android:background="#fff"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            >
-            <ImageView
-                style="@style/My_iv"
-                android:id="@+id/iv_my_task"
-                android:src="@drawable/icon_task"
-                />
-            <TextView
-                style="@style/My_tv"
-                android:layout_toRightOf="@id/iv_my_task"
-                android:text="我的任务"
-                />
-            <ImageView
-                style="@style/My_Arrow"
-                android:src="@drawable/icon_more"
-                />
-            <include layout="@layout/horizontal_line"
-                />
-        </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/iv_ren_zheng"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_ca"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_ren_zheng"
+                        android:text="我的认证"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_pay_center"
-            android:background="#fff"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            >
-            <ImageView
-                style="@style/My_iv"
-                android:id="@+id/iv_my_pay"
-                android:src="@drawable/icon_pay"
-                />
-            <TextView
-                style="@style/My_tv"
-                android:layout_toRightOf="@id/iv_my_pay"
-                android:text="充值中心"
-                />
-            <ImageView
-                style="@style/My_Arrow"
-                android:src="@drawable/icon_more"
-                />
-            <include layout="@layout/horizontal_line"
-                />
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
 
-        <RelativeLayout
-            android:id="@+id/rl_my_helper"
-            android:background="#fff"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            >
-            <ImageView
-                style="@style/My_iv"
-                android:id="@+id/iv_my_heaper"
-                android:src="@drawable/icon_ser"
-                />
+                    <ImageView
+                        android:id="@+id/iv_my_task"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_task"
+                        />
 
-            <TextView
-                style="@style/My_tv"
-                android:layout_toRightOf="@id/iv_my_heaper"
-                android:text="我的助手"
-                />
-            <ImageView
-                style="@style/My_Arrow"
-                android:src="@drawable/icon_more"
-                />
-            <include layout="@layout/horizontal_line"
-                />
-        </RelativeLayout>
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_task"
+                        android:text="我的任务"
+                        />
 
-        <RelativeLayout
-            android:id="@+id/rl_setting"
-            android:background="#fff"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            >
-            <ImageView
-                style="@style/My_iv"
-                android:id="@+id/iv_my_setting"
-                android:src="@drawable/icon_set"
-                />
-            <TextView
-                style="@style/My_tv"
-                android:layout_toRightOf="@id/iv_my_setting"
-                android:text="设置"
-                />
-            <ImageView
-                style="@style/My_Arrow"
-                android:src="@drawable/icon_more"
-                />
-        </RelativeLayout>
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
 
-    </LinearLayout>
-    </ScrollView>
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_pay_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_pay"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_pay"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_pay"
+                        android:text="充值中心"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_my_helper"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_heaper"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_ser"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_heaper"
+                        android:text="我的助手"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_setting"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_set"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_setting"
+                        android:text="设置"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </LinearLayout>

@@ -152,7 +152,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_25"
                     android:text="营业执照"
-                    android:textColor="@color/colocr_333"
+                    android:textColor="@color/color_333"
                     android:textSize="@dimen/sp_15"
                     />
 
@@ -199,7 +199,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_25"
                     android:text="认证人身份证正面"
-                    android:textColor="@color/colocr_333"
+                    android:textColor="@color/color_333"
                     android:textSize="@dimen/sp_15"
                     />
 
@@ -245,7 +245,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_25"
                     android:text="认证人身份证反面"
-                    android:textColor="@color/colocr_333"
+                    android:textColor="@color/color_333"
                     android:textSize="@dimen/sp_15"
                     />
                 <com.joooonho.SelectableRoundedImageView

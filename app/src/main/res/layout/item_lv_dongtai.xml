@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:textColor="@color/colocr_333"
+        android:textColor="@color/color_333"
         android:textSize="@dimen/sp_15"
         android:text="此处为活动标题"
         />
@@ -46,7 +46,7 @@
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_height="wrap_content"
                 android:text="企业名称"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_12"
                 />
         </LinearLayout>

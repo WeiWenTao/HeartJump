@@ -34,10 +34,11 @@ public class HotFenTuanAdapter extends BaseAdapter {
         return 0;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_gv_hot_fentuan, null);
+        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_lv_hot_fentuan, null);
 
         return cvh.convertView;
     }

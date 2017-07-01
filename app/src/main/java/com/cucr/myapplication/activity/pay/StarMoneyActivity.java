@@ -1,4 +1,4 @@
-package com.cucr.myapplication.activity.myHomePager;
+package com.cucr.myapplication.activity.pay;
 
 import android.app.Activity;
 import android.content.Intent;

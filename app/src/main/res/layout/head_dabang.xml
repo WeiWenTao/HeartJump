@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="创联凯尔"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_13"
                 />
 
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
                 android:text="563327星币"
-                android:textColor="@color/colocr_999"
+                android:textColor="@color/color_999"
                 android:textSize="@dimen/sp_12"
                 />
 
@@ -149,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="创联凯尔"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_13"
                 />
 
@@ -158,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
                 android:text="563327星币"
-                android:textColor="@color/colocr_999"
+                android:textColor="@color/color_999"
                 android:textSize="@dimen/sp_12"
                 />
 
@@ -238,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="创联凯尔"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_13"
                 />
 
@@ -247,7 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
                 android:text="563327星币"
-                android:textColor="@color/colocr_999"
+                android:textColor="@color/color_999"
                 android:textSize="@dimen/sp_12"
                 />
 

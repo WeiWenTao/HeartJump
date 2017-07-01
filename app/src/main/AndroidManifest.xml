@@ -107,9 +107,9 @@
         </activity>
         <activity android:name=".activity.myHomePager.FansActivity">
         </activity>
-        <activity android:name=".activity.myHomePager.PayCenterActivity">
+        <activity android:name=".activity.pay.PayCenterActivity">
         </activity>
-        <activity android:name=".activity.myHomePager.StarMoneyActivity">
+        <activity android:name=".activity.pay.StarMoneyActivity">
         </activity>
         <activity android:name=".activity.setting.SettingMessageActivity">
         </activity>
@@ -123,9 +123,9 @@
         </activity>
         <activity android:name=".activity.setting.SettingAccountManagerActivity">
         </activity>
-        <activity android:name=".activity.setting.LocalityProvienceActivity">
+        <activity android:name=".activity.local.LocalityProvienceActivity">
         </activity>
-        <activity android:name=".activity.setting.LocalityCityActivity">
+        <activity android:name=".activity.local.LocalityCityActivity">
         </activity>
         <activity android:name=".activity.setting.ClipActivity">
         </activity>
@@ -150,6 +150,16 @@
         <activity android:name=".activity.video.VideoActivity">
         </activity>
         <activity android:name=".activity.photos.PhotoActivity">
+        </activity>
+        <activity android:name=".activity.fenTuan.FenTuanListActivity">
+        </activity>
+        <activity android:name=".activity.fenTuan.FenTuanCatgoryActiviry">
+        </activity>
+        <activity android:name=".activity.yuyue.YuYueCatgoryActivity"
+                  android:launchMode="singleTask"
+            >
+        </activity>
+        <activity android:name=".activity.local.LocalityQuActivity">
         </activity>
     </application>
 

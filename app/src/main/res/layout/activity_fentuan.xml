@@ -13,25 +13,16 @@
         android:background="@color/blue_black"
         >
 
-        <ImageView
-            android:id="@+id/iv_fentuan_back"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:paddingRight="20dp"
-            android:src="@drawable/icon_back"
-            />
+
 
         <android.support.design.widget.TabLayout
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
             android:id="@+id/tablayout_fentuan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="@dimen/dp_55"
-            android:layout_marginRight="@dimen/dp_55"
+            android:layout_marginBottom="1dp"
             app:tabBackground="@null"
             app:tabGravity="fill"
             app:tabIndicatorHeight="0dp"
@@ -42,6 +33,16 @@
             app:tabTextColor="@color/white"
             ></android.support.design.widget.TabLayout>
 
+        <ImageView
+            android:id="@+id/iv_fentuan_back"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:paddingRight="20dp"
+            android:src="@drawable/icon_back"
+            />
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager

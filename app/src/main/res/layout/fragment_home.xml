@@ -24,17 +24,6 @@
                 >
             </ListView>
 
-            <ImageView
-                android:clickable="true"
-                android:id="@+id/iv_publish"
-                android:layout_marginRight="25dp"
-                android:layout_marginBottom="15dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/bnt_p"
-                />
         </RelativeLayout>
 
     </LinearLayout>

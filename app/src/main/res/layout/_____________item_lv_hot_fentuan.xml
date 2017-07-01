@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <com.joooonho.SelectableRoundedImageView
+        android:id="@+id/image"
+        android:src="@drawable/star3_new"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:sriv_left_bottom_corner_radius="@dimen/dp_8"
+        app:sriv_right_top_corner_radius="@dimen/dp_8"
+        app:sriv_left_top_corner_radius="@dimen/dp_8"
+        app:sriv_right_bottom_corner_radius="@dimen/dp_8"
+        android:scaleType="centerCrop"
+        />
+
+    <!--<ImageView-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_width="110dp"-->
+        <!--android:layout_height="150dp"-->
+        <!--android:src="@drawable/star3_new"-->
+        <!--/>-->
+
+</RelativeLayout>

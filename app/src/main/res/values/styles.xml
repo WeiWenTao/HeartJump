@@ -53,7 +53,9 @@
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 
+    <!--向右的小箭头-->
     <style name="My_Arrow">
+        <item name="android:src">@drawable/icon_more</item>
         <item name="android:layout_width">8dp</item>
         <item name="android:layout_height">16dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -150,7 +152,7 @@
     <style name="RenZheng_tv">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colocr_666</item>
+        <item name="android:textColor">@color/color_666</item>
         <item name="android:textSize">@dimen/sp_15</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_centerVertical">true</item>
@@ -160,7 +162,7 @@
     <style name="RenZheng_et">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colocr_666</item>
+        <item name="android:textColor">@color/color_666</item>
         <item name="android:textSize">@dimen/sp_15</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
@@ -181,5 +183,31 @@
         <attr name="horizontal_spacing" format="dimension" />
         <attr name="vertical_spacing" format="dimension" />
     </declare-styleable>
+
+
+
+    <!--明星主页收缩字体-->
+    <style name="TextStyle_close">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ff0</item>
+    </style>
+
+    <!--明星主页展开字体-->
+    <style name="TextStyle_open">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#f0f</item>
+    </style>
+
+    <!---->
+    <style name="MyOverflowText"></style>
+
+    <!--错误提示-->
+    <style name="MyErrorStyle"></style>
+
+    <!--提示字体-->
+    <style name="MyHintStyle">
+        <item name="android:textColor">#999</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 
 </resources>

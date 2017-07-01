@@ -2,6 +2,7 @@
 <LinearLayout
     android:id="@+id/activity_personal_home_page"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,103 +10,101 @@
     tools:context="com.cucr.myapplication.activity.home.PersonalHomePageActivity"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        >
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/star_bg_starhome"
-            />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#4000"
-            />
-
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="@dimen/dp_25"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_25"
-            android:background="@drawable/shape_focud_bg"
-            android:gravity="center"
-            android:text="我要打榜"
-            android:textColor="#fff"
-            android:textSize="@dimen/sp_13"
-            />
-
-        <TextView
-            android:id="@+id/tv_star_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="45dp"
-            android:layout_marginLeft="35dp"
-            android:text="明星姓名"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_18"
-            />
-
-        <LinearLayout
-            android:id="@+id/ll_goft"
-            android:layout_alignBottom="@id/tv_star_name"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@id/tv_star_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ta的粉团"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
-                />
-
-            <ImageView
-                android:layout_marginLeft="@dimen/dp_3"
-                android:layout_gravity="center_vertical"
-                android:layout_width="12dp"
-                android:layout_height="10dp"
-                android:src="@drawable/enter_ft"
-                />
-
-        </LinearLayout>
-
-        <TextView
-          android:textSize="@dimen/sp_14"
-          android:textColor="@color/white"
-          android:layout_alignLeft="@id/tv_star_name"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:layout_marginBottom="@dimen/dp_25"
-          android:text="粉丝 325687"
-          />
-
-    </RelativeLayout>
-
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/magic_indicator_personal_page"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/personal_pager"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white"
-        ></android.support.v4.view.ViewPager>
+        android:fitsSystemWindows="true"
+        >
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:fitsSystemWindows="true"
+                app:collapsedTitleTextAppearance="@style/TextStyle_close"
+                app:contentScrim="@color/blue_black"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleTextAppearance="@style/TextStyle_open"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:statusBarScrim="@color/blue_black"
+                >
+
+
+                <ImageView
+                    android:id="@+id/backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/star_bg_starhome"
+                    app:layout_collapseMode="parallax"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    android:background="#42000000"
+                    app:layout_collapseMode="parallax"
+                    />
+
+
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:layout_collapseMode="pin"
+                    android:gravity="center_vertical"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    >
+
+                    <ImageView
+                        android:paddingRight="20dp"
+                        android:id="@+id/iv_personal_page_back"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_back"
+                        android:layout_marginBottom="15dp"
+                        />
+                </android.support.v7.widget.Toolbar>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator_personal_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/personal_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+    </android.support.design.widget.CoordinatorLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
                 android:text="咨询"
-                android:textColor="@color/colocr_666"
+                android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_18"
                 />
 
@@ -157,6 +156,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_yuyue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_bg_commen_head"
@@ -175,4 +175,5 @@
 
 
     </LinearLayout>
+
 </LinearLayout>

@@ -3,7 +3,6 @@ package com.cucr.myapplication.fragment.home;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -12,8 +11,8 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.fenTuan.FenTuanActivity;
 import com.cucr.myapplication.activity.fuli.FuLiActiviry;
-import com.cucr.myapplication.activity.home.PublishActivity;
 import com.cucr.myapplication.activity.home.SignActivity;
 import com.cucr.myapplication.activity.huodong.HuoDongActivity;
 import com.cucr.myapplication.activity.news.NewsActivity;
@@ -40,7 +39,6 @@ import java.util.List;
 public class HomeFragment extends BaseFragment implements OnItemClickListener {
 
     private ListView mLv_home;
-    private ImageView mIv_publish;
     private ConvenientBanner convenientBanner;
     private List<Integer> localImages = new ArrayList<>();
     private LinearLayout mLl_sign_in;
@@ -149,7 +147,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 
             //粉团
             case R.id.ll_fentuan:
-
+                startActivity(new Intent(mContext,FenTuanActivity.class));
                 break;
 
             //活动
@@ -165,19 +163,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     private void findView(View childView) {
         //首页ListView
         mLv_home = (ListView) childView.findViewById(R.id.lv_home);
-
-
-        //首页"发布"
-        mIv_publish = (ImageView) childView.findViewById(R.id.iv_publish);
-
-        //点击跳转到发布界面
-        mIv_publish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(mContext, PublishActivity.class));
-            }
-        });
 
 
     }

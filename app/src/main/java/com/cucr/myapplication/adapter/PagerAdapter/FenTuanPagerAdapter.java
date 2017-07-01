@@ -41,6 +41,9 @@ public class FenTuanPagerAdapter extends FragmentPagerAdapter {
 
             case 1:
                 return "全部粉团";
+
+            case 2:
+                return "我的粉团";
         }
         return null;
     }
