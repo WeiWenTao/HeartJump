@@ -1,7 +1,11 @@
 package com.cucr.myapplication.fragment.mine;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,7 +21,9 @@ import com.cucr.myapplication.activity.setting.MyHelperActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
+import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.fragment.BaseFragment;
+import com.cucr.myapplication.utils.CommonUtils;
 
 /**
  * Created by 911 on 2017/4/10.
@@ -25,41 +31,70 @@ import com.cucr.myapplication.fragment.BaseFragment;
 
 public class MineFragment extends BaseFragment {
 
+    private RelativeLayout head;
+
     @Override
     protected void initView(View childView) {
+        head = (RelativeLayout) childView.findViewById(R.id.head);
+        initHead();
+
         ImageView iv_user = (ImageView) childView.findViewById(R.id.iv_user_mine);
-        LinearLayout ll_user_nickname = (LinearLayout)childView.findViewById(R.id.ll_user_nickname);
+        LinearLayout ll_user_nickname = (LinearLayout) childView.findViewById(R.id.ll_user_nickname);
         ImageView iv_mine_msg = (ImageView) childView.findViewById(R.id.iv_mine_msg);
         RelativeLayout rl_setting = (RelativeLayout) childView.findViewById(R.id.rl_setting);
-        LinearLayout ll_enter_home_pager = (LinearLayout) childView.findViewById(R.id.enter_home_pager);
+        RelativeLayout rl_enter_home_pager = (RelativeLayout) childView.findViewById(R.id.rl_enter_mypager);
         LinearLayout ll_mine_focus = (LinearLayout) childView.findViewById(R.id.ll_mine_focus);
         LinearLayout ll_mine_fans = (LinearLayout) childView.findViewById(R.id.ll_mine_fans);
         LinearLayout ll_pay = (LinearLayout) childView.findViewById(R.id.ll_pay);
         RelativeLayout rl_my_helper = (RelativeLayout) childView.findViewById(R.id.rl_my_helper);
         RelativeLayout rl_pay_center = (RelativeLayout) childView.findViewById(R.id.rl_pay_center);
         RelativeLayout rl_ren_zheng = (RelativeLayout) childView.findViewById(R.id.rl_ren_zheng);
-
+        RelativeLayout rl_piaowu = (RelativeLayout) childView.findViewById(R.id.rl_piaowu);
+        RelativeLayout rl_my_yuyue = (RelativeLayout) childView.findViewById(R.id.rl_my_yuyue);
 
 
         iv_user.setOnClickListener(this);
         ll_user_nickname.setOnClickListener(this);
         iv_mine_msg.setOnClickListener(this);
         rl_setting.setOnClickListener(this);
-        ll_enter_home_pager.setOnClickListener(this);
+        rl_enter_home_pager.setOnClickListener(this);
         ll_mine_focus.setOnClickListener(this);
         ll_mine_fans.setOnClickListener(this);
         ll_pay.setOnClickListener(this);
         rl_my_helper.setOnClickListener(this);
         rl_pay_center.setOnClickListener(this);
         rl_ren_zheng.setOnClickListener(this);
+        rl_piaowu.setOnClickListener(this);
+        rl_my_yuyue.setOnClickListener(this);
 
+    }
+
+    //
+    private void initHead() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
+            layoutParams.height = CommonUtils.dip2px(mContext, 73.0f);
+            head.setLayoutParams(layoutParams);
+            head.requestLayout();
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getActivity().getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
 
-        switch (v.getId()){
+        switch (v.getId()) {
             //跳转到个人资料界面
             case R.id.ll_user_nickname:
             case R.id.iv_user_mine:
@@ -77,7 +112,7 @@ public class MineFragment extends BaseFragment {
                 break;
 
             //进入主页
-            case R.id.enter_home_pager:
+            case R.id.rl_enter_mypager:
                 mContext.startActivity(new Intent(mContext, MyHomePagerActivity.class));
                 break;
 
@@ -107,14 +142,28 @@ public class MineFragment extends BaseFragment {
                 mContext.startActivity(new Intent(mContext, PayCenterActivity.class));
                 break;
 
+            //认证
             case R.id.rl_ren_zheng:
                 mContext.startActivity(new Intent(mContext, RenZhengActivity.class));
+                break;
+
+            //票务
+            case R.id.rl_piaowu:
+
+                break;
+
+
+            //预约
+            case R.id.rl_my_yuyue:
+                mContext.startActivity(new Intent(mContext, MyYuYueActivity.class));
+                break;
+
 
         }
 
     }
 
-    //不需要头部
+    //是否需要头部
     @Override
     protected boolean needHeader() {
         return false;

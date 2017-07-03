@@ -9,5 +9,5 @@
         android:background="#ebebeb"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
-        android:layout_height="1dp"/>
+        android:layout_height="0.5dp"/>
 </RelativeLayout>

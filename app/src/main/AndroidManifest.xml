@@ -155,11 +155,14 @@
         </activity>
         <activity android:name=".activity.fenTuan.FenTuanCatgoryActiviry">
         </activity>
-        <activity android:name=".activity.yuyue.YuYueCatgoryActivity"
-                  android:launchMode="singleTask"
+        <activity
+            android:name=".activity.yuyue.YuYueCatgoryActivity"
+            android:launchMode="singleTask"
             >
         </activity>
         <activity android:name=".activity.local.LocalityQuActivity">
+        </activity>
+        <activity android:name=".activity.yuyue.MyYuYueActivity">
         </activity>
     </application>
 

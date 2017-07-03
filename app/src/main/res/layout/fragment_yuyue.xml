@@ -14,13 +14,12 @@
         android:background="@color/blue_black"
         >
 
-
         <android.support.design.widget.TabLayout
-            android:layout_marginBottom="2dp"
-            android:layout_alignParentBottom="true"
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="@dimen/dp_55"
             android:layout_marginRight="@dimen/dp_55"
             app:tabBackground="@null"
@@ -32,7 +31,6 @@
             app:tabTextAppearance="@style/TabLayoutText"
             app:tabTextColor="@color/white"
             ></android.support.design.widget.TabLayout>
-
 
         <ImageView
             android:id="@+id/iv_search"

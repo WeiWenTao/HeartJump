@@ -26,7 +26,6 @@ import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -75,7 +74,7 @@ public class YuYueCatgoryActivity extends Activity {
         //模拟获取数据
         String price = " 56万";
 
-        SpannableString sp = new SpannableString("商业出演" + price + "/场");
+        SpannableString sp = new SpannableString("商业出演" + price + " /场");
 
         //设置高亮样式二
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#F68D89")), 4, 4 + price.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -104,20 +103,14 @@ public class YuYueCatgoryActivity extends Activity {
         setIntent(intent);
         LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
 
-        MyLogger.jLog().i("location" + location.toString());
 
         if (location != null) {
 
             String qu = location.getName();
 
-            MyLogger.jLog().i("1" + location.getpCode());
-
             LocationData shi = CityDao.queryCityBycode(location.getpCode());
-            MyLogger.jLog().i(shi.toString());
-            MyLogger.jLog().i("2" + shi.getpCode());
 
             LocationData sheng = CityDao.queryPrivnceBycode(shi.getpCode());
-            MyLogger.jLog().i("3" + sheng.getpCode());
 
             String district = shi.getName();
             String province = sheng.getName();
@@ -127,31 +120,32 @@ public class YuYueCatgoryActivity extends Activity {
         }
 
     }
-
+    //室内
     @OnClick(R.id.ll_shinei)
-    public void shiNei(View view){
-        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.dot_sel));
-        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.dot_nor));
+    public void shiNei(View view) {
+        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
+        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_nor));
     }
 
+    //室外
     @OnClick(R.id.ll_shiwai)
-    public void shiWai(View view){
-        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.dot_nor));
-        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.dot_sel));
+    public void shiWai(View view) {
+        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_nor));
+        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
     }
 
     //沉浸栏
     private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(this,73.0f);
+            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
             head.setLayoutParams(layoutParams);
             head.requestLayout();
         }
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

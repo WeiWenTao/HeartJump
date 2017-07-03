@@ -32,7 +32,6 @@ import java.util.List;
 
 public class ApointmentFragmentA extends BaseFragment {
 
-
     //导航栏
     @ViewInject(R.id.tablayout)
     TabLayout tablayout;
@@ -41,41 +40,38 @@ public class ApointmentFragmentA extends BaseFragment {
     @ViewInject(R.id.vp_recommed_star)
     ViewPager vp_recommed_star;
 
-
     //头部
     @ViewInject(R.id.head)
     RelativeLayout head;
-
-
 
     private List<Fragment> mFragments;
 
 
     @Override
     protected void initView(View childView) {
-        ViewUtils.inject(this,childView);
+        ViewUtils.inject(this, childView);
 
         initHead();
 
         initTableLayout();
+
         initVP();
-
-
 
     }
 
+    //沉浸栏
     private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(mContext,73.0f);
+            layoutParams.height = CommonUtils.dip2px(mContext, 73.0f);
             head.setLayoutParams(layoutParams);
             head.requestLayout();
         }
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window =  getActivity().getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getActivity().getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -89,7 +85,7 @@ public class ApointmentFragmentA extends BaseFragment {
         mFragments.add(new FragmentStarRecommend());
 //        mFragments.add(new FragmentStarClassify());
         mFragments.add(new FragmentStarRecommend());
-        vp_recommed_star.setAdapter(new YuYuePagerAdapter(getFragmentManager(),mFragments));
+        vp_recommed_star.setAdapter(new YuYuePagerAdapter(getFragmentManager(), mFragments));
     }
 
     @Override
@@ -105,7 +101,6 @@ public class ApointmentFragmentA extends BaseFragment {
     }
 
 
-
     //返回子类布局
     @Override
     public int getContentLayoutRes() {
@@ -114,13 +109,13 @@ public class ApointmentFragmentA extends BaseFragment {
 
     //跳转搜索界面
     @OnClick(R.id.iv_search)
-    public void goSearch(View view){
+    public void goSearch(View view) {
         startActivity(new Intent(mContext, HomeSearchActivity.class));
     }
 
     //跳转消息界面
     @OnClick(R.id.iv_header_msg)
-    public void goMsg(View view){
+    public void goMsg(View view) {
         startActivity(new Intent(mContext, MessageActivity.class));
     }
 

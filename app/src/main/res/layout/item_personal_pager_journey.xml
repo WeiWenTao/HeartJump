@@ -29,7 +29,7 @@
                 <!--android:contentInsetStart="0dp"-->
                 <!--android:minHeight="0dp"-->
                 <!--app:contentInsetStart="0dp"-->
-                <!--app:layout_scrollFlags="scroll|enterAlways|snap"-->
+                <!--app:layout_scrollFlags="scroll|enterAlwaysCollapsed"-->
                 <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
                 <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
                 <!--&gt;-->
@@ -69,6 +69,7 @@
 
 
         <!--android:divider="@drawable/list_divider_line"-->
+
         <android.support.v7.widget.RecyclerView
             android:background="@color/lvbg"
             android:clipToPadding="false"
