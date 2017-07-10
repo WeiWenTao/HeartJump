@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
               android:layout_width="173dp"
-              android:layout_height="240dp">
+              android:layout_height="240dp"
+              android:orientation="horizontal"
+    >
 
 
     <RelativeLayout
@@ -11,12 +12,11 @@
         >
 
 
-
-    <ImageView
-        android:layout_width="173dp"
-        android:layout_height="240dp"
-        android:src="@drawable/star1_new"
-        />
+        <ImageView
+            android:layout_width="173dp"
+            android:layout_height="238dp"
+            android:src="@drawable/star1_new"
+            />
 
 
         <ImageView
@@ -27,12 +27,12 @@
             />
 
         <TextView
-            android:layout_alignRight="@id/iv_bg"
             android:id="@+id/tv_dabang_first"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginTop="@dimen/dp_15"
+            android:layout_alignRight="@id/iv_bg"
             android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_15"
             android:background="@drawable/btn_bg_sel"
             android:clickable="true"
             android:gravity="center"
@@ -52,27 +52,26 @@
             />
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_fans"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_toRightOf="@id/iv_fans"
+            android:text="45893"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            />
 
-    <TextView
-        android:layout_toRightOf="@id/iv_fans"
-        android:layout_alignTop="@id/iv_fans"
-        android:layout_marginLeft="@dimen/dp_5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        android:text="45893"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/iv_fans"
-        android:layout_alignLeft="@id/iv_fans"
-        android:textSize="@dimen/sp_15"
-        android:text="明星姓名"
-        android:textColor="@color/white"
-        android:layout_marginBottom="@dimen/dp_3"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/iv_fans"
+            android:layout_alignLeft="@id/iv_fans"
+            android:layout_marginBottom="@dimen/dp_3"
+            android:text="明星姓名"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            />
     </RelativeLayout>
 </LinearLayout>

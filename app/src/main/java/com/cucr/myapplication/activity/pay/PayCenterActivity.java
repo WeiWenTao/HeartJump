@@ -1,13 +1,20 @@
 package com.cucr.myapplication.activity.pay;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -58,6 +65,10 @@ public class PayCenterActivity extends Activity implements RadioGroup.OnCheckedC
     @ViewInject(R.id.tv_pay_now)
     TextView tv_pay_now;
 
+    //沉浸栏
+    @ViewInject(R.id.head)
+    RelativeLayout head;
+
 
 
     private Map<Integer,Integer> moneys;
@@ -68,12 +79,35 @@ public class PayCenterActivity extends Activity implements RadioGroup.OnCheckedC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_center);
         ViewUtils.inject(this);
+        initHead();
+
         moneys = new HashMap<>();
 
         mDailogPayStyle = new DialogPayStyle(this, R.style.ShowAddressStyleTheme);
 
         findRG();
         initRBS();
+    }
+
+    //沉浸栏
+    private void initHead() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
+            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
+            head.setLayoutParams(layoutParams);
+            head.requestLayout();
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     private void initRBS() {

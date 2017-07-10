@@ -11,71 +11,75 @@
     >
 
     <RelativeLayout
-        android:background="@drawable/shape_bg_commen_head"
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
         >
+
         <ImageView
-            android:paddingRight="19dp"
             android:id="@+id/iv_msg_setting_back"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
             android:layout_width="30dp"
-            android:layout_height="22dp"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:paddingRight="20dp"
             android:src="@drawable/icon_back"
             />
 
         <TextView
-            android:id="@+id/rl_home_search"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:text="消息设置"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="消息设置"
-            >
-
-        </TextView>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_at_me"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        >
-
-
-        <TextView
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_15"
-            android:textColor="#666"
-            android:text="\@我的"
             />
-
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:src="@drawable/icon_more"
-            />
-
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
-            android:background="#ebebeb"/>
 
     </RelativeLayout>
 
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_at_me"-->
+        <!--android:background="@color/white"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--&gt;-->
+
+
+        <!--<TextView-->
+            <!--android:layout_marginLeft="@dimen/dp_10"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/sp_15"-->
+            <!--android:textColor="#666"-->
+            <!--android:text="\@我的"-->
+            <!--/>-->
+
+        <!--<ImageView-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dp_10"-->
+            <!--android:layout_width="8dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:src="@drawable/icon_more"-->
+            <!--/>-->
+
+        <!--<View-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginLeft="@dimen/dp_10"-->
+            <!--android:layout_marginRight="@dimen/dp_10"-->
+            <!--android:background="#ebebeb"/>-->
+
+    <!--</RelativeLayout>-->
+
     <RelativeLayout
+        android:id="@+id/rl_comment"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -170,7 +174,6 @@
             toggle:tbOnColor="#f68d89"
             toggle:tbOffColor="#ddd"
             toggle:tbSpotColor="#fff"
-            toggle:tbBorderWidth="1px"
             android:layout_height="20dp" >
         </com.zcw.togglebutton.ToggleButton>
 
@@ -206,7 +209,6 @@
             android:layout_width="35dp"
             toggle:tbOnColor="#f68d89"
             toggle:tbOffColor="#ddd"
-            toggle:tbBorderWidth="1px"
             toggle:tbSpotColor="#fff"
             android:layout_height="20dp" >
         </com.zcw.togglebutton.ToggleButton>

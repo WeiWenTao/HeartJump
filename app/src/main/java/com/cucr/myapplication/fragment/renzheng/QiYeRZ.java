@@ -36,7 +36,9 @@ import static android.app.Activity.RESULT_OK;
  * Created by 911 on 2017/6/16.
  */
 
-public class QiYeRZ extends Fragment {private PopupWindow popWindow;
+public class QiYeRZ extends Fragment {
+
+    private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
     private TextView photograph, albums;
     private LinearLayout cancel;
@@ -69,14 +71,13 @@ public class QiYeRZ extends Fragment {private PopupWindow popWindow;
     ImageView img_qieye_zhizhao;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         mContext = container.getContext();
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_qiye, container, false);
-        ViewUtils.inject(this,rootView);
+        ViewUtils.inject(this, rootView);
         initHead();
         return rootView;
 

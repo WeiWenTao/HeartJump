@@ -6,44 +6,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cucr.myapplication.activity.myHomePager.FocusActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+            android:id="@+id/iv_my_focus_back"
 
     <RelativeLayout
-        android:background="@drawable/shape_bg_commen_head"
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
         >
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout_focus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="@dimen/dp_55"
+            android:layout_marginRight="@dimen/dp_55"
+            app:tabBackground="@null"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabPadding="@dimen/dp_10"
+            app:tabSelectedTextColor="@color/pink"
+            app:tabTextAppearance="@style/TabLayoutText"
+            app:tabTextColor="@color/white"
+            ></android.support.design.widget.TabLayout>
+
         <ImageView
-            android:paddingRight="19dp"
-            android:id="@+id/iv_my_focus_back"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
+            android:id="@+id/iv_fuli_back"
             android:layout_width="30dp"
-            android:layout_height="22dp"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:paddingRight="20dp"
             android:src="@drawable/icon_back"
             />
 
-        <TextView
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="我的关注"
-            >
-
-        </TextView>
     </RelativeLayout>
 
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/magic_indicator_focus"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_10"
-        android:background="@color/lvbg"/>
     <android.support.v4.view.ViewPager
         android:background="@color/white"
         android:id="@+id/view_pager_focus"

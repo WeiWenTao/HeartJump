@@ -189,13 +189,13 @@
     <!--明星主页收缩字体-->
     <style name="TextStyle_close">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#ff0</item>
+        <item name="android:textColor">#fff</item>
     </style>
 
     <!--明星主页展开字体-->
     <style name="TextStyle_open">
-        <item name="android:textSize">30sp</item>
-        <item name="android:textColor">#f0f</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#fff</item>
     </style>
 
     <!---->
@@ -208,6 +208,19 @@
     <style name="MyHintStyle">
         <item name="android:textColor">#999</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <!--仿qq头部渐变-->
+    <style name="MaterialIndicator.Demo">
+        <item name="mi_indicatorColor">?android:attr/colorAccent</item>
+        <item name="mi_indicatorPadding">32dp</item>
+        <item name="mi_indicatorRadius">4dp</item>
+    </style>
+
+    <style name="MaterialIndicator">
+        <item name="mi_indicatorRadius">4dp</item>
+        <item name="mi_indicatorColor">#ff009688</item>
     </style>
 
 </resources>

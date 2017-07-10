@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="300dp"
+              android:layout_height="225dp"
+              android:background="@drawable/shape_publish_dialog_bg"
+              android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/tv_cancle_focus_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_30"
+        android:clickable="true"
+        android:text="创建规则"
+        android:textColor="#666"
+        android:textSize="@dimen/sp_15"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <TextView
+            android:id="@+id/tv_rule1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="1.填写想要创建明星粉团的信息并提交；"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_rule2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_rule1"
+            android:layout_below="@id/tv_rule1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="2.等待同样喜欢Ta的人点赞；"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_rule3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_rule1"
+            android:layout_below="@id/tv_rule2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="3.超过50人喜欢即可成功创建；"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_14"
+            />
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/tv_isee"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="125dp"
+        android:background="@drawable/shape_immediately_pay_bg"
+        android:text="我知道了"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_height="@dimen/dp_28"
+
+        />
+
+</LinearLayout>

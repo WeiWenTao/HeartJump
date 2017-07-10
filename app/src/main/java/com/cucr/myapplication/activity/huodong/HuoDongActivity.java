@@ -1,6 +1,7 @@
 package com.cucr.myapplication.activity.huodong;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -65,5 +66,11 @@ public class HuoDongActivity extends Activity {
     @OnClick(R.id.iv_active_back)
     public void back(View view){
         finish();
+    }
+
+    //跳转发布活动界面
+    @OnClick(R.id.iv_huodong_add)
+    public void faBuHuoDong(View view){
+        startActivity(new Intent(this,FaBuHuoDongActivity.class));
     }
 }

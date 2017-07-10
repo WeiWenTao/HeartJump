@@ -1,25 +1,27 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
 
 import java.util.List;
 
 /**
- * 明星主页的pagerAdapter
+ * Created by hackware on 2016/9/10.
  */
 
-public class MyHomePagerAdapter extends PagerAdapter {
+public class HomePhotoPagerAdapter extends PagerAdapter {
+    private Context mContext;
     private List<String> mDataList;
 
-    public MyHomePagerAdapter(List<String> dataList) {
+    public HomePhotoPagerAdapter(List<String> dataList, Context context) {
         mDataList = dataList;
+        this.mContext = context;
     }
 
     @Override
@@ -38,11 +40,11 @@ public class MyHomePagerAdapter extends PagerAdapter {
 
         if (itemView == null){
 
-
-            itemView = View.inflate(container.getContext(), R.layout.item_my_home_pager, null);
-            ListView lv_my_home_pager = (ListView) itemView.findViewById(R.id.lv_my_home_pager);
-            lv_my_home_pager.setAdapter(new HomeAdapter(container.getContext()));
+            itemView = View.inflate(mContext, R.layout.item_pager_home_photo,null);
+            ImageView iv_home_photo = (ImageView) itemView.findViewById(R.id.iv_home_photo);
+            iv_home_photo.setImageResource(R.drawable.pic1_tv);
         }
+
         container.addView(itemView);
         return itemView;
     }

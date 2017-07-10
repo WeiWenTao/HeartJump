@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,14 +12,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.adapter.PagerAdapter.HomePhotoPagerAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhotoActivity extends Activity {
 
     @ViewInject(R.id.head)
     RelativeLayout head;
+
+    //ViewPager
+    @ViewInject(R.id.vp_photo)
+    ViewPager vp_photo;
+
+    private List<String> photos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +38,15 @@ public class PhotoActivity extends Activity {
         ViewUtils.inject(this);
 
         initHead();
+
+        initView();
+    }
+
+    private void initView() {
+        photos.add("1");
+        photos.add("2");
+        photos.add("3");
+        vp_photo.setAdapter(new HomePhotoPagerAdapter(photos,this));
     }
 
     private void initHead() {

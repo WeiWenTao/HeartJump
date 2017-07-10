@@ -38,10 +38,12 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         //share sdk 初始化
         ShareSDK.initSDK(this);
 
+        //获取从 我的-明星-右上角加关注 界面跳转过来的数据
         findView();
-
-
         initView();
+
+
+
         initFragment(0);
         initRadioGroup();
 

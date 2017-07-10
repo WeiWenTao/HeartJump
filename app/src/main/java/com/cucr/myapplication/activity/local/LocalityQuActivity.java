@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
 import com.cucr.myapplication.bean.setting.LocationData;
@@ -24,7 +25,9 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LocalityQuActivity extends Activity {
 
@@ -35,6 +38,11 @@ public class LocalityQuActivity extends Activity {
     @ViewInject(R.id.head)
     RelativeLayout head;
 
+    //要跳转的所有activity
+    private Map<String,Class> actives;
+
+    //把传过来的字符串当作键
+    private String mWhich;
 
     private List<LocationData> mLocationDatas;
 
@@ -46,16 +54,28 @@ public class LocalityQuActivity extends Activity {
         setContentView(R.layout.activity_locality_qu);
 
         ViewUtils.inject(this);
-
         //沉浸栏
         initHead();
+
+        initActivitys();
 
         initData();
     }
 
+    private void initActivitys() {
+        actives = new HashMap<>();
+        //发布福利
+        actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
+        //预约详情
+        actives.put("YuYueCatgoryActivity",YuYueCatgoryActivity.class);
+    }
+
     private void initData() {
         //市
-        LocationData location = (LocationData) getIntent().getSerializableExtra("qu");
+        Intent intent = getIntent();
+        LocationData location = (LocationData) intent.getSerializableExtra("qu");
+        mWhich = intent.getStringExtra("className");
+
         mLocationDatas = CityDao.queryDistrictByPcode(location.getCode());
 
 
@@ -68,11 +88,11 @@ public class LocalityQuActivity extends Activity {
                 Intent intent = null;
 
                 if (position == 0) {
-                    intent = new Intent(LocalityQuActivity.this, YuYueCatgoryActivity.class);
+                    intent = new Intent(LocalityQuActivity.this, actives.get(mWhich));
                     //点头携带定位数据，这里用字符串模拟定位
                     intent.putExtra("finalData", new LocationData(1688,"420111","洪山区","420100"));
                 } else {
-                    intent = new Intent(LocalityQuActivity.this, YuYueCatgoryActivity.class);
+                    intent = new Intent(LocalityQuActivity.this, actives.get(mWhich));
                     intent.putExtra("finalData", mLocationDatas.get(position - 1));
                     MyLogger.jLog().i("mLocationDatas"+mLocationDatas.get(position - 1).toString());
                 }

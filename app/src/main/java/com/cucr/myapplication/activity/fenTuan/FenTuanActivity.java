@@ -2,6 +2,7 @@ package com.cucr.myapplication.activity.fenTuan;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,11 +63,9 @@ public class FenTuanActivity extends Activity {
 
         mFragments.add(new HotFenTuanFragment());
         mFragments.add(new HotFenTuanFragment());
-        mFragments.add(new HotFenTuanFragment());
 
         tablayout.addTab(tablayout.newTab().setText("火热粉团"));
         tablayout.addTab(tablayout.newTab().setText("全部粉团"));
-        tablayout.addTab(tablayout.newTab().setText("我的粉团"));
         tablayout.setupWithViewPager(vp_fentuan);//将导航栏和viewpager进行关联
 
         vp_fentuan.setAdapter(new FenTuanPagerAdapter(getFragmentManager(),mFragments));
@@ -98,5 +97,11 @@ public class FenTuanActivity extends Activity {
     @OnClick(R.id.iv_fentuan_back)
     public void back(View view){
         finish();
+    }
+
+    //创建ft
+    @OnClick(R.id.iv_fentuan_add)
+    public void newFt(View view){
+       startActivity(new Intent(this,CreatFtActivity.class));
     }
 }

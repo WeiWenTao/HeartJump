@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_creat_ft"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.fenTuan.CreatFt"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_16"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:background="@null"
+            android:hint="明星姓名"
+            android:textColorHint="#ccc"
+            android:textColor="@color/color_333"
+            android:textSize="@dimen/sp_16"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/dp_35"
+        android:layout_marginRight="@dimen/dp_35"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="#ccc"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="类型"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_16"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:background="@null"
+            android:hint="如：歌手"
+            android:textColorHint="#ccc"
+            android:textColor="@color/color_333"
+            android:textSize="@dimen/sp_16"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/dp_35"
+        android:layout_marginRight="@dimen/dp_35"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="#ccc"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_creat_ft_pic"
+        android:layout_width="300dp"
+        android:layout_height="125dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@drawable/shape_bg_xuyaun_kuang"
+        android:clickable="true"
+        >
+
+        <ImageView
+            android:id="@+id/iv_add_pic_yingyezhizhao"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/add"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_add_pic_yingyezhizhao"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="上传明星图片"
+            android:textColor="#ccc"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/img_creat_ft_star_pic"
+            android:layout_width="300dp"
+            android:layout_height="125dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/shape_bg_ren_zheng"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+            app:sriv_left_top_corner_radius="@dimen/dp_5"
+            app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+            app:sriv_right_top_corner_radius="@dimen/dp_5"
+            />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_commit_check"
+        android:layout_width="230dp"
+        android:layout_height="@dimen/dp_40"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/shape_immediately_pay_bg"
+        android:gravity="center"
+        android:text="提交创建"
+        android:textColor="@color/white"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:layout_marginTop="29dp"
+        android:background="@color/lvbg"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/shape_cor_line"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="创建中的粉团"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

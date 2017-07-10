@@ -10,30 +10,34 @@
     >
 
     <RelativeLayout
-        android:background="@drawable/shape_bg_commen_head"
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
         >
+
         <ImageView
-            android:paddingRight="19dp"
             android:id="@+id/iv_account_safe_back"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
             android:layout_width="30dp"
-            android:layout_height="22dp"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:paddingRight="20dp"
             android:src="@drawable/icon_back"
             />
 
         <TextView
-            android:id="@+id/rl_home_search"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:text="账号安全"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="账号安全"
-            >
-        </TextView>
+            />
+
     </RelativeLayout>
 
     <RelativeLayout

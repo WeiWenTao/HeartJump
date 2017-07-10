@@ -37,7 +37,7 @@ public class FtListAdapter extends BaseAdapter implements View.OnClickListener {
 
     @Override
     public int getCount() {
-        return 30;
+        return 3;
     }
 
     @Override

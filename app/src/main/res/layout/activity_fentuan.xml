@@ -14,15 +14,14 @@
         >
 
 
-
         <android.support.design.widget.TabLayout
-            android:layout_marginLeft="@dimen/dp_30"
-            android:layout_marginRight="@dimen/dp_30"
             android:id="@+id/tablayout_fentuan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="1dp"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
             app:tabBackground="@null"
             app:tabGravity="fill"
             app:tabIndicatorHeight="0dp"
@@ -36,13 +35,27 @@
         <ImageView
             android:id="@+id/iv_fentuan_back"
             android:layout_width="30dp"
-            android:layout_height="20dp"
+            android:layout_height="34dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
             android:layout_marginLeft="@dimen/dp_10"
+
+            android:paddingBottom="14dp"
             android:paddingRight="20dp"
             android:src="@drawable/icon_back"
             />
+
+        <ImageView
+            android:id="@+id/iv_fentuan_add"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:paddingBottom="14dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/icon_add_ft"
+            />
+
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager

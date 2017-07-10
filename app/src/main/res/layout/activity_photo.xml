@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     android:id="@+id/activity_photo"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,18 +42,18 @@
 
     </RelativeLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         >
 
-        <ImageView
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/pic1_tv"
-            />
+            ></android.support.v4.view.ViewPager>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -92,7 +93,6 @@
                 android:text="此处是图集内容（转载于创联凯尔）"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15"
-
                 />
 
         </RelativeLayout>
@@ -101,6 +101,8 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:paddingLeft="@dimen/dp_10"
@@ -177,5 +179,7 @@
 
 
     </RelativeLayout>
+
+
 
 </LinearLayout>

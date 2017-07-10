@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
@@ -24,16 +25,23 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LocalityProvienceActivity extends Activity {
 
     private ListView mLv_provience;
     private List<LocationData> mProvinces;
     private boolean mNeedShow;
+
+    private Map<String,Class> actives;
+
     //沉浸栏
     @ViewInject(R.id.head)
     RelativeLayout head;
+
+    private String mWhich;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +52,16 @@ public class LocalityProvienceActivity extends Activity {
         //沉浸栏
         initHead();
 
+        actives = new HashMap<>();
+        //发布福利
+        actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
+        //预约详情
+        actives.put("YuYueCatgoryActivity",YuYueCatgoryActivity.class);
+
         //是否需要跳转三级地区界面
-        mNeedShow = getIntent().getBooleanExtra("needShow", false);
+        Intent intent = getIntent();
+        mNeedShow = intent.getBooleanExtra("needShow", false);
+        mWhich = intent.getStringExtra("className");
 
         mLv_provience = (ListView) findViewById(R.id.lv_provience);
         initData();
@@ -66,7 +82,7 @@ public class LocalityProvienceActivity extends Activity {
 
                 //点头直接返回个人信息页
                 if (position == 0){
-                    Intent intent = new Intent(LocalityProvienceActivity.this,mNeedShow ? YuYueCatgoryActivity.class : PersonalInfoActivity.class);
+                    Intent intent = new Intent(LocalityProvienceActivity.this,mNeedShow ? actives.get(mWhich) : PersonalInfoActivity.class);
                     if (mNeedShow){
                         intent.putExtra("finalData",new LocationData(1688,"420111","洪山区","420100"));
                     }else {
@@ -77,6 +93,7 @@ public class LocalityProvienceActivity extends Activity {
                     Intent intent = new Intent(LocalityProvienceActivity.this,LocalityCityActivity.class);
                     intent.putExtra("data",mProvinces.get(position-1));
                     intent.putExtra("mNeedShow",mNeedShow);
+                    intent.putExtra("className",mWhich);
                     startActivity(intent);
                 }
             }

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
               android:background="@color/lvbg"
+              android:orientation="vertical"
     >
 
 
@@ -21,8 +21,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_13"
             android:text="我的"
-            android:textSize="@dimen/sp_18"
             android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"
             />
 
         <ImageView
@@ -102,6 +102,7 @@
                         <!--android:layout_marginLeft="@dimen/dp_5"-->
                         <!--android:src="@drawable/icon_girl"-->
                         <!--/>-->
+
                     </LinearLayout>
 
 
@@ -166,43 +167,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="1dp"
-                            android:text="关注"
-                            android:textColor="@color/color_666"
-                            android:textSize="@dimen/sp_12"
-                            />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    >
-
-                    <LinearLayout
-                        android:id="@+id/ll_mine_fans"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="234"
-                            android:textColor="@color/pink"
-                            android:textSize="18sp"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="1dp"
-                            android:text="粉丝"
+                            android:text="明星"
                             android:textColor="@color/color_666"
                             android:textSize="@dimen/sp_12"
                             />
@@ -229,7 +194,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="500"
+                            android:text="234"
                             android:textColor="@color/pink"
                             android:textSize="18sp"
                             />
@@ -245,6 +210,42 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/ll_mine_dongtai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="500"
+                            android:textColor="@color/pink"
+                            android:textSize="18sp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:text="动态"
+                            android:textColor="@color/color_666"
+                            android:textSize="@dimen/sp_12"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -253,6 +254,32 @@
                 android:background="#f6f6f6"
                 android:orientation="vertical"
                 >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_star_data"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_ca"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_star_data"
+                        android:text="这里是明星数据（普通用户隐藏）"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/rl_ren_zheng"
@@ -282,11 +309,11 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:clickable="true"
                     android:id="@+id/rl_my_yuyue"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="#fff"
+                    android:clickable="true"
                     >
 
                     <ImageView

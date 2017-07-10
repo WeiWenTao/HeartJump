@@ -13,14 +13,14 @@ import com.cucr.myapplication.R;
  * Created by 911 on 2017/4/26.
  */
 
-public class DialogAtMeSettingStyle extends Dialog implements View.OnClickListener {
+public class DialogCommentSettingStyle extends Dialog implements View.OnClickListener {
 
     private ImageView mIv_everyone;
     private ImageView mIv_my_focus;
-    private ImageView mIv_close_at;
+    private ImageView mIv_close_comment;
     private ImageView temp;
 
-    public DialogAtMeSettingStyle(Context context, int themeResId) {
+    public DialogCommentSettingStyle(Context context, int themeResId) {
         super(context, themeResId);
     }
 
@@ -31,16 +31,16 @@ public class DialogAtMeSettingStyle extends Dialog implements View.OnClickListen
 
         RelativeLayout rl_everyone = (RelativeLayout) findViewById(R.id.rl_everyone);
         RelativeLayout rl_my_focus = (RelativeLayout) findViewById(R.id.rl_my_focus);
-        RelativeLayout rl_close_at = (RelativeLayout) findViewById(R.id.rl_close_at);
+        RelativeLayout rl_close_comment = (RelativeLayout) findViewById(R.id.rl_close_comment);
 
         mIv_everyone = (ImageView) findViewById(R.id.iv_everyone);
         temp = mIv_everyone;
         mIv_my_focus = (ImageView) findViewById(R.id.iv_my_focus);
-        mIv_close_at = (ImageView) findViewById(R.id.iv_close_at);
+        mIv_close_comment = (ImageView) findViewById(R.id.iv_close_at);
 
         rl_everyone.setOnClickListener(this);
         rl_my_focus.setOnClickListener(this);
-        rl_close_at.setOnClickListener(this);
+        rl_close_comment.setOnClickListener(this);
 
     }
 
@@ -61,10 +61,10 @@ public class DialogAtMeSettingStyle extends Dialog implements View.OnClickListen
                 temp = mIv_my_focus;
                 break;
 
-            case R.id.rl_close_at:
+            case R.id.rl_close_comment:
                 temp.setVisibility(View.GONE);
-                mIv_close_at.setVisibility(View.VISIBLE);
-                temp = mIv_close_at;
+                mIv_close_comment.setVisibility(View.VISIBLE);
+                temp = mIv_close_comment;
                 break;
         }
     }

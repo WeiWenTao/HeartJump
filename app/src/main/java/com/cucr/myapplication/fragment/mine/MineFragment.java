@@ -12,9 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.myHomePager.FansActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
-import com.cucr.myapplication.activity.myHomePager.MyHomePagerActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity;
 import com.cucr.myapplication.activity.pay.StarMoneyActivity;
 import com.cucr.myapplication.activity.setting.MyHelperActivity;
@@ -38,13 +36,11 @@ public class MineFragment extends BaseFragment {
         head = (RelativeLayout) childView.findViewById(R.id.head);
         initHead();
 
-        ImageView iv_user = (ImageView) childView.findViewById(R.id.iv_user_mine);
-        LinearLayout ll_user_nickname = (LinearLayout) childView.findViewById(R.id.ll_user_nickname);
         ImageView iv_mine_msg = (ImageView) childView.findViewById(R.id.iv_mine_msg);
         RelativeLayout rl_setting = (RelativeLayout) childView.findViewById(R.id.rl_setting);
         RelativeLayout rl_enter_home_pager = (RelativeLayout) childView.findViewById(R.id.rl_enter_mypager);
         LinearLayout ll_mine_focus = (LinearLayout) childView.findViewById(R.id.ll_mine_focus);
-        LinearLayout ll_mine_fans = (LinearLayout) childView.findViewById(R.id.ll_mine_fans);
+        LinearLayout ll_mine_fans = (LinearLayout) childView.findViewById(R.id.ll_mine_dongtai);
         LinearLayout ll_pay = (LinearLayout) childView.findViewById(R.id.ll_pay);
         RelativeLayout rl_my_helper = (RelativeLayout) childView.findViewById(R.id.rl_my_helper);
         RelativeLayout rl_pay_center = (RelativeLayout) childView.findViewById(R.id.rl_pay_center);
@@ -53,8 +49,6 @@ public class MineFragment extends BaseFragment {
         RelativeLayout rl_my_yuyue = (RelativeLayout) childView.findViewById(R.id.rl_my_yuyue);
 
 
-        iv_user.setOnClickListener(this);
-        ll_user_nickname.setOnClickListener(this);
         iv_mine_msg.setOnClickListener(this);
         rl_setting.setOnClickListener(this);
         rl_enter_home_pager.setOnClickListener(this);
@@ -95,11 +89,6 @@ public class MineFragment extends BaseFragment {
         super.onClick(v);
 
         switch (v.getId()) {
-            //跳转到个人资料界面
-            case R.id.ll_user_nickname:
-            case R.id.iv_user_mine:
-                startActivity(new Intent(mContext, PersonalInfoActivity.class));
-                break;
 
             //跳转到消息界面
             case R.id.iv_mine_msg:
@@ -111,9 +100,9 @@ public class MineFragment extends BaseFragment {
                 mContext.startActivity(new Intent(mContext, SettingActivity.class));
                 break;
 
-            //进入主页
+            //进入个人资料
             case R.id.rl_enter_mypager:
-                mContext.startActivity(new Intent(mContext, MyHomePagerActivity.class));
+                startActivity(new Intent(mContext, PersonalInfoActivity.class));
                 break;
 
             //关注
@@ -122,9 +111,9 @@ public class MineFragment extends BaseFragment {
                 break;
 
 
-            //粉丝
-            case R.id.ll_mine_fans:
-                mContext.startActivity(new Intent(mContext, FansActivity.class));
+            //动态
+            case R.id.ll_mine_dongtai:
+//                mContext.startActivity(new Intent(mContext, ));
                 break;
 
             //星币

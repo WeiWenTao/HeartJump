@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="1dp"
             android:layout_marginLeft="@dimen/dp_55"
             android:layout_marginRight="@dimen/dp_55"
             app:tabBackground="@null"

@@ -101,11 +101,7 @@
         </activity>
         <activity android:name=".activity.setting.SettingActivity">
         </activity>
-        <activity android:name=".activity.myHomePager.MyHomePagerActivity">
-        </activity>
         <activity android:name=".activity.myHomePager.FocusActivity">
-        </activity>
-        <activity android:name=".activity.myHomePager.FansActivity">
         </activity>
         <activity android:name=".activity.pay.PayCenterActivity">
         </activity>
@@ -163,6 +159,15 @@
         <activity android:name=".activity.local.LocalityQuActivity">
         </activity>
         <activity android:name=".activity.yuyue.MyYuYueActivity">
+        </activity>
+        <activity
+            android:name=".activity.fenTuan.CreatFtActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+        </activity>
+        <activity android:name=".activity.huodong.FaBuHuoDongActivity"
+                  android:launchMode="singleTask"
+            >
         </activity>
     </application>
 

@@ -65,7 +65,7 @@ public class DialogChangePswStyle extends Dialog implements View.OnClickListener
 
                 }
                 //将光标移至末尾
-                mEt_new_psw.postInvalidate();
+                mEt_new_psw.setSelection(mEt_new_psw.getText().length());
                 break;
 
             case R.id.iv_confirm_psw:

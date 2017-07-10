@@ -93,6 +93,7 @@ public class YuYueCatgoryActivity extends Activity {
     public void selLocal(View view) {
         Intent intent = new Intent(this, LocalityProvienceActivity.class);
         intent.putExtra("needShow", true);
+        intent.putExtra("className", "YuYueCatgoryActivity");
         startActivity(intent);
     }
 
@@ -120,6 +121,7 @@ public class YuYueCatgoryActivity extends Activity {
         }
 
     }
+
     //室内
     @OnClick(R.id.ll_shinei)
     public void shiNei(View view) {
@@ -134,6 +136,12 @@ public class YuYueCatgoryActivity extends Activity {
         iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
     }
 
+    //返回
+    @OnClick(R.id.iv_myyuyue_back)
+    public void back(View view) {
+        finish();
+    }
+
     //沉浸栏
     private void initHead() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -144,7 +152,6 @@ public class YuYueCatgoryActivity extends Activity {
             head.requestLayout();
         }
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -154,4 +161,6 @@ public class YuYueCatgoryActivity extends Activity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
+
+
 }
