@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     
     <color name="pink">#f68d89</color>
-    <color name="popWindowBg">#55555555</color>
+    <color name="popWindowBg">#5000</color>
     <color name="gray">#bfbfbf</color>
     <color name="white">#fff</color>
     <color name="mygray">#f9f9f9</color>
@@ -15,4 +15,5 @@
     <color name="color_999">#999</color>
     <color name="blue_black">#141517</color>
     <color name="Color_92">#929292</color>
+
 </resources>

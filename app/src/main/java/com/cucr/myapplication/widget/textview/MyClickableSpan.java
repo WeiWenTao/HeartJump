@@ -30,6 +30,6 @@ public class MyClickableSpan extends ClickableSpan {
 //        bundle.putString("content", content);
 //        intent.putExtra("bundle", bundle);
 //        startActivity(intent);
-        ToastUtils.showToast(widget.getContext(),content);
+        ToastUtils.showToast(widget.getContext(), "跳转到" + content + "粉团");
     }
 }

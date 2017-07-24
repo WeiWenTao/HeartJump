@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -59,6 +60,12 @@ public class HuoDongActivity extends Activity {
 
     private void initLV() {
         lv_active.setAdapter(new HuoDongTaiAdapter(this));
+        lv_active.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(HuoDongActivity.this,HuoDongCatgoryActivity.class));
+            }
+        });
     }
 
 
@@ -73,4 +80,6 @@ public class HuoDongActivity extends Activity {
     public void faBuHuoDong(View view){
         startActivity(new Intent(this,FaBuHuoDongActivity.class));
     }
+
+
 }

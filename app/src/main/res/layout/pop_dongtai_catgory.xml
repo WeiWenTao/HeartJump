@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_popWindow_bg"
+    >
+
+
+   <LinearLayout
+       android:layout_above="@+id/cancel"
+       android:id="@+id/ll_up_pop"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@drawable/shape_myyuyue_bg"
+       android:orientation="vertical"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"
+       >
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_above="@+id/line"
+        android:background="@drawable/setting_up_selector"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="#999"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_30"
+        android:background="#99cccccc" />
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/setting_down_selector"
+        android:gravity="center"
+        android:text="分享"
+        android:textColor="#999"
+        android:textSize="18sp" />
+   </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/setting_one_selector" >
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="取 消"
+            android:textColor="#999"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

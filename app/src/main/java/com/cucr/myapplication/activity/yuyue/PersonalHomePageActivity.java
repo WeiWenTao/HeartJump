@@ -1,4 +1,4 @@
-package com.cucr.myapplication.activity.home;
+package com.cucr.myapplication.activity.yuyue;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +16,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.widget.statusBar.StatusBarCompat;

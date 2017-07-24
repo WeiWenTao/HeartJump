@@ -27,8 +27,8 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
-import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;

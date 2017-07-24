@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.home.PublishActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtListAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.widget.alphaHead.GradationScrollView;
@@ -152,11 +153,12 @@ public class FenTuanListActivity extends Activity implements GradationScrollView
 
 
 
-//    @OnClick(R.id.iv_ft_back)
-//    public void goPublish(View view){
-//        startActivity(new Intent(this, PublishActivity.class));
-//    }
+    @OnClick(R.id.iv_publish)
+    public void goPublish(View view){
+        startActivity(new Intent(this, PublishActivity.class));
+    }
 
+    //返回
     @OnClick(R.id.iv_ft_back)
     public void back(View view){
         finish();

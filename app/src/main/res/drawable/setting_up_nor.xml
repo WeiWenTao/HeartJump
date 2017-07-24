@@ -7,8 +7,8 @@
     <corners
         android:bottomLeftRadius="0.0dip"
         android:bottomRightRadius="0.0dip"
-        android:topLeftRadius="3.0dip"
-        android:topRightRadius="3.0dip" />
+        android:topLeftRadius="5.0dip"
+        android:topRightRadius="5.0dip" />
 
     <padding
         android:bottom="1.0px"

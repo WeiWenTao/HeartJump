@@ -26,14 +26,14 @@
             />
 
         <ImageView
-            android:id="@+id/iv_mine_msg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:id="@+id/iv_header_msg"
+            android:layout_width="40dp"
+            android:layout_height="44dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="13dp"
+            android:paddingBottom="13dp"
             android:layout_marginRight="@dimen/dp_10"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingTop="10dp"
             android:src="@drawable/icon_msg"
             />
@@ -139,6 +139,7 @@
                 >
 
                 <LinearLayout
+                    android:id="@+id/ll_mine_focus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -148,7 +149,6 @@
                     >
 
                     <LinearLayout
-                        android:id="@+id/ll_mine_focus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -175,6 +175,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_pay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -184,7 +185,7 @@
                     >
 
                     <LinearLayout
-                        android:id="@+id/ll_pay"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -211,6 +212,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_mine_dongtai"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -220,7 +222,7 @@
                     >
 
                     <LinearLayout
-                        android:id="@+id/ll_mine_dongtai"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -254,32 +256,6 @@
                 android:background="#f6f6f6"
                 android:orientation="vertical"
                 >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_star_data"
-                        style="@style/My_iv"
-                        android:src="@drawable/icon_ca"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_star_data"
-                        android:text="这里是明星数据（普通用户隐藏）"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/rl_ren_zheng"
@@ -456,6 +432,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:layout_marginBottom="@dimen/dp_40"
                     android:id="@+id/rl_piaowu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

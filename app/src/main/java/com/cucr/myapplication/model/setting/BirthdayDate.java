@@ -1,4 +1,4 @@
-package com.cucr.myapplication.bean.setting;
+package com.cucr.myapplication.model.setting;
 
 /**
  * Created by 911 on 2017/4/21.

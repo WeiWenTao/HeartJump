@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gallery="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/shop_bg"
+        android:scaleType="centerCrop"
+        />
+
+    <LinearLayout
+        android:id="@+id/dactivity_fu_li_catgory"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:gallery="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#6666"
+        android:orientation="vertical"
+        tools:context="com.cucr.myapplication.activity.fuli.DuiHuanCatgoryActivity"
+        >
+
+        <RelativeLayout
+            android:id="@+id/head"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_fuli_duihuan_back"
+                style="@style/IconBackStyle"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="14dp"
+                android:text="兑换详情"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                />
+
+        </RelativeLayout>
+
+        <com.cucr.myapplication.widget.coverflow.GalleryRecyclerView
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginTop="@dimen/dp_25"
+            android:clipChildren="false"
+            gallery:selectitem="1"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -53,4 +53,7 @@ dependencies {
 
     //模糊
     compile 'net.qiujuer.genius:blur:2.0.0-beta4'
+
+    //图片旋转木马
+    compile 'com.zhy:base-rvadapter:3.0.3'
 }

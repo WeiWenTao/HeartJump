@@ -34,23 +34,24 @@
 
         <ImageView
             android:id="@+id/iv_search"
-            android:layout_width="21dp"
-            android:layout_height="21dp"
+            android:layout_width="41dp"
+            android:layout_height="35dp"
+            android:paddingRight="@dimen/dp_20"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
+            android:paddingBottom="14dp"
             android:layout_marginLeft="@dimen/dp_10"
             android:src="@drawable/icon_search"
             />
 
         <ImageView
             android:id="@+id/iv_header_msg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="44dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="13dp"
+            android:paddingBottom="13dp"
             android:layout_marginRight="@dimen/dp_10"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingTop="10dp"
             android:src="@drawable/icon_msg"
             />

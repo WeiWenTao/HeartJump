@@ -340,6 +340,7 @@
                     >
 
                     <EditText
+                        android:paddingRight="@dimen/dp_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -350,9 +351,10 @@
                         />
 
                     <TextView
+                        android:layout_marginBottom="@dimen/dp_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 人"
+                        android:text="人"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/color_666"
                         android:textSize="@dimen/sp_14"

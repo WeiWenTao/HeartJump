@@ -15,6 +15,8 @@ public class Constans {
 
     public static final int TYPE_OTHER = -1;
 
+    public static final String POSITION = "position";
+
     //正文   点赞
     public static final int STATE_LIKE = 4;
     //正文   评论

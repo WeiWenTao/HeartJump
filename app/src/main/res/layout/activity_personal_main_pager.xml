@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_personal_main_pager"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/rl_personal_info"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_fuzzy_bg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/star3_new"
+            />
+
+        <RelativeLayout
+            android:id="@+id/head"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_pager_back"
+                style="@style/IconBackStyle"
+                />
+
+        </RelativeLayout>
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_star_head"
+            android:layout_width="81dp"
+            android:layout_height="81dp"
+            android:layout_below="@id/head"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-15dp"
+            android:src="@drawable/pic2_live"
+            app:civ_border_color="#5fff"
+            app:civ_border_width="1dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_star_head"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="用户昵称"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
+            android:layout_alignTop="@id/tv_nick_name"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_3"
+            android:layout_toRightOf="@id/tv_nick_name"
+            android:src="@drawable/icon_girl_"
+            />
+
+        <TextView
+            android:id="@+id/tv_user_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_nick_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="用户签名用户签名"
+            android:textColor="#d4d4d4"
+            android:textSize="@dimen/sp_15"
+            />
+
+    </RelativeLayout>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator_personal_page"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/rl_personal_info"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/personal_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/magic_indicator_personal_page"
+        ></android.support.v4.view.ViewPager>
+
+
+</RelativeLayout>

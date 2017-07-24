@@ -82,7 +82,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         //底部导航栏距离
         initDrawable(rb_1, 0, 0, 22, 22);
         initDrawable(rb_2, 0, 0, 22, 20);
-        initDrawable(rb_3, 0, 0, 18, 22);
+        initDrawable(rb_3, 0, 0, 22, 22);
         initDrawable(rb_4, 0, 0, 17, 22);
     }
 

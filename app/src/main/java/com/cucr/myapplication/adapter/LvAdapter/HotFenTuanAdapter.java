@@ -1,4 +1,4 @@
-package com.cucr.myapplication.adapter.RlVAdapter;
+package com.cucr.myapplication.adapter.LvAdapter;
 
 import android.content.Context;
 import android.view.View;

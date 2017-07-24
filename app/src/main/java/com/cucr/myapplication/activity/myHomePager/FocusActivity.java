@@ -17,6 +17,7 @@ import com.cucr.myapplication.adapter.PagerAdapter.FocusPagerAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.Arrays;
 import java.util.List;
@@ -82,6 +83,11 @@ public class FocusActivity extends Activity {
         //初始化vp和vpi
         mViewPager = (ViewPager) findViewById(R.id.view_pager_focus);
         mViewPager.setAdapter(new FocusPagerAdapter(mDataList));
+    }
+
+    @OnClick(R.id.iv_focus_back)
+    public void back(View view){
+        finish();
     }
 
 }

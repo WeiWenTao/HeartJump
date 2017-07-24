@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.home.PersonalHomePageActivity;
+import com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.utils.CommonViewHolder;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;

@@ -11,30 +11,28 @@
     >
 
     <RelativeLayout
-        android:background="@drawable/shape_bg_commen_head"
+        android:id="@+id/rl_head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
         >
+
         <ImageView
-            android:paddingRight="19dp"
-            android:id="@+id/iv_my_sign_back"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:layout_height="22dp"
-            android:src="@drawable/icon_back"
+            android:id="@+id/iv_sign_back"
+            style="@style/IconBackStyle"
             />
 
         <TextView
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:text="签到"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="签到"
-            >
+            />
 
-        </TextView>
     </RelativeLayout>
 
     <TextView

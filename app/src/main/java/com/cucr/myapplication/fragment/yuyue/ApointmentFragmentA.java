@@ -83,7 +83,9 @@ public class ApointmentFragmentA extends BaseFragment {
     private void initVP() {
         mFragments = new ArrayList<>();
         mFragments.add(new FragmentStarRecommend());
-//        mFragments.add(new FragmentStarClassify());
+
+//      快速导航栏
+//      mFragments.add(new FragmentStarClassify());
         mFragments.add(new FragmentStarRecommend());
         vp_recommed_star.setAdapter(new YuYuePagerAdapter(getFragmentManager(), mFragments));
     }

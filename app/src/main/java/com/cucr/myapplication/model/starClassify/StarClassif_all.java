@@ -1,4 +1,4 @@
-package com.cucr.myapplication.bean.starClassify;
+package com.cucr.myapplication.model.starClassify;
 
 import java.util.List;
 

@@ -12,14 +12,18 @@ import com.cucr.myapplication.R;
  * Created by 911 on 2017/6/27.
  */
 public class RlvPersonalJourneyAdapter extends RecyclerView.Adapter<RlvPersonalJourneyAdapter.PersonaJourneylHolder> {
+
     private Context context;
+
+
     public RlvPersonalJourneyAdapter(Context context) {
         this.context = context;
+
     }
 
     @Override
     public PersonaJourneylHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_rlv_journey,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_rlv_journey, parent, false);
         PersonaJourneylHolder holder = new PersonaJourneylHolder(view);
         return holder;
     }
@@ -35,7 +39,7 @@ public class RlvPersonalJourneyAdapter extends RecyclerView.Adapter<RlvPersonalJ
     }
 
 
-    class PersonaJourneylHolder extends RecyclerView.ViewHolder{
+    class PersonaJourneylHolder extends RecyclerView.ViewHolder {
 
         public PersonaJourneylHolder(View itemView) {
             super(itemView);

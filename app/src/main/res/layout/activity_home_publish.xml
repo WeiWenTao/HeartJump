@@ -18,13 +18,7 @@
 
         <ImageView
             android:id="@+id/iv_publish_back"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:paddingRight="20dp"
-            android:src="@drawable/icon_back"
+            style="@style/IconBackStyle"
             />
 
         <TextView
@@ -34,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="13dp"
             android:text="发布"
             android:textColor="@color/white"
             android:textSize="18sp"

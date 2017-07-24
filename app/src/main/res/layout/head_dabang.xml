@@ -5,6 +5,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="43dp"
                 android:paddingRight="43dp"
+                android:background="@color/white"
                 android:paddingBottom="@dimen/dp_10"
     >
 

@@ -80,7 +80,7 @@ public class DialogChangePswStyle extends Dialog implements View.OnClickListener
                     mEt_confirm_psw.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 //将光标移至末尾
-                mEt_confirm_psw.postInvalidate();
+                mEt_confirm_psw.setSelection(mEt_confirm_psw.getText().length());
                 break;
         }
     }

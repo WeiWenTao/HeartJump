@@ -36,15 +36,10 @@
             ></android.support.design.widget.TabLayout>
 
         <ImageView
-            android:id="@+id/iv_fuli_back"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:paddingRight="20dp"
-            android:src="@drawable/icon_back"
+            android:id="@+id/iv_focus_back"
+            style="@style/IconBackStyle"
             />
+
 
     </RelativeLayout>
 

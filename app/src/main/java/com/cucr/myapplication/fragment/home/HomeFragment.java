@@ -21,6 +21,7 @@ import com.cucr.myapplication.activity.video.VideoActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.temp.LocalImageHolderView;
+import com.cucr.myapplication.utils.ClickUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -92,14 +93,12 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         ll_fentuan.setOnClickListener(this);
 
 
-
-
         //首页轮播图
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
         initARL();
 
-        mLv_home.addHeaderView(headerView,null,true);
-        mLv_home.addHeaderView(View.inflate(mContext,R.layout.header_home_lv_1,null),null,true);
+        mLv_home.addHeaderView(headerView, null, true);
+        mLv_home.addHeaderView(View.inflate(mContext, R.layout.header_home_lv_1, null), null, true);
 
         //去掉头部分割线
         mLv_home.setHeaderDividersEnabled(false);
@@ -113,7 +112,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 //                startActivity(new Intent(mContext, CommentAndLikeActivity.class));
 //                startActivity(new Intent(mContext, position  == 2 ? VideoActivity.class : NewsActivity.class));
 
-                switch (position){
+                switch (position) {
                     case 2:
                         startActivity(new Intent(mContext, VideoActivity.class));
                         break;
@@ -133,26 +132,30 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
 
             //签到
             case R.id.ll_sign_in:
-                startActivity(new Intent(mContext,SignActivity.class));
+                if (ClickUtil.isFastClick())
+                    startActivity(new Intent(mContext, SignActivity.class));
                 break;
 
             //福利
             case R.id.ll_fuli:
-                startActivity(new Intent(mContext,FuLiActiviry.class));
+                if (ClickUtil.isFastClick())
+                    startActivity(new Intent(mContext, FuLiActiviry.class));
                 break;
 
             //粉团
             case R.id.ll_fentuan:
-                startActivity(new Intent(mContext,FenTuanActivity.class));
+                if (ClickUtil.isFastClick())
+                    startActivity(new Intent(mContext, FenTuanActivity.class));
                 break;
 
             //活动
             case R.id.ll_active:
-                startActivity(new Intent(mContext,HuoDongActivity.class));
+                if (ClickUtil.isFastClick())
+                    startActivity(new Intent(mContext, HuoDongActivity.class));
                 break;
 
 
@@ -170,7 +173,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     //-------------------------------------------------------------------------------
 
     //初始化网络图片缓存库
-    private void initImageLoader(){
+    private void initImageLoader() {
         //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.ic_launcher)
@@ -184,18 +187,19 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                 .tasksProcessingOrder(QueueProcessingType.LIFO).build();
         ImageLoader.getInstance().init(config);
     }
+
     /*
     加入测试Views
     * */
     private void initLocalImg() {
         //本地图片集合
         for (int position = 1; position < 3; position++)
-            localImages.add(getResId("banner" + position  , R.drawable.class));
+            localImages.add(getResId("banner" + position, R.drawable.class));
 
     }
 
 
-    private void initARL(){
+    private void initARL() {
 //        initImageLoader();
         initLocalImg();
         //本地图片例子
@@ -224,7 +228,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 //                return new NetworkImageHolderView();
 //            }
 //        },networkImages);
-
 
 
 //手动New并且添加到ListView Header的例子
@@ -258,7 +261,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     //convenientBanner的点击监听
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(mContext,position+"",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, position + "", Toast.LENGTH_SHORT).show();
     }
 
 

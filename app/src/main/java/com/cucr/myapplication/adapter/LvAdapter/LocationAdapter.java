@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonViewHolder;
 
 import java.util.List;

@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,20 +17,23 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
-import com.cucr.myapplication.bean.setting.BirthdayDate;
-import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.model.setting.BirthdayDate;
+import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
-import com.cucr.myapplication.widget.dialog.DialogGenderStyle;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -40,7 +45,7 @@ import java.io.FileNotFoundException;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class PersonalInfoActivity extends Activity {
+public class PersonalInfoActivity extends Activity implements View.OnClickListener {
 
     //选择生日
     @ViewInject(R.id.tv_birthday_edit)
@@ -62,15 +67,28 @@ public class PersonalInfoActivity extends Activity {
     @ViewInject(R.id.fl_pop_bg)
     FrameLayout fl_pop_bg;
 
+    //沉浸栏头部
+    @ViewInject(R.id.head)
+    RelativeLayout head;
+
+    //个性签名
+    @ViewInject(R.id.et_my_sign)
+    EditText et_my_sign;
+
+    //昵称
+    @ViewInject(R.id.et_nickname)
+    EditText et_nickname;
+
+
     private DialogBirthdayStyle mBirthdayStyle;
     private String mYear;
     private String mMon;
     private String mDay;
     private String dateText;
-    private DialogGenderStyle mGenderStyle;
 
 
     private PopupWindow popWindow;
+    private PopupWindow genderPopWindow;
     private LayoutInflater layoutInflater;
     private TextView photograph, albums;
     private LinearLayout cancel;
@@ -93,10 +111,42 @@ public class PersonalInfoActivity extends Activity {
         setContentView(R.layout.activity_personal_info);
         ViewUtils.inject(this);
 
+        initHeadBar();
+
         initHead();
 
         initDialog();
 
+        initView();
+
+    }
+
+    //初始化控件
+    private void initView() {
+
+        //将editText光标放置末尾
+        et_my_sign.setSelection(et_my_sign.getText().length());
+        et_nickname.setSelection(et_nickname.getText().length());
+    }
+
+    private void initHeadBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) head.getLayoutParams();
+            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
+            head.setLayoutParams(layoutParams);
+            head.requestLayout();
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     private void initHead() {
@@ -135,18 +185,6 @@ public class PersonalInfoActivity extends Activity {
     private void initDialog() {
         mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme);
 
-        mGenderStyle = new DialogGenderStyle(this, R.style.BirthdayStyleTheme);
-        mGenderStyle.setOnClickGender(new DialogGenderStyle.OnClickGender() {
-            @Override
-            public void onClickBoy() {
-                tv_gender.setText("男");
-            }
-
-            @Override
-            public void onClickGirl() {
-                tv_gender.setText("女");
-            }
-        });
     }
 
 
@@ -197,10 +235,45 @@ public class PersonalInfoActivity extends Activity {
 
     }
 
-    //选择性别
+    //弹出性别选择框
     @OnClick(R.id.rl_gender)
-    public void selectGender(View view) {
-        mGenderStyle.show();
+    public void selectGender(View parent) {
+        CommonUtils.initPopBg(true, fl_pop_bg);
+
+        if (genderPopWindow == null) {
+            View genderView = layoutInflater.inflate(R.layout.pop_gender_select, null);
+            genderPopWindow = new PopupWindow(genderView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+            initGenderPop(genderView);
+        }
+        genderPopWindow.setAnimationStyle(R.style.AnimationFade);
+        genderPopWindow.setFocusable(true);
+        genderPopWindow.setOutsideTouchable(true);
+
+        genderPopWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        genderPopWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        genderPopWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
+
+        genderPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                CommonUtils.initPopBg(false, fl_pop_bg);
+            }
+        });
+    }
+
+    private void initGenderPop(View genderView) {
+
+        genderView.findViewById(R.id.rl_popWindow_bg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                genderPopWindow.dismiss();
+            }
+        });
+
+        genderView.findViewById(R.id.tv_man).setOnClickListener(this);
+        genderView.findViewById(R.id.tv_women).setOnClickListener(this);
+        genderView.findViewById(R.id.tv_cancle).setOnClickListener(this);
     }
 
     //选择所在地
@@ -376,6 +449,19 @@ public class PersonalInfoActivity extends Activity {
         finish();
     }
 
+    @OnClick(R.id.rl_nickname)
+    public void nickName(View view){
+        ToastUtils.showToast(this,"aaa");
+        et_nickname.requestFocus();
+
+    }
+
+    @OnClick(R.id.rl_mysign)
+    public void mySign(View view){
+        et_my_sign.requestFocus();
+    }
+
+
     @Override
     public void onBackPressed() {
         //TODO
@@ -383,5 +469,24 @@ public class PersonalInfoActivity extends Activity {
 //            cancel.performClick();
 //        }
         super.onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_man:
+                tv_gender.setText("男");
+                genderPopWindow.dismiss();
+                break;
+
+            case R.id.tv_women:
+                tv_gender.setText("女");
+                genderPopWindow.dismiss();
+                break;
+
+            case R.id.tv_cancle:
+                genderPopWindow.dismiss();
+                break;
+        }
     }
 }

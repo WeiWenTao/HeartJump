@@ -11,78 +11,82 @@
 
     <LinearLayout
         android:id="@+id/ll_container"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="vertical"
         ></LinearLayout>
 
-    <View android:layout_width="match_parent"
-          android:layout_height="0.5dp"
-          android:background="#ccc"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
+
     <RadioGroup
-        android:background="@color/white"
         android:id="@+id/rg_mian_fragments"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
         >
 
         <RadioButton
-            android:checked="true"
-            android:textColor="@color/text_selector"
-            android:textSize="@dimen/sp_10"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"
             android:id="@+id/rb_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:button="@null"
+            android:checked="true"
             android:drawableTop="@drawable/home_selector"
+            android:gravity="center_horizontal"
             android:text="首页"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="@color/text_selector"
+            android:textSize="@dimen/sp_10"
             />
 
         <RadioButton
-            android:layout_marginTop="1dp"
-            android:textColor="@color/text_selector"
-            android:drawableTop="@drawable/live_selector"
-            android:textSize="@dimen/sp_10"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"
             android:id="@+id/rb_2"
-            android:button="@null"
-            android:text="预约"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/live_selector"
+            android:gravity="center_horizontal"
+            android:text="预约"
+            android:textColor="@color/text_selector"
+            android:textSize="@dimen/sp_10"
             />
 
         <RadioButton
-            android:textColor="@color/text_selector"
-            android:drawableTop="@drawable/discover_selector"
-            android:textSize="@dimen/sp_10"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"
             android:id="@+id/rb_3"
-            android:button="@null"
-            android:text="榜单"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            />
-        <RadioButton
-            android:drawableTop="@drawable/mine_selector"
-            android:textSize="@dimen/sp_10"
             android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"
-            android:id="@+id/rb_4"
-            android:button="@null"
-            android:textColor="@color/text_selector"
-            android:text="我的"
             android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/discover_selector"
+            android:gravity="center_horizontal"
+            android:text="榜单"
+            android:textColor="@color/text_selector"
+            android:textSize="@dimen/sp_10"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/mine_selector"
+            android:gravity="center_horizontal"
+            android:text="我的"
+            android:textColor="@color/text_selector"
+            android:textSize="@dimen/sp_10"
             />
     </RadioGroup>
 

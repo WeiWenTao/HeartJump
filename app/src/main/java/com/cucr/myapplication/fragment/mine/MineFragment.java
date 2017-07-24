@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
+import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity;
 import com.cucr.myapplication.activity.pay.StarMoneyActivity;
@@ -36,7 +37,7 @@ public class MineFragment extends BaseFragment {
         head = (RelativeLayout) childView.findViewById(R.id.head);
         initHead();
 
-        ImageView iv_mine_msg = (ImageView) childView.findViewById(R.id.iv_mine_msg);
+        ImageView iv_mine_msg = (ImageView) childView.findViewById(R.id.iv_header_msg);
         RelativeLayout rl_setting = (RelativeLayout) childView.findViewById(R.id.rl_setting);
         RelativeLayout rl_enter_home_pager = (RelativeLayout) childView.findViewById(R.id.rl_enter_mypager);
         LinearLayout ll_mine_focus = (LinearLayout) childView.findViewById(R.id.ll_mine_focus);
@@ -63,7 +64,7 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    //
+    //沉浸栏
     private void initHead() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -91,7 +92,7 @@ public class MineFragment extends BaseFragment {
         switch (v.getId()) {
 
             //跳转到消息界面
-            case R.id.iv_mine_msg:
+            case R.id.iv_header_msg:
                 mContext.startActivity(new Intent(mContext, MessageActivity.class));
                 break;
 
@@ -105,7 +106,7 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(mContext, PersonalInfoActivity.class));
                 break;
 
-            //关注
+            //明星
             case R.id.ll_mine_focus:
                 mContext.startActivity(new Intent(mContext, FocusActivity.class));
                 break;
@@ -113,7 +114,7 @@ public class MineFragment extends BaseFragment {
 
             //动态
             case R.id.ll_mine_dongtai:
-//                mContext.startActivity(new Intent(mContext, ));
+                mContext.startActivity(new Intent(mContext, DongTaiActivity.class));
                 break;
 
             //星币

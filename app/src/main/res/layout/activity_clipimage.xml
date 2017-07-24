@@ -4,33 +4,30 @@
     android:layout_height="match_parent"
     android:background="#000000" >
 
+            android:id="@+id/iv_adjust_pic_back"
     <RelativeLayout
-        android:id="@+id/title_bar"
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/pink" >
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
+        >
 
         <ImageView
-            android:paddingRight="19dp"
             android:id="@+id/iv_adjust_pic_back"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:layout_height="22dp"
-            android:src="@drawable/icon_back"
+            style="@style/IconBackStyle"
             />
 
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
             android:text="移动和缩放"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            />
+
     </RelativeLayout>
 
     <com.cucr.myapplication.widget.clip.ClipImageLayout
@@ -38,7 +35,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/rl_botom"
-        android:layout_below="@+id/title_bar" />
+        android:layout_below="@+id/head" />
 
     <RelativeLayout
         android:id="@+id/rl_botom"

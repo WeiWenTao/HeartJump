@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.home.PersonalHomePageActivity;
+import com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 
 /**

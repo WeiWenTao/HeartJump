@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.FenTuanListActivity;
-import com.cucr.myapplication.adapter.RlVAdapter.HotFenTuanAdapter;
+import com.cucr.myapplication.adapter.LvAdapter.HotFenTuanAdapter;
 
 /**
  * Created by 911 on 2017/6/24.

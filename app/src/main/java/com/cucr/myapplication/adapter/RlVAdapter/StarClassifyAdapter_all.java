@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.bean.starClassify.StarClassif_all;
+import com.cucr.myapplication.model.starClassify.StarClassif_all;
 import com.cucr.myapplication.widget.dialog.DialogCanaleFocusStyle;
 
 import java.io.File;

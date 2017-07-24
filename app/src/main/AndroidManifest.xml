@@ -90,9 +90,12 @@
         </activity>
         <activity android:name=".activity.home.CommentAndLikeActivity">
         </activity>
-        <activity android:name=".activity.MessageActivity">
+        <activity
+            android:name=".activity.MessageActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
-        <activity android:name=".activity.home.PersonalHomePageActivity">
+        <activity android:name=".activity.yuyue.PersonalHomePageActivity">
         </activity>
         <activity
             android:name=".activity.setting.PersonalInfoActivity"
@@ -165,9 +168,20 @@
             android:windowSoftInputMode="adjustPan"
             >
         </activity>
-        <activity android:name=".activity.huodong.FaBuHuoDongActivity"
-                  android:launchMode="singleTask"
+        <activity
+            android:name=".activity.huodong.FaBuHuoDongActivity"
+            android:launchMode="singleTask"
             >
+        </activity>
+        <activity android:name=".activity.huodong.HuoDongCatgoryActivity">
+        </activity>
+        <activity android:name=".activity.fuli.DuiHuanCatgoryActivity">
+        </activity>
+        <activity android:name=".activity.dongtai.DongTaiActivity">
+        </activity>
+        <activity android:name=".activity.dongtai.DongTaiCatgoryActivity">
+        </activity>
+        <activity android:name=".activity.dongtai.PersonalMainPagerActivity">
         </activity>
     </application>
 

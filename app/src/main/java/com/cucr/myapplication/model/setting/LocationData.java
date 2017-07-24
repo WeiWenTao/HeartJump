@@ -1,4 +1,4 @@
-package com.cucr.myapplication.bean.setting;
+package com.cucr.myapplication.model.setting;
 
 import java.io.Serializable;
 
