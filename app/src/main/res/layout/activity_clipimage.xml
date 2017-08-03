@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="#000000" >
 
-            android:id="@+id/iv_adjust_pic_back"
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"

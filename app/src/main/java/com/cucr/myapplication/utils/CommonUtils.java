@@ -58,7 +58,7 @@ public class CommonUtils {
     /**
      * 设置分割线颜色
      */
-    public static void setDatePickerDividerColor(Context context, DatePicker datePicker){
+    public static void setDatePickerDividerColor(Context context, DatePicker datePicker) {
 
         // 获取 mSpinners
         LinearLayout llFirst = (LinearLayout) datePicker.getChildAt(0);
@@ -89,23 +89,23 @@ public class CommonUtils {
 
             //设置分割线高度
             for (Field pf : pickerFields) {
-                           if (pf.getName().equals("mSelectionDividerHeight")) {
-                                   pf.setAccessible(true);
-                              try {
-                                      pf.set(picker, 1);
-                                  } catch (Exception e){
-                                      e.printStackTrace();
-                                   }
-                               break;
-                         }
-                 }
+                if (pf.getName().equals("mSelectionDividerHeight")) {
+                    pf.setAccessible(true);
+                    try {
+                        pf.set(picker, 1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
         }
     }
 
     /**
      * 获取当前时间
      */
-    public static String getCurrentDate(){
+    public static String getCurrentDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
         Date date = new Date();
         String dateStr = format.format(date);
@@ -116,16 +116,16 @@ public class CommonUtils {
     /**
      * wheelView的初始化
      */
-    public static List<String> getDateList(){
+    public static List<String> getDateList() {
         List<String> list = null;
 
-        if (list == null){
+        if (list == null) {
             list = new ArrayList<>();
         }
 
-        if (list.size()==0){
+        if (list.size() == 0) {
             for (int i = 1; i <= 12; i++) {
-                list.add("2017年"+i+"月");
+                list.add("2017年" + i + "月");
             }
         }
 

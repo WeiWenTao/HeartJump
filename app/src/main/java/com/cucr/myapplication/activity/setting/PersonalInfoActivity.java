@@ -1,32 +1,27 @@
 package com.cucr.myapplication.activity.setting;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.model.setting.BirthdayDate;
@@ -34,7 +29,6 @@ import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
@@ -45,7 +39,7 @@ import java.io.FileNotFoundException;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class PersonalInfoActivity extends Activity implements View.OnClickListener {
+public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
 
     //选择生日
     @ViewInject(R.id.tv_birthday_edit)
@@ -66,10 +60,6 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg)
     FrameLayout fl_pop_bg;
-
-    //沉浸栏头部
-    @ViewInject(R.id.head)
-    RelativeLayout head;
 
     //个性签名
     @ViewInject(R.id.et_my_sign)
@@ -105,20 +95,22 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
         super();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_info);
-        ViewUtils.inject(this);
 
-        initHeadBar();
+    @Override
+    protected void initChild() {
+
+        initTitle("个人资料");
 
         initHead();
 
         initDialog();
 
         initView();
+    }
 
+    @Override
+    protected int getChildRes() {
+        return R.layout.activity_personal_info;
     }
 
     //初始化控件
@@ -129,25 +121,6 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
         et_nickname.setSelection(et_nickname.getText().length());
     }
 
-    private void initHeadBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
 
     private void initHead() {
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -443,11 +416,6 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
         }
     }
 
-    //返回
-    @OnClick(R.id.iv_personal_info_back)
-    public void back(View view) {
-        finish();
-    }
 
     @OnClick(R.id.rl_nickname)
     public void nickName(View view){

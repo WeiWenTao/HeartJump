@@ -11,30 +11,7 @@
     >
 
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
-
-        <ImageView
-            android:id="@+id/iv_my_pay_back"
-            style="@style/IconBackStyle"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:text="充值中心"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
-
-    </RelativeLayout>
+    <include layout="@layout/activity_base_title"/>
 
     <LinearLayout
         android:background="@color/white"

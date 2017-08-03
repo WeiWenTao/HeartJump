@@ -1,42 +1,36 @@
 package com.cucr.myapplication.activity.huodong;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.io.File;
 
-public class FaBuHuoDongActivity extends Activity {
+public class FaBuHuoDongActivity extends BaseActivity {
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg_fb_huodong)
@@ -54,9 +48,6 @@ public class FaBuHuoDongActivity extends Activity {
     @ViewInject(R.id.et_local_catgory)
     EditText et_local_catgory;
 
-    //沉浸栏
-    @ViewInject(R.id.head)
-    RelativeLayout head;
 
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
@@ -72,37 +63,17 @@ public class FaBuHuoDongActivity extends Activity {
     private String path;//图片全路径
 
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fa_bu_huo_dong);
-        ViewUtils.inject(this);
-        initTitleBar();
+    protected void initChild() {
+        initTitle("活动发布");
         initHead();
-
     }
 
-    //沉浸栏
-    private void initTitleBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
+    @Override
+    protected int getChildRes() {
+        return R.layout.activity_fa_bu_huo_dong;
     }
-
 
     //活动地区
     @OnClick(R.id.tv_active_local)
@@ -266,10 +237,4 @@ public class FaBuHuoDongActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    //返回
-    @OnClick(R.id.iv_fb_huodong_back)
-    public void back(View view) {
-        finish();
-    }
 }

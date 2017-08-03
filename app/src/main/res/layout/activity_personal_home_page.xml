@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.home.PersonalHomePageActivity"
+    tools:context="com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity"
     >
 
 
@@ -136,7 +136,7 @@
                         android:layout_width="50dp"
                         android:layout_height="40dp"
                         android:layout_marginBottom="15dp"
-                        android:paddingBottom="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_5"
                         android:paddingRight="40dp"
                         android:paddingTop="@dimen/dp_10"
                         android:src="@drawable/icon_back"

@@ -28,19 +28,13 @@
 
 
             <ImageView
-                android:id="@+id/iv_fentuan_back"
+                android:id="@+id/iv_base_back"
                 style="@style/IconBackStyle"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="14dp"
-                android:text="创建粉团"
-                android:textColor="@color/white"
-                android:textSize="18sp"
+               style="@style/TitleStyle"
+               android:text="创建粉团"
                 />
 
             <ImageView

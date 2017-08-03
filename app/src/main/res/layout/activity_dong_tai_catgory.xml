@@ -17,17 +17,18 @@
         >
 
         <ImageView
-            android:id="@+id/iv_dongtai_catgory_back"
+            android:id="@+id/iv_base_back"
             style="@style/IconBackStyle"
             />
 
         <TextView
+            android:id="@+id/tv_base_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
-            android:text="详情"
+
             android:textColor="@color/white"
             android:textSize="18sp"
             />

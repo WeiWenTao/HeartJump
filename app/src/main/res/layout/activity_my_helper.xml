@@ -9,30 +9,7 @@
     tools:context="com.cucr.myapplication.activity.setting.MyHelperActivity"
     >
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
-
-        <ImageView
-            android:id="@+id/iv_helper_back"
-            style="@style/IconBackStyle"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:text="我的助手"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
-
-    </RelativeLayout>
+    <include layout="@layout/activity_base_title"/>
 
     <LinearLayout
         android:background="@color/white"

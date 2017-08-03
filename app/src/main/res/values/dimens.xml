@@ -33,6 +33,7 @@
     <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_28">28dp</dimen>
     <dimen name="header_height">250dp</dimen>
+    <dimen name="titleBarHight">48dp</dimen>
 
 
 </resources>

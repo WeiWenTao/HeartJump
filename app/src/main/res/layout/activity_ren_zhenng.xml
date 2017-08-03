@@ -18,7 +18,7 @@
         >
 
         <ImageView
-            android:id="@+id/iv_ren_zheng_back"
+            android:id="@+id/iv_base_back"
             style="@style/IconBackStyle"
             />
 

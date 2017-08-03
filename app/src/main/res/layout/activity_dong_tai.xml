@@ -9,30 +9,32 @@
     tools:context="com.cucr.myapplication.activity.dongtai.DongTaiActivity"
     >
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/head"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@color/blue_black"-->
+        <!--&gt;-->
 
-        <ImageView
-            android:id="@+id/iv_dongtai_back"
-            style="@style/IconBackStyle"
-            />
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_dongtai_back"-->
+            <!--style="@style/IconBackStyle"-->
+            <!--/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:text="我发布的"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginBottom="14dp"-->
+            <!--android:text="我发布的"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="18sp"-->
+            <!--/>-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
+
+    <include layout="@layout/activity_base_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rlv_dongtai"

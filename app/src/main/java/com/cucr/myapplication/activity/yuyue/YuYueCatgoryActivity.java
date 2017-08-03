@@ -1,11 +1,11 @@
 package com.cucr.myapplication.activity.yuyue;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -26,11 +26,16 @@ import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
-public class YuYueCatgoryActivity extends Activity {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class YuYueCatgoryActivity extends FragmentActivity {
 
     //报价
     @ViewInject(R.id.tv_price)
@@ -56,6 +61,20 @@ public class YuYueCatgoryActivity extends Activity {
     @ViewInject(R.id.head)
     RelativeLayout head;
 
+    //开始时间
+    @ViewInject(R.id.tv_time_star)
+    TextView tv_time_star;
+
+    //结束时间
+    @ViewInject(R.id.tv_time_end)
+    TextView tv_time_end;
+
+    //定义变量记录是开始时间还是结束时间
+    private boolean isEndTime;
+
+
+    //日期格式
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +86,14 @@ public class YuYueCatgoryActivity extends Activity {
         initHead();
 
         initTv();
+
+        initTime();
     }
+
+    private void initTime() {
+
+    }
+
 
     private void initTv() {
 
@@ -161,6 +187,61 @@ public class YuYueCatgoryActivity extends Activity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
+
+    //活动开始时间
+    @OnClick(R.id.tv_time_star)
+    public void starData(View view) {
+        isEndTime = false;
+        new SlideDateTimePicker.Builder(getSupportFragmentManager())
+                .setListener(listener)
+                .setInitialDate(new Date())
+                .setMinDate(new Date(System.currentTimeMillis()))
+                //.setMaxDate(maxDate)
+                .setIs24HourTime(true)
+                //.setTheme(SlideDateTimePicker.HOLO_LIGHT)
+                .setIndicatorColor(Color.parseColor("#f68d89"))
+                .build()
+                .show();
+    }
+
+    //活动结束时间
+    @OnClick(R.id.tv_time_end)
+    public void endData(View view) {
+        isEndTime = true;
+        new SlideDateTimePicker.Builder(getSupportFragmentManager())
+                .setListener(listener)
+                .setInitialDate(new Date())
+                .setMinDate(new Date(System.currentTimeMillis()))
+                //.setMaxDate(maxDate)
+                .setIs24HourTime(true)
+                //.setTheme(SlideDateTimePicker.HOLO_DARK)
+                .setIndicatorColor(Color.parseColor("#f68d89"))
+                .build()
+                .show();
+    }
+
+    private SlideDateTimeListener listener = new SlideDateTimeListener() {
+
+        @Override
+        public void onDateTimeSet(Date date) {
+
+            String timeDate = mFormatter.format(date);
+
+            if (isEndTime) {
+                tv_time_end.setText(timeDate);
+            } else {
+                tv_time_star.setText(timeDate);
+            }
+
+        }
+
+        // Optional cancel listener
+        @Override
+        public void onDateTimeCancel() {
+//            Toast.makeText(YuYueCatgoryActivity.this,
+//                    "Canceled", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 
 }

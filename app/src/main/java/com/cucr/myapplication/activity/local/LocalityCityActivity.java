@@ -1,44 +1,30 @@
 package com.cucr.myapplication.activity.local;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.model.setting.LocationData;
-import com.cucr.myapplication.utils.CommonUtils;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LocalityCityActivity extends Activity {
+public class LocalityCityActivity extends BaseActivity {
 
     //市区列表
     @ViewInject(R.id.lv_city)
     ListView lv_city;
     private List<LocationData> mLocationDatas;
-
-    //沉浸栏
-    @ViewInject(R.id.head)
-    RelativeLayout head;
 
     //要跳转的所有activity
     private Map<String,Class> actives;
@@ -50,17 +36,15 @@ public class LocalityCityActivity extends Activity {
     private boolean needShowArrow;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_locality_city);
-        ViewUtils.inject(this);
-
+    protected void initChild() {
+        initTitle("所在地");
         initActivitys();
-        //沉浸栏
-        initHead();
-
         initData();
+    }
 
+    @Override
+    protected int getChildRes() {
+        return R.layout.activity_locality_city;
     }
 
     private void initActivitys() {
@@ -71,7 +55,7 @@ public class LocalityCityActivity extends Activity {
         actives.put("YuYueCatgoryActivity",YuYueCatgoryActivity.class);
     }
 
-    //沉浸栏
+
     private void initData() {
         Intent intent = getIntent();
         LocationData data = (LocationData) intent.getSerializableExtra("data");
@@ -114,30 +98,5 @@ public class LocalityCityActivity extends Activity {
         });
     }
 
-    private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    //返回
-    @OnClick(R.id.iv_back)
-    public void back(View view) {
-        finish();
-    }
 
 }

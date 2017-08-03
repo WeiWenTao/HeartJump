@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/comment_head"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/titleBarHight"
+    android:background="@color/blue_black"
+
+    >
+
+    <ImageView
+        android:id="@+id/iv_base_back"
+        style="@style/IconBackStyle"
+        />
+
+    <TextView
+        android:id="@+id/tv_base_title"
+        style="@style/TitleStyle"
+        android:text="标题"
+        />
+
+</RelativeLayout>

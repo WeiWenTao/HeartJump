@@ -17,19 +17,14 @@
         >
 
         <ImageView
-            android:id="@+id/iv_active_back"
+            android:id="@+id/iv_base_back"
             style="@style/IconBackStyle"
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_centerHorizontal="true"
+            style="@style/TitleStyle"
             android:text="活动"
-            android:textColor="@color/white"
-            android:textSize="18sp"
+            android:id="@+id/tv_base_title"
             />
 
         <ImageView

@@ -1,38 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_locality_qu"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.local.LocalityQuActivity"
     >
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
-
-        <ImageView
-            android:id="@+id/iv_back"
-            style="@style/IconBackStyle"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_centerHorizontal="true"
-            android:text="所在地"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
-
-    </RelativeLayout>
+    <include layout="@layout/activity_base_title"/>
 
     <ListView
         android:id="@+id/lv_qu"

@@ -37,7 +37,7 @@ import java.util.List;
 
 public class PersonalHomePageActivity extends AppCompatActivity {
 
-    private static final String[] CHANNELS = new String[]{"星闻","行程"};
+    private static final String[] CHANNELS = new String[]{"星闻", "行程"};
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private ViewPager mViewPager;
 
@@ -71,7 +71,7 @@ public class PersonalHomePageActivity extends AppCompatActivity {
 
     private void initVP() {
         mViewPager = (ViewPager) findViewById(R.id.personal_pager);
-        mViewPager.setAdapter(new StarPagerAdapter(mDataList,this));
+        mViewPager.setAdapter(new StarPagerAdapter(mDataList, this));
     }
 
     //初始化标签栏
@@ -86,9 +86,10 @@ public class PersonalHomePageActivity extends AppCompatActivity {
             public int getCount() {
                 return mDataList == null ? 0 : mDataList.size();
             }
+
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context,2.0f);
+                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 2.0f);
                 simplePagerTitleView.setText(mDataList.get(index));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#bfbfbf"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#f68d89"));
@@ -100,6 +101,7 @@ public class PersonalHomePageActivity extends AppCompatActivity {
                 });
                 return simplePagerTitleView;
             }
+
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
@@ -121,13 +123,13 @@ public class PersonalHomePageActivity extends AppCompatActivity {
 
     //返回
     @OnClick(R.id.iv_personal_page_back)
-    public void back(View view){
+    public void back(View view) {
         finish();
     }
 
     //跳转预约界面
     @OnClick(R.id.ll_yuyue)
-    public void goYuYue(View view){
+    public void goYuYue(View view) {
         startActivity(new Intent(this, YuYueCatgoryActivity.class));
     }
 }

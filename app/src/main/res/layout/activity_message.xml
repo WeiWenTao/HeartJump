@@ -10,31 +10,7 @@
     tools:context="com.cucr.myapplication.activity.MessageActivity"
     >
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
-
-        <ImageView
-            android:id="@+id/iv_msg_back"
-            style="@style/IconBackStyle"
-            />
-
-        <TextView
-            android:id="@+id/rl_home_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="消息"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            >
-
-        </TextView>
-
-    </RelativeLayout>
+    <include layout="@layout/activity_base_title"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
