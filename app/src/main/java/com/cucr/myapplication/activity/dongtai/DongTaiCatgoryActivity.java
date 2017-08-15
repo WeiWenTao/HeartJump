@@ -37,23 +37,10 @@ public class DongTaiCatgoryActivity extends BaseActivity implements View.OnClick
     @ViewInject(R.id.lv_dongtai_catgory)
     ListView lv_dongtai_catgory;
 
-
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
     private TextView tv_delete, tv_share;
     private LinearLayout cancel;
-
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_dong_tai_catgory);
-//        ViewUtils.inject(this);
-//
-//        initHead();
-//
-//        initLV();
-//    }
 
     @Override
     protected void initChild() {
@@ -88,7 +75,6 @@ public class DongTaiCatgoryActivity extends BaseActivity implements View.OnClick
         tv_from.setText(sp);
         //设置TextView可点击
         tv_from.setMovementMethod(LinkMovementMethod.getInstance());
-
 
         lv_dongtai_catgory.addHeaderView(lvHead, null, true);
         lv_dongtai_catgory.setHeaderDividersEnabled(false);

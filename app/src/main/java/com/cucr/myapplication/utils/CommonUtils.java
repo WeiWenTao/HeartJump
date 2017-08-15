@@ -5,8 +5,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -31,6 +33,7 @@ public class CommonUtils {
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
+
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
@@ -44,6 +47,22 @@ public class CommonUtils {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    /**
+     *
+     * @param context
+     * @param view
+     * 隐藏和显示软键盘
+     */
+    public static void hideKeyBorad(Context context,View view,Boolean isHide){
+        InputMethodManager imm1 = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (isHide){
+            imm1.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }else {
+            imm1.showSoftInput(view,0);
+        }
+
+    }
 
     /**
      * 过滤非0-9的数字
@@ -196,6 +215,11 @@ public class CommonUtils {
         fl_pop_bg.setAnimation(isIn ? animation1 : animation2);
         fl_pop_bg.setVisibility(isIn ? View.VISIBLE : View.GONE);
 
+    }
+
+    public static String getDiverID(Context context){
+        String serial= Build.SERIAL;
+        return serial;
     }
 
 }

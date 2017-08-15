@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_load"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.regist.LoadActivity"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/shop_bg"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+
+        <RadioGroup
+            android:id="@+id/rg_load"
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:background="@drawable/shape_load_bg"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/rb_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_load_psw"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="密码登录"
+                android:textColor="@color/star_money_text_selector"
+                android:textSize="@dimen/sp_18"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_load_dongtai"
+                android:button="@null"
+                android:gravity="center"
+                android:text="动态登录"
+                android:textColor="@color/star_money_text_selector"
+                android:textSize="@dimen/sp_18"
+                />
+
+        </RadioGroup>
+
+
+        <LinearLayout
+            android:id="@+id/ll_load_continer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            ></LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

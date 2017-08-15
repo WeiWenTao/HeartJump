@@ -50,4 +50,8 @@ dependencies {
     compile project(':lib_slideDateTimePicker')
     //透明导航栏
     compile 'org.zackratos:ultimatebar:1.0.3'
+
+    //nohttp联网
+    compile 'com.yanzhenjie.nohttp:nohttp:1.1.3'
+    compile 'com.yanzhenjie.nohttp:okhttp:1.1.3'
 }

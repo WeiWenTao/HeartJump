@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="300dp"
-              android:layout_height="225dp"
+              android:layout_height="wrap_content"
               android:background="@drawable/shape_publish_dialog_bg"
               android:orientation="vertical"
+              android:padding="@dimen/dp_20"
     >
 
     <TextView
-        android:id="@+id/tv_cancle_focus_title"
+        android:id="@+id/tv_duihuan_rule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dp_30"
         android:clickable="true"
-        android:text="创建规则"
-        android:textColor="#666"
-        android:textSize="@dimen/sp_15"
+        android:text="兑换规则"
+        android:textColor="#333"
+        android:textSize="@dimen/sp_16"
         />
 
     <RelativeLayout
@@ -31,9 +31,9 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="1.填写想要创建明星粉团的信息并提交；"
+            android:text="1.兑换礼品扣除相应数量星币，兑换成功后奖品将在7个工作日内发出。"
             android:textColor="@color/color_666"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_12"
             />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_below="@id/tv_rule1"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="2.等待同样喜欢Ta的人点赞；"
+            android:text="2.兑换的礼品只包邮中国大陆地区，超出范围联系客服，由用户本人承担运费。"
             android:textColor="@color/color_666"
             android:textSize="@dimen/sp_14"
             />
@@ -57,7 +57,20 @@
             android:layout_below="@id/tv_rule2"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="3.超过50人喜欢即可成功创建；"
+            android:text="3.星币兑换礼品属于回馈活动，不提供发票，一经兑换，不可撤销、退货、换货、退星币。"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_rule4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_rule1"
+            android:layout_below="@id/tv_rule3"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="4.星币兑换礼品请确保信息填写详细、真实、准确；如若有误请及时联系客服更改信息，否则将由用户本人承担责任。"
             android:textColor="@color/color_666"
             android:textSize="@dimen/sp_14"
             />
@@ -74,7 +87,7 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:layout_height="@dimen/dp_28"
-
+        android:layout_marginBottom="@dimen/dp_10"
         />
 
 </LinearLayout>

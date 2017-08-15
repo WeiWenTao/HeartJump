@@ -38,4 +38,7 @@ public class Constans {
     //表名 “区”
     public static final String TABLENAME_DISTRICT = "district";
 
+    //电话号码正则
+    public static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="39dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_account"
+            android:layout_width="13dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/icon_account"
+            />
+
+        <EditText
+            android:id="@+id/et_accunt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/iv_account"
+            android:background="@null"
+            android:hint="手机号"
+            android:inputType="number"
+            android:maxLength="11"
+            android:textColor="@color/white"
+            android:textColorHint="#b0b0b0"
+            android:textSize="@dimen/sp_16"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_psw"
+            android:layout_width="12dp"
+            android:layout_height="13dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/icon_pswda"
+            />
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/et_yzm"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/iv_psw"
+            android:background="@null"
+            android:hint="验证码"
+            android:maxLength="4"
+            android:textColor="@color/white"
+            android:textColorHint="#b0b0b0"
+            android:textSize="@dimen/sp_16"
+            />
+
+        <TextView
+            android:id="@+id/tv_yan_zheng_ma"
+            android:layout_width="90dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/sp_12"
+            android:background="@drawable/selector_get_yzm"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_regist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/dp_15"
+        android:text="还没注册？"
+        android:textColor="#b0b0b0"
+        android:textSize="@dimen/sp_14"
+        />
+
+    <TextView
+        android:id="@+id/tv_load"
+        android:layout_width="250dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/selector_load"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        />
+
+</LinearLayout>
