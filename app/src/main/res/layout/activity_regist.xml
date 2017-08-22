@@ -17,17 +17,26 @@
         />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:orientation="vertical"
+        android:layout_marginTop="110dp"
+        android:layout_centerHorizontal="true"
         >
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="100dp"
+            android:layout_height="55dp"
+            android:background="@color/color_666"
+            android:gravity="center"
+            android:text="logo"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="39dp"
+            android:layout_marginTop="35dp"
             >
 
             <TextView
@@ -70,7 +79,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             >
 
             <ImageView
@@ -83,6 +92,7 @@
                 />
 
             <EditText
+                android:inputType="number"
                 android:id="@+id/et_yanzhengm"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
@@ -123,7 +133,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             >
 
             <ImageView
@@ -144,7 +154,6 @@
                 android:layout_toRightOf="@id/iv_account"
                 android:background="@null"
                 android:hint="昵称"
-                android:maxLength="12"
                 android:textColor="@color/white"
                 android:textColorHint="#b0b0b0"
                 android:textSize="@dimen/sp_16"
@@ -163,7 +172,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             >
 
             <ImageView
@@ -204,7 +213,7 @@
             android:id="@+id/tv_regist"
             android:layout_width="250dp"
             android:layout_height="35dp"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/selector_load"
             android:enabled="false"
             android:gravity="center"
@@ -214,4 +223,5 @@
             />
 
     </LinearLayout>
+
 </RelativeLayout>

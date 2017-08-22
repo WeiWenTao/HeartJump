@@ -4,7 +4,7 @@ package com.cucr.myapplication.model.login;
  * Created by 911 on 2017/8/14.
  */
 
-public class YzmInfo {
+public class ReBackMsg {
     /**
      * msg :
      * success : true

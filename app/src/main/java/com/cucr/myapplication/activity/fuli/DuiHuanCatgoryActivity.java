@@ -1,6 +1,7 @@
 package com.cucr.myapplication.activity.fuli;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -27,6 +27,7 @@ import java.util.List;
 
 public class DuiHuanCatgoryActivity extends Activity {
 
+    //商品列表
     @ViewInject(R.id.gallery)
     GalleryRecyclerView mGalleryRecyclerView;
 
@@ -77,13 +78,9 @@ public class DuiHuanCatgoryActivity extends Activity {
         mGalleryRecyclerView.setBaseScale(0.65f);
         mGalleryRecyclerView.setBaseAlpha(0.5f);
         mGalleryRecyclerView.selectItem(getIntent().getIntExtra("position",0));
-//        mGalleryRecyclerView.setBaseScale(0.5f);
-//        mGalleryRecyclerView.setBaseAlpha(0.95f);
-
-//        mGalleryRecyclerView.setSelectedItem(3);
-
-
-
+//        mGalleryRecyclerView.setBaseScale(0.5f); //间距
+//        mGalleryRecyclerView.setBaseAlpha(0.95f);//透明度
+//        mGalleryRecyclerView.setSelectedItem(3);//被选中的条目
 
         mGalleryRecyclerView.setAdapter(new CommonAdapter<Item>(this, R.layout.item_duihuan, mlist) {
             @Override
@@ -92,7 +89,7 @@ public class DuiHuanCatgoryActivity extends Activity {
                 holder.getView(R.id.tv_duihuan).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext,position+"", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DuiHuanCatgoryActivity.this,DingDanActivity.class));
                     }
                 });
             }

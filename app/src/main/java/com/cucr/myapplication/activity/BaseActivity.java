@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 
 import org.zackratos.ultimatebar.UltimateBar;
@@ -14,13 +15,14 @@ public abstract class BaseActivity extends Activity {
 
     //标题
     protected TextView tv_title;
+    protected Gson mGson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getChildRes());
         ViewUtils.inject(this);
-
+        mGson = new Gson();
         //初始化沉浸栏、标题内容、返回键
         initBar();
 

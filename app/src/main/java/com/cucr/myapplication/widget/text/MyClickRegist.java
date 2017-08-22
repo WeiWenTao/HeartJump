@@ -1,4 +1,4 @@
-package com.cucr.myapplication.widget.textview;
+package com.cucr.myapplication.widget.text;
 
 import android.content.Context;
 import android.content.Intent;

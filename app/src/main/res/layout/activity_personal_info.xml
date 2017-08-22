@@ -10,12 +10,15 @@
     tools:context="com.cucr.myapplication.activity.setting.PersonalInfoActivity"
     >
 
-    <include layout="@layout/activity_base_title" android:id="@+id/head"/>
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_base_title"
+        />
 
     <ScrollView
-        android:layout_below="@id/head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/head"
         >
 
 
@@ -45,7 +48,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dp_13"
-                    android:src="@drawable/img1_user"
                     app:civ_border_color="#ffff"
                     app:civ_border_width="1dp"
                     />
@@ -88,13 +90,13 @@
                     />
 
                 <EditText
-                    android:textCursorDrawable="@null"
-                    android:gravity="right"
                     android:id="@+id/et_nickname"
-                    android:background="@null"
                     style="@style/Right_TV"
-                    android:textColorHint="@color/color_999"
+                    android:background="@null"
+                    android:gravity="right"
                     android:hint="请输入昵称"
+                    android:textColorHint="@color/color_999"
+                    android:textCursorDrawable="@null"
                     />
 
                 <include layout="@layout/horizontal_line"
@@ -140,8 +142,8 @@
                 <TextView
                     android:id="@+id/tv_birthday_edit"
                     style="@style/Right_TV"
-                    android:textColorHint="@color/color_999"
                     android:hint="请选择生日"
+                    android:textColorHint="@color/color_999"
                     />
 
                 <include layout="@layout/horizontal_line"
@@ -186,18 +188,18 @@
                     />
 
                 <EditText
-                    android:textCursorDrawable="@null"
-                    android:gravity="right"
-                    style="@style/Right_TV"
                     android:id="@+id/et_my_sign"
+                    style="@style/Right_TV"
                     android:background="@null"
+                    android:gravity="right"
                     android:hint="你好！欢迎来到我的主页！"
                     android:textColorHint="@color/color_999"
+                    android:textCursorDrawable="@null"
                     />
 
                 <include layout="@layout/horizontal_line"
                     />
-                
+
             </RelativeLayout>
 
             <LinearLayout
@@ -205,20 +207,21 @@
                 android:layout_height="match_parent"
                 android:background="#f6f6f6"
                 />
-            
+
             <TextView
-                android:background="@drawable/shape_immediately_pay_bg"
-                android:textColor="@color/white"
-                android:text="保   存"
-                android:gravity="center"
-                android:textSize="@dimen/sp_18"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="@dimen/dp_40"
+                android:id="@+id/tv_save"
                 android:layout_width="200dp"
                 android:layout_height="@dimen/dp_40"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/shape_immediately_pay_bg"
+                android:gravity="center"
+                android:text="保   存"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
                 />
-            
+
         </LinearLayout>
     </ScrollView>
 

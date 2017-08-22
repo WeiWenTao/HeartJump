@@ -2,6 +2,7 @@ package com.cucr.myapplication.fragment.load;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,17 +20,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.DongTaiLoadCore;
+import com.cucr.myapplication.listener.OnDongTaiLoginListener;
 import com.cucr.myapplication.listener.OnGetYzmListener;
-import com.cucr.myapplication.listener.OnLoginListener;
 import com.cucr.myapplication.model.login.LoadSuccess;
 import com.cucr.myapplication.model.login.LoadUserInfo;
-import com.cucr.myapplication.model.login.YzmInfo;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.textview.MyClickRegist;
+import com.cucr.myapplication.widget.text.MyClickRegist;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -141,7 +144,7 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
                     @Override
                     public void onSuccess(Response<String> response) {
                         String result = response.get();
-                        YzmInfo yzmInfo = mGson.fromJson(result, YzmInfo.class);
+                        ReBackMsg yzmInfo = mGson.fromJson(result, ReBackMsg.class);
                         if (!yzmInfo.isSuccess()){
                             //success = false 密码错误
                             // 显示服务器返回的错误信息
@@ -162,26 +165,31 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
 
             //点击登陆
             case R.id.tv_load:
-                mCore.login(mContext, account, yzm, new OnLoginListener() {
+                mCore.login(mContext, account, yzm, new OnDongTaiLoginListener() {
                     @Override
                     public void onSuccess(Response<String> response) {
 
                         String s = response.get();
-                        MyLogger.jLog().i(s);
+
                         LoadUserInfo loadUserInfo = mGson.fromJson(s, LoadUserInfo.class);
 //                登录成功 保存密钥
                         if (loadUserInfo.isSuccess()) {
                             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
 //                    保存密钥
-                            SpUtil.setParam(mContext, "sign", loadSuccess.getSign());
+                            SpUtil.setParam(mContext, SpConstant.SIGN, loadSuccess.getSign());
+//                    保存用户id
+                            SpUtil.setParam(mContext, SpConstant.USER_ID, loadSuccess.getUserId());
+                            MyLogger.jLog().i("DTuseid:"+loadSuccess.getUserId());
+
 //                    显示吐司
                             ToastUtils.showToast(mContext, "登录成功");
-
+//                    跳转到主界面
+                            mContext.startActivity(new Intent(mContext, MainActivity.class));
+                            getActivity().finish();
                         } else {
                             //success = false 密码错误
                             // 显示服务器返回的错误信息
-                            ToastUtils.showToast(mContext, loadUserInfo.getMsg()+"11111");
-                            MyLogger.jLog().i(yzm+"222");
+                            ToastUtils.showToast(mContext, loadUserInfo.getMsg());
                         }
                     }
 

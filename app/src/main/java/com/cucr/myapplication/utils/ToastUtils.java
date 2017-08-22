@@ -1,6 +1,7 @@
 package com.cucr.myapplication.utils;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 /**
@@ -32,6 +33,27 @@ public class ToastUtils {
      * @param message
      */
     public static void showToast(Context context, String message) {
+        if (toast == null) {
+            toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+            toast.show();
+            oneTime = System.currentTimeMillis();
+        } else {
+            twoTime = System.currentTimeMillis();
+            if (message.equals(oldMsg)) {
+                if (twoTime - oneTime > Toast.LENGTH_SHORT) {
+                    toast.show();
+                }
+            } else {
+                oldMsg = message;
+                toast.setText(message);
+                toast.show();
+            }
+        }
+        oneTime = twoTime;
+    }
+
+    public static void show(Context context, @StringRes int stringId) {
+        String message = context.getString(stringId);
         if (toast == null) {
             toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
             toast.show();

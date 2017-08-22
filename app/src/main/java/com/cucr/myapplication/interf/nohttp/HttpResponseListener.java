@@ -16,8 +16,11 @@
 package com.cucr.myapplication.interf.nohttp;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 
+import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.WaitDialog;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.NotFoundCacheError;
@@ -39,7 +42,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
     /**
      * Dialog.
      */
-//    private WaitDialog mWaitDialog;
+    private WaitDialog mWaitDialog;
     /**
      * Request.
      */
@@ -60,16 +63,16 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
             canCancel, boolean isLoading) {
         this.mActivity = activity;
         this.mRequest = request;
-//        if (activity != null && isLoading) {
-//            mWaitDialog = new WaitDialog(activity);
-//            mWaitDialog.setCancelable(canCancel);
-//            mWaitDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//                @Override
-//                public void onCancel(DialogInterface dialog) {
-//                    mRequest.cancel();
-//                }
-//            });
-//        }
+        if (activity != null && isLoading) {
+            mWaitDialog = new WaitDialog(activity);
+            mWaitDialog.setCancelable(canCancel);
+            mWaitDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    mRequest.cancel();
+                }
+            });
+        }
         this.callback = httpCallback;
     }
 
@@ -78,8 +81,8 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      */
     @Override
     public void onStart(int what) {
-//        if (mWaitDialog != null && !mActivity.isFinishing() && !mWaitDialog.isShowing())
-//            mWaitDialog.show();
+        if (mWaitDialog != null && !mActivity.isFinishing() && !mWaitDialog.isShowing())
+            mWaitDialog.show();
     }
 
     /**
@@ -87,8 +90,8 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      */
     @Override
     public void onFinish(int what) {
-//        if (mWaitDialog != null && mWaitDialog.isShowing())
-//            mWaitDialog.dismiss();
+        if (mWaitDialog != null && mWaitDialog.isShowing())
+            mWaitDialog.dismiss();
     }
 
     /**
@@ -111,18 +114,18 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
     public void onFailed(int what, Response<T> response) {
         Exception exception = response.getException();
         if (exception instanceof NetworkError) {// 网络不好
-            ToastUtils.showToast(mActivity, "请检查网络");
+            ToastUtils.show(mActivity,R.string.error_please_check_network);
         } else if (exception instanceof TimeoutError) {// 请求超时
-            ToastUtils.showToast(mActivity, "请求超时");
+            ToastUtils.show(mActivity, R.string.error_timeout);
         } else if (exception instanceof UnKnownHostError) {// 找不到服务器
-            ToastUtils.showToast(mActivity, "找不到服务器");
+            ToastUtils.show(mActivity, R.string.error_not_found_server);
         } else if (exception instanceof URLError) {// URL是错的
-            ToastUtils.showToast(mActivity, "URl错误");
+            ToastUtils.show(mActivity, R.string.error_url_error);
         } else if (exception instanceof NotFoundCacheError) {
             // 这个异常只会在仅仅查找缓存时没有找到缓存时返回
             // 没有缓存一般不提示用户，如果需要随你。
         } else {
-            ToastUtils.showToast(mActivity, "未知错误");
+            ToastUtils.showToast(mActivity, "未知错误:"+response.getHeaders().getResponseCode());
         }
         Logger.e("错误：" + exception.getMessage());
         if (callback != null)

@@ -3,10 +3,9 @@ package com.cucr.myapplication.core.login;
 import android.content.Context;
 
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.interf.load.LoadByDongTai;
-import com.cucr.myapplication.listener.OnDongTaiLoginListener;
+import com.cucr.myapplication.interf.load.Regist;
 import com.cucr.myapplication.listener.OnGetYzmListener;
-import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.listener.load.OnRegistListener;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -17,58 +16,60 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
 /**
- * Created by 911 on 2017/8/14.
+ * Created by 911 on 2017/8/15.
  */
 
-public class DongTaiLoadCore implements LoadByDongTai {
+public class RegistCore implements Regist {
 
     //验证码请求
     private static final int REQUEST_YZM = 1;
 
     //登录请求
-    private static final int REQUEST_LOAD = 2;
+    private static final int REQUEST_REGIST = 2;
 
+    //注册接口
+    private OnRegistListener registListener;
+
+    //获取验证码接口
+    private OnGetYzmListener getYzmListener;
 
     //取消标记
     private Object flag = new Object();
 
-    private Context context;
-    //验证码接口
-    private OnGetYzmListener yzmListener;
-    //登录接口
-    private OnDongTaiLoginListener dongTaiListener;
     /**
      * 请求队列。
      */
     private RequestQueue mQueue = NoHttp.newRequestQueue();
 
-    //登录
+    private Context mContext;
+
+
     @Override
-    public void login(Context context, String userName, String yzm, OnDongTaiLoginListener loginListener) {
-        this.dongTaiListener = loginListener;
-        this.context = context;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DONGTAI_LOAD, RequestMethod.POST);
-        request.add("phone", userName) // 账号。
-                .add("checkCode", yzm)
-                .add("driverId", CommonUtils.getDiverID(context)) // 设备id。
+    public void regist(Context context, String yzm, String phoneNum, String nickName, String psw, OnRegistListener registListener) {
+        this.mContext = context;
+        this.registListener = registListener;
+
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
+        request.add("checkCode", yzm) // 账号。
+                .add("phone", phoneNum)
+                .add("name", nickName) // 用户名。
+                .add("password", psw) // 密码。
                 // 设置取消标志。
                 .setCancelSign(flag);
 
-        mQueue.add(REQUEST_LOAD, request, responseListener);
+        mQueue.add(REQUEST_REGIST, request, responseListener);
     }
 
-    //获取验证码
     @Override
-    public void getYzm(Context context, String userName, OnGetYzmListener yzmListener) {
-        this.yzmListener = yzmListener;
-        this.context = context;
+    public void getYzm(Context context, String userName, OnGetYzmListener getYzmListener) {
+        this.mContext = context;
+        this.getYzmListener = getYzmListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_YZM, RequestMethod.GET);
         request.add("phoneNumber", userName) // 账号。
                 // 设置取消标志。
                 .setCancelSign(flag);
 
         mQueue.add(REQUEST_YZM, request, responseListener);
-
     }
 
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
@@ -81,16 +82,16 @@ public class DongTaiLoadCore implements LoadByDongTai {
         public void onSucceed(int what, Response<String> response) {
             int responseCode = response.getHeaders().getResponseCode();
             if (what == REQUEST_YZM) {
-                if (yzmListener != null && responseCode == 200) {
-                    yzmListener.onSuccess(response);
+                if (getYzmListener != null && responseCode == 200) {
+                    getYzmListener.onSuccess(response);
                 } else {
-                    ToastUtils.showToast(context, "未知错误:" + responseCode);
+                    ToastUtils.showToast(mContext, "未知错误:" + responseCode);
                 }
-            } else if (what == REQUEST_LOAD) {
-                if (dongTaiListener != null && responseCode == 200) {
-                    dongTaiListener.onSuccess(response);
+            } else if (what == REQUEST_REGIST) {
+                if (registListener != null && responseCode == 200) {
+                    registListener.OnRegistSuccess(response);
                 } else {
-                    ToastUtils.showToast(context, "未知错误:" + responseCode);
+                    ToastUtils.showToast(mContext, "未知错误:" + responseCode);
                 }
             }
         }
@@ -98,18 +99,17 @@ public class DongTaiLoadCore implements LoadByDongTai {
         @Override
         public void onFailed(int what, Response<String> response) {
 
-            HttpExceptionUtil.showTsByException(response, context);
-
+            HttpExceptionUtil.showTsByException(response, mContext);
             if (what == REQUEST_YZM) {
 
-                if (yzmListener != null) {
-                    yzmListener.onFailed();
+                if (getYzmListener != null) {
+                    getYzmListener.onFailed();
                 }
 
-            } else if (what == REQUEST_LOAD) {
+            } else if (what == REQUEST_REGIST) {
 
-                if (dongTaiListener != null) {
-                    dongTaiListener.onFailed();
+                if (registListener != null) {
+                    registListener.onRegistFailed();
                 }
             }
         }
@@ -119,7 +119,6 @@ public class DongTaiLoadCore implements LoadByDongTai {
 //            ToastUtils.showToast(context,"登录完成");
         }
     };
-
 
     //activity destory 时调用
     public void stopReques() {

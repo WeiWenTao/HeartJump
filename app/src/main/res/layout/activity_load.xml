@@ -16,13 +16,24 @@
         />
 
     <LinearLayout
+        android:layout_marginTop="110dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:orientation="vertical"
         >
 
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="55dp"
+            android:text="logo"
+            android:background="@color/color_666"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            />
+
         <RadioGroup
+            android:layout_marginTop="30dp"
             android:id="@+id/rg_load"
             android:layout_width="250dp"
             android:layout_height="35dp"

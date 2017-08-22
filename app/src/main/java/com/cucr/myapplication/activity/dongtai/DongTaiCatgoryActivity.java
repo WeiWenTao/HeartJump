@@ -23,7 +23,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.textview.MyClickableSpan;
+import com.cucr.myapplication.widget.text.MyClickableSpan;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 

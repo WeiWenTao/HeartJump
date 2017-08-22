@@ -11,6 +11,10 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.model.setting.BirthdayDate;
 import com.cucr.myapplication.utils.CommonUtils;
 
+import java.util.Date;
+
+import static com.cucr.myapplication.R.id.dp;
+
 /**
  * Created by 911 on 2017/4/21.
  */
@@ -42,7 +46,8 @@ public class DialogBirthdayStyle extends Dialog {
 
         mBirDate = new BirthdayDate(Integer.parseInt(y), Integer.parseInt(m) - 1, Integer.parseInt(d));
 
-        DatePicker datePicker = (DatePicker) findViewById(R.id.dp);
+        DatePicker datePicker = (DatePicker) findViewById(dp);
+        datePicker.setMaxDate(new Date().getTime());
 
         //初始化
         datePicker.init(year, month , day, new DatePicker.OnDateChangedListener() {

@@ -1,4 +1,4 @@
-package com.cucr.myapplication.widget.textview;
+package com.cucr.myapplication.widget.text;
 
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;

@@ -19,19 +19,6 @@ public class SpUtil {
     //sp实例
     private static SharedPreferences sp;
 
-    //单例模式
-    public static SharedPreferences getSpInstance(String spName, Context context) {
-
-        if (sp == null) {
-            sp = context.getSharedPreferences(spName, MODE_PRIVATE);
-        }
-        return sp;
-    }
-
-    public static void spWriteStr(String key, String value) {
-        sp.edit().putString(key, value).commit();
-    }
-
     public static void setParam(Context context, String key, Object object) {
         String type = object.getClass().getSimpleName();
         if (sp == null) {
@@ -79,8 +66,13 @@ public class SpUtil {
         sp.edit().putInt(SpConstant.IS_FIRST_RUN, BuildConfig.VERSION_CODE).commit();
     }
 
-    public static boolean readFirstRun(Context context) {
+    public static boolean readNeedUpdata(Context context) {
         return context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
                 .getInt(SpConstant.IS_FIRST_RUN, 0) < BuildConfig.VERSION_CODE;
     }
+
+//    public static boolean isFirstRun(Context context) {
+//        return context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
+//                .getInt(SpConstant.IS_FIRST_RUN, -1) == -1;
+//    }
 }

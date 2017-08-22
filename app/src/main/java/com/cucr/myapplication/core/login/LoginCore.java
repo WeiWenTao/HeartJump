@@ -1,16 +1,16 @@
 package com.cucr.myapplication.core.login;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.load.LoadByPsw;
 import com.cucr.myapplication.listener.OnLoginListener;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -28,7 +28,7 @@ public class LoginCore implements LoadByPsw {
      * 用来标志请求的what, 类似handler的what一样，这里用来区分请求。
      */
     private static final int NOHTTP_WHAT_1 = 1;
-    private static final String LOAD_ADDRESS = "/interface/user/login";
+
 
     private OnLoginListener loginListener;
     private Context context;
@@ -52,12 +52,12 @@ public class LoginCore implements LoadByPsw {
         this.context = context;
         String sign = (String) SpUtil.getParam(context, SpConstant.SIGN, "");
         // 创建请求对象。
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + LOAD_ADDRESS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PSW_LOAD, RequestMethod.POST);
 
         // 如果有密钥 添加加密后的请求参数。
-        if (!TextUtils.isEmpty(sign)){
-            request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context,request.getParamKeyValues()));
-        }
+//        if (!TextUtils.isEmpty(sign)){
+//            request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context,request.getParamKeyValues()));
+//        }
         request.add("userName", userName) // 账号。
                 .add("driverId", CommonUtils.getDiverID(context)) // 设备id。
                 .add("password", psw) // 密码。
@@ -89,14 +89,18 @@ public class LoginCore implements LoadByPsw {
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+            MyLogger.jLog().i("密码登录开始");
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
+            //状态码
+            int responseCode = response.getHeaders().getResponseCode();
             if (what == NOHTTP_WHAT_1) {
-                if (loginListener != null && response.getHeaders().getResponseCode() == 200) {
+                if (loginListener != null && responseCode == 200) {
                     loginListener.onSuccess(response);
+                }else {
+                    ToastUtils.showToast(context,"未知错误:"+responseCode);
                 }
             }
         }
@@ -111,7 +115,7 @@ public class LoginCore implements LoadByPsw {
 
         @Override
         public void onFinish(int what) {
-
+            MyLogger.jLog().i("密码登录结束");
         }
     };
 

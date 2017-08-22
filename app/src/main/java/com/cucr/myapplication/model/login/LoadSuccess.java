@@ -11,14 +11,14 @@ public class LoadSuccess {
      * sign : f0ddd2a5-ab6b-4298-a835-e43c19c00f51
      */
 
-    private String userId;
+    private int userId;
     private String sign;
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

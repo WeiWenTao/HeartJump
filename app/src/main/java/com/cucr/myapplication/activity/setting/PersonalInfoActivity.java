@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +24,25 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.editPersonalInfo.EditInfoCore;
+import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.EditPersonalInfo.PersonMessage;
+import com.cucr.myapplication.model.EditPersonalInfo.PersonalInfo;
 import com.cucr.myapplication.model.setting.BirthdayDate;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,9 +83,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
 
     private DialogBirthdayStyle mBirthdayStyle;
-    private String mYear;
-    private String mMon;
-    private String mDay;
+    private String mYear = "0000";
+    private String mMon = "00";
+    private String mDay = "00";
     private String dateText;
 
 
@@ -90,6 +102,13 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private String photoSavePath;//保存路径
     private String photoSaveName;//图pian名
     private String path;//图片全路径
+    private EditInfoCore mCore;//编辑
+    private QueryPersonalMsgCore mQucryCore;//查询
+    private String mProvince = "";
+    private String mCity = "";
+    private String mTemppath = "";
+    private String birthdayMsg;
+
 
     public PersonalInfoActivity() {
         super();
@@ -98,6 +117,12 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initChild() {
+
+        //用户编辑
+        mCore = new EditInfoCore(this);
+        //查询
+        mQucryCore = new QueryPersonalMsgCore(this);
+
 
         initTitle("个人资料");
 
@@ -115,10 +140,40 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     //初始化控件
     private void initView() {
-
+        queryMsg();
         //将editText光标放置末尾
         et_my_sign.setSelection(et_my_sign.getText().length());
         et_nickname.setSelection(et_nickname.getText().length());
+    }
+
+    private void queryMsg() {
+        mQucryCore.queryPersonalInfo(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
+                boolean success = personMessage.isSuccess();
+                if (success) {
+                    PersonMessage.ObjBean obj = mGson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
+                    //头像回显
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
+                    //昵称回显
+                    et_nickname.setText(obj.getName());
+                    //性别回显
+                    tv_gender.setText(obj.getSex() == 0 ? "男" : "女");
+
+                    tv_birthday_edit.setText(obj.getBirthday().substring(0, 10));
+                    tv_set_location.setText(obj.getProvinceName() + " " + obj.getCityName());
+                    mProvince = obj.getProvinceName();
+                    mCity = obj.getCityName();
+                    et_my_sign.setText(obj.getSignName());
+                    //生日回显
+                    birthdayMsg = obj.getBirthday().substring(0, 10);
+                    MyLogger.jLog().i("saved:" + birthdayMsg);
+                } else {
+                    ToastUtils.showToast(PersonalInfoActivity.this, personMessage.getMsg());
+                }
+            }
+        });
     }
 
 
@@ -143,12 +198,12 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         if (location != null) {
 
 
-            String city = location.getName();
+            mCity = location.getName();
 
             LocationData locationData = CityDao.queryPrivnceBycode(location.getpCode());
-            String province = locationData.getName();
+            mProvince = locationData.getName();
 
-            tv_set_location.setText(province + "  " + city);
+            tv_set_location.setText(mProvince + "  " + mCity);
         }
 
     }
@@ -164,18 +219,20 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     //选择生日
     @OnClick(R.id.rl_birthday)
     public void selectBirthday(View view) {
-        dateText = tv_birthday_edit.getText().toString().trim();
-        if (dateText.length() == 0) {
+        if (TextUtils.isEmpty(dateText)) {
             dateText = CommonUtils.getCurrentDate();
         }
 
-        mYear = dateText.substring(0, 4).trim();
-        mMon = dateText.substring(dateText.indexOf("年") + 1, dateText.indexOf("月")).trim();
-        mDay = dateText.substring(dateText.indexOf("月") + 1, dateText.indexOf("日")).trim();
+        MyLogger.jLog().i("dateText:" + dateText);
 
+        mYear = dateText.substring(0, 4).trim();
+        mMon = dateText.substring(5, 7).trim();
+        mDay = dateText.substring(8, 10).trim();
+
+        MyLogger.jLog().i("mYear:" + mYear + ",mMon:" + mMon + ",mDay:" + mDay);
 
         //初始化日期数据
-        mBirthdayStyle.initDate(Integer.parseInt(mYear), Integer.parseInt(mMon) - 1, Integer.parseInt(mDay));
+        mBirthdayStyle.initDate(Integer.parseInt(mYear), Integer.parseInt(mMon), Integer.parseInt(mDay));
 
         //点击对话框外部消失
         mBirthdayStyle.setCanceledOnTouchOutside(true);
@@ -183,22 +240,28 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onClickComplete(BirthdayDate date, boolean isChange) {
                 //如果用户改了生日就显示改了的  如果没改就显示原来的
-                if (isChange) {
-                    tv_birthday_edit.setText(date.getYear() + " 年 " + (date.getMonth() + 1) + " 月 " + date.getDay() + " 日 ");
-                } else {
+//                if (isChange) {
+                birthdayMsg = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDay();
+                tv_birthday_edit.setText(birthdayMsg);
+                MyLogger.jLog().i("birthdayMsg:" + birthdayMsg);
+                mYear = date.getYear() + "";
+                mMon = (date.getMonth() + 1) + "";
+                mDay = date.getDay() + "";
+//                } else {
 
-                    //如果是以零开头就去掉零
-                    if (mMon.startsWith("0")) {
-                        mMon = mMon.substring(1);
-                    }
+//                    //如果是以零开头就去掉零
+//                    if (mMon.startsWith("0")) {
+//                        mMon = mMon.substring(1);
+//                    }
+//
+//                    //同上
+//                    if (mDay.startsWith("0")) {
+//                        mDay = mDay.substring(1);
+//                    }
 
-                    //同上
-                    if (mDay.startsWith("0")) {
-                        mDay = mDay.substring(1);
-                    }
+                tv_birthday_edit.setText(mYear + "-" + mMon + "-" + mDay);
+//                }
 
-                    tv_birthday_edit.setText(mYear + " 年 " + mMon + " 月 " + mDay + " 日 ");
-                }
             }
         });
 
@@ -390,8 +453,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 break;
 
             case IMAGE_COMPLETE:
-                final String temppath = data.getStringExtra("path");
-                iv_head.setImageBitmap(getLoacalBitmap(temppath));
+                mTemppath = data.getStringExtra("path");
+                iv_head.setImageBitmap(getLoacalBitmap(mTemppath));
                 break;
 
             default:
@@ -417,18 +480,40 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    //昵称
     @OnClick(R.id.rl_nickname)
-    public void nickName(View view){
-        ToastUtils.showToast(this,"aaa");
+    public void nickName(View view) {
         et_nickname.requestFocus();
 
     }
 
+    //个性签名
     @OnClick(R.id.rl_mysign)
-    public void mySign(View view){
+    public void mySign(View view) {
         et_my_sign.requestFocus();
     }
 
+    //保存
+    @OnClick(R.id.tv_save)
+    public void saveInfo(View view) {
+        int userId = (int) SpUtil.getParam(this, SpConstant.USER_ID, -1);
+        String sign = (String) SpUtil.getParam(this, SpConstant.SIGN, "");
+        MyLogger.jLog().i("sign:" + sign);
+        String nickName = et_nickname.getText().toString();
+        String singName = et_my_sign.getText().toString();
+        int sex = tv_gender.getText().equals("男") ? 0 : 1;
+
+        PersonalInfo personalInfo = new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath);
+
+        mCore.save(this, personalInfo, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                MyLogger.jLog().i("成功回调：" + response.get());
+
+            }
+        });
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -456,5 +541,12 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 genderPopWindow.dismiss();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mCore.stopRequest();
+        mQucryCore.stopRequest();
+        super.onDestroy();
     }
 }

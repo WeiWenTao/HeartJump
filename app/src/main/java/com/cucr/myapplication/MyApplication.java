@@ -2,6 +2,8 @@ package com.cucr.myapplication;
 
 import android.app.Application;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -54,6 +56,13 @@ public class MyApplication extends Application {
         // compile 'com.yanzhenjie.nohttp:okhttp:1.1.1'
 
         // NoHttp详细使用文档：http://doc.nohttp.net
+
+        //创建默认的ImageLoader配置参数
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+                .createDefault(this);
+
+        //Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(configuration);
     }
 
     public static MyApplication getInstance() {

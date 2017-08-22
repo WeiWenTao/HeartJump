@@ -18,7 +18,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.dongtai.DongTaiCatgoryActivity;
 import com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity;
 import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.widget.textview.MyClickableSpan;
+import com.cucr.myapplication.widget.text.MyClickableSpan;
 
 /**
  * Created by 911 on 2017/7/17.

@@ -60,9 +60,16 @@ public class EncodingUtils {
 
         //第九步:对拼接好的参数进行MD5加密
         paramsBuilder.append(SpUtil.getParam(context, SpConstant.SIGN, "error"));
-        String decodeBase64 = Base64.encodeToString(paramsBuilder.toString().getBytes(), Base64.DEFAULT);
-        String str = MD5Util.md5(decodeBase64).toUpperCase();
 
-        return str;
+
+        String params = paramsBuilder.toString();
+        MyLogger.jLog().i("params:"+params);
+        String decodeBase64 = Base64.encodeToString(paramsBuilder.toString().getBytes(), Base64.DEFAULT);
+        decodeBase64 = decodeBase64.replace("\n","");
+        MyLogger.jLog().i("decodeBase64:"+decodeBase64);
+        String md5 = MD5Util.md5(decodeBase64).toUpperCase();
+        MyLogger.jLog().i("md5:"+md5);
+
+        return md5;
     }
 }

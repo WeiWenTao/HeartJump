@@ -2,6 +2,7 @@ package com.cucr.myapplication.fragment.load;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +19,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.OnLoginListener;
 import com.cucr.myapplication.model.login.LoadSuccess;
@@ -26,7 +29,7 @@ import com.cucr.myapplication.model.login.LoadUserInfo;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.textview.MyClickRegist;
+import com.cucr.myapplication.widget.text.MyClickRegist;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -56,16 +59,22 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
             mEt_psw = (EditText) rootView.findViewById(R.id.et_psw);
             mTv_load = (TextView) rootView.findViewById(R.id.tv_load);
             mTv_load.setOnClickListener(this);
-
+            mContext = rootView.getContext();
             initView();
             //控制层
             mLoginCore = new LoginCore();
         }
-        mContext = rootView.getContext();
         return rootView;
     }
 
     private void initView() {
+        //回显账号和密码  如果没有就设置为空串  账号密码由注册时保存到sp中
+//        mEt_accunt.setText(SpUtil.getParam(mContext,SpConstant.USER_NAEM,"").toString());
+//        mEt_psw.setText(SpUtil.getParam(mContext,SpConstant.PASSWORD,"").toString());
+        //设置登录 可点击
+//        mTv_regist.setEnabled(true);
+
+
         SpannableString sp = new SpannableString("还没注册？");
         //设置高亮样式二
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#F68D89")), 2, 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -138,9 +147,15 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
                 if (loadUserInfo.isSuccess()) {
                     LoadSuccess loadSuccess = gson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
 //                    保存密钥
-                    SpUtil.setParam(mContext, "sign", loadSuccess.getSign());
+                    SpUtil.setParam(mContext, SpConstant.SIGN, loadSuccess.getSign());
+//                    保存用户id
+                    SpUtil.setParam(mContext, SpConstant.USER_ID, loadSuccess.getUserId());
+                    MyLogger.jLog().i("PSWuseid:"+loadSuccess.getUserId());
 //                    显示吐司
                     ToastUtils.showToast(mContext, "登录成功");
+//                    跳转到主界面
+                    mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    getActivity().finish();
 
                 } else {
                     //success = false 密码错误
