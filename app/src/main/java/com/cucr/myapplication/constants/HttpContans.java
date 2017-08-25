@@ -7,9 +7,9 @@ package com.cucr.myapplication.constants;
 
 public class HttpContans {
     //域名
-//    public static final String HTTP_HOST = "http://192.168.1.132:8080";
+//    public static final String HTTP_HOST = "http://192.168.1.141:8080";
 
-    public static final String HTTP_HOST = "http://192.168.1.139:8080";
+    public static final String HTTP_HOST = "http://192.168.1.132:8080";
 
     //注册
     public static final String ADDRESS_REGIST = "/interface/user/regist";
@@ -32,5 +32,10 @@ public class HttpContans {
     //商品购买
     public static final String ADDRESS_SHOP = "/interface/mobileOrder/createOrder";
 
+    //明星认证
+    public static final String ADDRESS_STAR_RZ = "/interface/authenticationAction/start";
+
+    //企业认证
+    public static final String ADDRESS_QIYE_RZ = "/interface/authenticationAction/company";
 
 }

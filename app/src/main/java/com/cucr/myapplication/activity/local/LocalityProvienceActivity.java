@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.fuli.DingDanActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
@@ -37,6 +38,8 @@ public class LocalityProvienceActivity extends BaseActivity {
         actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
         //预约详情
         actives.put("YuYueCatgoryActivity",YuYueCatgoryActivity.class);
+        //订单地区
+        actives.put("DingDanActivity", DingDanActivity.class);
 
         //是否需要跳转三级地区界面
         Intent intent = getIntent();

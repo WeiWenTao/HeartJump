@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.fuli.DingDanActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
@@ -53,6 +54,8 @@ public class LocalityCityActivity extends BaseActivity {
         actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
         //预约详情
         actives.put("YuYueCatgoryActivity",YuYueCatgoryActivity.class);
+        //预约详情
+        actives.put("DingDanActivity",DingDanActivity.class);
     }
 
 

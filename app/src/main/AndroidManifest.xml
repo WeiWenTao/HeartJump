@@ -22,8 +22,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
 
-
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -202,7 +200,10 @@
         </activity>
         <activity android:name=".activity.regist.RegistActivity">
         </activity>
-        <activity android:name=".activity.fuli.DingDanActivity">
+        <activity
+            android:name=".activity.fuli.DingDanActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
     </application>
 

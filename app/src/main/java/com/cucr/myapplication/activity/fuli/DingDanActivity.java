@@ -1,7 +1,7 @@
 package com.cucr.myapplication.activity.fuli;
 
+import android.content.Intent;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -10,9 +10,12 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.core.shangPing.DingDanCore;
+import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.login.LoadUserInfo;
+import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDingDanStyle;
@@ -85,8 +88,41 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
         //详细地址
         mReceived_address = et_receive_person_local_catgory.getText().toString();
         //商品id  由上个页面跳转获得
-        mShopId = 2;
+        mShopId = 3;
 
+    }
+
+    //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
+
+        if (location != null) {
+
+            String qu = location.getName();
+
+            LocationData shi = CityDao.queryCityBycode(location.getpCode());
+
+            LocationData sheng = CityDao.queryPrivnceBycode(shi.getpCode());
+
+            String district = shi.getName();
+            String province = sheng.getName();
+
+            tv_receive_person_local.setText(province + " " + district + " " + qu);
+            et_receive_person_local_catgory.requestFocus();
+        }
+
+    }
+
+    //选择地区
+    @OnClick(R.id.rl_location_select)
+    public void clickSetLocal(View view){
+        Intent intent = new Intent(this, LocalityProvienceActivity.class);
+        intent.putExtra("needShow", true);
+        intent.putExtra("className", "DingDanActivity");
+        startActivity(intent);
     }
 
     //兑换规则
@@ -106,7 +142,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     //删减商品数量
     @OnClick(R.id.iv_goods_subtract)
     public void addSubtract(View view) {
-        if (goodsNum > 0) {
+        if (goodsNum > 1) {
             goodsNum--;
         }
         tv_show_goods_num.setText(goodsNum + "");
@@ -125,10 +161,11 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
-                if (loadUserInfo.isSuccess()){
-                    MyLogger.jLog().i("订单提交成功");
-                }else {
-                    ToastUtils.showToast(DingDanActivity.this,loadUserInfo.getMsg());
+                if (loadUserInfo.isSuccess()) {
+                    //TODO 跳转票务界面
+
+                } else {
+                    ToastUtils.showToast(DingDanActivity.this, loadUserInfo.getMsg());
                 }
             }
         });
@@ -146,10 +183,16 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (mNum > 0 && !TextUtils.isEmpty(mReceive_person) && !TextUtils.isEmpty(mReceive_num) && !TextUtils.isEmpty(mReceived_local) && !TextUtils.isEmpty(mReceived_address)){
+        if (et_receive_person_name.length()>0
+                && et_receive_person_num.length()>0
+                && tv_receive_person_local.length()>0
+                && et_receive_person_local_catgory.length()>0) {
+            MyLogger.jLog().i("可点击");
             tv_perform_duihuan.setEnabled(true);
-        }else {
+        } else {
             tv_perform_duihuan.setEnabled(false);
+
+            MyLogger.jLog().i("不可点击");
         }
     }
 }

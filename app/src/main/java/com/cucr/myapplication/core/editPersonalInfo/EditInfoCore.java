@@ -47,7 +47,6 @@ public class EditInfoCore extends BaseCore implements SavePersonalInfo {
         request.add("sex", personalInfo.getSex());
         request.add("name", personalInfo.getName());
         request.add("birthday", personalInfo.getBirthday());
-        MyLogger.jLog().i("saving:"+personalInfo.getBirthday());
         request.add("provinceName", personalInfo.getProvinceId());
         request.add("cityName", personalInfo.getCityId());
         request.add("signName", personalInfo.getSignName());
@@ -56,7 +55,7 @@ public class EditInfoCore extends BaseCore implements SavePersonalInfo {
         //如果头像路径为空 则不上传头像
         if (file.exists()) {
             // 上传文件需要实现NoHttp的Binary接口，NoHttp默认实现了FileBinary、InputStreamBinary、ByteArrayBitnary、BitmapBinary。
-//            Bitmap imageByPath = ImageUtils.getImageByPath(head);
+//            Bitmap imageByPath = CommonUtils.decodeBitmap(head);
             FileBinary fileBinary0 = new FileBinary(file);
 //            BitmapBinary fileBinary0 = new BitmapBinary(imageByPath,head.substring(head.lastIndexOf("/")));
 

@@ -68,6 +68,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tv_phone"
                     style="@style/Right_TV"
                     android:text="13512345678"
                     />

@@ -130,7 +130,6 @@ public class YuYueCatgoryActivity extends FragmentActivity {
         setIntent(intent);
         LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
 
-
         if (location != null) {
 
             String qu = location.getName();

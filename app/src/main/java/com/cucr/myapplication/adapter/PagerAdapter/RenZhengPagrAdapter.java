@@ -38,7 +38,7 @@ public class RenZhengPagrAdapter extends FragmentPagerAdapter {
                 return "明星";
 
             case 1:
-                return "企业1";
+                return "企业";
 
         }
 

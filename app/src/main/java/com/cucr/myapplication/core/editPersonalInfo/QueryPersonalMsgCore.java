@@ -33,7 +33,6 @@ public class QueryPersonalMsgCore extends BaseCore implements QueryPersonalInfo 
     public void queryPersonalInfo(final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_USERINFO, RequestMethod.GET);
-
         // 添加普通参数。
 
         request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)));

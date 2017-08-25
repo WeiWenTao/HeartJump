@@ -69,10 +69,12 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
 
     private void initView() {
         //回显账号和密码  如果没有就设置为空串  账号密码由注册时保存到sp中
-//        mEt_accunt.setText(SpUtil.getParam(mContext,SpConstant.USER_NAEM,"").toString());
-//        mEt_psw.setText(SpUtil.getParam(mContext,SpConstant.PASSWORD,"").toString());
+        mEt_accunt.setText(((String) SpUtil.getParam(mContext, SpConstant.USER_NAEM, "")));
+        mEt_psw.setText(((String) SpUtil.getParam(mContext, SpConstant.PASSWORD, "")));
         //设置登录 可点击
-//        mTv_regist.setEnabled(true);
+        if (mEt_accunt.length() > 0 && mEt_psw.length() > 0) {
+            mTv_load.setEnabled(true);
+        }
 
 
         SpannableString sp = new SpannableString("还没注册？");
@@ -150,7 +152,11 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
                     SpUtil.setParam(mContext, SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
                     SpUtil.setParam(mContext, SpConstant.USER_ID, loadSuccess.getUserId());
-                    MyLogger.jLog().i("PSWuseid:"+loadSuccess.getUserId());
+//                    存储账号和密码等信息
+                    SpUtil.setParam(mContext, SpConstant.USER_NAEM, mEt_accunt.getText().toString());
+                    SpUtil.setParam(mContext, SpConstant.PASSWORD, mEt_psw.getText().toString());
+
+                    MyLogger.jLog().i("PSWuseid:" + loadSuccess.getUserId());
 //                    显示吐司
                     ToastUtils.showToast(mContext, "登录成功");
 //                    跳转到主界面

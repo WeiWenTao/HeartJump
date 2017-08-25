@@ -245,6 +245,8 @@ public class RegistActivity extends Activity implements TextWatcher {
                     SpUtil.setParam(RegistActivity.this, SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
                     SpUtil.setParam(RegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
+//                    保存用户名和密码
+                    SpUtil.setParam(RegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
 //                    跳转到主界面
                     RegistActivity.this.startActivity(new Intent(RegistActivity.this, MainActivity.class));
                     RegistActivity.this.finish();

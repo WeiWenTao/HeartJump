@@ -81,6 +81,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     @ViewInject(R.id.et_nickname)
     EditText et_nickname;
 
+    //昵称
+    @ViewInject(R.id.tv_phone)
+    TextView tv_phone;
+
 
     private DialogBirthdayStyle mBirthdayStyle;
     private String mYear = "0000";
@@ -140,13 +144,16 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     //初始化控件
     private void initView() {
+
         queryMsg();
+
         //将editText光标放置末尾
         et_my_sign.setSelection(et_my_sign.getText().length());
         et_nickname.setSelection(et_nickname.getText().length());
     }
 
     private void queryMsg() {
+        MyLogger.jLog().i("Thread");
         mQucryCore.queryPersonalInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -154,13 +161,19 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 boolean success = personMessage.isSuccess();
                 if (success) {
                     PersonMessage.ObjBean obj = mGson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
+
                     //头像回显
                     ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
                     //昵称回显
                     et_nickname.setText(obj.getName());
                     //性别回显
                     tv_gender.setText(obj.getSex() == 0 ? "男" : "女");
+                    //电话回显
+                    tv_phone.setText(obj.getPhone());
 
+                    if (obj.getBirthday() == null) {
+                        obj.setBirthday(CommonUtils.getCurrentDate() + "00:00:00");
+                    }
                     tv_birthday_edit.setText(obj.getBirthday().substring(0, 10));
                     tv_set_location.setText(obj.getProvinceName() + " " + obj.getCityName());
                     mProvince = obj.getProvinceName();

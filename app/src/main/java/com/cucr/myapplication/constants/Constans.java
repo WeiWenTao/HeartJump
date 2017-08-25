@@ -23,11 +23,11 @@ public class Constans {
     public static final int STATE_COMMENT = 5;
 
     //省市区数据库文件的绝对路径
-    public static final String LOCATION_PATH = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/dataBase",
+    public static final String LOCATION_PATH = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase",
             "city.db").getAbsolutePath();
 
     //省市区数据库文件夹路径
-    public static final String LOCATIY_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/dataBase";
+    public static final String LOCATIY_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase";
 
     //表名 “省”
     public static final String TABLENAME_PROVINCE = "province";
@@ -43,6 +43,5 @@ public class Constans {
 
     //用户名正则
     public static final String USERNAME_REGEX = "[~!/@#$%^&*()\\\\-_=+\\\\|[{}];:\\'\\\",<.>/?]+";
-
 
 }

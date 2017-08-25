@@ -43,30 +43,28 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         initView();
 
 
-
         initFragment(0);
         initRadioGroup();
 
         //TODO: 2017/4/28 Splash界面完成
         //实例化文件对象 判断文件是否存在
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/dataBase");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
         file.mkdir();
 
 
 //        if (!file.exists()){
-            //解压文件
-            initZip();
+        //解压文件
+        initZip();
 //        }
     }
-
 
 
     private void initZip() {
 
         try {
             InputStream is = getAssets().open("citys.zip");
-            FileOutputStream os = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/dataBase","city.db"));
-            ZipUtil.unzip(is,os);
+            FileOutputStream os = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase", "city.db"));
+            ZipUtil.unzip(is, os);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,6 +76,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         RadioButton rb_2 = (RadioButton) findViewById(R.id.rb_2);
         RadioButton rb_3 = (RadioButton) findViewById(R.id.rb_3);
         RadioButton rb_4 = (RadioButton) findViewById(R.id.rb_4);
+//        rb_4.setVisibility(View.GONE);
 
         //底部导航栏距离
         initDrawable(rb_1, 0, 0, 22, 22);

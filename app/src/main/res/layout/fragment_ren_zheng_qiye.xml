@@ -33,6 +33,7 @@
                     />
 
                 <EditText
+                    android:id="@+id/et_qiye_name"
                     style="@style/RenZheng_et"
                     android:hint="请输入真实完整的企业名称"
                     />
@@ -54,6 +55,7 @@
                     />
 
                 <EditText
+                    android:id="@+id/et_qiye_contact"
                     style="@style/RenZheng_et"
                     android:hint="请输入联系方式"
                     />
@@ -75,6 +77,7 @@
                     />
 
                 <EditText
+                    android:id="@+id/et_person_name"
                     style="@style/RenZheng_et"
                     android:hint="请输入真实的姓名"
                     />
@@ -96,6 +99,7 @@
                     />
 
                 <EditText
+                    android:id="@+id/et_person_phone"
                     style="@style/RenZheng_et"
                     android:hint="请输入联系方式"
                     />

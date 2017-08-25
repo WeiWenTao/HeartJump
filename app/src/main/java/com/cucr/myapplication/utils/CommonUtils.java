@@ -125,7 +125,7 @@ public class CommonUtils {
      * 获取当前时间
      */
     public static String getCurrentDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String dateStr = format.format(date);
         return dateStr;
@@ -186,8 +186,8 @@ public class CommonUtils {
         options.inJustDecodeBounds = false;
         // 注意这次要把options.inJustDecodeBounds 设为 false,这次图片是要读取出来的。
         bitmap = BitmapFactory.decodeFile(path, options);
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
+//        int w = bitmap.getWidth();
+//        int h = bitmap.getHeight();
 //        System.out.println("缩略图高度：" + h + "宽度:" + w);
         return bitmap;
     }

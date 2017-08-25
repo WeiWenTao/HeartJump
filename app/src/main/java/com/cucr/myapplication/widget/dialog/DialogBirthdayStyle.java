@@ -41,8 +41,8 @@ public class DialogBirthdayStyle extends Dialog {
 
         String s = CommonUtils.getCurrentDate();
         String y = s.substring(0, 4);
-        String m = s.substring(s.indexOf("年") + 1, s.indexOf("月"));
-        String d = s.substring(s.indexOf("月") + 1, s.indexOf("日"));
+        String m = Integer.parseInt(s.substring(5,7))- 1 +"";
+        String d = s.substring(8);
 
         mBirDate = new BirthdayDate(Integer.parseInt(y), Integer.parseInt(m) - 1, Integer.parseInt(d));
 

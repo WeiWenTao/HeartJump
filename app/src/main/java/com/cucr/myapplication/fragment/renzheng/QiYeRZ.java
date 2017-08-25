@@ -4,18 +4,21 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,12 +26,23 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.core.renZheng.CommitQiYeRzCore;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.AlbumListener;
+import com.yanzhenjie.album.api.widget.Widget;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -50,9 +64,11 @@ public class QiYeRZ extends Fragment {
     private String photoSavePath;//保存路径
     private String photoSaveName;//图pian名
     private String path;//图片全路径
+    private CommitQiYeRzCore mCore;
 
     private Context mContext;
-    Activity activity;
+    private Activity activity;
+    private Gson mGson;
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg_qiye)
@@ -66,16 +82,43 @@ public class QiYeRZ extends Fragment {
     @ViewInject(R.id.img_qiye_nagetive)
     ImageView img_qiye_nagetive;
 
-    //反面
+    //营业执照
     @ViewInject(R.id.img_qieye_zhizhao)
     ImageView img_qieye_zhizhao;
 
+    //企业名称
+    @ViewInject(R.id.et_qiye_name)
+    EditText et_qiye_name;
+
+    //企业联系方式
+    @ViewInject(R.id.et_qiye_contact)
+    EditText et_qiye_contact;
+
+    //认证人姓名
+    @ViewInject(R.id.et_person_name)
+    EditText et_person_name;
+
+    //认证人联系方式
+    @ViewInject(R.id.et_person_phone)
+    EditText et_person_phone;
+
+
+    //营业执照
+    private Bitmap licenseBitmap;
+
+    //身份证正面
+    private Bitmap positiveBitmap;
+
+    //身份证反面
+    private Bitmap nagetiveBitmap;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
+        mCore = new CommitQiYeRzCore(activity);
         mContext = container.getContext();
+        mGson = new Gson();
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_qiye, container, false);
         ViewUtils.inject(this, rootView);
         initHead();
@@ -119,9 +162,45 @@ public class QiYeRZ extends Fragment {
             @Override
             public void onClick(View arg0) {
                 popWindow.dismiss();
-                Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                openAlbumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(openAlbumIntent, PHOTOZOOM);
+
+
+                Album.album(QiYeRZ.this)
+                        .singleChoice()
+                        .widget(Widget.newDarkBuilder(activity)
+                                .title("选择图片") // 标题。
+                                .statusBarColor(getResources().getColor(R.color.blue_black)) // 状态栏颜色。
+                                .toolBarColor(getResources().getColor(R.color.blue_black)) // Toolbar颜色。
+                                .build())
+                        .columnCount(2)
+                        .requestCode(1)
+                        .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+                            @Override
+                            public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                                if (whichView.getVisibility() == View.GONE) {
+                                    whichView.setVisibility(View.VISIBLE);
+                                }
+                                //用缩略图显示
+                                String albumPath = result.get(0).getPath();
+                                Bitmap bm = CommonUtils.decodeBitmap(albumPath);
+                                whichView.setImageBitmap(bm);
+                                //如果是正面
+                                if (whichView == img_qiye_positive) {
+                                    positiveBitmap = bm;
+
+                                    //反面
+                                } else if (whichView == img_qiye_nagetive) {
+                                    nagetiveBitmap = bm;
+
+                                    //营业执照
+                                } else {
+                                    licenseBitmap = bm;
+                                }
+                            }
+
+                            @Override
+                            public void onAlbumCancel(int requestCode) {
+                            }
+                        }).start();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -169,21 +248,21 @@ public class QiYeRZ extends Fragment {
         Uri uri = null;
         switch (requestCode) {
             case PHOTOZOOM://相册
-                if (data == null) {
-                    return;
-                }
-                uri = data.getData();
-                String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = activity.managedQuery(uri, proj, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(column_index);// 图片在的路径
-                //当不可见时在显示
-                if (whichView.getVisibility() == View.GONE) {
-                    whichView.setVisibility(View.VISIBLE);
-                }
-                //用缩略图显示
-                whichView.setImageBitmap(CommonUtils.decodeBitmap(path));
+//                if (data == null) {
+//                    return;
+//                }
+//                uri = data.getData();
+//                String[] proj = {MediaStore.Images.Media.DATA};
+//                Cursor cursor = activity.managedQuery(uri, proj, null, null, null);
+//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                cursor.moveToFirst();
+//                path = cursor.getString(column_index);// 图片在的路径
+//                //当不可见时在显示
+//                if (whichView.getVisibility() == View.GONE) {
+//                    whichView.setVisibility(View.VISIBLE);
+//                }
+//                //用缩略图显示
+//                whichView.setImageBitmap(CommonUtils.decodeBitmap(path));
                 break;
 
             case PHOTOTAKE://拍照
@@ -194,8 +273,20 @@ public class QiYeRZ extends Fragment {
                     whichView.setVisibility(View.VISIBLE);
                 }
                 //用缩略图显示
-                whichView.setImageBitmap(CommonUtils.decodeBitmap(path));
+                Bitmap bmByCrame = CommonUtils.decodeBitmap(path);
+                whichView.setImageBitmap(bmByCrame);
+                //如果是正面
+                if (whichView == img_qiye_positive) {
+                    positiveBitmap = bmByCrame;
 
+                    //反面
+                } else if (whichView == img_qiye_nagetive) {
+                    nagetiveBitmap = bmByCrame;
+
+                    //营业执照
+                } else {
+                    licenseBitmap = bmByCrame;
+                }
                 break;
 
         }
@@ -211,7 +302,6 @@ public class QiYeRZ extends Fragment {
         whichView = img_qiye_positive;
         CommonUtils.initPopBg(true, fl_pop_bg_qiye);
         showPopupWindow(img_qiye_positive);
-
     }
 
     //身份证反面
@@ -233,6 +323,49 @@ public class QiYeRZ extends Fragment {
     //提交审核
     @OnClick(R.id.tv_commit_check)
     public void commitCheck(View view) {
+        if (TextUtils.isEmpty(et_qiye_name.getText())) {
+            ToastUtils.showToast(activity, "请输入企业名称哦");
+            return;
+        }
+
+        if (TextUtils.isEmpty(et_qiye_contact.getText())) {
+            ToastUtils.showToast(activity, "请输入企业联系方式哦");
+            return;
+        }
+
+        if (TextUtils.isEmpty(et_person_name.getText())) {
+            ToastUtils.showToast(activity, "请输入认证人姓名哦");
+            return;
+        }
+        if (TextUtils.isEmpty(et_person_phone.getText())) {
+            ToastUtils.showToast(activity, "请输入认证人联系方式哦");
+            return;
+        }
+
+        if (licenseBitmap == null || positiveBitmap == null || nagetiveBitmap == null) {
+            ToastUtils.showToast(activity, "请上传照片哦");
+            return;
+        }
+
+        mCore.onCommStarRZ(et_qiye_name.getText().toString(), et_person_name.getText().toString(),
+                et_person_phone.getText().toString(), et_qiye_contact.getText().toString(),
+                positiveBitmap, nagetiveBitmap, licenseBitmap, new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                        if (reBackMsg.isSuccess()) {
+                            ToastUtils.showToast(activity, "企业认证提交成功");
+                        } else {
+                            ToastUtils.showToast(activity, reBackMsg.getMsg());
+                        }
+                    }
+                });
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCore.stopReques();
+    }
 }
