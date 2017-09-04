@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyGit.iml" filepath="$PROJECT_DIR$/MyGit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HeartDance.iml" filepath="$PROJECT_DIR$/HeartDance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib-convenientbanner/lib-convenientbanner.iml" filepath="$PROJECT_DIR$/lib-convenientbanner/lib-convenientbanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_slideDateTimePicker/lib_slideDateTimePicker.iml" filepath="$PROJECT_DIR$/lib_slideDateTimePicker/lib_slideDateTimePicker.iml" />

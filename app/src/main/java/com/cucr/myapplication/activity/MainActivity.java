@@ -10,9 +10,10 @@ import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
+import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
 import com.cucr.myapplication.fragment.home.HomeFragment;
 import com.cucr.myapplication.fragment.mine.MineFragment;
-import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
+import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ZipUtil;
 
@@ -104,9 +105,19 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
 
     private void initView() {
         mFragments.add(new HomeFragment());              //首页
-        mFragments.add(new ApointmentFragmentA());       //预约
+        mFragments.add(new FragmentHuoDongAndFuLi());
+
+//      mFragments.add(new ApointmentFragmentA());       //预约
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的
+
+        //TODO
+//        if (明星用户) {
+//        mFragments.add(new ApointmentFragmentA());
+//        }else(其他用户){
+        mFragments.add(new FragmentFans());              //其他
+//        }
+
 
         mRg_mian_fragments = (RadioGroup) findViewById(R.id.rg_mian_fragments);
 
@@ -135,6 +146,13 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
             case R.id.rb_4:
                 initFragment(3);
                 break;
+
+
+            //我的
+            case R.id.rb_mid:
+                initFragment(4);
+                break;
+
         }
     }
 

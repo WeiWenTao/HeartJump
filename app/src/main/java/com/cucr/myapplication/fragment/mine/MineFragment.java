@@ -16,7 +16,6 @@ import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity;
 import com.cucr.myapplication.activity.pay.StarMoneyActivity;
-import com.cucr.myapplication.activity.setting.MyHelperActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
@@ -43,11 +42,19 @@ public class MineFragment extends BaseFragment {
         LinearLayout ll_mine_focus = (LinearLayout) childView.findViewById(R.id.ll_mine_focus);
         LinearLayout ll_mine_fans = (LinearLayout) childView.findViewById(R.id.ll_mine_dongtai);
         LinearLayout ll_pay = (LinearLayout) childView.findViewById(R.id.ll_pay);
-        RelativeLayout rl_my_helper = (RelativeLayout) childView.findViewById(R.id.rl_my_helper);
         RelativeLayout rl_pay_center = (RelativeLayout) childView.findViewById(R.id.rl_pay_center);
         RelativeLayout rl_ren_zheng = (RelativeLayout) childView.findViewById(R.id.rl_ren_zheng);
         RelativeLayout rl_piaowu = (RelativeLayout) childView.findViewById(R.id.rl_piaowu);
         RelativeLayout rl_my_yuyue = (RelativeLayout) childView.findViewById(R.id.rl_my_yuyue);
+
+//        如果是企业用户
+//        if (){
+//            rl_my_yuyue.setVisibility(View.VISIBLE);
+//        如果是明星用户
+//        }else if(){
+//        普通用户
+//         }else{
+// }
 
 
         iv_mine_msg.setOnClickListener(this);
@@ -56,7 +63,6 @@ public class MineFragment extends BaseFragment {
         ll_mine_focus.setOnClickListener(this);
         ll_mine_fans.setOnClickListener(this);
         ll_pay.setOnClickListener(this);
-        rl_my_helper.setOnClickListener(this);
         rl_pay_center.setOnClickListener(this);
         rl_ren_zheng.setOnClickListener(this);
         rl_piaowu.setOnClickListener(this);
@@ -106,8 +112,14 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(mContext, PersonalInfoActivity.class));
                 break;
 
-            //明星
+            //关注
             case R.id.ll_mine_focus:
+                mContext.startActivity(new Intent(mContext, FocusActivity.class));
+                break;
+
+
+            //粉丝
+            case R.id.ll_mine_fans:
                 mContext.startActivity(new Intent(mContext, FocusActivity.class));
                 break;
 
@@ -120,11 +132,6 @@ public class MineFragment extends BaseFragment {
             //星币
             case R.id.ll_pay:
                 mContext.startActivity(new Intent(mContext, StarMoneyActivity.class));
-                break;
-
-            //我的助手
-            case R.id.rl_my_helper:
-                mContext.startActivity(new Intent(mContext, MyHelperActivity.class));
                 break;
 
             //充值中心
@@ -142,15 +149,12 @@ public class MineFragment extends BaseFragment {
 
                 break;
 
-
             //预约
             case R.id.rl_my_yuyue:
                 mContext.startActivity(new Intent(mContext, MyYuYueActivity.class));
                 break;
 
-
         }
-
     }
 
     //是否需要头部

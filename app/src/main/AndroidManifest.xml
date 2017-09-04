@@ -119,8 +119,6 @@
         </activity>
         <activity android:name=".activity.setting.SettingMessageActivity">
         </activity>
-        <activity android:name=".activity.setting.MyHelperActivity">
-        </activity>
         <activity android:name=".activity.setting.SettingLikeActivity">
         </activity>
         <activity android:name=".activity.setting.SettingAboveUsActivity">

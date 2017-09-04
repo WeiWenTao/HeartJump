@@ -53,6 +53,8 @@ public class DingDanCore extends BaseCore implements DuiHuanDingDan {
         request.add("addressee", rececivedPerson);
         request.add("addresseePhone", rececivedPhone);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+
+
         //回调
         HttpListener<String> callback = new HttpListener<String>() {
             @Override

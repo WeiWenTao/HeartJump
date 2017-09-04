@@ -1,93 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_star_money"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.pay.StarMoneyActivity"
     >
 
     <include layout="@layout/activity_base_title"/>
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/white"
         >
+
         <TextView
-            android:layout_centerVertical="true"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_16"
-            android:layout_marginLeft="@dimen/dp_10"
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="星币余额："
-            />
-        <TextView
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="星币余额："
             android:textColor="#666"
             android:textSize="@dimen/sp_16"
-            android:layout_toRightOf="@id/tv_balance"
+            />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_balance"
             android:text="60"
+            android:textColor="#666"
+            android:textSize="@dimen/sp_16"
             />
 
         <TextView
             android:id="@+id/tv_goto_pay"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/sp_12"
-            android:gravity="center"
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
+            android:background="@drawable/shape_immediately_pay_bg"
+            android:gravity="center"
             android:text="去充值"
             android:textColor="@color/white"
-            android:background="@drawable/shape_immediately_pay_bg"
+            android:textSize="@dimen/sp_12"
             />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_10"
-        android:background="@color/lvbg"/>
+        android:background="@color/lvbg"
+        />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:paddingLeft="@dimen/dp_10"
         android:paddingTop="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         >
-       <TextView
-           android:layout_gravity="center"
-           android:layout_width="2dp"
-           android:layout_height="15dp"
-           android:background="@drawable/shape_vertical_line"
-           />
+
         <TextView
+            android:layout_width="2dp"
+            android:layout_height="15dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dp_5"
+            android:background="@drawable/shape_vertical_line"
+            />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_5"
             android:text="刷币记录"
-            android:textSize="@dimen/sp_13"
             android:textColor="#666"
+            android:textSize="@dimen/sp_13"
             />
 
     </LinearLayout>
 
     <ListView
-        android:dividerHeight="1dp"
-        android:divider="@drawable/list_divider_line"
-        android:background="@color/white"
         android:id="@+id/lv_expense_calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+        android:divider="@drawable/list_divider_line"
+        android:dividerHeight="1dp"
         />
 
 </LinearLayout>

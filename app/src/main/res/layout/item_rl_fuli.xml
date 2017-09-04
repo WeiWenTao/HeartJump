@@ -18,10 +18,10 @@
         >
 
         <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/iv_active_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/active2"
             app:sriv_left_bottom_corner_radius="@dimen/dp_8"
             app:sriv_left_top_corner_radius="@dimen/dp_8"
             app:sriv_right_bottom_corner_radius="@dimen/dp_8"

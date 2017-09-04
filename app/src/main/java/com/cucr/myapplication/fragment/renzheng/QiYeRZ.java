@@ -104,13 +104,13 @@ public class QiYeRZ extends Fragment {
 
 
     //营业执照
-    private Bitmap licenseBitmap;
+    private String licenseBitmap;
 
     //身份证正面
-    private Bitmap positiveBitmap;
+    private String positiveBitmap;
 
     //身份证反面
-    private Bitmap nagetiveBitmap;
+    private String nagetiveBitmap;
 
     @Nullable
     @Override
@@ -185,15 +185,15 @@ public class QiYeRZ extends Fragment {
                                 whichView.setImageBitmap(bm);
                                 //如果是正面
                                 if (whichView == img_qiye_positive) {
-                                    positiveBitmap = bm;
+                                    positiveBitmap = albumPath;
 
                                     //反面
                                 } else if (whichView == img_qiye_nagetive) {
-                                    nagetiveBitmap = bm;
+                                    nagetiveBitmap = albumPath;
 
                                     //营业执照
                                 } else {
-                                    licenseBitmap = bm;
+                                    licenseBitmap = albumPath;
                                 }
                             }
 
@@ -277,15 +277,15 @@ public class QiYeRZ extends Fragment {
                 whichView.setImageBitmap(bmByCrame);
                 //如果是正面
                 if (whichView == img_qiye_positive) {
-                    positiveBitmap = bmByCrame;
+                    positiveBitmap = path;
 
                     //反面
                 } else if (whichView == img_qiye_nagetive) {
-                    nagetiveBitmap = bmByCrame;
+                    nagetiveBitmap = path;
 
                     //营业执照
                 } else {
-                    licenseBitmap = bmByCrame;
+                    licenseBitmap = path;
                 }
                 break;
 

@@ -61,6 +61,21 @@
             />
 
         <RadioButton
+            android:id="@+id/rb_mid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/live_selector"
+            android:gravity="center_horizontal"
+            android:text="明星"
+            android:textColor="@color/text_selector"
+            android:textSize="@dimen/sp_10"
+            />
+
+
+        <RadioButton
             android:id="@+id/rb_3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

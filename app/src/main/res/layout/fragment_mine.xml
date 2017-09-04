@@ -167,7 +167,44 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="1dp"
-                            android:text="明星"
+                            android:text="关注"
+                            android:textColor="@color/color_666"
+                            android:textSize="@dimen/sp_12"
+                            android:id="@+id/textView5"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_mine_fans"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="556"
+                            android:textColor="@color/pink"
+                            android:textSize="18sp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:text="粉丝"
                             android:textColor="@color/color_666"
                             android:textSize="@dimen/sp_12"
                             />
@@ -329,33 +366,6 @@
                         style="@style/My_tv"
                         android:layout_toRightOf="@id/iv_my_pay"
                         android:text="充值中心"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_my_helper"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_heaper"
-                        style="@style/My_iv"
-                        android:src="@drawable/icon_ser"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_heaper"
-                        android:text="我的助手"
                         />
 
                     <ImageView

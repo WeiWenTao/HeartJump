@@ -77,6 +77,9 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
         et_receive_person_num.addTextChangedListener(this);
 
 
+    }
+
+    private void initMsg() {
         //商品数量
         mNum = Integer.parseInt(tv_show_goods_num.getText().toString().trim());
         //收件人
@@ -89,7 +92,6 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
         mReceived_address = et_receive_person_local_catgory.getText().toString();
         //商品id  由上个页面跳转获得
         mShopId = 3;
-
     }
 
     //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
@@ -110,7 +112,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
             String district = shi.getName();
             String province = sheng.getName();
 
-            tv_receive_person_local.setText(province + " " + district + " " + qu);
+            tv_receive_person_local.setText(province + "-" + district + "-" + qu);
             et_receive_person_local_catgory.requestFocus();
         }
 
@@ -118,7 +120,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
 
     //选择地区
     @OnClick(R.id.rl_location_select)
-    public void clickSetLocal(View view){
+    public void clickSetLocal(View view) {
         Intent intent = new Intent(this, LocalityProvienceActivity.class);
         intent.putExtra("needShow", true);
         intent.putExtra("className", "DingDanActivity");
@@ -157,10 +159,14 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     //确定兑换
     @OnClick(R.id.tv_perform_duihuan)
     public void performDuihuan(View view) {
+        initMsg();
+        //去除特殊字符
+        mReceived_local = mReceived_local.replaceAll("[^\\u4e00-\\u9fa5]", "-");
         mCore.onDuiHuan(this, mReceived_local, mReceived_address, mReceive_person, mReceive_num, mNum, mShopId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
+
                 if (loadUserInfo.isSuccess()) {
                     //TODO 跳转票务界面
 
@@ -183,10 +189,10 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (et_receive_person_name.length()>0
-                && et_receive_person_num.length()>0
-                && tv_receive_person_local.length()>0
-                && et_receive_person_local_catgory.length()>0) {
+        if (et_receive_person_name.length() > 0
+                && et_receive_person_num.length() > 0
+                && tv_receive_person_local.length() > 0
+                && et_receive_person_local_catgory.length() > 0) {
             MyLogger.jLog().i("可点击");
             tv_perform_duihuan.setEnabled(true);
         } else {

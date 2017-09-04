@@ -13,6 +13,7 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -36,8 +37,11 @@ public class QueryPersonalMsgCore extends BaseCore implements QueryPersonalInfo 
         // 添加普通参数。
 
         request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)));
-        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity,request.getParamKeyValues()));
-
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+        //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
+        request.setCacheKey(EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+        //没有缓存才去请求网络
+        request.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
         //回调
         HttpListener<String> callback = new HttpListener<String>() {
             @Override

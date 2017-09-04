@@ -33,7 +33,7 @@ public class HttpExceptionUtil {
             // 这个异常只会在仅仅查找缓存时没有找到缓存时返回
             // 没有缓存一般不提示用户，如果需要随你。
         } else {
-            ToastUtils.showToast(context, "未知错误");
+            ToastUtils.showToast(context, "未知错误:"+ response.getHeaders().getResponseCode());
 
         }
         Logger.e("错误：" + exception.getMessage());

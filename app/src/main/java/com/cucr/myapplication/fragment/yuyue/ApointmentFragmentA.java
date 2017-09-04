@@ -80,6 +80,7 @@ public class ApointmentFragmentA extends BaseFragment {
         }
     }
 
+
     private void initVP() {
         mFragments = new ArrayList<>();
         mFragments.add(new FragmentStarRecommend());

@@ -13,7 +13,7 @@ public class PersonMessage {
      */
 
     private String msg;
-    private ObjBean obj;
+    private String obj;
     private boolean success;
 
     public String getMsg() {
@@ -24,11 +24,11 @@ public class PersonMessage {
         this.msg = msg;
     }
 
-    public ObjBean getObj() {
+    public String getObj() {
         return obj;
     }
 
-    public void setObj(ObjBean obj) {
+    public void setObj(String obj) {
         this.obj = obj;
     }
 

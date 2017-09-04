@@ -16,7 +16,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.widget.statusBar.StatusBarCompat;
 import com.lidroid.xutils.ViewUtils;
@@ -64,14 +63,15 @@ public class PersonalHomePageActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         StatusBarCompat.setStatusBarColorForCollapsingToolbar(this, mAppBarLayout, mCollapsingToolbarLayout, mToolbar, Color.TRANSPARENT);
 
     }
 
     private void initVP() {
         mViewPager = (ViewPager) findViewById(R.id.personal_pager);
-        mViewPager.setAdapter(new StarPagerAdapter(mDataList, this));
+        //TODO 和首页逻辑一样
+//        mViewPager.setAdapter(new StarPagerAdapter(mDataList, this));
     }
 
     //初始化标签栏
@@ -121,11 +121,11 @@ public class PersonalHomePageActivity extends AppCompatActivity {
     }
 
 
-    //返回
-    @OnClick(R.id.iv_personal_page_back)
-    public void back(View view) {
-        finish();
-    }
+//    //返回
+//    @OnClick(R.id.iv_personal_page_back)
+//    public void back(View view) {
+//        finish();
+//    }
 
     //跳转预约界面
     @OnClick(R.id.ll_yuyue)

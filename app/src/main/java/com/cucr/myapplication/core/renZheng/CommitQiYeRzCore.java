@@ -1,12 +1,12 @@
 package com.cucr.myapplication.core.renZheng;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.renZheng.CommitQiYeRZ;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
@@ -45,7 +45,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
 
     @Override
     public void onCommStarRZ(String companyName, String userName, String contact,
-                             String companyContact, Bitmap pic1, Bitmap pic2, Bitmap pic3,
+                             String companyContact, String pic1, String pic2, String pic3,
                              OnCommonListener listener) {
 
         this.listener = listener;
@@ -62,15 +62,15 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
                 .add("companyContact", companyContact); // flocat型。
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
 
-        BitmapBinary binary1 = new BitmapBinary(pic1, "");
+        BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")+1));
         request.add("pic1", binary1);
         binary1.setUploadListener(0, mOnUploadListener);
 
-        BitmapBinary binary2 = new BitmapBinary(pic2, "");
+        BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2), pic2.substring(pic1.lastIndexOf("/")+1));
         request.add("pic2", binary2);
         binary2.setUploadListener(1, mOnUploadListener);
 
-        BitmapBinary binary3 = new BitmapBinary(pic3, "");
+        BitmapBinary binary3 = new BitmapBinary(CommonUtils.decodeBitmap(pic3), pic3.substring(pic1.lastIndexOf("/")+1));
         request.add("pic3", binary3);
         binary2.setUploadListener(2, mOnUploadListener);
 

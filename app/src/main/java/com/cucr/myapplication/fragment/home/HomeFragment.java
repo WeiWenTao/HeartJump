@@ -19,14 +19,19 @@ import com.cucr.myapplication.activity.news.NewsActivity;
 import com.cucr.myapplication.activity.photos.PhotoActivity;
 import com.cucr.myapplication.activity.video.VideoActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
+import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
-import com.cucr.myapplication.temp.LocalImageHolderView;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.Home.HomeBannerInfo;
+import com.cucr.myapplication.temp.NetworkImageHolderView;
 import com.cucr.myapplication.utils.ClickUtil;
+import com.cucr.myapplication.utils.ThreadUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,11 +51,20 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     private LinearLayout ll_fuli;
     private LinearLayout ll_active;
     private LinearLayout ll_fentuan;
+    private QueryBannerCore mCore;
+    private List<String> pics;
 
     @Override
     protected void initView(View childView) {
+        mCore = new QueryBannerCore(getActivity());
         findView(childView);
         initLv();
+        ThreadUtils.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                queryBanner();
+            }
+        });
     }
 
 
@@ -95,7 +109,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 
         //首页轮播图
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
-        initARL();
+//        initARL();
 
         mLv_home.addHeaderView(headerView, null, true);
         mLv_home.addHeaderView(View.inflate(mContext, R.layout.header_home_lv_1, null), null, true);
@@ -158,7 +172,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                     startActivity(new Intent(mContext, HuoDongActivity.class));
                 break;
 
-
         }
 
     }
@@ -166,8 +179,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     private void findView(View childView) {
         //首页ListView
         mLv_home = (ListView) childView.findViewById(R.id.lv_home);
-
-
     }
 
     //-------------------------------------------------------------------------------
@@ -200,52 +211,39 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 
 
     private void initARL() {
-//        initImageLoader();
-        initLocalImg();
-        //本地图片例子
-        convenientBanner.setPages(
-                new CBViewHolderCreator<LocalImageHolderView>() {
-                    @Override
-                    public LocalImageHolderView createHolder() {
-                        return new LocalImageHolderView();
-                    }
-                }, localImages)
+
+
+//        网络加载例子
+        convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+            @Override
+            public NetworkImageHolderView createHolder() {
+                return new NetworkImageHolderView();
+            }
+        }, pics)
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.drawable.cricle_nor, R.drawable.icon_w_sel})
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
 //                .setOnPageChangeListener(this)//监听翻页事件
-                .startTurning(3000)
+//
                 .setOnItemClickListener(this);
-
+        convenientBanner.startTurning(3000);
         convenientBanner.setManualPageable(true);//设置不能手动影响
 
-        //网络加载例子
-//        networkImages=Arrays.asList(images);
-//        convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
-//            @Override
-//            public NetworkImageHolderView createHolder() {
-//                return new NetworkImageHolderView();
-//            }
-//        },networkImages);
+    }
 
-
-//手动New并且添加到ListView Header的例子
-//        ConvenientBanner mConvenientBanner = new ConvenientBanner(this,false);
-//        mConvenientBanner.setMinimumHeight(500);
-//        mConvenientBanner.setPages(
-//                new CBViewHolderCreator<LocalImageHolderView>() {
-//                    @Override
-//                    public LocalImageHolderView createHolder() {
-//                        return new LocalImageHolderView();
-//                    }
-//                }, localImages)
-//                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-//                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-//                        //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-//                .setOnItemClickListener(this);
-//        listView.addHeaderView(mConvenientBanner);
+    private void queryBanner() {
+        pics = new ArrayList<>();
+        mCore.queryBanner(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                HomeBannerInfo homeBannerInfo = mGson.fromJson(response.get(), HomeBannerInfo.class);
+                for (HomeBannerInfo.ObjBean objBean : homeBannerInfo.getObj()) {
+                    pics.add(objBean.getFileUrl());
+                }
+                initARL();
+            }
+        });
     }
 
     //---------------------------------------------------------------------------------
@@ -271,7 +269,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         super.onResume();
         //开始自动翻页
         convenientBanner.setCanLoop(true);
-        convenientBanner.startTurning(3000);
     }
 
     // 停止自动翻页

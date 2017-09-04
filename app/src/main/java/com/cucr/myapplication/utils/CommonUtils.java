@@ -17,8 +17,10 @@ import android.widget.NumberPicker;
 import com.cucr.myapplication.R;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -220,6 +222,51 @@ public class CommonUtils {
     public static String getDiverID(Context context){
         String serial= Build.SERIAL;
         return serial;
+    }
+
+    /**
+     * 判断当前事件是否过期
+     * @param day
+     * @return 早于今天返回false
+     * @throws ParseException
+     */
+    public static boolean IsGone(String day){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        // 当前的时刻
+        Calendar pre = Calendar.getInstance();
+        Date predate = new Date(System.currentTimeMillis());
+        pre.setTime(predate);
+
+        // 设定的时刻
+        Calendar cal = Calendar.getInstance();
+        Date date = null;
+        try {
+            date = sdf.parse(day);
+        } catch (ParseException e) {
+            MyLogger.jLog().i("日期解析错误！");
+            e.printStackTrace();
+        }
+        cal.setTime(date);
+
+        if (cal.get(Calendar.YEAR) == (pre.get(Calendar.YEAR))) {
+            int diffDay = cal.get(Calendar.DAY_OF_YEAR) - pre.get(Calendar.DAY_OF_YEAR);
+            int diffHour = cal.get(Calendar.HOUR_OF_DAY) - pre.get(Calendar.HOUR_OF_DAY);
+            int diffMin = cal.get(Calendar.MINUTE) - pre.get(Calendar.MINUTE);
+            if (diffDay == 0) {
+                if (diffHour == 0) {
+                    if (diffMin >= 0) {
+                        return true;
+                    }
+                } else if (diffHour > 0) {
+                    return true;
+                }
+            } else if (diffDay > 0) {
+                return true;
+            }
+        } else if (cal.get(Calendar.YEAR) > (pre.get(Calendar.YEAR))) {
+            return true;
+        }
+        return false;
     }
 
 }
