@@ -14,6 +14,9 @@ import android.widget.GridView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
+import com.cucr.myapplication.model.starList.StarListInfos;
+
+import java.util.List;
 
 /**
  * Created by 911 on 2017/5/22.
@@ -23,7 +26,12 @@ public class FragmentStarRecommend extends Fragment {
 
     private GridView gv_star_recommend;
     private StarRecommendAdapter mGvAdapter;
-    View view;
+    private View view;
+    private List<StarListInfos.RowsBean> rows;
+
+    public FragmentStarRecommend(List<StarListInfos.RowsBean> rows) {
+        this.rows = rows;
+    }
 
     @Nullable
     @Override
@@ -39,7 +47,7 @@ public class FragmentStarRecommend extends Fragment {
     }
 
     private void initGV(final Context context) {
-        mGvAdapter = new StarRecommendAdapter(context);
+        mGvAdapter = new StarRecommendAdapter(context,rows,getActivity());
         gv_star_recommend.setAdapter(mGvAdapter);
         gv_star_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -48,5 +56,12 @@ public class FragmentStarRecommend extends Fragment {
                 context.startActivity(new Intent(context,PersonalHomePageActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //停止请求
+        mGvAdapter.stop();
     }
 }

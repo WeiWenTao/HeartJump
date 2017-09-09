@@ -59,8 +59,9 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     private void initVP() {
         mFragments = new ArrayList<>();
 
+        mFragments.add(new FragmentFuLi());
         mFragments.add(new FragmentHuoDong());
-        mFragments.add(new FragmentHuoDong());
+
 //        mFragments.add(new FragmentStarRecommend());
 //      快速导航栏
 //      mFragments.add(new FragmentStarClassify());
@@ -93,8 +94,8 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
 
     //初始化标签
     private void initTableLayout() {
-        tablayout.addTab(tablayout.newTab().setText("活动"));
         tablayout.addTab(tablayout.newTab().setText("福利"));
+        tablayout.addTab(tablayout.newTab().setText("活动"));
         tablayout.setupWithViewPager(vp_fuli_huodong);//将导航栏和viewpager进行关联
     }
 

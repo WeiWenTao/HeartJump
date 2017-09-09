@@ -1,5 +1,8 @@
 package com.cucr.myapplication.utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -50,18 +53,16 @@ public class CommonUtils {
     }
 
     /**
-     *
      * @param context
-     * @param view
-     * 隐藏和显示软键盘
+     * @param view    隐藏和显示软键盘
      */
-    public static void hideKeyBorad(Context context,View view,Boolean isHide){
+    public static void hideKeyBorad(Context context, View view, Boolean isHide) {
         InputMethodManager imm1 = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        if (isHide){
+        if (isHide) {
             imm1.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }else {
-            imm1.showSoftInput(view,0);
+        } else {
+            imm1.showSoftInput(view, 0);
         }
 
     }
@@ -219,18 +220,98 @@ public class CommonUtils {
 
     }
 
-    public static String getDiverID(Context context){
-        String serial= Build.SERIAL;
+    public static void animationRotate(View view, boolean isShow){
+        ObjectAnimator animator;
+        if (isShow) {
+
+            animator = ObjectAnimator.ofFloat(view, "rotation",
+                    0f, 180f);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mAnimationListener.onOutAnimationFinish();
+                }
+            });
+        } else {
+            animator = ObjectAnimator.ofFloat(view, "rotation",
+                    180f, 360f);
+        }
+
+        animator.setDuration(300);
+//        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
+
+    }
+
+    public static void animationAlpha(View view, boolean isShow) {
+        ObjectAnimator animator;
+        if (isShow) {
+
+            animator = ObjectAnimator.ofFloat(view, "alpha",
+                    0f, 1.0f);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mAnimationListener.onOutAnimationFinish();
+                }
+            });
+        } else {
+            animator = ObjectAnimator.ofFloat(view, "alpha",
+                    1.0f, 0f);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mAnimationListener.onInAnimationFinish();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+        }
+
+        animator.setDuration(300);
+//        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
+    }
+
+    public interface AnimationListener {
+        void onInAnimationFinish();
+
+        void onOutAnimationFinish();
+    }
+
+    public static void setAnimationListener(AnimationListener animationListener) {
+        mAnimationListener = animationListener;
+    }
+
+    private static AnimationListener mAnimationListener;
+
+
+    public static String getDiverID(Context context) {
+        String serial = Build.SERIAL;
         return serial;
     }
 
     /**
      * 判断当前事件是否过期
+     *
      * @param day
      * @return 早于今天返回false
      * @throws ParseException
      */
-    public static boolean IsGone(String day){
+    public static boolean IsGone(String day) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         // 当前的时刻
         Calendar pre = Calendar.getInstance();

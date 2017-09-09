@@ -16,6 +16,7 @@ import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity;
 import com.cucr.myapplication.activity.pay.StarMoneyActivity;
+import com.cucr.myapplication.activity.journey.MyJourneyActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
@@ -46,6 +47,7 @@ public class MineFragment extends BaseFragment {
         RelativeLayout rl_ren_zheng = (RelativeLayout) childView.findViewById(R.id.rl_ren_zheng);
         RelativeLayout rl_piaowu = (RelativeLayout) childView.findViewById(R.id.rl_piaowu);
         RelativeLayout rl_my_yuyue = (RelativeLayout) childView.findViewById(R.id.rl_my_yuyue);
+        RelativeLayout rl_my_journey = (RelativeLayout) childView.findViewById(R.id.rl_my_journey);
 
 //        如果是企业用户
 //        if (){
@@ -67,6 +69,7 @@ public class MineFragment extends BaseFragment {
         rl_ren_zheng.setOnClickListener(this);
         rl_piaowu.setOnClickListener(this);
         rl_my_yuyue.setOnClickListener(this);
+        rl_my_journey.setOnClickListener(this);
 
     }
 
@@ -152,6 +155,11 @@ public class MineFragment extends BaseFragment {
             //预约
             case R.id.rl_my_yuyue:
                 mContext.startActivity(new Intent(mContext, MyYuYueActivity.class));
+                break;
+
+            //行程
+            case R.id.rl_my_journey:
+                mContext.startActivity(new Intent(mContext, MyJourneyActivity.class));
                 break;
 
         }

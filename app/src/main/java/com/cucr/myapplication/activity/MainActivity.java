@@ -107,7 +107,6 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         mFragments.add(new HomeFragment());              //首页
         mFragments.add(new FragmentHuoDongAndFuLi());
 
-//      mFragments.add(new ApointmentFragmentA());       //预约
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的
 

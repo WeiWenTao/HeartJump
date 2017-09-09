@@ -16,6 +16,8 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by 911 on 2017/8/14.
  */
@@ -51,6 +53,7 @@ public class DongTaiLoadCore implements LoadByDongTai {
         request.add("phone", userName) // 账号。
                 .add("checkCode", yzm)
                 .add("driverId", CommonUtils.getDiverID(context)) // 设备id。
+                .add("msgRegId", JPushInterface.getRegistrationID(context))
                 // 设置取消标志。
                 .setCancelSign(flag);
 

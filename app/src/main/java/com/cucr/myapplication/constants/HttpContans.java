@@ -9,7 +9,7 @@ public class HttpContans {
     //域名
     public static final String HTTP_HOST = "http://192.168.1.141:8080";
 
-//  public static final String HTTP_HOST = "http://192.168.1.124:8080";
+//    public static final String HTTP_HOST = "http://192.168.1.124:8080";
 
     //注册
     public static final String ADDRESS_REGIST = "/interface/user/regist";
@@ -50,7 +50,17 @@ public class HttpContans {
     //用户余额
     public static final String ADDRESS_USER_MONEY = "/interface/userMoneyAction/recharge";
 
-
     //明星查询
-    public static final String ADDRESS_STAR = "/interface/mobileStartAction/query";
+    public static final String ADDRESS_QUERY_STAR = "/interface/mobileStartAction/query";
+
+    //关注
+    public static final String ADDRESS_TO_FOCUS = "/interface/mobileStartAction/follow";
+
+    //取消关注
+    public static final String ADDRESS_CANCLE_FOCUS = "/interface/mobileStartAction/cancelFollow";
+
+    //我的关注
+    public static final String ADDRESS_MY_FOCUS = "/interface/mobileStartAction/myFollow";
+
+
 }

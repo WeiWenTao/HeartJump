@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.RlvPersonalJourneyAdapter;
+import com.cucr.myapplication.core.starList.QueryStarJourney;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lantouzi.wheelview.WheelView;
 
@@ -25,6 +26,7 @@ public class Fragment_star_xingcheng extends android.app.Fragment {
     private WheelView mWheelview;
     private RecyclerView mRlv_journey;
     private Context mContext;
+    private QueryStarJourney mCore;
 
     @Nullable
     @Override
@@ -33,10 +35,17 @@ public class Fragment_star_xingcheng extends android.app.Fragment {
         //view的复用
         if (view == null){
             view = inflater.inflate(R.layout.item_personal_pager_journey, container, false);
+            queryJourney();
             initView();
         }
 
         return view;
+    }
+
+    private void queryJourney() {
+        mCore = new QueryStarJourney();
+        // TODO: 2017/9/6 starId eventBus获取
+//        mCore.queryJourneySchedule();
     }
 
     private void initView() {

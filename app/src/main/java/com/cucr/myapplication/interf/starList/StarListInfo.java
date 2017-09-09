@@ -7,5 +7,5 @@ import com.cucr.myapplication.listener.OnCommonListener;
  */
 
 public interface StarListInfo {
-    void queryStarList(OnCommonListener onCommonListener);
+    void queryStarList(int type,int page,int row,int code,OnCommonListener onCommonListener);
 }

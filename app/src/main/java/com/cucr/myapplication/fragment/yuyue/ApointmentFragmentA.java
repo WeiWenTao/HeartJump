@@ -16,12 +16,17 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.YuYuePagerAdapter;
+import com.cucr.myapplication.core.starList.QueryStarList;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.FragmentStarRecommend;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +50,37 @@ public class ApointmentFragmentA extends BaseFragment {
     RelativeLayout head;
 
     private List<Fragment> mFragments;
-
+    private QueryStarList mCore;
+    private List<StarListInfos.RowsBean> mRows;
 
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
 
+        queryStar();
+
         initHead();
 
         initTableLayout();
 
-        initVP();
+//        initVP();
 
+    }
+
+    private void queryStar() {
+        mCore = new QueryStarList(getActivity());
+        mCore.queryStarList(1, 1, 10, 1, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
+                if (starListInfos.isSuccess()) {
+                    mRows = starListInfos.getRows();
+                    initVP();
+                } else {
+                    ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
+                }
+            }
+        });
     }
 
     //沉浸栏
@@ -83,11 +107,10 @@ public class ApointmentFragmentA extends BaseFragment {
 
     private void initVP() {
         mFragments = new ArrayList<>();
-        mFragments.add(new FragmentStarRecommend());
-
+        mFragments.add(new FragmentStarRecommend(mRows));
 //      快速导航栏
 //      mFragments.add(new FragmentStarClassify());
-        mFragments.add(new FragmentStarRecommend());
+        mFragments.add(new FragmentStarRecommend(mRows));
         vp_recommed_star.setAdapter(new YuYuePagerAdapter(getFragmentManager(), mFragments));
     }
 
@@ -100,9 +123,7 @@ public class ApointmentFragmentA extends BaseFragment {
         tablayout.addTab(tablayout.newTab().setText("推荐"));
         tablayout.addTab(tablayout.newTab().setText("全部"));
         tablayout.setupWithViewPager(vp_recommed_star);//将导航栏和viewpager进行关联
-
     }
-
 
     //返回子类布局
     @Override
@@ -122,5 +143,10 @@ public class ApointmentFragmentA extends BaseFragment {
         startActivity(new Intent(mContext, MessageActivity.class));
     }
 
-
+    //停止请求
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCore.stopRequest();
+    }
 }

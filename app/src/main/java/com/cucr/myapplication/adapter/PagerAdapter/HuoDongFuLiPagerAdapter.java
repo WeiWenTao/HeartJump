@@ -37,10 +37,10 @@ public class HuoDongFuLiPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "活动";
+                return "福利";
 
             case 1:
-                return "福利";
+                return "活动";
         }
         return null;
     }

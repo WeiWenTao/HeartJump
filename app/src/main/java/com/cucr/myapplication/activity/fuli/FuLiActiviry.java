@@ -65,13 +65,13 @@ public class FuLiActiviry extends BaseActivity implements SwipeRefreshLayout.OnR
     protected void initChild() {
         mCore = new FuLiCore(this);
         initTitle("福利");
-        ThreadUtils.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
+//        ThreadUtils.getInstance().execute(new Runnable() {
+//            @Override
+//            public void run() {
                 queryDduiHuanInfo();
                 queryActiveInfo();
-            }
-        });
+//            }
+//        });
         initRLV();
         initRefresh();
 
@@ -219,5 +219,11 @@ public class FuLiActiviry extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCore.stop();
     }
 }

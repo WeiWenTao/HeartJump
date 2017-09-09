@@ -110,9 +110,7 @@ public class FuLiCore implements QueryFuLi {
         }
     };
 
-
-//    @Override
-//    public Activity getChildActivity() {
-//        return mActivity;
-//    }
+    public void stop() {
+        mQueue.cancelAll();
+    }
 }

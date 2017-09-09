@@ -173,6 +173,12 @@
         <item name="android:windowExitAnimation">@anim/popwindow_out</item>
     </style>
 
+    <style name="AnimationStar">
+        <!--   PopupWindow上下弹出的效果-->
+        <item name="android:windowEnterAnimation">@anim/classify_menu_in</item>
+        <item name="android:windowExitAnimation">@anim/classify_menu_out</item>
+    </style>
+
     <!--flowlayout-->
     <declare-styleable name="FlowLayout">
         <attr name="horizontal_spacing" format="dimension"/>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_huo_dong"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.huodong.HuoDongActivity"
+    >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            style="@style/TitleStyle"
+            android:text="活动"
+            android:id="@+id/tv_base_title"
+            />
+
+        <ImageView
+            android:id="@+id/iv_huodong_add"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:paddingBottom="14dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/icon_add_ft"
+            />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_active"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/lvbg"
+        android:dividerHeight="@dimen/dp_10"
+        />
+
+</LinearLayout>

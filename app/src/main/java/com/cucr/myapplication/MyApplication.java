@@ -11,6 +11,8 @@ import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by 911 on 2017/8/11.
  */
@@ -24,6 +26,10 @@ public class MyApplication extends Application {
 
         //内存溢出
 //        LeakCanary.install(this);
+
+        //极光推送初始化
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 
         _instance = this;
 

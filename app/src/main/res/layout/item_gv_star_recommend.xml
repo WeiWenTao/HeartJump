@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="173dp"
               android:layout_height="240dp"
               android:orientation="horizontal"
@@ -7,15 +8,19 @@
 
 
     <RelativeLayout
+        android:id="@+id/rl_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-
-        <ImageView
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/iv_pic"
             android:layout_width="173dp"
-            android:layout_height="238dp"
-            android:src="@drawable/star1_new"
+            android:layout_height="234dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/star2"
+            app:sriv_left_top_corner_radius="49dp"
+            app:sriv_right_bottom_corner_radius="49dp"
             />
 
 
@@ -27,7 +32,7 @@
             />
 
         <TextView
-            android:id="@+id/tv_dabang_first"
+            android:id="@+id/tv_focus"
             android:layout_width="50dp"
             android:layout_height="20dp"
             android:layout_alignRight="@id/iv_bg"
@@ -53,6 +58,7 @@
 
 
         <TextView
+            android:id="@+id/tv_star_fans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/iv_fans"
@@ -64,6 +70,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_star_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/iv_fans"

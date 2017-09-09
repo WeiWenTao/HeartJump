@@ -21,7 +21,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -31,19 +30,20 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         >
 
-        <!--测试类-->
+        <!-- 测试类 -->
         <uses-library android:name="android.test.runner"/>
 
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             >
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
 
 
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- share sdk -->
@@ -193,6 +193,7 @@
         <activity android:name=".activity.regist.LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -203,7 +204,22 @@
             android:launchMode="singleTask"
             >
         </activity>
-    </application>
+        <activity android:name=".activity.journey.MyJourneyActivity">
+        </activity>
+        <activity android:name=".activity.journey.AddJourneyActivity">
+        </activity>
 
+        <receiver android:name=".boradReceiver.MyRecyiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+                <category android:name="com.cucr.myapplication" />
+            </intent-filter>
+        </receiver>
+    </application>
 
 </manifest>

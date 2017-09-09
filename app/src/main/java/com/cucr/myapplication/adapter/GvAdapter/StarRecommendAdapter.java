@@ -1,14 +1,27 @@
 package com.cucr.myapplication.adapter.GvAdapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.focus.FocusCore;
+import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonViewHolder;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.dialog.DialogCanaleFocusStyle;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
 
 /**
  * Created by 911 on 2017/5/22.
@@ -20,16 +33,23 @@ public class StarRecommendAdapter extends BaseAdapter {
     int checked = -1;
     private DialogCanaleFocusStyle mDialogCanaleFocusStyle;
     private FrameLayout mFl;
+    private List<StarListInfos.RowsBean> rows;
+    private Activity activity;
+    private FocusCore mCore;
 
     public void setCheck(int position) {
         checked = position;
         notifyDataSetChanged();
     }
 
-    public StarRecommendAdapter(Context context) {
+    public StarRecommendAdapter(Context context, List<StarListInfos.RowsBean> rows, Activity activity) {
         this.mContext = context;
+        this.rows = rows;
+        this.activity = activity;
+        mCore = new FocusCore(activity);
         initDialog();
     }
+
 
     private void initDialog() {
 
@@ -43,7 +63,6 @@ public class StarRecommendAdapter extends BaseAdapter {
 
             @Override
             public void clickCancle() {
-
                 mDialogCanaleFocusStyle.dismiss();
             }
         });
@@ -51,7 +70,8 @@ public class StarRecommendAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 30;
+        MyLogger.jLog().i("rows:" + rows);
+        return rows == null ? 0 : rows.size();
     }
 
     @Override
@@ -64,40 +84,72 @@ public class StarRecommendAdapter extends BaseAdapter {
         return 0;
     }
 
-    private int mConut;
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_gv_star_recommend, null);
+        final StarListInfos.RowsBean rowsBean = rows.get(position);
+        Resources resources = mContext.getResources();
 
-//        RelativeLayout rl_goto_starpager = cvh.getView(R.id.rl_goto_starpager, RelativeLayout.class);
-//        rl_goto_starpager.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(v.getContext(), position + "", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        //获取控件
+        RelativeLayout rl_item = cvh.getView(R.id.rl_item, RelativeLayout.class);
+        final TextView tv_focus = cvh.getTv(R.id.tv_focus);
+        TextView tv_star_fans = cvh.getTv(R.id.tv_star_fans);
+        TextView tv_star_name = cvh.getTv(R.id.tv_star_name);
+        ImageView iv_pic = cvh.getIv(R.id.iv_pic);
 
+        //显示明星列表图片
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getStartShowPic(), iv_pic);
 
-    /*    //解决item重复调用 getView 方法的bug
-        if (parent.getChildCount() == position || position != 0) {
-            if (position == checked) {
-//            条目复用导致的混乱 可用对象存储字段解决 TODO
-//            mFl.setVisibility(mFl.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                mFl = cvh.getView(R.id.fl_star_bg, FrameLayout.class);
+        //粉丝数量
+        tv_star_fans.setText(rowsBean.getFansCount());
 
-                if (mFl.getVisibility() == View.GONE) {
-                    Toast.makeText(mContext,"已关注 林更新",Toast.LENGTH_SHORT).show();
-                    mFl.setVisibility(View.VISIBLE);
-                } else if (mFl.getVisibility() == View.VISIBLE) {
-                    mDialogCanaleFocusStyle.show();
-                    mDialogCanaleFocusStyle.initTitle("林更新");
+        //明星姓名
+        final String realName = rowsBean.getRealName();
+        final int starId = rowsBean.getId();
+        tv_star_name.setText(realName);
 
+        //是否关注  0：未关注      1：已关注
+        final int isfollow = rowsBean.getIsfollow();
+        if (isfollow == 0) {
+            tv_focus.setText("加关注");
+            tv_focus.setTextColor(resources.getColor(R.color.pink));
+            tv_focus.setBackgroundDrawable(resources.getDrawable(R.drawable.btn_bg_sel));
+        } else {
+            tv_focus.setText("已关注");
+            tv_focus.setTextColor(resources.getColor(R.color.white));
+            tv_focus.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_focud_bg));
+        }
+
+        tv_focus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isfollow == 0) {
+                    MyLogger.jLog().i("关注。。。");
+                    mCore.toFocus(starId);
+                    rowsBean.setIsfollow(1);
+                } else {
+                    MyLogger.jLog().i("取消关注。。。");
+                    mCore.cancaleFocus(starId);
+                    rowsBean.setIsfollow(0);
                 }
+                notifyDataSetChanged();
             }
-        }*/
+        });
+
+
+        //点击事件
+        rl_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), position + "", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return cvh.convertView;
+    }
+
+    public void stop(){
+        mCore.stopRequest();
     }
 }

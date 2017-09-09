@@ -18,6 +18,8 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by 911 on 2017/8/11.
  * TODO 这里进行联网操作
@@ -61,6 +63,7 @@ public class LoginCore implements LoadByPsw {
         request.add("userName", userName) // 账号。
                 .add("driverId", CommonUtils.getDiverID(context)) // 设备id。
                 .add("password", psw) // 密码。
+                .add("msgRegId", JPushInterface.getRegistrationID(context)) // 极光推送。
 
                 // 单个请求的超时时间，不指定就会使用全局配置。
                 .setConnectTimeout(10 * 1000) // 设置连接超时。

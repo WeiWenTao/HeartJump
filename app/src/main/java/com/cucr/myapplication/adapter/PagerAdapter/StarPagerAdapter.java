@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.cucr.myapplication.model.others.FragmentInfos;
-import com.cucr.myapplication.utils.MyLogger;
 
 import java.util.List;
 
@@ -24,13 +23,11 @@ public class StarPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        MyLogger.jLog().i("size:" + fragmentInfos.size());
         return fragmentInfos == null ? 0 : fragmentInfos.size();
     }
 
     @Override
     public Fragment getItem(int position) {
-        MyLogger.jLog().i("fragmentInfos:" + fragmentInfos);
         return fragmentInfos.get(position).getFragment();
     }
 

@@ -9,6 +9,7 @@
     <!--android:clipToPadding="false"-->
     <!--android:paddingTop="@dimen/dp_10"-->
     <GridView
+        android:clipToPadding="false"
         android:scrollbarStyle="outsideOverlay"
         android:background="@color/white"
         android:id="@+id/gv_star_recommend"
@@ -17,6 +18,7 @@
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
         android:horizontalSpacing="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
         android:listSelector="@android:color/transparent"
         android:numColumns="2"/>
 
