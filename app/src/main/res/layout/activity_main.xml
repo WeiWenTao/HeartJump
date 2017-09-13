@@ -55,7 +55,7 @@
             android:button="@null"
             android:drawableTop="@drawable/live_selector"
             android:gravity="center_horizontal"
-            android:text="预约"
+            android:text="福利"
             android:textColor="@color/text_selector"
             android:textSize="@dimen/sp_10"
             />

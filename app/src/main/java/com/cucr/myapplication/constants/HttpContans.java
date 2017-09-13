@@ -38,6 +38,9 @@ public class HttpContans {
     //企业认证
     public static final String ADDRESS_QIYE_RZ = "/interface/authenticationAction/company";
 
+    //认证查询
+    public static final String ADDRESS_QUERY_RZ = "/interface/authenticationAction/authenticationResult";
+
     //福利商品查询
     public static final String ADDRESS_FULI_GOODS = "/interface/shopAction/shopList";
 
@@ -61,6 +64,9 @@ public class HttpContans {
 
     //我的关注
     public static final String ADDRESS_MY_FOCUS = "/interface/mobileStartAction/myFollow";
+
+    //添加行程
+    public static final String ADDRESS_ADD_JOURNEY = "/interface/mobileStartTripAction/addTrip";
 
 
 }

@@ -44,4 +44,10 @@ public class Constans {
     //用户名正则
     public static final String USERNAME_REGEX = "[~!/@#$%^&*()\\\\-_=+\\\\|[{}];:\\'\\\",<.>/?]+";
 
+    //明星认证
+    public static final int RZ_STAR = 0;
+
+    //企业认证
+    public static final int RZ_QIYE = 1;
+
 }

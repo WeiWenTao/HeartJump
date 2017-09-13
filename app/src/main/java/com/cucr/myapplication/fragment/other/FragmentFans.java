@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
-import com.cucr.myapplication.core.starList.QueryMyFocusStars;
+import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
 import com.cucr.myapplication.fragment.star.Fragment_star_shuju;

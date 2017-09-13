@@ -1,7 +1,6 @@
 package com.cucr.myapplication.fragment.renzheng;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,8 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,20 +30,21 @@ import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.picture.MyLoader;
 import com.google.gson.Gson;
+import com.jaiky.imagespickers.ImageConfig;
+import com.jaiky.imagespickers.ImageSelector;
+import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.AlbumListener;
-import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.cucr.myapplication.fragment.renzheng.StarRZ.REQUEST_CODE;
 
 /**
  * Created by 911 on 2017/6/16.
@@ -69,6 +69,7 @@ public class QiYeRZ extends Fragment {
     private Context mContext;
     private Activity activity;
     private Gson mGson;
+    private ImageConfig imageConfig;
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg_qiye)
@@ -145,6 +146,8 @@ public class QiYeRZ extends Fragment {
                 popWindow.dismiss();
             }
         });
+
+        //拍照
         photograph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -158,51 +161,36 @@ public class QiYeRZ extends Fragment {
                 startActivityForResult(openCameraIntent, PHOTOTAKE);
             }
         });
+
+        //相册
+
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-                popWindow.dismiss();
+            public void onClick(View v) {
+                //点击去相册
+                imageConfig = new ImageConfig.Builder(
+                        new MyLoader())
+                        .steepToolBarColor(getResources().getColor(R.color.titleBlue))
+                        .titleBgColor(getResources().getColor(R.color.titleBlue))
+                        .titleSubmitTextColor(getResources().getColor(R.color.white))
+                        .titleTextColor(getResources().getColor(R.color.white))
+                        // 开启单选   （默认为多选）
+                        .singleSelect()
+                        // 裁剪 (只有单选可裁剪)
+//                        .crop(1, 2, 500, 1000)
+                        // 开启拍照功能 （默认关闭）
+                        .showCamera()
+                        //设置显示容器
+//                        .setContainer(llContainer)
+                        .requestCode(REQUEST_CODE)
+                        .build();
 
-
-                Album.album(QiYeRZ.this)
-                        .singleChoice()
-                        .widget(Widget.newDarkBuilder(activity)
-                                .title("选择图片") // 标题。
-                                .statusBarColor(getResources().getColor(R.color.blue_black)) // 状态栏颜色。
-                                .toolBarColor(getResources().getColor(R.color.blue_black)) // Toolbar颜色。
-                                .build())
-                        .columnCount(2)
-                        .requestCode(1)
-                        .listener(new AlbumListener<ArrayList<AlbumFile>>() {
-                            @Override
-                            public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
-                                if (whichView.getVisibility() == View.GONE) {
-                                    whichView.setVisibility(View.VISIBLE);
-                                }
-                                //用缩略图显示
-                                String albumPath = result.get(0).getPath();
-                                Bitmap bm = CommonUtils.decodeBitmap(albumPath);
-                                whichView.setImageBitmap(bm);
-                                //如果是正面
-                                if (whichView == img_qiye_positive) {
-                                    positiveBitmap = albumPath;
-
-                                    //反面
-                                } else if (whichView == img_qiye_nagetive) {
-                                    nagetiveBitmap = albumPath;
-
-                                    //营业执照
-                                } else {
-                                    licenseBitmap = albumPath;
-                                }
-                            }
-
-                            @Override
-                            public void onAlbumCancel(int requestCode) {
-                            }
-                        }).start();
+                ImageSelector.open(QiYeRZ.this, imageConfig);   // 开启图片选择器
             }
         });
+
+
+        //取消
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -247,23 +235,33 @@ public class QiYeRZ extends Fragment {
         }
         Uri uri = null;
         switch (requestCode) {
-            case PHOTOZOOM://相册
-//                if (data == null) {
-//                    return;
-//                }
-//                uri = data.getData();
-//                String[] proj = {MediaStore.Images.Media.DATA};
-//                Cursor cursor = activity.managedQuery(uri, proj, null, null, null);
-//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                cursor.moveToFirst();
-//                path = cursor.getString(column_index);// 图片在的路径
-//                //当不可见时在显示
-//                if (whichView.getVisibility() == View.GONE) {
-//                    whichView.setVisibility(View.VISIBLE);
-//                }
-//                //用缩略图显示
-//                whichView.setImageBitmap(CommonUtils.decodeBitmap(path));
-                break;
+            case REQUEST_CODE:
+                if (data != null) {
+                    if (popWindow.isShowing()) {
+                        popWindow.dismiss();
+//                        fl_pop_bg_qiye.setVisibility(View.GONE);
+                    }
+                    List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+                    //当不可见时在显示
+                    if (whichView.getVisibility() == View.GONE) {
+                        whichView.setVisibility(View.VISIBLE);
+                    }
+                    //用缩略图显示
+                    String s = pathList.get(0);
+                    whichView.setImageBitmap(CommonUtils.decodeBitmap(s));
+                    //如果是正面
+                    if (whichView == img_qiye_positive) {
+                        positiveBitmap = s;
+                        //反面
+                    } else if (whichView == img_qiye_nagetive) {
+                        nagetiveBitmap = s;
+
+                        //营业执照
+                    } else {
+                        licenseBitmap = s;
+                    }
+                    break;
+                }
 
             case PHOTOTAKE://拍照
                 path = photoSavePath + photoSaveName;
@@ -275,6 +273,7 @@ public class QiYeRZ extends Fragment {
                 //用缩略图显示
                 Bitmap bmByCrame = CommonUtils.decodeBitmap(path);
                 whichView.setImageBitmap(bmByCrame);
+
                 //如果是正面
                 if (whichView == img_qiye_positive) {
                     positiveBitmap = path;

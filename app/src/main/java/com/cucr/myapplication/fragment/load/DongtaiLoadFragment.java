@@ -36,6 +36,12 @@ import com.cucr.myapplication.widget.text.MyClickRegist;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+
 /**
  * Created by 911 on 2017/8/10.
  */
@@ -51,7 +57,7 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
     private DongTaiLoadCore mCore;
     private Context mContext;
     private Gson mGson;
-
+    private Set<String> tags;
 
     @Nullable
     @Override
@@ -115,7 +121,7 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
     private CountDownTimer downTimer = new CountDownTimer(60 * 1000, 1000) {
         @Override
         public void onTick(long l) {
-            mTv_yzm.setText("("+(l / 1000)+"s)重新获取");
+            mTv_yzm.setText("(" + (l / 1000) + "s)重新获取");
             mTv_yzm.setEnabled(false);
         }
 
@@ -137,7 +143,7 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
             return;
         }
 
-        switch (v.getId()){
+        switch (v.getId()) {
             //获取验证码
             case R.id.tv_yan_zheng_ma:
                 mCore.getYzm(mContext, account, new OnGetYzmListener() {
@@ -145,12 +151,12 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
                     public void onSuccess(Response<String> response) {
                         String result = response.get();
                         ReBackMsg yzmInfo = mGson.fromJson(result, ReBackMsg.class);
-                        if (!yzmInfo.isSuccess()){
+                        if (!yzmInfo.isSuccess()) {
                             //success = false 密码错误
                             // 显示服务器返回的错误信息
                             ToastUtils.showToast(mContext, yzmInfo.getMsg());
                             MyLogger.jLog().i("验证码获取失败");
-                        }else {
+                        } else {
                             MyLogger.jLog().i("验证码获取成功");
                         }
                     }
@@ -170,17 +176,26 @@ public class DongtaiLoadFragment extends Fragment implements TextWatcher, View.O
                     public void onSuccess(Response<String> response) {
 
                         String s = response.get();
-
+                        tags = new HashSet<>();
                         LoadUserInfo loadUserInfo = mGson.fromJson(s, LoadUserInfo.class);
 //                登录成功 保存密钥
                         if (loadUserInfo.isSuccess()) {
                             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+                            //设置极光推送的tag
+                            tags.add(loadSuccess.getRoleId() + "");
+                            JPushInterface.setTags(mContext, tags, new TagAliasCallback() {
+                                @Override
+                                public void gotResult(int i, String s, Set<String> set) {
+                                    MyLogger.jLog().i("设置tags成功");
+                                }
+                            });
+                            MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
 //                    保存密钥
                             SpUtil.setParam(mContext, SpConstant.SIGN, loadSuccess.getSign());
+//                    保存认证信息
+                            SpUtil.getParam(mContext,SpConstant.ROLEID,loadSuccess.getRoleId());
 //                    保存用户id
                             SpUtil.setParam(mContext, SpConstant.USER_ID, loadSuccess.getUserId());
-                            MyLogger.jLog().i("DTuseid:"+loadSuccess.getUserId());
-
 //                    显示吐司
                             ToastUtils.showToast(mContext, "登录成功");
 //                    跳转到主界面

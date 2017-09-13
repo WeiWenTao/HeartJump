@@ -1,7 +1,6 @@
 package com.cucr.myapplication.fragment.renzheng;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,8 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,27 +21,33 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.renZheng.CommitStarRzCore;
+import com.cucr.myapplication.core.renZheng.QueryRzResult;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.RZ.RzResult;
 import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.picture.MyLoader;
 import com.google.gson.Gson;
+import com.jaiky.imagespickers.ImageConfig;
+import com.jaiky.imagespickers.ImageSelector;
+import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.AlbumListener;
-import com.yanzhenjie.album.api.widget.Widget;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,6 +60,7 @@ public class StarRZ extends Fragment {
     private LayoutInflater layoutInflater;
     private TextView photograph, albums;
     private LinearLayout cancel;
+    public static final int REQUEST_CODE = 123;
 
     public static final int PHOTOZOOM = 0; // 相册/拍照
     public static final int PHOTOTAKE = 1; // 相册/拍照
@@ -64,9 +70,12 @@ public class StarRZ extends Fragment {
     private String photoSaveName;//图pian名
     private String path;//图片全路径
     private CommitStarRzCore mCore;
+    private QueryRzResult mQueryCore;
     private Context mContext;
     private Activity activity;
     private Gson mGson;
+    private ImageConfig imageConfig;
+    private ImageLoader instance;
 
     //身份证正面路径
     private String img_postive_path;
@@ -80,6 +89,10 @@ public class StarRZ extends Fragment {
     //正面
     @ViewInject(R.id.img_star_positive)
     ImageView iv_add_pic_positive;
+
+    //提交
+    @ViewInject(R.id.tv_commit_check)
+    TextView tv_commit_check;
 
     //反面
     @ViewInject(R.id.img_star_nagetive)
@@ -97,6 +110,18 @@ public class StarRZ extends Fragment {
     @ViewInject(R.id.et_belone)
     EditText et_belone;
 
+    //明星商演费用
+    @ViewInject(R.id.et_star_price)
+    EditText et_star_price;
+
+    //身份证反面
+    @ViewInject(R.id.rl_star_shenfenzheng_negative)
+    RelativeLayout rl_star_shenfenzheng_negative;
+
+    //身份证正面
+    @ViewInject(R.id.rl_star_shenfenzheng_positive)
+    RelativeLayout rl_star_shenfenzheng_positive;
+
 
     @Nullable
     @Override
@@ -105,11 +130,71 @@ public class StarRZ extends Fragment {
         mContext = container.getContext();
         mGson = new Gson();
         mCore = new CommitStarRzCore(activity);
+        mQueryCore = new QueryRzResult(activity);
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_star, container, false);
         ViewUtils.inject(this, rootView);
+        initView();
         initHead();
         return rootView;
 
+    }
+
+    private void initView() {
+        mQueryCore.queryRz(Constans.RZ_STAR, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                MyLogger.jLog().i("json:" + response.get());
+                RzResult rzResult = mGson.fromJson(response.get(), RzResult.class);
+                if (rzResult.isSuccess()){
+                    RzResult.ObjBean obj = rzResult.getObj();
+                    String getUserName = obj.getUserName();  //姓名
+
+                    //如果信息为空 说明未提交过审核 直接返回
+                    if (TextUtils.isEmpty(getUserName)){
+                        return;
+                    }
+
+                    String contact = obj.getContact();  //联系方式
+                    String belongCompany = obj.getBelongCompany();  //所属公司
+                    int result = obj.getResult();   //审核结果
+                    int startCost = obj.getStartCost(); //商演费用
+                    String pic1 = obj.getPic1();
+                    String pic2 = obj.getPic2();
+                    backShow(getUserName,contact,belongCompany,startCost,result,pic1,pic2);
+                }else {
+                    ToastUtils.showToast(mContext,rzResult.getMsg()+"");
+                }
+            }
+        });
+    }
+
+
+    //回显数据   result 0待审  1没通过  2通过
+    private void backShow(String auditor, String contact, String belongCompany, int startCost,int result, String pic1, String pic2) {
+        instance = ImageLoader.getInstance();
+        et_name.setText(auditor);
+        et_contact.setText(contact);
+        et_belone.setText(belongCompany);
+        et_star_price.setText(""+startCost);
+        instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive);
+        instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive);
+        //控件不可用
+        setView();
+        switch (result) {
+            case 0:
+
+                tv_commit_check.setText("审核中");
+                break;
+
+            case 1:
+                tv_commit_check.setText("审核通过");
+                break;
+
+            case 2:
+                tv_commit_check.setText("审核未通过，请重新提交资料");
+                tv_commit_check.setEnabled(true);
+                break;
+        }
     }
 
 
@@ -133,6 +218,8 @@ public class StarRZ extends Fragment {
                 popWindow.dismiss();
             }
         });
+
+        //点击拍照
         photograph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -147,44 +234,31 @@ public class StarRZ extends Fragment {
             }
         });
 
-        //点击去相册选择
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-                popWindow.dismiss();
+            public void onClick(View v) {
+                //点击去相册
+                imageConfig = new ImageConfig.Builder(
+                        new MyLoader())
+                        .steepToolBarColor(getResources().getColor(R.color.titleBlue))
+                        .titleBgColor(getResources().getColor(R.color.titleBlue))
+                        .titleSubmitTextColor(getResources().getColor(R.color.white))
+                        .titleTextColor(getResources().getColor(R.color.white))
+                        // 开启单选   （默认为多选）
+                        .singleSelect()
+                        // 裁剪 (只有单选可裁剪)
+//                        .crop(1, 2, 500, 1000)
+                        // 开启拍照功能 （默认关闭）
+                        .showCamera()
+                        //设置显示容器
+//                        .setContainer(llContainer)
+                        .requestCode(REQUEST_CODE)
+                        .build();
 
-                Album.album(StarRZ.this)
-                        .singleChoice()
-                        .widget(Widget.newDarkBuilder(activity)
-                                .title("选择图片") // 标题。
-                                .statusBarColor(getResources().getColor(R.color.blue_black)) // 状态栏颜色。
-                                .toolBarColor(getResources().getColor(R.color.blue_black)) // Toolbar颜色。
-                                .build())
-                        .columnCount(2)
-                        .requestCode(1)
-                        .listener(new AlbumListener<ArrayList<AlbumFile>>() {
-                            @Override
-                            public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
-                                if (whichView.getVisibility() == View.GONE) {
-                                    whichView.setVisibility(View.VISIBLE);
-                                }
-                                //用缩略图显示
-                                String albumPath = result.get(0).getPath();
-                                whichView.setImageBitmap(CommonUtils.decodeBitmap(albumPath));
-                                //如果是正面
-                                if (whichView == iv_add_pic_positive) {
-                                    img_postive_path = albumPath;
-                                } else {
-                                    img_nagetive_path = albumPath;
-                                }
-                            }
-
-                            @Override
-                            public void onAlbumCancel(int requestCode) {
-                            }
-                        }).start();
+                ImageSelector.open(StarRZ.this, imageConfig);   // 开启图片选择器
             }
         });
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -221,32 +295,37 @@ public class StarRZ extends Fragment {
     /**
      * 图片选择及拍照结果
      */
-    @SuppressWarnings("deprecation")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        MyLogger.jLog().i("onActivityResult");
         if (resultCode != RESULT_OK) {
             return;
         }
         Uri uri = null;
         switch (requestCode) {
-         /*   case PHOTOZOOM://相册
-                if (data == null) {
-                    return;
+            case REQUEST_CODE:
+                if (data != null) {
+                    if (popWindow.isShowing()) {
+                        popWindow.dismiss();
+                        fl_pop_bg.setVisibility(View.GONE);
+                    }
+                    List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+                    //当不可见时在显示
+                    if (whichView.getVisibility() == View.GONE) {
+                        whichView.setVisibility(View.VISIBLE);
+                    }
+                    //用缩略图显示
+                    String s = pathList.get(0);
+                    whichView.setImageBitmap(CommonUtils.decodeBitmap(s));
+                    //如果是正面
+                    if (whichView == iv_add_pic_positive) {
+                        img_postive_path = s;
+                    } else {
+                        img_nagetive_path = s;
+                    }
+                    break;
                 }
-                uri = data.getData();
-                String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = activity.managedQuery(uri, proj, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(column_index);// 图片在的路径
-                cursor.close();
-                //当不可见时在显示
-                if (whichView.getVisibility() == View.GONE) {
-                    whichView.setVisibility(View.VISIBLE);
-                }
-                //用缩略图显示
-                whichView.setImageBitmap(CommonUtils.decodeBitmap(path));
-                break;*/
+
 
             case PHOTOTAKE://拍照
                 path = photoSavePath + photoSaveName;
@@ -276,6 +355,7 @@ public class StarRZ extends Fragment {
     @OnClick(R.id.rl_star_shenfenzheng_positive)
     public void positive(View view) {
         whichView = iv_add_pic_positive;
+        MyLogger.jLog().i("whichView = iv_add_pic_positive;");
         CommonUtils.initPopBg(true, fl_pop_bg);
         showPopupWindow(iv_add_pic_positive);
 
@@ -285,6 +365,7 @@ public class StarRZ extends Fragment {
     @OnClick(R.id.rl_star_shenfenzheng_negative)
     public void negative(View view) {
         whichView = iv_add_pic_nagetive;
+        MyLogger.jLog().i("whichView = iv_add_pic_nagetive;");
         CommonUtils.initPopBg(true, fl_pop_bg);
         showPopupWindow(iv_add_pic_nagetive);
     }
@@ -308,26 +389,48 @@ public class StarRZ extends Fragment {
             return;
         }
 
+        if (TextUtils.isEmpty(et_star_price.getText())) {
+            ToastUtils.showToast(activity, "请输入商演费用哦");
+            return;
+        }
+
         if (TextUtils.isEmpty(img_postive_path) || TextUtils.isEmpty(img_nagetive_path)) {
             ToastUtils.showToast(activity, "请上传照片哦");
             return;
         }
 
-        mCore.onCommStarRZ(et_name.getText().toString(), et_belone.getText().toString(),
-                et_belone.getText().toString(), img_postive_path, img_nagetive_path,
+        mCore.onCommStarRZ(et_name.getText().toString(),
+                et_belone.getText().toString(),
+                et_contact.getText().toString(),
+                et_star_price.getText().toString(),
+                img_postive_path, img_nagetive_path,
                 new OnCommonListener() {
                     @Override
                     public void onRequestSuccess(Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                         if (reBackMsg.isSuccess()) {
                             ToastUtils.showToast(activity, "明星认证上传成功！");
+                            setView();
                         } else {
                             ToastUtils.showToast(activity, reBackMsg.getMsg());
                         }
                     }
-                });
-        MyLogger.jLog().i("img_postive_path:" + img_postive_path + ",img_nagetive_path:" + img_nagetive_path);
 
+
+                });
+
+    }
+
+    //提交认证后 各个控件的初始化话
+    private void setView() {
+        et_name.setEnabled(false);
+        et_contact.setEnabled(false);
+        et_belone.setEnabled(false);
+        tv_commit_check.setEnabled(false);
+        tv_commit_check.setText("审核中");
+        et_star_price.setEnabled(false);
+        rl_star_shenfenzheng_negative.setEnabled(false);
+        rl_star_shenfenzheng_positive.setEnabled(false);
     }
 
     //生命周期方法绑定

@@ -1,7 +1,8 @@
 package com.cucr.myapplication.activity.setting;
 
-import android.app.Fragment;
+
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.cucr.myapplication.R;
@@ -45,7 +46,7 @@ public class RenZhengActivity extends BaseActivity {
         mFragmentList.add(new StarRZ());
         mFragmentList.add(new QiYeRZ());
 
-        vp_ren_zheng.setAdapter(new RenZhengPagrAdapter(getFragmentManager(),mFragmentList));
+        vp_ren_zheng.setAdapter(new RenZhengPagrAdapter(getSupportFragmentManager(),mFragmentList));
 
         //TabLayou绑定ViewPager
         tl_tab.setupWithViewPager(vp_ren_zheng,true);

@@ -11,10 +11,6 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.fenTuan.FenTuanActivity;
-import com.cucr.myapplication.activity.fuli.FuLiActiviry;
-import com.cucr.myapplication.activity.home.SignActivity;
-import com.cucr.myapplication.activity.huodong.HuoDongActivity;
 import com.cucr.myapplication.activity.news.NewsActivity;
 import com.cucr.myapplication.activity.photos.PhotoActivity;
 import com.cucr.myapplication.activity.video.VideoActivity;
@@ -24,7 +20,6 @@ import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.Home.HomeBannerInfo;
 import com.cucr.myapplication.temp.NetworkImageHolderView;
-import com.cucr.myapplication.utils.ClickUtil;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -85,11 +80,16 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         }
     }
 
+    @Override
+    protected boolean needHeader() {
+        return false;
+    }
+
     private void initLv() {
         //添加头部
         View headerView = View.inflate(mContext, R.layout.header_home_lv, null);
 
-        //签到
+       /* //签到
         mLl_sign_in = (LinearLayout) headerView.findViewById(R.id.ll_sign_in);
         mLl_sign_in.setOnClickListener(this);
 
@@ -105,17 +105,17 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         //粉团
         ll_fentuan = (LinearLayout) headerView.findViewById(R.id.ll_fentuan);
         ll_fentuan.setOnClickListener(this);
-
+*/
 
         //首页轮播图
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
 //        initARL();
 
         mLv_home.addHeaderView(headerView, null, true);
-        mLv_home.addHeaderView(View.inflate(mContext, R.layout.header_home_lv_1, null), null, true);
+//        mLv_home.addHeaderView(View.inflate(mContext, R.layout.header_home_lv_1, null), null, true);
 
         //去掉头部分割线
-        mLv_home.setHeaderDividersEnabled(false);
+//        mLv_home.setHeaderDividersEnabled(false);
 
         //用父类的Context
         mLv_home.setAdapter(new HomeAdapter(mContext));
@@ -143,38 +143,38 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-
-            //签到
-            case R.id.ll_sign_in:
-                if (ClickUtil.isFastClick())
-                    startActivity(new Intent(mContext, SignActivity.class));
-                break;
-
-            //福利
-            case R.id.ll_fuli:
-                if (ClickUtil.isFastClick())
-                    startActivity(new Intent(mContext, FuLiActiviry.class));
-                break;
-
-            //粉团
-            case R.id.ll_fentuan:
-                if (ClickUtil.isFastClick())
-                    startActivity(new Intent(mContext, FenTuanActivity.class));
-                break;
-
-            //活动
-            case R.id.ll_active:
-                if (ClickUtil.isFastClick())
-                    startActivity(new Intent(mContext, HuoDongActivity.class));
-                break;
-
-        }
-
-    }
+//    @Override
+//    public void onClick(View v) {
+//        super.onClick(v);
+//        switch (v.getId()) {
+//
+//            //签到
+//            case R.id.ll_sign_in:
+//                if (ClickUtil.isFastClick())
+//                    startActivity(new Intent(mContext, SignActivity.class));
+//                break;
+//
+//            //福利
+//            case R.id.ll_fuli:
+//                if (ClickUtil.isFastClick())
+//                    startActivity(new Intent(mContext, FuLiActiviry.class));
+//                break;
+//
+//            //粉团
+//            case R.id.ll_fentuan:
+//                if (ClickUtil.isFastClick())
+//                    startActivity(new Intent(mContext, FenTuanActivity.class));
+//                break;
+//
+//            //活动
+//            case R.id.ll_active:
+//                if (ClickUtil.isFastClick())
+//                    startActivity(new Intent(mContext, HuoDongActivity.class));
+//                break;
+//
+//        }
+//
+//    }
 
     private void findView(View childView) {
         //首页ListView
@@ -199,15 +199,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         ImageLoader.getInstance().init(config);
     }
 
-    /*
-    加入测试Views
-    * */
-    private void initLocalImg() {
-        //本地图片集合
-        for (int position = 1; position < 3; position++)
-            localImages.add(getResId("banner" + position, R.drawable.class));
-
-    }
 
 
     private void initARL() {

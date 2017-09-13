@@ -15,5 +15,10 @@ public interface Journey {
     /**
      * 查询行程详情
      */
-    void queryJourneyCatgory(int starId, String time,OnCommonListener commonListener);
+    void queryJourneyCatgory(int starId, String time, OnCommonListener commonListener);
+
+    /**
+     * 添加行程
+     */
+    void addJourney(String place, String content, String tripTime, OnCommonListener commonListener);
 }

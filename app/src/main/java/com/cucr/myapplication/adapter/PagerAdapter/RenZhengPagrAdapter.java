@@ -1,8 +1,9 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentPagerAdapter;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
@@ -13,14 +14,14 @@ import java.util.List;
 public class RenZhengPagrAdapter extends FragmentPagerAdapter {
     List<Fragment> fragmentList;
 
-    public RenZhengPagrAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList) {
-        super(fragmentManager);
+    public RenZhengPagrAdapter(FragmentManager supportFragmentManager, List<Fragment> fragmentList) {
+        super(supportFragmentManager);
         this.fragmentList = fragmentList;
-
     }
 
+
     @Override
-    public android.app.Fragment getItem(int position) {
+    public Fragment getItem(int position) {
         return fragmentList.get(position);
     }
 

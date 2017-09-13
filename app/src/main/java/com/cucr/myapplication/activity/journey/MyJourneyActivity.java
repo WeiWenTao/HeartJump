@@ -42,5 +42,4 @@ public class MyJourneyActivity extends BaseActivity {
         startActivity(new Intent(this,AddJourneyActivity.class));
     }
 
-
 }

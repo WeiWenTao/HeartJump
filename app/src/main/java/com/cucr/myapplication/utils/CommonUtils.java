@@ -350,4 +350,53 @@ public class CommonUtils {
         return false;
     }
 
+
+    //根据日期获取星期
+    public static String getWeek(Calendar c) {
+        String Week = "星期";
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");//也可将此值当参数传进来
+//        Date  curDate = new Date(System.currentTimeMillis());
+//        String pTime = format.format(curDate);
+//        Calendar c = Calendar.getInstance();
+//        try {
+//            c.setTime(format.parse(pTime));
+//        } catch (ParseException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+        switch(c.get(Calendar.DAY_OF_WEEK)){
+            case 1:
+                Week += "天";
+                break;
+            case 2:
+                Week += "一";
+                break;
+            case 3:
+                Week += "二";
+                break;
+            case 4:
+                Week += "三";
+                break;
+            case 5:
+                Week += "四";
+                break;
+            case 6:
+                Week += "五";
+                break;
+            case 7:
+                Week += "六";
+                break;
+            default:
+                break;
+        }
+        return Week;
+    }
+
+    //去除特殊字符
+    public static String replaceOtherChars(String s){
+        s = s.replaceAll("-", "");
+        s = s.replaceAll("[^\\u4e00-\\u9fa5]", "-");
+        return s;
+    }
+
 }

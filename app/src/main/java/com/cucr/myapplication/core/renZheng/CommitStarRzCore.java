@@ -44,8 +44,12 @@ public class CommitStarRzCore implements CommitStarRZ {
     }
 
     @Override
-    public void onCommStarRZ(String userName, String contact, String belongCompany,
-                             String pic1, String pic2, OnCommonListener listener) {
+    public void onCommStarRZ(String userName,
+                             String belongCompany ,
+                             String contact,
+                             String starPrice,
+                             String pic1, String pic2,
+                             OnCommonListener listener) {
         this.listener = listener;
         mWaitDialog = new WaitDialog(activity);
         // 创建请求对象。
@@ -54,18 +58,19 @@ public class CommitStarRzCore implements CommitStarRZ {
 
         // 添加请求参数。
         request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1))) // String型。
-                .add("userName", userName) // int型。
-                .add("contact", contact) // double型。
-                .add("belongCompany", belongCompany); // flocat型。
+                .add("userName", userName)
+                .add("contact", contact)
+                .add("belongCompany", belongCompany)
+                .add("startCost", starPrice);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
 
 //        FileBinary binary1 = new FileBinary(new File(pic1));
-        BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1),pic1.substring(pic1.lastIndexOf("/")));
+        BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")));
         request.add("pic1", binary1);
         binary1.setUploadListener(0, mOnUploadListener);
 
 //        FileBinary binary2 = new FileBinary(new File(pic2));
-        BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2),pic1.substring(pic2.lastIndexOf("/")));
+        BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2), pic1.substring(pic2.lastIndexOf("/")));
         request.add("pic2", binary2);
         binary2.setUploadListener(1, mOnUploadListener);
 
@@ -161,7 +166,7 @@ public class CommitStarRzCore implements CommitStarRZ {
         }
     };
 
-    public void stopReques(){
+    public void stopReques() {
         // 和声明周期绑定，退出时取消这个队列中的所有请求，当然可以在你想取消的时候取消也可以，不一定和声明周期绑定。
         mQueue.cancelBySign(sign);
 

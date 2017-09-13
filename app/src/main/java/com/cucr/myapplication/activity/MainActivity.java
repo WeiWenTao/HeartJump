@@ -11,7 +11,7 @@ import android.widget.RadioGroup;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
 import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
-import com.cucr.myapplication.fragment.home.HomeFragment;
+import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -104,7 +104,8 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     }
 
     private void initView() {
-        mFragments.add(new HomeFragment());              //首页
+//        mFragments.add(new HomeFragment());              //首页
+        mFragments.add(new FragmentHotAndFocusNews());              //首页
         mFragments.add(new FragmentHuoDongAndFuLi());
 
         mFragments.add(new DaBangFragment());            //打榜
@@ -131,7 +132,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 initFragment(0);
                 break;
 
-            //预约
+            //福利
             case R.id.rb_2:
                 initFragment(1);
                 break;
@@ -147,7 +148,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 break;
 
 
-            //我的
+            //中间的other
             case R.id.rb_mid:
                 initFragment(4);
                 break;

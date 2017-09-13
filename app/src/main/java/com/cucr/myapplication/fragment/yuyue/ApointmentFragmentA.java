@@ -16,7 +16,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.YuYuePagerAdapter;
-import com.cucr.myapplication.core.starList.QueryStarList;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarList;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.FragmentStarRecommend;
 import com.cucr.myapplication.listener.OnCommonListener;

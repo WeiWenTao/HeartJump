@@ -35,6 +35,12 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+
 public class RegistActivity extends Activity implements TextWatcher {
 
     //电话号码
@@ -69,6 +75,7 @@ public class RegistActivity extends Activity implements TextWatcher {
     private Gson mGson;
     private String mPhoneNum;
     private String mSetPsw;
+    private Set<String> tags;
 
 
     @Override
@@ -235,18 +242,30 @@ public class RegistActivity extends Activity implements TextWatcher {
         new LoginCore().login(RegistActivity.this, mPhoneNum, mSetPsw, new OnLoginListener() {
             @Override
             public void onSuccess(Response<String> response) {
+                tags = new HashSet<String>();
                 String s = response.get();
                 Gson gson = new Gson();
                 LoadUserInfo loadUserInfo = gson.fromJson(s, LoadUserInfo.class);
 //                登录成功 保存密钥
                 if (loadUserInfo.isSuccess()) {
                     LoadSuccess loadSuccess = gson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+                    //设置极光推送的tag
+                    tags.add(loadSuccess.getRoleId() + "");
+                    MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
+                    JPushInterface.setTags(RegistActivity.this, tags, new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                            MyLogger.jLog().i("设置tags成功");
+                        }
+                    });
 //                    保存密钥
                     SpUtil.setParam(RegistActivity.this, SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
                     SpUtil.setParam(RegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存用户名和密码
                     SpUtil.setParam(RegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
+//                    保存认证信息
+                    SpUtil.getParam(RegistActivity.this,SpConstant.ROLEID,loadSuccess.getRoleId());
 //                    跳转到主界面
                     RegistActivity.this.startActivity(new Intent(RegistActivity.this, MainActivity.class));
                     RegistActivity.this.finish();

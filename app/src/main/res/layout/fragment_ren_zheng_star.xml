@@ -96,13 +96,13 @@
 
                 <TextView
                     style="@style/RenZheng_tv"
-                    android:text="上传证件"
+                    android:text="商演费用"
                     />
 
                 <EditText
+                    android:id="@+id/et_star_price"
                     style="@style/RenZheng_et"
-                    android:enabled="false"
-                    android:hint="请上传信息清晰的图片"
+                    android:hint="请填写商演费用"
                     />
 
                 <include layout="@layout/horizontal_line_for_ccc"/>
@@ -208,7 +208,7 @@
                 android:layout_height="@dimen/dp_40"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/shape_immediately_pay_bg"
+                android:background="@drawable/selector_shenhe"
                 android:gravity="center"
                 android:text="提交审核"
                 android:textColor="@color/white"

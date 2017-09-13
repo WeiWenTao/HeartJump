@@ -206,18 +206,22 @@
         </activity>
         <activity android:name=".activity.journey.MyJourneyActivity">
         </activity>
-        <activity android:name=".activity.journey.AddJourneyActivity">
+        <activity
+            android:name=".activity.journey.AddJourneyActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
 
         <receiver android:name=".boradReceiver.MyRecyiver">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
-                <action android:name="cn.jpush.android.intent.CONNECTION" />
-                <category android:name="com.cucr.myapplication" />
+                <action android:name="cn.jpush.android.intent.REGISTRATION"/>
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION"/>
+                <action android:name="cn.jpush.android.intent.CONNECTION"/>
+
+                <category android:name="com.cucr.myapplication"/>
             </intent-filter>
         </receiver>
     </application>

@@ -33,6 +33,12 @@ import com.cucr.myapplication.widget.text.MyClickRegist;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+
 /**
  * Created by 911 on 2017/8/10.
  */
@@ -46,6 +52,7 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
     private TextView mTv_load;
     private LoginCore mLoginCore;
     private Context mContext;
+    private Set<String> tags;
     //是否是第一次
     private boolean isFirst = true;
 
@@ -143,15 +150,21 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
             @Override
             public void onSuccess(Response<String> response) {
                 String s = response.get();
+                tags = new HashSet<>();
                 Gson gson = new Gson();
                 LoadUserInfo loadUserInfo = gson.fromJson(s, LoadUserInfo.class);
 //                登录成功 保存密钥
                 if (loadUserInfo.isSuccess()) {
                     LoadSuccess loadSuccess = gson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+                    //设置极光推送的tag
+                    tags.add(loadSuccess.getRoleId() + "");
+                    MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
 //                    保存密钥
                     SpUtil.setParam(mContext, SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
                     SpUtil.setParam(mContext, SpConstant.USER_ID, loadSuccess.getUserId());
+//                    保存认证信息
+                    SpUtil.getParam(mContext, SpConstant.ROLEID, loadSuccess.getRoleId());
 //                    存储账号和密码等信息
                     SpUtil.setParam(mContext, SpConstant.USER_NAEM, mEt_accunt.getText().toString());
                     SpUtil.setParam(mContext, SpConstant.PASSWORD, mEt_psw.getText().toString());
@@ -159,6 +172,14 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
                     MyLogger.jLog().i("PSWuseid:" + loadSuccess.getUserId());
 //                    显示吐司
                     ToastUtils.showToast(mContext, "登录成功");
+
+                    JPushInterface.setTags(mContext, tags, new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                            MyLogger.jLog().i("设置tags成功");
+                        }
+                    });
+
 //                    跳转到主界面
                     mContext.startActivity(new Intent(mContext, MainActivity.class));
                     getActivity().finish();
@@ -167,7 +188,6 @@ public class PswLoadFragment extends Fragment implements TextWatcher, View.OnCli
                     //success = false 密码错误
                     // 显示服务器返回的错误信息
                     ToastUtils.showToast(mContext, loadUserInfo.getMsg());
-
                 }
             }
 

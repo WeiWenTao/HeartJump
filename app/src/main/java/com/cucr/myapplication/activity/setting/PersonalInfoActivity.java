@@ -224,7 +224,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     //初始化对话框
     private void initDialog() {
-        mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme);
+        mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, true);
 
     }
 
@@ -258,10 +258,14 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 tv_birthday_edit.setText(birthdayMsg);
                 MyLogger.jLog().i("birthdayMsg:" + birthdayMsg);
                 mYear = date.getYear() + "";
-                mMon = (date.getMonth() + 1) + "";
+                MyLogger.jLog().i("aaa:" + date.getMonth());
+                mMon = (date.getMonth() + (isChange ? 1 : 2)) + "";
                 mDay = date.getDay() + "";
 //                } else {
-
+//                    dateText = CommonUtils.getCurrentDate();
+//                    mYear = dateText.substring(0, 4).trim();
+//                    mMon = dateText.substring(5, 7).trim();
+//                    mDay = dateText.substring(8, 10).trim();
 //                    //如果是以零开头就去掉零
 //                    if (mMon.startsWith("0")) {
 //                        mMon = mMon.substring(1);

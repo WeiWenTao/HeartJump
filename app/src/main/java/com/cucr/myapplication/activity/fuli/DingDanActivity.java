@@ -16,6 +16,7 @@ import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.login.LoadUserInfo;
 import com.cucr.myapplication.model.setting.LocationData;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDingDanStyle;
@@ -160,9 +161,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     @OnClick(R.id.tv_perform_duihuan)
     public void performDuihuan(View view) {
         initMsg();
-        //去除特殊字符
-        mReceived_local = mReceived_local.replaceAll("[^\\u4e00-\\u9fa5]", "-");
-        mCore.onDuiHuan(this, mReceived_local, mReceived_address, mReceive_person, mReceive_num, mNum, mShopId, new OnCommonListener() {
+        mCore.onDuiHuan(this, CommonUtils.replaceOtherChars(mReceived_local), mReceived_address, mReceive_person, mReceive_num, mNum, mShopId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);

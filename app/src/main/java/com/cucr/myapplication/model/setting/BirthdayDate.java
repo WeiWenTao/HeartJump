@@ -9,6 +9,16 @@ public class BirthdayDate {
     private int month;
     private int day;
 
+    public String getWeek() {
+        return week;
+    }
+
+    public void setWeek(String week) {
+        this.week = week;
+    }
+
+    private String week;
+
     public BirthdayDate() {
     }
 

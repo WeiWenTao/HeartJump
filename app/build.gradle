@@ -75,8 +75,13 @@ dependencies {
     compile 'com.yanzhenjie.nohttp:nohttp:1.1.3'
     compile 'com.yanzhenjie.nohttp:okhttp:1.1.3'
 
-    //相册选择图片
-    compile 'com.yanzhenjie:album:2.0.0-alpha'
+    //相册选择图片  这个加载太慢
+//    compile 'com.yanzhenjie:album:2.0.0-alpha'
+//    compile rootProject.ext.dependencies.album
+    compile 'com.jaikydota.imagespickers:imagespickers:1.0.6'
+
+    //Glide
+    compile 'com.github.bumptech.glide:glide:3.6.1'
 
     //数据库GreenDao
     compile 'org.greenrobot:greendao:3.1.0'

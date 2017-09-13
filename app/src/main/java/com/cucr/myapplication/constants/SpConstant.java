@@ -23,4 +23,7 @@ public class SpConstant {
 
     //用户密码
     public static final String PASSWORD = "passWord";
+
+    //身份id
+    public static final String ROLEID = "roleId";
 }
