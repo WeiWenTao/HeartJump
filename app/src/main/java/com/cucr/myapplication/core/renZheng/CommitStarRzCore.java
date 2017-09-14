@@ -45,10 +45,11 @@ public class CommitStarRzCore implements CommitStarRZ {
 
     @Override
     public void onCommStarRZ(String userName,
-                             String belongCompany ,
+                             String belongCompany,
                              String contact,
                              String starPrice,
                              String pic1, String pic2,
+                             Integer id,
                              OnCommonListener listener) {
         this.listener = listener;
         mWaitDialog = new WaitDialog(activity);
@@ -62,17 +63,25 @@ public class CommitStarRzCore implements CommitStarRZ {
                 .add("contact", contact)
                 .add("belongCompany", belongCompany)
                 .add("startCost", starPrice);
+        if (id != null) {
+            request.add("dataId", id); // flocat型。
+        }
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
 
 //        FileBinary binary1 = new FileBinary(new File(pic1));
-        BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")));
-        request.add("pic1", binary1);
-        binary1.setUploadListener(0, mOnUploadListener);
+        //"1"代表用户审核未通过 且未重新选择上传照片
+        if (pic1 != "1") {
+            BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")));
+            request.add("pic1", binary1);
+            binary1.setUploadListener(0, mOnUploadListener);
+        }
 
+        if (pic2 != "1") {
 //        FileBinary binary2 = new FileBinary(new File(pic2));
-        BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2), pic1.substring(pic2.lastIndexOf("/")));
-        request.add("pic2", binary2);
-        binary2.setUploadListener(1, mOnUploadListener);
+            BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2), pic1.substring(pic2.lastIndexOf("/")));
+            request.add("pic2", binary2);
+            binary2.setUploadListener(1, mOnUploadListener);
+        }
 
         // 设置取消标志。
         request.setCancelSign(sign);

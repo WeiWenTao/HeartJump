@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:text="2.兑换的礼品只包邮中国大陆地区，超出范围联系客服，由用户本人承担运费。"
             android:textColor="@color/color_666"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_12"
             />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:text="3.星币兑换礼品属于回馈活动，不提供发票，一经兑换，不可撤销、退货、换货、退星币。"
             android:textColor="@color/color_666"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_12"
             />
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:text="4.星币兑换礼品请确保信息填写详细、真实、准确；如若有误请及时联系客服更改信息，否则将由用户本人承担责任。"
             android:textColor="@color/color_666"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_12"
             />
     </RelativeLayout>
     

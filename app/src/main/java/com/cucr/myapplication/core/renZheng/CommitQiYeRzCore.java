@@ -44,9 +44,9 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
     }
 
     @Override
-    public void onCommStarRZ(String companyName, String userName, String contact,
+    public void onCommQiYeRZ(String companyName, String userName, String contact,
                              String companyContact, String pic1, String pic2, String pic3,
-                             OnCommonListener listener) {
+                             String text, Integer dataId, OnCommonListener listener) {
 
         this.listener = listener;
         mWaitDialog = new WaitDialog(activity);
@@ -59,20 +59,31 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
                 .add("userName", userName) // int型。
                 .add("contact", contact) // double型。
                 .add("companyName", companyName) // flocat型。
-                .add("companyContact", companyContact); // flocat型。
+                .add("companyContact", companyContact) // flocat型。
+                .add("position", text); // flocat型。
+        if (dataId != null) {
+            request.add("dataId", dataId); // flocat型。
+        }
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
 
-        BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")+1));
-        request.add("pic1", binary1);
-        binary1.setUploadListener(0, mOnUploadListener);
+        if (pic1 != "1") {
+            BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")));
+            request.add("pic1", binary1);
+            binary1.setUploadListener(0, mOnUploadListener);
+        }
 
-        BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2), pic2.substring(pic1.lastIndexOf("/")+1));
-        request.add("pic2", binary2);
-        binary2.setUploadListener(1, mOnUploadListener);
+        if (pic2 != "1") {
+            BitmapBinary binary2 = new BitmapBinary(CommonUtils.decodeBitmap(pic2), pic2.substring(pic1.lastIndexOf("/")));
+            request.add("pic2", binary2);
+            binary2.setUploadListener(1, mOnUploadListener);
+        }
 
-        BitmapBinary binary3 = new BitmapBinary(CommonUtils.decodeBitmap(pic3), pic3.substring(pic1.lastIndexOf("/")+1));
-        request.add("pic3", binary3);
-        binary2.setUploadListener(2, mOnUploadListener);
+        if (pic3 != "1") {
+            BitmapBinary binary3 = new BitmapBinary(CommonUtils.decodeBitmap(pic3), pic3.substring(pic1.lastIndexOf("/")));
+            request.add("pic3", binary3);
+            binary3.setUploadListener(2, mOnUploadListener);
+        }
+
 
         // 设置取消标志。
         request.setCancelSign(sign);

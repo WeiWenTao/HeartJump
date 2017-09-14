@@ -76,6 +76,7 @@ public class StarRZ extends Fragment {
     private Gson mGson;
     private ImageConfig imageConfig;
     private ImageLoader instance;
+    private Integer dataId;
 
     //身份证正面路径
     private String img_postive_path;
@@ -101,6 +102,14 @@ public class StarRZ extends Fragment {
     //姓名
     @ViewInject(R.id.et_name)
     EditText et_name;
+
+    //失败原因
+    @ViewInject(R.id.tv_fail_info)
+    TextView tv_fail_info;
+
+    //失败标题
+    @ViewInject(R.id.tv_fail_title)
+    TextView tv_fail_title;
 
     //联系方式
     @ViewInject(R.id.et_contact)
@@ -143,26 +152,26 @@ public class StarRZ extends Fragment {
         mQueryCore.queryRz(Constans.RZ_STAR, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("json:" + response.get());
+                MyLogger.jLog().i("明星认证");
                 RzResult rzResult = mGson.fromJson(response.get(), RzResult.class);
-                if (rzResult.isSuccess()){
+                if (rzResult.isSuccess()) {
                     RzResult.ObjBean obj = rzResult.getObj();
-                    String getUserName = obj.getUserName();  //姓名
-
                     //如果信息为空 说明未提交过审核 直接返回
-                    if (TextUtils.isEmpty(getUserName)){
+                    if (obj == null) {
                         return;
                     }
-
+                    String getUserName = obj.getUserName();  //姓名
                     String contact = obj.getContact();  //联系方式
                     String belongCompany = obj.getBelongCompany();  //所属公司
                     int result = obj.getResult();   //审核结果
                     int startCost = obj.getStartCost(); //商演费用
                     String pic1 = obj.getPic1();
+                    String info = obj.getInfo();
+                    dataId = obj.getId();
                     String pic2 = obj.getPic2();
-                    backShow(getUserName,contact,belongCompany,startCost,result,pic1,pic2);
-                }else {
-                    ToastUtils.showToast(mContext,rzResult.getMsg()+"");
+                    backShow(getUserName, contact, belongCompany, startCost, result, pic1, pic2, info);
+                } else {
+                    ToastUtils.showToast(mContext, rzResult.getMsg() + "");
                 }
             }
         });
@@ -170,29 +179,34 @@ public class StarRZ extends Fragment {
 
 
     //回显数据   result 0待审  1没通过  2通过
-    private void backShow(String auditor, String contact, String belongCompany, int startCost,int result, String pic1, String pic2) {
+    private void backShow(String auditor, String contact, String belongCompany, int startCost, int result, String pic1, String pic2, String info) {
         instance = ImageLoader.getInstance();
         et_name.setText(auditor);
         et_contact.setText(contact);
         et_belone.setText(belongCompany);
-        et_star_price.setText(""+startCost);
+        et_star_price.setText("" + startCost);
+        iv_add_pic_positive.setVisibility(View.VISIBLE);
+        iv_add_pic_nagetive.setVisibility(View.VISIBLE);
         instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive);
         instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive);
         //控件不可用
-        setView();
-        switch (result) {
-            case 0:
+        setView(false, "审核中");
 
-                tv_commit_check.setText("审核中");
-                break;
+        switch (result) {
+//            case 0:
+//                break;
 
             case 1:
-                tv_commit_check.setText("审核通过");
+                //"1"代表用户审核未通过 且未重新选择上传照片
+                img_postive_path = "1";
+                img_nagetive_path = "1";
+                setView(true, "审核未通过，点我重新提交");
+                tv_fail_info.setText(info);
+
                 break;
 
             case 2:
-                tv_commit_check.setText("审核未通过，请重新提交资料");
-                tv_commit_check.setEnabled(true);
+                tv_commit_check.setText("审核通过");
                 break;
         }
     }
@@ -320,6 +334,7 @@ public class StarRZ extends Fragment {
                     //如果是正面
                     if (whichView == iv_add_pic_positive) {
                         img_postive_path = s;
+
                     } else {
                         img_nagetive_path = s;
                     }
@@ -404,13 +419,14 @@ public class StarRZ extends Fragment {
                 et_contact.getText().toString(),
                 et_star_price.getText().toString(),
                 img_postive_path, img_nagetive_path,
+                dataId,
                 new OnCommonListener() {
                     @Override
                     public void onRequestSuccess(Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                         if (reBackMsg.isSuccess()) {
                             ToastUtils.showToast(activity, "明星认证上传成功！");
-                            setView();
+                            setView(false, "审核中");
                         } else {
                             ToastUtils.showToast(activity, reBackMsg.getMsg());
                         }
@@ -422,15 +438,23 @@ public class StarRZ extends Fragment {
     }
 
     //提交认证后 各个控件的初始化话
-    private void setView() {
-        et_name.setEnabled(false);
-        et_contact.setEnabled(false);
-        et_belone.setEnabled(false);
-        tv_commit_check.setEnabled(false);
-        tv_commit_check.setText("审核中");
-        et_star_price.setEnabled(false);
-        rl_star_shenfenzheng_negative.setEnabled(false);
-        rl_star_shenfenzheng_positive.setEnabled(false);
+    private void setView(boolean enable, String text) {
+        et_name.setEnabled(enable);
+        et_contact.setEnabled(enable);
+        et_belone.setEnabled(enable);
+        tv_commit_check.setEnabled(enable);
+        tv_commit_check.setText(text);
+        et_star_price.setEnabled(enable);
+        rl_star_shenfenzheng_negative.setEnabled(enable);
+        rl_star_shenfenzheng_positive.setEnabled(enable);
+
+        if (enable) {
+            tv_fail_info.setVisibility(View.VISIBLE);
+            tv_fail_title.setVisibility(View.VISIBLE);
+        } else {
+            tv_fail_info.setVisibility(View.GONE);
+            tv_fail_title.setVisibility(View.GONE);
+        }
     }
 
     //生命周期方法绑定

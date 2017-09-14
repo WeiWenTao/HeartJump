@@ -8,5 +8,5 @@ import com.cucr.myapplication.listener.OnCommonListener;
 
 public interface CommitQiYeRZ {
 
-    void onCommStarRZ(String companyName, String userName, String contact, String companyContact, String pic1, String pic2, String pic3, OnCommonListener listener);
+    void onCommQiYeRZ(String companyName, String userName, String contact, String companyContact, String pic1, String pic2, String pic3,String text,Integer dataId, OnCommonListener listener);
 }

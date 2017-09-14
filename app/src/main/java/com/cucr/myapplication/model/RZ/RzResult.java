@@ -70,7 +70,8 @@ public class RzResult {
         private String companyName;
         private String contact;
         private int createType;
-        private int id;
+        private String position;
+        private Integer id;
         private String info;
         private String pic1;
         private String pic2;
@@ -89,6 +90,14 @@ public class RzResult {
 
         public void setAuditor(String auditor) {
             this.auditor = auditor;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
         }
 
         public Object getAuditorTime() {
@@ -139,11 +148,11 @@ public class RzResult {
             this.createType = createType;
         }
 
-        public int getId() {
+        public Integer getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 
