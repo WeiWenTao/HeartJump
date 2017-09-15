@@ -7,26 +7,29 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.model.starJourney.StarJourneyList;
+
+import java.util.List;
 
 /**
  * Created by cucr on 2017/9/7.
  */
- public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.SimpleViewHolder> {
+public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.SimpleViewHolder> {
 
     private ItemTouchListener mItemTouchListener;
+    private List<StarJourneyList.RowsBean> rows;
 
+    public void setItemTouchListener(ItemTouchListener itemTouchListener) {
+        mItemTouchListener = itemTouchListener;
+    }
 
-//    DemoAdapter( ItemTouchListener itemTouchListener) {
-//        this.mData = data;
-//        this.mItemTouchListener = itemTouchListener;
-//    }
-
-
+    public DemoAdapter(List<StarJourneyList.RowsBean> rows) {
+        this.rows = rows;
+    }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return rows == null ? 0 : rows.size();
     }
 
     @Override
@@ -36,42 +39,46 @@ import com.cucr.myapplication.utils.ToastUtils;
     }
 
     @Override
-    public void onBindViewHolder(final SimpleViewHolder holder, int position) {
-        holder.mContent.setText("行程内容行程内容行程内容行程内容行程内容行程内容" + position);
+    public void onBindViewHolder(final SimpleViewHolder holder, final int position) {
+        StarJourneyList.RowsBean rowsBean = rows.get(position);
+        holder.mContent.setText(rowsBean.getTitle());
+        holder.tv_journey_date.setText(rowsBean.getTripTime().substring(0,10));
+        holder.tv_journey_local.setText(rowsBean.getPlace());
         holder.mSwipeItemLayout.setSwipeEnable(true);
-//        if (mItemTouchListener != null) {
+        if (mItemTouchListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    mItemTouchListener.onItemClick(holder.mContent.getText().toString());
-                    ToastUtils.showToast(v.getContext(),"条目");
+                    mItemTouchListener.onItemClcik(v, position);
                 }
             });
-
 
             if (holder.mRightMenu != null) {
                 holder.mRightMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtils.showToast(v.getContext(),"菜单");
-//                        mItemTouchListener.onRightMenuClick("right " + holder.getAdapterPosition());
+                        mItemTouchListener.onClcikDelete(v, position);
                         holder.mSwipeItemLayout.close();
                     }
                 });
-//            }
+            }
         }
     }
 
-    static class SimpleViewHolder extends RecyclerView.ViewHolder {
+    class SimpleViewHolder extends RecyclerView.ViewHolder {
 
-        private final View mRightMenu;
-        private final TextView mContent;
-        private final SwipeItemLayout mSwipeItemLayout;
+        private View mRightMenu;
+        private TextView mContent;
+        private TextView tv_journey_date;
+        private TextView tv_journey_local;
+        private SwipeItemLayout mSwipeItemLayout;
 
         SimpleViewHolder(View itemView) {
             super(itemView);
             mSwipeItemLayout = (SwipeItemLayout) itemView.findViewById(R.id.swipe_layout);
             mContent = (TextView) itemView.findViewById(R.id.tv_content);
+            tv_journey_date = (TextView) itemView.findViewById(R.id.tv_journey_date);
+            tv_journey_local = (TextView) itemView.findViewById(R.id.tv_journey_local);
             mRightMenu = itemView.findViewById(R.id.right_menu);
         }
     }

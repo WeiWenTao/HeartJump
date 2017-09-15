@@ -152,7 +152,7 @@ public class StarRZ extends Fragment {
         mQueryCore.queryRz(Constans.RZ_STAR, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("明星认证");
+                MyLogger.jLog().i("来自缓存："+response.isFromCache()+"，明星认证："+response.get());
                 RzResult rzResult = mGson.fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     RzResult.ObjBean obj = rzResult.getObj();
@@ -206,7 +206,7 @@ public class StarRZ extends Fragment {
                 break;
 
             case 2:
-                tv_commit_check.setText("审核通过");
+                tv_commit_check.setText("审核通过，重新登录账号才有效哦");
                 break;
         }
     }

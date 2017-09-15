@@ -229,7 +229,7 @@ public class QiYeRZ extends Fragment {
                 break;
 
             case 2:
-                tv_commit_check.setText("审核通过");
+                tv_commit_check.setText("审核通过，重新登录账号才有效哦");
                 break;
         }
     }

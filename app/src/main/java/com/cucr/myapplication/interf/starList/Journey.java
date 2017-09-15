@@ -20,5 +20,9 @@ public interface Journey {
     /**
      * 添加行程
      */
-    void addJourney(String place, String content, String tripTime, OnCommonListener commonListener);
+    void addJourney(String place, String content, String tripTime, OnCommonListener commonListener); /**
+
+     * 删除行程
+     */
+    void deleteJourney(int dataId, OnCommonListener commonListener);
 }

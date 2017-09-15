@@ -68,5 +68,11 @@ public class HttpContans {
     //添加行程
     public static final String ADDRESS_ADD_JOURNEY = "/interface/mobileStartTripAction/addTrip";
 
+    //删除行程
+    public static final String ADDRESS_DELETE_JOURNEY = "/interface/mobileStartTripAction/delTrip";
+
+    //查询行程列表
+    public static final String ADDRESS_QUERY_JOURNEY = "/interface/mobileStartTripAction/startTrip";
+
 
 }

@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.starListAndJourney;
 
 import android.app.Activity;
 
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.BaseCore;
@@ -24,7 +25,10 @@ import com.yanzhenjie.nohttp.rest.Response;
 public class StarJourney extends BaseCore implements Journey {
 
     private Activity mActivity;
-    private OnCommonListener onCommonListener;
+    private OnCommonListener addJourneyListener;
+    private OnCommonListener scheduleListener;
+    private OnCommonListener delJourneyListener;
+    private OnCommonListener catgoryListener;
 
 
     public StarJourney(Activity activity) {
@@ -39,19 +43,19 @@ public class StarJourney extends BaseCore implements Journey {
     //行程时间表
     @Override
     public void queryJourneySchedule(int starId, OnCommonListener commonListener) {
-
+        this.scheduleListener = commonListener;
     }
 
     //行程详细信息
     @Override
     public void queryJourneyCatgory(int starId, String time, OnCommonListener commonListener) {
-
+        this.catgoryListener = commonListener;
     }
 
     //添加行程
     @Override
     public void addJourney(String place, String content, String tripTime, OnCommonListener commonListener) {
-        this.onCommonListener = commonListener;
+        this.addJourneyListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_JOURNEY, RequestMethod.POST);
         tripTime = tripTime + " 00:00:00";
         // 添加普通参数。
@@ -60,20 +64,53 @@ public class StarJourney extends BaseCore implements Journey {
                 .add("tripTime", tripTime)
                 .add("title", content)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
-        //回调
-        HttpListener<String> callback = new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                MyLogger.jLog().i("请求成功");
-                onCommonListener.onRequestSuccess(response);
-            }
 
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                MyLogger.jLog().i("请求失败");
-            }
-        };
-        request(0, request, callback, false, true);
+        request(Constans.TYPE_ONE, request, callback, false, true);
     }
 
+    //删除行程
+    @Override
+    public void deleteJourney(int dataId, OnCommonListener commonListener) {
+        this.delJourneyListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DELETE_JOURNEY, RequestMethod.POST);
+        // 添加普通参数。
+        request.add("userId", ((int) SpUtil.getParam(mActivity, SpConstant.USER_ID, -1)))
+                .add("dataId", dataId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+
+        request(Constans.TYPE_TWO, request, callback, false, true);
+    }
+
+    //回调
+    private HttpListener<String> callback = new HttpListener<String>() {
+        @Override
+        public void onSucceed(int what, Response<String> response) {
+
+            switch (what) {
+
+                //添加行程
+                case Constans.TYPE_ONE:
+                    MyLogger.jLog().i("添加行程请求成功");
+                    addJourneyListener.onRequestSuccess(response);
+                    break;
+
+                //删除行程
+                case Constans.TYPE_TWO:
+                    MyLogger.jLog().i("添加行程请求成功");
+                    delJourneyListener.onRequestSuccess(response);
+                    break;
+
+            }
+
+        }
+
+        @Override
+        public void onFailed(int what, Response<String> response) {
+            switch (what) {
+                case Constans.TYPE_ONE:
+                    MyLogger.jLog().i("添加行程请求失败");
+                    break;
+            }
+        }
+    };
 }

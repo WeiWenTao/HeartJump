@@ -12,11 +12,13 @@ import java.util.List;
  */
 
 public class RenZhengPagrAdapter extends FragmentPagerAdapter {
-    List<Fragment> fragmentList;
+    private List<Fragment> fragmentList;
+    private List<String> mTitles;
 
-    public RenZhengPagrAdapter(FragmentManager supportFragmentManager, List<Fragment> fragmentList) {
+    public RenZhengPagrAdapter(FragmentManager supportFragmentManager, List<Fragment> fragmentList, List<String> titles) {
         super(supportFragmentManager);
         this.fragmentList = fragmentList;
+        this.mTitles = titles;
     }
 
 
@@ -33,16 +35,6 @@ public class RenZhengPagrAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
 
-        switch (position){
-
-            case 0:
-                return "明星";
-
-            case 1:
-                return "企业";
-
-        }
-
-        return null;
+        return mTitles.get(position);
     }
 }

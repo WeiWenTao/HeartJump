@@ -220,7 +220,7 @@ public class CommonUtils {
 
     }
 
-    public static void animationRotate(View view, boolean isShow){
+    public static void animationRotate(View view, boolean isShow) {
         ObjectAnimator animator;
         if (isShow) {
 
@@ -364,7 +364,7 @@ public class CommonUtils {
 //            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
-        switch(c.get(Calendar.DAY_OF_WEEK)){
+        switch (c.get(Calendar.DAY_OF_WEEK)) {
             case 1:
                 Week += "天";
                 break;
@@ -393,9 +393,9 @@ public class CommonUtils {
     }
 
     //去除特殊字符
-    public static String replaceOtherChars(String s){
+    public static String replaceOtherChars(String s) {
         s = s.replaceAll("-", "");
-        s = s.replaceAll("[^\\u4e00-\\u9fa5]", "-");
+        s = s.replaceAll("[^\\u4e00-\\u9fa5]", " ").trim();
         return s;
     }
 
