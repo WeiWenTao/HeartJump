@@ -1,6 +1,7 @@
 package com.cucr.myapplication.model.others;
 
-import android.app.Fragment;
+
+import android.support.v4.app.Fragment;
 
 /**
  * Created by cucr on 2017/8/31.

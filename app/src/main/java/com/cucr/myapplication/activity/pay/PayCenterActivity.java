@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -132,6 +133,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setEtOther();
 
             }
 
@@ -149,7 +151,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         et_other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setEtOther();
                 et_other.setCursorVisible(true);
                 CommonUtils.hideKeyBorad(v.getContext(), v, false);
 
@@ -167,6 +169,18 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
                 tv_pay_now.setText("立即充值");
             }
         });
+    }
+
+    //根据用户操作修改 “ 立即充值 ” 按钮状态
+    private void setEtOther() {
+        String s = et_other.getText().toString();
+        if (!TextUtils.isEmpty(s.trim()) && Integer.parseInt(s) > 0) {
+            tv_pay_now.setEnabled(true);
+            MyLogger.jLog().i("setEnabled(true);");
+        } else{
+            tv_pay_now.setEnabled(false);
+            MyLogger.jLog().i("setEnabled(false);");
+        }
     }
 
     @Override
@@ -203,6 +217,10 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+        //设置为可点击 // TODO: 2017/9/16  
+        tv_pay_now.setEnabled(true);
+        MyLogger.jLog().i("onCheckedChanged true");
+
         //隐藏软键盘
         CommonUtils.hideKeyBorad(this, et_other, true);
         tv_other_yuan.setVisibility(View.GONE);
@@ -210,6 +228,8 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         et_other.clearComposingText();
         et_other.setHint("其他数量");
         et_other.setCursorVisible(false);
+
+
 
 
         RadioButton rbNow = ((RadioButton) findViewById(checkedId));

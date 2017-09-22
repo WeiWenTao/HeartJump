@@ -14,7 +14,7 @@ import com.cucr.myapplication.R;
 
 public class DialogCanaleFocusStyle extends Dialog implements View.OnClickListener {
 
-
+    private TextView mTv_title;
 
     public DialogCanaleFocusStyle(Context context, int themeResId) {
         super(context, themeResId);
@@ -26,12 +26,14 @@ public class DialogCanaleFocusStyle extends Dialog implements View.OnClickListen
         setContentView(R.layout.dialog_cancle_focus);
 
         initView();
-        initTitle("黄晓明");
+//        initTitle("黄晓明");
     }
 
     public void initTitle(String text) {
-        TextView mTv_title = (TextView) findViewById(R.id.tv_cancle_focus_title);
+
         mTv_title.setText("取消关注 "+text +" 吗？");
+
+
     }
 
 
@@ -41,12 +43,14 @@ public class DialogCanaleFocusStyle extends Dialog implements View.OnClickListen
     }
 
     private void initView() {
+
         //设置点击外部消失
         setCanceledOnTouchOutside(true);
-
+        mTv_title = (TextView) findViewById(R.id.tv_cancle_title);
         TextView tv_confirm = (TextView) findViewById(R.id.tv_cancle_focus_confirm);
         TextView tv_cancle = (TextView) findViewById(R.id.tv_cancle_focus_cancle);
-
+        tv_confirm.setText("确定");
+        tv_cancle.setText("取消");
 
         tv_confirm.setOnClickListener(this);
         tv_cancle.setOnClickListener(this);

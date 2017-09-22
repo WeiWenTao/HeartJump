@@ -10,6 +10,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
 import com.cucr.myapplication.core.starListAndJourney.StarJourney;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.RZ.RzResult;
 import com.cucr.myapplication.model.starJourney.StarJourneyList;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ThreadUtils;
@@ -36,18 +37,25 @@ public class MyJourneyActivity extends BaseActivity implements ItemTouchListener
 
     @Override
     protected void initChild() {
+        mCore = new QueryJourneyList(this);
+        mJourneyCore = new StarJourney(null);
+        //查询明星行程
+        QueryStarJourneyList();
+
+
+    }
+
+    //查询明星行程
+    private void QueryStarJourneyList() {
         ThreadUtils.getInstance().execute(new Runnable() {
             @Override
             public void run() {
                 queryJourney();
             }
         });
-
     }
 
     private void queryJourney() {
-        mCore = new QueryJourneyList(this);
-        mJourneyCore = new StarJourney(null);
         mCore.QueyrStarJourney(1, 1, 1, null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -82,7 +90,7 @@ public class MyJourneyActivity extends BaseActivity implements ItemTouchListener
     //添加行程
     @OnClick(R.id.iv_journey_add)
     public void addJourney(View view) {
-        startActivity(new Intent(this, AddJourneyActivity.class));
+        startActivityForResult(new Intent(this, AddJourneyActivity.class), 1);
     }
 
     //侧滑删除
@@ -91,12 +99,23 @@ public class MyJourneyActivity extends BaseActivity implements ItemTouchListener
         mJourneyCore.deleteJourney(mRows.get(position).getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("删除了" + mRows.get(position).getTitle() + " 行程，position：" + position);
-                mRows.remove(position);
-                mAdapter.notifyItemRemoved(position);
-                mAdapter.notifyItemRangeChanged(position, mRows.size());
+                RzResult rzResult = mGson.fromJson(response.get(), RzResult.class);
+                if (rzResult.isSuccess()) {
+                    MyLogger.jLog().i("删除了" + mRows.get(position).getTitle() + " 行程，position：" + position);
+                    mRows.remove(position);
+                    mAdapter.notifyItemRemoved(position);
+                    mAdapter.notifyItemRangeChanged(position, mRows.size());
+                }else {
+                    ToastUtils.showToast(rzResult.getMsg());
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        QueryStarJourneyList();
     }
 
     @Override

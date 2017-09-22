@@ -8,6 +8,7 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.fuli.QueryFuLi;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.EncodingUtils;
+import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -45,9 +46,9 @@ public class FuLiCore implements QueryFuLi {
                 .add("rows", rows)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
-        request.setCacheKey(EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+        request.setCacheKey(HttpContans.ADDRESS_FULI_GOODS);
         //没有缓存才去请求网络
-        request.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
 
@@ -62,9 +63,9 @@ public class FuLiCore implements QueryFuLi {
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
 
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
-        request.setCacheKey(EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+        request.setCacheKey(HttpContans.ADDRESS_FULI_ACTIVE);
         //没有缓存才去请求网络
-        request.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
@@ -79,12 +80,12 @@ public class FuLiCore implements QueryFuLi {
         public void onSucceed(int what, Response<String> response) {
             switch (what) {
                 case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("福利商品请求成功");
+                    MyLogger.jLog().i("福利商品请求成功，Cache?"+response.isFromCache());
                     fuLiListener.onRequestSuccess(response);
                     break;
 
                 case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("福利活动请求成功");
+                    MyLogger.jLog().i("福利活动请求成功，Cache?"+response.isFromCache());
                     huoDongListener.onRequestSuccess(response);
                     break;
             }
@@ -93,6 +94,7 @@ public class FuLiCore implements QueryFuLi {
 
         @Override
         public void onFailed(int what, Response<String> response) {
+            HttpExceptionUtil.showTsByException(response, mActivity);
             switch (what) {
                 case Constans.TYPE_ONE:
                     MyLogger.jLog().i("福利商品请求失败");

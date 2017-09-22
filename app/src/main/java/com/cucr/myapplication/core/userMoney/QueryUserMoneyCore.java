@@ -26,10 +26,11 @@ public class QueryUserMoneyCore implements QueryUserMoney {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
     public QueryUserMoneyCore(Context context) {
         this.context = context;
+        mQueue = NoHttp.newRequestQueue();
     }
 
     @Override

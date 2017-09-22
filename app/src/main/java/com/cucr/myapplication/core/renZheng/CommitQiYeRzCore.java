@@ -30,7 +30,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
     private Object sign = new Object();
 
@@ -41,6 +41,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
 
     public CommitQiYeRzCore(Activity activity) {
         this.activity = activity;
+        mQueue = NoHttp.newRequestQueue();
     }
 
     @Override

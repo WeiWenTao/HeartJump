@@ -1,8 +1,9 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentPagerAdapter;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.cucr.myapplication.model.others.FragmentInfos;
 
@@ -26,10 +27,6 @@ public class StarPagerAdapter extends FragmentPagerAdapter {
         return fragmentInfos == null ? 0 : fragmentInfos.size();
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        return fragmentInfos.get(position).getFragment();
-    }
 
 //    @Override
 //    public int getItemPosition(Object object) {
@@ -45,5 +42,10 @@ public class StarPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return fragmentInfos.get(position).getTitle();
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return fragmentInfos.get(position).getFragment();
     }
 }

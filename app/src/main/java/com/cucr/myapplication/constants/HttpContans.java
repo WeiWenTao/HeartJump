@@ -71,8 +71,16 @@ public class HttpContans {
     //删除行程
     public static final String ADDRESS_DELETE_JOURNEY = "/interface/mobileStartTripAction/delTrip";
 
-    //查询行程列表
+    //查询 “ 我的行程 ” 列表 （根据时间表查询行程）
     public static final String ADDRESS_QUERY_JOURNEY = "/interface/mobileStartTripAction/startTrip";
 
+    //查询行程时间表
+    public static final String ADDRESS_QUERY_JOURNEY_SCHEDULE = "/interface/mobileStartTripAction/tripTimeGroup";
+
+    //粉团发布动态
+    public static final String ADDRESS_PUBLISH_FT_INFO = "/interface/mobileContentAction/applyInfo";
+
+    //查询粉团动态
+    public static final String ADDRESS_QUERY_FT_INFO = "/interface/mobileContentAction/queryInfo";
 
 }

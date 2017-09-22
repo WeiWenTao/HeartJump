@@ -7,12 +7,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.utils.MyLogger;
 
 /**
  * Created by 911 on 2017/6/27.
  */
 public class XingWenAdapter extends RecyclerView.Adapter<XingWenAdapter.XinWenHolder> {
+
+    private Context mContext;
+
+    private QueryFtInfos mQueryFtInfos;
+
     public XingWenAdapter(Context context) {
+        this.mContext = context;
+
+    }
+
+    public void setData(QueryFtInfos queryFtInfos){
+        this.mQueryFtInfos = queryFtInfos;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -45,7 +59,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<XingWenAdapter.XinWenHo
 
     @Override
     public void onBindViewHolder(XinWenHolder holder, int position) {
-
+        MyLogger.jLog().i("aaa:"+mQueryFtInfos);
     }
 
 

@@ -241,6 +241,7 @@ public class FragmentFans extends BaseFragment {
             bg.setVisibility(View.VISIBLE);
             isShow = false;
         } else {
+            bg.setEnabled(false);
             ll_show_stars.setEnabled(false);
             drawer_rcv.clearAnimation();
             drawer_rcv.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.classify_menu_out));

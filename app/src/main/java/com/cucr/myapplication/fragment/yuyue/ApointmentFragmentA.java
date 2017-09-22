@@ -1,27 +1,30 @@
 package com.cucr.myapplication.fragment.yuyue;
 
-import android.app.Fragment;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.YuYuePagerAdapter;
+import com.cucr.myapplication.adapter.SpinnerAdapter.MySpAdapter;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarList;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.FragmentStarRecommend;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -37,13 +40,23 @@ import java.util.List;
 
 public class ApointmentFragmentA extends BaseFragment {
 
-    //导航栏
-    @ViewInject(R.id.tablayout)
-    TabLayout tablayout;
+    private List<String> mList;
 
     //ViewPager
     @ViewInject(R.id.vp_recommed_star)
     ViewPager vp_recommed_star;
+
+    //sp1
+    @ViewInject(R.id.sp_1)
+    Spinner sp1;
+
+    //sp2
+    @ViewInject(R.id.sp_2)
+    Spinner sp2;
+
+    //sp3
+    @ViewInject(R.id.sp_3)
+    Spinner sp3;
 
     //头部
     @ViewInject(R.id.head)
@@ -57,13 +70,29 @@ public class ApointmentFragmentA extends BaseFragment {
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
 
+        initSP();
+
         queryStar();
 
         initHead();
 
-        initTableLayout();
 
 //        initVP();
+
+    }
+
+    private void initSP() {
+        mList = new ArrayList<>();
+        mList.add("qqqq");
+        mList.add("w");
+        mList.add("dddd");
+        mList.add("100万-150万");
+        mList.add("ww");
+
+        sp1.setAdapter(new MySpAdapter(mContext,mList));
+        sp2.setAdapter(new MySpAdapter(mContext,mList));
+        sp3.setAdapter(new MySpAdapter(mContext,mList));
+
 
     }
 
@@ -75,6 +104,7 @@ public class ApointmentFragmentA extends BaseFragment {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
                     mRows = starListInfos.getRows();
+
                     initVP();
                 } else {
                     ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
@@ -107,6 +137,9 @@ public class ApointmentFragmentA extends BaseFragment {
 
     private void initVP() {
         mFragments = new ArrayList<>();
+        for (int i = 0; i < mRows.size(); i++) {
+            MyLogger.jLog().i("i=" + i + ",mRows:" + mRows.get(i));
+        }
         mFragments.add(new FragmentStarRecommend(mRows));
 //      快速导航栏
 //      mFragments.add(new FragmentStarClassify());
@@ -117,12 +150,6 @@ public class ApointmentFragmentA extends BaseFragment {
     @Override
     protected boolean needHeader() {
         return false;
-    }
-
-    private void initTableLayout() {
-        tablayout.addTab(tablayout.newTab().setText("推荐"));
-        tablayout.addTab(tablayout.newTab().setText("全部"));
-        tablayout.setupWithViewPager(vp_recommed_star);//将导航栏和viewpager进行关联
     }
 
     //返回子类布局

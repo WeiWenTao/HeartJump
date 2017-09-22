@@ -1,72 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@color/lvbg"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lvbg"
+    >
 
     <View
-        android:layout_marginLeft="30.5dp"
         android:layout_width="1dp"
+        android:layout_height="125dp"
+        android:layout_marginLeft="30.5dp"
         android:background="#9999"
-        android:layout_height="125dp"/>
+        />
 
     <ImageView
         android:id="@+id/iv_drop"
-        android:src="@drawable/drop1"
-        android:layout_marginLeft="@dimen/dp_25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:src="@drawable/drop1"
         />
 
     <TextView
         android:id="@+id/tv_journey_date"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_toRightOf="@id/iv_drop"
-        android:textSize="@dimen/sp_13"
-        android:textColor="#666"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@id/iv_drop"
         android:text="5-28 星期日"
+        android:textColor="#666"
+        android:textSize="@dimen/sp_13"
         />
-    
+
     <RelativeLayout
-        android:layout_below="@id/tv_journey_date"
-        android:layout_alignLeft="@id/tv_journey_date"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/bg_topic"
         android:layout_width="295dp"
         android:layout_height="91dp"
+        android:layout_alignLeft="@id/tv_journey_date"
+        android:layout_below="@id/tv_journey_date"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/bg_topic"
         >
+
         <TextView
             android:id="@+id/tv_journey_catgory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginTop="23dp"
+            android:text="电影《绣春刀修罗战场》发布会"
             android:textColor="#666"
             android:textSize="@dimen/sp_13"
-            android:layout_marginTop="23dp"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:text="电影《绣春刀修罗战场》发布会"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             />
-        
+
         <ImageView
             android:id="@+id/iv_landmark"
-            android:src="@drawable/landmark1"
             android:layout_width="@dimen/dp_15"
             android:layout_height="@dimen/dp_15"
-            android:paddingRight="@dimen/dp_5"
-            android:layout_below="@id/tv_journey_catgory"
             android:layout_alignLeft="@id/tv_journey_catgory"
+            android:layout_below="@id/tv_journey_catgory"
             android:layout_marginTop="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:src="@drawable/landmark1"
             />
+
         <TextView
-            android:layout_alignTop="@id/iv_landmark"
+            android:id="@+id/tv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_landmark"
             android:layout_toRightOf="@id/iv_landmark"
+            android:text="北京"
             android:textColor="#666"
             android:textSize="@dimen/sp_12"
-            android:text="北京"
             />
     </RelativeLayout>
 

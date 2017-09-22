@@ -115,5 +115,27 @@ public class StarListInfos {
         public void setUserPicCover(String userPicCover) {
             this.userPicCover = userPicCover;
         }
+
+        @Override
+        public String toString() {
+            return "RowsBean{" +
+                    "fansCount='" + fansCount + '\'' +
+                    ", id=" + id +
+                    ", realName='" + realName + '\'' +
+                    ", startShowPic='" + startShowPic + '\'' +
+                    ", userPicCover='" + userPicCover + '\'' +
+                    ", isfollow=" + isfollow +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "StarListInfos{" +
+                "errorMsg='" + errorMsg + '\'' +
+                ", success=" + success +
+                ", total=" + total +
+                ", rows=" + rows +
+                '}';
     }
 }

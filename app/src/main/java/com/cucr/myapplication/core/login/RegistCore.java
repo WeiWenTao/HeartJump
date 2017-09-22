@@ -39,9 +39,13 @@ public class RegistCore implements Regist {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
     private Context mContext;
+
+    public RegistCore() {
+        mQueue = NoHttp.newRequestQueue();
+    }
 
 
     @Override

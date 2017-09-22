@@ -1,21 +1,28 @@
 package com.cucr.myapplication.activity.setting;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.RenZhengPagrAdapter;
 import com.cucr.myapplication.fragment.renzheng.QiYeRZ;
 import com.cucr.myapplication.fragment.renzheng.StarRZ;
+import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
+
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenZhengActivity extends BaseActivity {
+public class RenZhengActivity extends FragmentActivity {
 
     private List<String> mTitles;
 
@@ -30,16 +37,19 @@ public class RenZhengActivity extends BaseActivity {
     List<Fragment> mFragmentList;
 
     @Override
-    protected void initChild() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ren_zhenng);
+        ViewUtils.inject(this);
         initView();
     }
 
-    @Override
-    protected int getChildRes() {
-        return R.layout.activity_ren_zhenng;
-    }
-
     private void initView() {
+
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
+
+
         mFragmentList = new ArrayList<>();
         mTitles = new ArrayList<>();
         mTitles.add("明星");
@@ -52,6 +62,11 @@ public class RenZhengActivity extends BaseActivity {
 
         //TabLayou绑定ViewPager
         tl_tab.setupWithViewPager(vp_ren_zheng,true);
+    }
+
+    @OnClick(R.id.iv_base_back)
+    public void back(View view){
+        finish();
     }
 
 }

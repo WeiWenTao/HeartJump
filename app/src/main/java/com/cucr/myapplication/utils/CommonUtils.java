@@ -354,16 +354,6 @@ public class CommonUtils {
     //根据日期获取星期
     public static String getWeek(Calendar c) {
         String Week = "星期";
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");//也可将此值当参数传进来
-//        Date  curDate = new Date(System.currentTimeMillis());
-//        String pTime = format.format(curDate);
-//        Calendar c = Calendar.getInstance();
-//        try {
-//            c.setTime(format.parse(pTime));
-//        } catch (ParseException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
         switch (c.get(Calendar.DAY_OF_WEEK)) {
             case 1:
                 Week += "天";

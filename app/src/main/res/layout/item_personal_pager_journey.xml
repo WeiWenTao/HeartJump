@@ -53,16 +53,13 @@
                         android:layout_marginLeft="53dp"
                         android:layout_marginRight="53dp"
                         app:lwvHighlightColor="#f68d89"
-                        app:lwvIntervalFactor="1.2"
+                        app:lwvIntervalFactor="1.8"
                         />
 
 
                 </LinearLayout>
 
             <!--</android.support.v7.widget.Toolbar>-->
-
-
-
 
 
         <!--</android.support.design.widget.AppBarLayout>-->

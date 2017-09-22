@@ -68,10 +68,8 @@ public class PersonalMainPagerActivity extends Activity {
 
         initHead();
 
-
         initVP();
         initIndicator();
-
 
 
     }

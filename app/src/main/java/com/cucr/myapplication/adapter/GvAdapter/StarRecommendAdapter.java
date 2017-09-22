@@ -36,6 +36,7 @@ public class StarRecommendAdapter extends BaseAdapter {
     private List<StarListInfos.RowsBean> rows;
     private Activity activity;
     private FocusCore mCore;
+    private int newPosition;
 
     public void setCheck(int position) {
         checked = position;
@@ -57,7 +58,11 @@ public class StarRecommendAdapter extends BaseAdapter {
         mDialogCanaleFocusStyle.setOnClickBtListener(new DialogCanaleFocusStyle.OnClickBtListener() {
             @Override
             public void clickConfirm() {
-                mFl.setVisibility(View.GONE);
+//                mFl.setVisibility(View.GONE);
+                StarListInfos.RowsBean rowsBean = rows.get(newPosition);
+                mCore.cancaleFocus(rowsBean.getId());
+                rowsBean.setIsfollow(0);
+                notifyDataSetChanged();
                 mDialogCanaleFocusStyle.dismiss();
             }
 
@@ -105,12 +110,15 @@ public class StarRecommendAdapter extends BaseAdapter {
         tv_star_fans.setText(rowsBean.getFansCount());
 
         //明星姓名
-        final String realName = rowsBean.getRealName();
+//        final String realName = rowsBean.getRealName();
+//        final int starId = rowsBean.getId();
+        String realName = rowsBean.getRealName();
         final int starId = rowsBean.getId();
         tv_star_name.setText(realName);
 
         //是否关注  0：未关注      1：已关注
         final int isfollow = rowsBean.getIsfollow();
+
         if (isfollow == 0) {
             tv_focus.setText("加关注");
             tv_focus.setTextColor(resources.getColor(R.color.pink));
@@ -129,9 +137,13 @@ public class StarRecommendAdapter extends BaseAdapter {
                     mCore.toFocus(starId);
                     rowsBean.setIsfollow(1);
                 } else {
+                    mDialogCanaleFocusStyle.show();
+                    mDialogCanaleFocusStyle.initTitle(rows.get(position).getRealName());
+                    newPosition = position;
                     MyLogger.jLog().i("取消关注。。。");
-                    mCore.cancaleFocus(starId);
-                    rowsBean.setIsfollow(0);
+
+//                    mCore.cancaleFocus(starId);
+//                    rowsBean.setIsfollow(0);
                 }
                 notifyDataSetChanged();
             }
@@ -149,7 +161,7 @@ public class StarRecommendAdapter extends BaseAdapter {
         return cvh.convertView;
     }
 
-    public void stop(){
+    public void stop() {
         mCore.stopRequest();
     }
 }

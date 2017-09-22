@@ -14,32 +14,25 @@
         android:background="@color/blue_black"
         >
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="@dimen/dp_55"
-            android:layout_marginRight="@dimen/dp_55"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/pink"
-            app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/white"
-            ></android.support.design.widget.TabLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:text="预约艺人"
+            android:textColor="@color/pink"
+            android:textSize="@dimen/sp_18"
+            />
 
         <ImageView
             android:id="@+id/iv_search"
             android:layout_width="41dp"
             android:layout_height="35dp"
-            android:paddingRight="@dimen/dp_20"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="14dp"
             android:layout_marginLeft="@dimen/dp_10"
+            android:paddingBottom="14dp"
+            android:paddingRight="@dimen/dp_20"
             android:src="@drawable/icon_search"
             />
 
@@ -49,13 +42,75 @@
             android:layout_height="44dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:paddingBottom="13dp"
             android:layout_marginRight="@dimen/dp_10"
+            android:paddingBottom="13dp"
             android:paddingLeft="18dp"
             android:paddingTop="10dp"
             android:src="@drawable/icon_msg"
             />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        >
+
+
+        <Spinner
+            android:id="@+id/sp_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:overlapAnchor="false"
+            android:spinnerMode="dropdown"
+            ></Spinner>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="#ddd"
+            />
+
+        <Spinner
+            android:id="@+id/sp_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:overlapAnchor="false"
+            ></Spinner>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="#ddd"
+            />
+
+        <Spinner
+            android:id="@+id/sp_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:overlapAnchor="false"
+            ></Spinner>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#eee"
+        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_recommed_star"

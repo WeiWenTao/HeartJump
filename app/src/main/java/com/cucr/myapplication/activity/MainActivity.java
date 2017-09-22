@@ -1,10 +1,11 @@
 package com.cucr.myapplication.activity;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -25,7 +26,7 @@ import java.util.List;
 
 import cn.sharesdk.framework.ShareSDK;
 
-public class MainActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
 
     private List<Fragment> mFragments = new ArrayList<>();
     private RadioGroup mRg_mian_fragments;
@@ -100,7 +101,8 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
 
     //根据常过来的索引切换fragment
     private void initFragment(int i) {
-        getFragmentManager().beginTransaction().replace(R.id.ll_container, mFragments.get(i)).commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.ll_container, mFragments.get(i)).commit() ;
     }
 
     private void initView() {
@@ -112,7 +114,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         mFragments.add(new MineFragment());              //我的
 
         //TODO
-//        if (明星用户) {
+//        if (企业用户) {
 //        mFragments.add(new ApointmentFragmentA());
 //        }else(其他用户){
         mFragments.add(new FragmentFans());              //其他

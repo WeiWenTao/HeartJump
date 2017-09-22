@@ -26,7 +26,7 @@ public class QueryBannerCore implements QueryHomeBanner {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue;
+    private RequestQueue mQueue = NoHttp.newRequestQueue();;
     private OnCommonListener commonListener;
 
     private Activity activity;
@@ -39,7 +39,6 @@ public class QueryBannerCore implements QueryHomeBanner {
     public void queryBanner(OnCommonListener commonListener) {
         this.commonListener = commonListener;
         flag = new Object();
-        mQueue = NoHttp.newRequestQueue();
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HOME_BANNER, RequestMethod.POST);
 

@@ -1,6 +1,8 @@
 package com.cucr.myapplication;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -19,7 +21,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class MyApplication extends Application {
     private static MyApplication _instance;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -69,6 +70,12 @@ public class MyApplication extends Application {
 
         //Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(configuration);
+    }
+
+    //解决重复依赖bug
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base); MultiDex.install(this);
     }
 
     public static MyApplication getInstance() {

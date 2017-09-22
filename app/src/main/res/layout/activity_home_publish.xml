@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_home_lv_catgory"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cucr.myapplication.activity.home.PublishActivity"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.fenTuan.PublishActivity"
     >
 
     <RelativeLayout
@@ -22,13 +23,16 @@
             />
 
         <TextView
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_alignParentRight="true"
+            android:id="@+id/tv_publish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="13dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
             android:text="发布"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -38,63 +42,88 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         >
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
             <EditText
                 android:id="@+id/et_publish"
-                android:textColorHint="#bfbfbf"
-                android:textSize="@dimen/sp_15"
-                android:background="@null"
-                android:gravity="top"
-                android:layout_margin="@dimen/dp_10"
-                android:hint="说点什么呢......"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="说点什么呢......"
+                android:textColorHint="#bfbfbf"
+                android:textSize="@dimen/sp_15"
                 />
         </ScrollView>
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_et_foot"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:background="#f9f9f9"-->
-                <!--android:gravity="center_vertical"-->
-                <!--&gt;-->
-                <!--<ImageView-->
-                    <!--android:layout_marginLeft="@dimen/dp_10"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:src="@drawable/icon_img"-->
-                    <!--/>-->
-                <!--<ImageView-->
-                    <!--android:layout_marginLeft="50dp"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:src="@drawable/icon_ait"-->
-                    <!--/>-->
-                <!--<ImageView-->
-                    <!--android:layout_marginLeft="50dp"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:src="@drawable/icon_jing"-->
-                    <!--/>-->
-                <!--<ImageView-->
-                    <!--android:layout_marginLeft="50dp"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:src="@drawable/icon_emo"-->
-                    <!--/>-->
-                <!---->
-            <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+        <!--android:id="@+id/ll_et_foot"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="#f9f9f9"-->
+        <!--android:gravity="center_vertical"-->
+        <!--&gt;-->
+        <!--<ImageView-->
+        <!--android:layout_marginLeft="@dimen/dp_10"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:src="@drawable/icon_img"-->
+        <!--/>-->
+        <!--<ImageView-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:src="@drawable/icon_ait"-->
+        <!--/>-->
+        <!--<ImageView-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:src="@drawable/icon_jing"-->
+        <!--/>-->
+        <!--<ImageView-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:src="@drawable/icon_emo"-->
+        <!--/>-->
+        <!---->
+        <!--</LinearLayout>-->
 
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#ccc"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_15"
+        android:text="添加图片或视频"
+        android:textColor="@color/color_666"
+        android:textSize="@dimen/sp_12"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/picture_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_10"
+        ></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

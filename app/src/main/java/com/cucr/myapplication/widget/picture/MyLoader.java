@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cucr.myapplication.R;
 import com.jaiky.imagespickers.ImageLoader;
 
@@ -14,10 +15,13 @@ import com.jaiky.imagespickers.ImageLoader;
 public class MyLoader implements ImageLoader {
     @Override
     public void displayImage(Context context, String path, ImageView imageView) {
+        RequestOptions options = new RequestOptions();
+        options.centerCrop()
+                .placeholder(R.drawable.global_img_default);
         Glide.with(context)
                 .load(path)
-                .placeholder(R.drawable.global_img_default)
-                .centerCrop()
+                .apply(options)
                 .into(imageView);
+
     }
 }

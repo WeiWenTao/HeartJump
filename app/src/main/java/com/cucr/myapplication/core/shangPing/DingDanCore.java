@@ -68,6 +68,8 @@ public class DingDanCore extends BaseCore implements DuiHuanDingDan {
                 MyLogger.jLog().i("请求失败");
             }
         };
+
+
         request(0, request, callback, false, true);
     }
 }

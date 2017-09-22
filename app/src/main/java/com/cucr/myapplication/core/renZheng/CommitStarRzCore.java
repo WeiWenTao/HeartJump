@@ -30,7 +30,7 @@ public class CommitStarRzCore implements CommitStarRZ {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
     private Object sign = new Object();
 
@@ -41,6 +41,7 @@ public class CommitStarRzCore implements CommitStarRZ {
 
     public CommitStarRzCore(Activity activity) {
         this.activity = activity;
+        mQueue = NoHttp.newRequestQueue();
     }
 
     @Override

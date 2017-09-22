@@ -253,4 +253,16 @@
         <!--<item name="android:layout_centerHorizontal">true</item>-->
         <!--<item name="android:layout_marginBottom">14dp</item>-->
     </style>
+
+    <!--Spinner-->
+    <style name="SpinnerStyle">
+
+        <item name="colorAccent">#ff0</item>
+        <item name="colorControlNormal">#ddffffff</item> <!--改变了spinner的颜色  -->
+    </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

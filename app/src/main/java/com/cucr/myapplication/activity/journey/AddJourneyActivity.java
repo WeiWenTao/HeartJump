@@ -40,7 +40,7 @@ public class AddJourneyActivity extends BaseActivity {
 
 
     private StarJourney mCore;
-
+    private Intent mIntent;
 
     private String mProvince = "";
     private String mCity = "";

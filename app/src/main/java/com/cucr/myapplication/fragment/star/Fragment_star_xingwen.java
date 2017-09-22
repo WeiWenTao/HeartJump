@@ -3,6 +3,7 @@ package com.cucr.myapplication.fragment.star;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
 /**
  * Created by 911 on 2017/6/24.
  */
-public class Fragment_star_xingwen extends android.app.Fragment {
+public class Fragment_star_xingwen extends Fragment {
 
     View view;
 

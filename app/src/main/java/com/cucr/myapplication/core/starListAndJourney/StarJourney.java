@@ -26,9 +26,8 @@ public class StarJourney extends BaseCore implements Journey {
 
     private Activity mActivity;
     private OnCommonListener addJourneyListener;
-    private OnCommonListener scheduleListener;
     private OnCommonListener delJourneyListener;
-    private OnCommonListener catgoryListener;
+
 
 
     public StarJourney(Activity activity) {
@@ -40,17 +39,7 @@ public class StarJourney extends BaseCore implements Journey {
         return mActivity;
     }
 
-    //行程时间表
-    @Override
-    public void queryJourneySchedule(int starId, OnCommonListener commonListener) {
-        this.scheduleListener = commonListener;
-    }
 
-    //行程详细信息
-    @Override
-    public void queryJourneyCatgory(int starId, String time, OnCommonListener commonListener) {
-        this.catgoryListener = commonListener;
-    }
 
     //添加行程
     @Override
@@ -96,7 +85,7 @@ public class StarJourney extends BaseCore implements Journey {
 
                 //删除行程
                 case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("添加行程请求成功");
+                    MyLogger.jLog().i("删除行程请求成功");
                     delJourneyListener.onRequestSuccess(response);
                     break;
 
@@ -109,6 +98,10 @@ public class StarJourney extends BaseCore implements Journey {
             switch (what) {
                 case Constans.TYPE_ONE:
                     MyLogger.jLog().i("添加行程请求失败");
+                    break;
+
+                case Constans.TYPE_TWO:
+                    MyLogger.jLog().i("删除行程请求失败");
                     break;
             }
         }
