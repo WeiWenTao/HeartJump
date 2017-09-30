@@ -1,34 +1,26 @@
 package com.cucr.myapplication.model.fenTuan;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2017/9/22.
  */
 
-public class QueryFtInfos {
+public class QueryFtInfos implements Serializable {
+
 
     /**
      * errorMsg :
-     * rows : [{"attrFileList":[{"contentId":"2","fileContent":"","fileUrl":"file111222","id":8,"locationUrl":"","sort":null,"type":0},{"contentId":"2","fileContent":"","fileUrl":"file111","id":7,"locationUrl":"","sort":null,"type":0}],"commentCount":null,"content":"测试内容","creaetTime":"2017-08-30 09:38:42","createUserId":1,"createUserName":"系统管理员","dataType":1,"fansTeam":{"contentCount":1,"fansCount":1,"fansTeamName":"李玟de粉丝团","id":7,"managerId":1,"managerName":"系统管理员","startId":17,"startName":"李玟"},"giveUpCount":0,"id":2,"readCount":0,"remarks":"","title":"测试新闻","type":1}]
+     * rows : [{"attrFileList":[{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/f7f968ee-10f9-4fc5-8ba2-823581644ea9.jpg","id":55,"locationUrl":"","sort":7,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/67fbed2f-9c2d-4134-8570-5fba42a1351d.png","id":56,"locationUrl":"","sort":6,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/46bb568b-807a-498b-a951-576e8a75acaa.png","id":57,"locationUrl":"","sort":5,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/f44e36bd-950b-4b58-afa6-b2ce6d1e252a.png","id":50,"locationUrl":"","sort":0,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/5217653a-319d-418d-9f38-068effc5ae4c.png","id":58,"locationUrl":"","sort":1,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/35b058a1-0325-4ab4-9046-84ef3fba7b1c.jpg","id":53,"locationUrl":"","sort":4,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/1f88b8ba-2074-4ebe-9058-13bd919a290f.png","id":52,"locationUrl":"","sort":2,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/567e8690-9c8a-4e9c-a21e-6d4da66ba7ac.png","id":51,"locationUrl":"","sort":3,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/a43fa350-399e-4f0e-a2ca-8cd7488a9449.jpg","id":54,"locationUrl":"","sort":8,"timeCount":null,"type":0,"videoPagePic":""}],"commentCount":null,"content":"","creaetTime":"2017-09-22 14:06:45","createUserId":22,"createUserName":"000","dataType":1,"fansTeam":{"contentCount":100,"fansCount":100,"fansTeamName":"微文滔的粉丝团","id":5,"managerId":1,"managerName":"系统管理员","startId":5,"startName":"微文滔"},"giveUpCount":null,"id":14,"isGiveUp":false,"readCount":null,"remarks":"","title":"","type":1,"userHeadPortrait":"123"},{"attrFileList":[],"commentCount":null,"content":"1111111","creaetTime":"2017-09-22 11:51:06","createUserId":22,"createUserName":"000","dataType":1,"fansTeam":{"contentCount":100,"fansCount":100,"fansTeamName":"微文滔的粉丝团","id":5,"managerId":1,"managerName":"系统管理员","startId":5,"startName":"微文滔"},"giveUpCount":null,"id":13,"isGiveUp":false,"readCount":null,"remarks":"","title":"","type":0,"userHeadPortrait":"123"},{"attrFileList":[{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/f82b0adb-4079-498c-bbb1-c82a58726c1c.png","id":41,"locationUrl":"","sort":2,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/80100e45-7f51-48ce-9b5f-d5648cd90aa5.png","id":47,"locationUrl":"","sort":4,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/4c543f04-1159-47c4-a59c-076495ca7701.png","id":48,"locationUrl":"","sort":3,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/714e45d2-316e-4146-aeec-dee437173279.png","id":46,"locationUrl":"","sort":1,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/a5c3e347-edc9-47e1-85c6-e7343adf3081.png","id":43,"locationUrl":"","sort":7,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/4dbad387-6aaa-4dc8-b663-b0d8939b4185.jpg","id":44,"locationUrl":"","sort":6,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/6d7d77b8-eef2-40a7-a6b8-9f9d07aaa7ea.jpg","id":42,"locationUrl":"","sort":8,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/2f5ed950-8a05-468b-9faa-6d2017ab02e4.png","id":45,"locationUrl":"","sort":5,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"9","fileContent":"","fileUrl":"/static/yuanshi_image/e76bf5ee-edb5-41eb-82d0-1de222398c28.jpg","id":49,"locationUrl":"","sort":0,"timeCount":null,"type":0,"videoPagePic":""}],"commentCount":null,"content":"123","creaetTime":"2017-09-22 11:44:05","createUserId":22,"createUserName":"000","dataType":1,"fansTeam":{"contentCount":100,"fansCount":100,"fansTeamName":"微文滔的粉丝团","id":5,"managerId":1,"managerName":"系统管理员","startId":5,"startName":"微文滔"},"giveUpCount":null,"id":9,"isGiveUp":false,"readCount":null,"remarks":"","title":"","type":1,"userHeadPortrait":"123"}]
      * success : true
-     * total : 1
+     * total : 3
      */
 
     private String errorMsg;
-    private boolean success;
-    private int total;
+    private Boolean success;
+    private Integer total;
     private List<RowsBean> rows;
-
-    @Override
-    public String toString() {
-        return "QueryFtInfos{" +
-                "errorMsg='" + errorMsg + '\'' +
-                ", success=" + success +
-                ", total=" + total +
-                ", rows=" + rows +
-                '}';
-    }
 
     public String getErrorMsg() {
         return errorMsg;
@@ -38,19 +30,19 @@ public class QueryFtInfos {
         this.errorMsg = errorMsg;
     }
 
-    public boolean isSuccess() {
+    public Boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(Boolean success) {
         this.success = success;
     }
 
-    public int getTotal() {
-        return total;
+    public Integer getTotal() {
+        return total == null ? 0 : total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Integer total) {
         this.total = total;
     }
 
@@ -62,7 +54,7 @@ public class QueryFtInfos {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         @Override
         public String toString() {
             return "RowsBean{" +
@@ -75,49 +67,54 @@ public class QueryFtInfos {
                     ", fansTeam=" + fansTeam +
                     ", giveUpCount=" + giveUpCount +
                     ", id=" + id +
+                    ", isGiveUp=" + isGiveUp +
                     ", readCount=" + readCount +
                     ", remarks='" + remarks + '\'' +
                     ", title='" + title + '\'' +
                     ", type=" + type +
+                    ", userHeadPortrait='" + userHeadPortrait + '\'' +
                     ", attrFileList=" + attrFileList +
                     '}';
         }
 
         /**
-         * attrFileList : [{"contentId":"2","fileContent":"","fileUrl":"file111222","id":8,"locationUrl":"","sort":null,"type":0},{"contentId":"2","fileContent":"","fileUrl":"file111","id":7,"locationUrl":"","sort":null,"type":0}]
+         * attrFileList : [{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/f7f968ee-10f9-4fc5-8ba2-823581644ea9.jpg","id":55,"locationUrl":"","sort":7,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/67fbed2f-9c2d-4134-8570-5fba42a1351d.png","id":56,"locationUrl":"","sort":6,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/46bb568b-807a-498b-a951-576e8a75acaa.png","id":57,"locationUrl":"","sort":5,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/f44e36bd-950b-4b58-afa6-b2ce6d1e252a.png","id":50,"locationUrl":"","sort":0,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/5217653a-319d-418d-9f38-068effc5ae4c.png","id":58,"locationUrl":"","sort":1,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/35b058a1-0325-4ab4-9046-84ef3fba7b1c.jpg","id":53,"locationUrl":"","sort":4,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/1f88b8ba-2074-4ebe-9058-13bd919a290f.png","id":52,"locationUrl":"","sort":2,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/567e8690-9c8a-4e9c-a21e-6d4da66ba7ac.png","id":51,"locationUrl":"","sort":3,"timeCount":null,"type":0,"videoPagePic":""},{"contentId":"14","fileContent":"","fileUrl":"/static/yuanshi_image/a43fa350-399e-4f0e-a2ca-8cd7488a9449.jpg","id":54,"locationUrl":"","sort":8,"timeCount":null,"type":0,"videoPagePic":""}]
          * commentCount : null
-         * content : 测试内容
-         * creaetTime : 2017-08-30 09:38:42
-         * createUserId : 1
-         * createUserName : 系统管理员
+         * content :
+         * creaetTime : 2017-09-22 14:06:45
+         * createUserId : 22
+         * createUserName : 000
          * dataType : 1
-         * fansTeam : {"contentCount":1,"fansCount":1,"fansTeamName":"李玟de粉丝团","id":7,"managerId":1,"managerName":"系统管理员","startId":17,"startName":"李玟"}
-         * giveUpCount : 0
-         * id : 2
-         * readCount : 0
+         * fansTeam : {"contentCount":100,"fansCount":100,"fansTeamName":"微文滔的粉丝团","id":5,"managerId":1,"managerName":"系统管理员","startId":5,"startName":"微文滔"}
+         * giveUpCount : null
+         * id : 14
+         * isGiveUp : false
+         * readCount : null
          * remarks :
-         * title : 测试新闻
+         * title :
          * type : 1
+         * userHeadPortrait : 123
          */
 
         private Integer commentCount;
         private String content;
         private String creaetTime;
-        private int createUserId;
+        private Integer createUserId;
         private String createUserName;
-        private int dataType;
+        private Integer dataType;
         private FansTeamBean fansTeam;
-        private int giveUpCount;
-        private int id;
-        private int readCount;
+        private Integer giveUpCount;
+        private Integer id;
+        private Boolean isGiveUp;
+        private Integer readCount;
         private String remarks;
         private String title;
-        private int type;
+        private Integer type;
+        private String userHeadPortrait;
         private List<AttrFileListBean> attrFileList;
 
-
         public Integer getCommentCount() {
-            return commentCount;
+            return commentCount == null ? 0 : commentCount;
         }
 
         public void setCommentCount(Integer commentCount) {
@@ -140,11 +137,11 @@ public class QueryFtInfos {
             this.creaetTime = creaetTime;
         }
 
-        public int getCreateUserId() {
-            return createUserId;
+        public Integer getCreateUserId() {
+            return createUserId == null ? 0 : createUserId;
         }
 
-        public void setCreateUserId(int createUserId) {
+        public void setCreateUserId(Integer createUserId) {
             this.createUserId = createUserId;
         }
 
@@ -156,11 +153,11 @@ public class QueryFtInfos {
             this.createUserName = createUserName;
         }
 
-        public int getDataType() {
-            return dataType;
+        public Integer getDataType() {
+            return dataType == null ? 0 : dataType;
         }
 
-        public void setDataType(int dataType) {
+        public void setDataType(Integer dataType) {
             this.dataType = dataType;
         }
 
@@ -172,27 +169,35 @@ public class QueryFtInfos {
             this.fansTeam = fansTeam;
         }
 
-        public int getGiveUpCount() {
-            return giveUpCount;
+        public Integer getGiveUpCount() {
+            return giveUpCount == null ? 0 : giveUpCount;
         }
 
-        public void setGiveUpCount(int giveUpCount) {
+        public void setGiveUpCount(Integer giveUpCount) {
             this.giveUpCount = giveUpCount;
         }
 
-        public int getId() {
-            return id;
+        public Integer getId() {
+            return id == null ? 0 : id;
         }
 
-        public void setId(int id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 
-        public int getReadCount() {
-            return readCount;
+        public Boolean isIsGiveUp() {
+            return isGiveUp;
         }
 
-        public void setReadCount(int readCount) {
+        public void setIsGiveUp(Boolean isGiveUp) {
+            this.isGiveUp = isGiveUp;
+        }
+
+        public Integer getReadCount() {
+            return readCount == null ? 0 : readCount;
+        }
+
+        public void setReadCount(Integer readCount) {
             this.readCount = readCount;
         }
 
@@ -212,12 +217,20 @@ public class QueryFtInfos {
             this.title = title;
         }
 
-        public int getType() {
-            return type;
+        public Integer getType() {
+            return type == null ? 0 : type;
         }
 
-        public void setType(int type) {
+        public void setType(Integer type) {
             this.type = type;
+        }
+
+        public String getUserHeadPortrait() {
+            return userHeadPortrait;
+        }
+
+        public void setUserHeadPortrait(String userHeadPortrait) {
+            this.userHeadPortrait = userHeadPortrait;
         }
 
         public List<AttrFileListBean> getAttrFileList() {
@@ -229,53 +242,39 @@ public class QueryFtInfos {
         }
 
         public static class FansTeamBean {
-            @Override
-            public String toString() {
-                return "FansTeamBean{" +
-                        "contentCount=" + contentCount +
-                        ", fansCount=" + fansCount +
-                        ", fansTeamName='" + fansTeamName + '\'' +
-                        ", id=" + id +
-                        ", managerId=" + managerId +
-                        ", managerName='" + managerName + '\'' +
-                        ", startId=" + startId +
-                        ", startName='" + startName + '\'' +
-                        '}';
-            }
-
             /**
-             * contentCount : 1
-             * fansCount : 1
-             * fansTeamName : 李玟de粉丝团
-             * id : 7
+             * contentCount : 100
+             * fansCount : 100
+             * fansTeamName : 微文滔的粉丝团
+             * id : 5
              * managerId : 1
              * managerName : 系统管理员
-             * startId : 17
-             * startName : 李玟
+             * startId : 5
+             * startName : 微文滔
              */
 
-            private int contentCount;
-            private int fansCount;
+            private Integer contentCount;
+            private Integer fansCount;
             private String fansTeamName;
-            private int id;
-            private int managerId;
+            private Integer id;
+            private Integer managerId;
             private String managerName;
-            private int startId;
+            private Integer startId;
             private String startName;
 
-            public int getContentCount() {
-                return contentCount;
+            public Integer getContentCount() {
+                return contentCount == null ? 0 : contentCount;
             }
 
-            public void setContentCount(int contentCount) {
+            public void setContentCount(Integer contentCount) {
                 this.contentCount = contentCount;
             }
 
-            public int getFansCount() {
-                return fansCount;
+            public Integer getFansCount() {
+                return fansCount == null ? 0 : fansCount;
             }
 
-            public void setFansCount(int fansCount) {
+            public void setFansCount(Integer fansCount) {
                 this.fansCount = fansCount;
             }
 
@@ -287,19 +286,19 @@ public class QueryFtInfos {
                 this.fansTeamName = fansTeamName;
             }
 
-            public int getId() {
-                return id;
+            public Integer getId() {
+                return id == null ? 0 : id;
             }
 
-            public void setId(int id) {
+            public void setId(Integer id) {
                 this.id = id;
             }
 
-            public int getManagerId() {
-                return managerId;
+            public Integer getManagerId() {
+                return managerId == null ? 0 : managerId;
             }
 
-            public void setManagerId(int managerId) {
+            public void setManagerId(Integer managerId) {
                 this.managerId = managerId;
             }
 
@@ -311,11 +310,11 @@ public class QueryFtInfos {
                 this.managerName = managerName;
             }
 
-            public int getStartId() {
-                return startId;
+            public Integer getStartId() {
+                return startId == null ? 0 : startId;
             }
 
-            public void setStartId(int startId) {
+            public void setStartId(Integer startId) {
                 this.startId = startId;
             }
 
@@ -328,24 +327,43 @@ public class QueryFtInfos {
             }
         }
 
-        public static class AttrFileListBean {
+        public static class AttrFileListBean implements Serializable {
+            @Override
+            public String toString() {
+                return "AttrFileListBean{" +
+                        "contentId='" + contentId + '\'' +
+                        ", fileContent='" + fileContent + '\'' +
+                        ", fileUrl='" + fileUrl + '\'' +
+                        ", id=" + id +
+                        ", locationUrl='" + locationUrl + '\'' +
+                        ", sort=" + sort +
+                        ", timeCount=" + timeCount +
+                        ", type=" + type +
+                        ", videoPagePic='" + videoPagePic + '\'' +
+                        '}';
+            }
+
             /**
-             * contentId : 2
+             * contentId : 14
              * fileContent :
-             * fileUrl : file111222
-             * id : 8
+             * fileUrl : /static/yuanshi_image/f7f968ee-10f9-4fc5-8ba2-823581644ea9.jpg
+             * id : 55
              * locationUrl :
-             * sort : null
+             * sort : 7
+             * timeCount : null
              * type : 0
+             * videoPagePic :
              */
 
             private String contentId;
             private String fileContent;
             private String fileUrl;
-            private int id;
+            private Integer id;
             private String locationUrl;
-            private Object sort;
-            private int type;
+            private Integer sort;
+            private Integer timeCount;
+            private Integer type;
+            private String videoPagePic;
 
             public String getContentId() {
                 return contentId;
@@ -371,11 +389,11 @@ public class QueryFtInfos {
                 this.fileUrl = fileUrl;
             }
 
-            public int getId() {
-                return id;
+            public Integer getId() {
+                return id == null ? 0 : id;
             }
 
-            public void setId(int id) {
+            public void setId(Integer id) {
                 this.id = id;
             }
 
@@ -387,21 +405,47 @@ public class QueryFtInfos {
                 this.locationUrl = locationUrl;
             }
 
-            public Object getSort() {
-                return sort;
+            public Integer getSort() {
+                return sort == null ? 0 : sort;
             }
 
-            public void setSort(Object sort) {
+            public void setSort(Integer sort) {
                 this.sort = sort;
             }
 
-            public int getType() {
-                return type;
+            public Integer getTimeCount() {
+                return timeCount == null ? 0 : timeCount;
             }
 
-            public void setType(int type) {
+            public void setTimeCount(Integer timeCount) {
+                this.timeCount = timeCount;
+            }
+
+            public Integer getType() {
+                return type == null ? 0 : type;
+            }
+
+            public void setType(Integer type) {
                 this.type = type;
             }
+
+            public String getVideoPagePic() {
+                return videoPagePic;
+            }
+
+            public void setVideoPagePic(String videoPagePic) {
+                this.videoPagePic = videoPagePic;
+            }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "QueryFtInfos{" +
+                "errorMsg='" + errorMsg + '\'' +
+                ", success=" + success +
+                ", total=" + total +
+                ", rows=" + rows +
+                '}';
     }
 }

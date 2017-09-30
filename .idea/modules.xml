@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HeartDance.iml" filepath="$PROJECT_DIR$/HeartDance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/giraffeplayer/giraffeplayer.iml" filepath="$PROJECT_DIR$/giraffeplayer/giraffeplayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" filepath="$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib-convenientbanner/lib-convenientbanner.iml" filepath="$PROJECT_DIR$/lib-convenientbanner/lib-convenientbanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_slideDateTimePicker/lib_slideDateTimePicker.iml" filepath="$PROJECT_DIR$/lib_slideDateTimePicker/lib_slideDateTimePicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_svpi/lib_svpi.iml" filepath="$PROJECT_DIR$/lib_svpi/lib_svpi.iml" />

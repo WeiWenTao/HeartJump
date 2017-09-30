@@ -19,7 +19,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.GridImageAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuan.FtPublishCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.OnUpLoadListener;
 import com.cucr.myapplication.model.RZ.RzResult;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -27,6 +27,7 @@ import com.cucr.myapplication.widget.dialog.DialogPublishStyle;
 import com.cucr.myapplication.widget.recyclerView.FullyGridLayoutManager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.luck.picture.lib.PictureSelector;
@@ -338,24 +339,54 @@ public class PublishActivity extends Activity {
 
     @OnClick(R.id.tv_publish)
     public void toPublish(View view) {
-        //mType不能为零   另外再定义变量
+
+//        mType不能为零   另外再定义变量
         if (mData == null || mData.size() == 0) {
             fileType = 0;
         } else {
             fileType = mType;
         }
 
-        core.publishFtInfo(5, fileType, et_publish.getText().toString(), mData, new OnCommonListener() {
+//        photoUpload();
+
+        core.publishFtInfo(5, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void OnUpLoadPicListener(Response<String> response) {
                 MyLogger.jLog().i("response:"+response.get());
                 RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");
+                    MyLogger.jLog().i("发布pic成功");
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
                 }
             }
+
+            @Override
+            public void OnUpLoadVideoListener(ResponseInfo<String> arg0) {
+                MyLogger.jLog().i("response:"+arg0.result);
+                RzResult rzResult = new Gson().fromJson(arg0.result, RzResult.class);
+                if (rzResult.isSuccess()) {
+                    ToastUtils.showToast("发布视频成功");
+                    MyLogger.jLog().i("发布video成功");
+                } else {
+                    ToastUtils.showToast(rzResult.getMsg());
+                }
+            }
+
+            @Override
+            public void OnUpLoadTextListener(Response<String> response) {
+
+                MyLogger.jLog().i("response:"+response.get());
+                RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
+                if (rzResult.isSuccess()) {
+                    ToastUtils.showToast("发布成功");
+                    MyLogger.jLog().i("发布text成功");
+                } else {
+                    ToastUtils.showToast(rzResult.getMsg());
+                }
+            }
+
         });
     }
 

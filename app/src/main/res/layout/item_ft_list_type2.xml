@@ -45,7 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/textView4"
+                    android:id="@+id/tv_forminfo"
                     />
 
                 <LinearLayout
@@ -63,6 +63,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tv_read"
                         android:layout_marginLeft="@dimen/dp_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -78,19 +79,9 @@
     </LinearLayout>
 
 
-    <!--<GridView-->
-        <!--android:id="@+id/gridview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/dp_10"-->
-        <!--android:columnWidth="110dp"-->
-        <!--android:gravity="center"-->
-        <!--android:horizontalSpacing="5dp"-->
-        <!--android:numColumns="3"-->
-        <!--android:stretchMode="columnWidth"-->
-        <!--android:verticalSpacing="2.5dp"-->
-        <!--/>-->
+
         <TextView
+            android:id="@+id/tv_content"
             android:layout_marginLeft="@dimen/dp_10"
             android:lineSpacingExtra="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_10"
@@ -103,39 +94,18 @@
             android:ellipsize="end"
             />
 
-    <LinearLayout
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
+    <com.cucr.myapplication.widget.gridView.NoScrollGridView
+        android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:layout_marginRight="@dimen/dp_5"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/imageView2"
-            android:src="@drawable/img1"
-            />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/dp_5"
-            android:src="@drawable/img1"
-            />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:src="@drawable/img1"
-            />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:columnWidth="110dp"
+        android:gravity="center"
+        android:horizontalSpacing="5dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2.5dp"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -199,7 +169,7 @@
 
 
             <TextView
-                android:id="@+id/tv_session0"
+                android:id="@+id/tv_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -255,6 +225,9 @@
 
     </RelativeLayout>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/color_999"
+        android:layout_height="1px"/>
 
 </LinearLayout>

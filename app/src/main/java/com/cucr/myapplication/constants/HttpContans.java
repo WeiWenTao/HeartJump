@@ -6,10 +6,10 @@ package com.cucr.myapplication.constants;
  */
 
 public class HttpContans {
-    //域名
-    public static final String HTTP_HOST = "http://192.168.1.141:8080";
+    //服务器
+    public static final String HTTP_HOST = "http://101.132.96.199";
 
-//    public static final String HTTP_HOST = "http://192.168.1.124:8080";
+//    public static final String HTTP_HOST = "http://192.168.1.122:8080";
 
     //注册
     public static final String ADDRESS_REGIST = "/interface/user/regist";

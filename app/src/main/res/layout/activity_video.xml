@@ -9,9 +9,12 @@
     tools:context="com.cucr.myapplication.activity.video.VideoActivity"
     >
 
+
     <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_video"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="225dp"
         android:background="@color/blue_black"
         >
 
@@ -30,7 +33,7 @@
             android:paddingTop="@dimen/dp_5"
             android:paddingBottom="@dimen/dp_5"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="36dp"
             android:paddingRight="40dp"
             android:src="@drawable/icon_back"
             />
@@ -40,7 +43,7 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="37dp"
             android:paddingLeft="10dp"
             android:src="@drawable/share"
             />
@@ -90,8 +93,8 @@
                 />
 
             <ImageView
-                android:layout_width="@dimen/dp_5"
-                android:layout_height="@dimen/dp_5"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="@dimen/dp_10"
                 android:layout_alignRight="@id/progressed"
                 android:layout_centerVertical="true"
                 android:src="@drawable/cricle_pink"
@@ -123,6 +126,10 @@
 
     </RelativeLayout>
 
+    <include
+        layout="@layout/giraffe_player"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"/>
 
     <ListView
         android:id="@+id/lv_video_recommend"
@@ -132,6 +139,7 @@
         />
 
     <RelativeLayout
+        android:id="@+id/rl_commend_bar"
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
         android:layout_width="match_parent"

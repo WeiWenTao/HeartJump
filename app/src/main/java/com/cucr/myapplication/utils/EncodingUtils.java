@@ -37,6 +37,7 @@ public class EncodingUtils {
 
                     //第六步:将请求参数的value添加到Map中
                     keyValueMap.put(key, (String) value);
+                    MyLogger.jLog().i("key:"+key+",Value"+ (String) value);
                 }
             }
         }
@@ -63,12 +64,12 @@ public class EncodingUtils {
 
 
         String params = paramsBuilder.toString();
-        MyLogger.jLog().i("params:"+params);
+        MyLogger.jLog().i("sign:params:"+params);
         String decodeBase64 = Base64.encodeToString(paramsBuilder.toString().getBytes(), Base64.DEFAULT);
         decodeBase64 = decodeBase64.replace("\n","");
-        MyLogger.jLog().i("decodeBase64:"+decodeBase64);
+        MyLogger.jLog().i("sign:decodeBase64:"+decodeBase64);
         String md5 = MD5Util.md5(decodeBase64).toUpperCase();
-        MyLogger.jLog().i("md5:"+md5);
+        MyLogger.jLog().i("sign:md5:"+md5);
 
         return md5;
     }

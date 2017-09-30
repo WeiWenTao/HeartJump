@@ -1,1 +1,1 @@
-include ':app', 'lib_svpi', ':lib-convenientbanner', ':lib_wheelView', ':lib_slideDateTimePicker'
+include ':app', 'lib_svpi', ':lib-convenientbanner', ':lib_wheelView', ':lib_slideDateTimePicker', ':ijkplayer-java', ':giraffeplayer'

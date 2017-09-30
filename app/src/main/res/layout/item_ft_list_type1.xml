@@ -44,6 +44,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/tv_forminfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -68,6 +69,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tv_read"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_5"
@@ -81,7 +83,9 @@
 
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/tv_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:lineSpacingExtra="@dimen/dp_4"
         android:layout_marginRight="@dimen/dp_10"
@@ -94,6 +98,8 @@
         android:ellipsize="end"
         />
     <RelativeLayout
+        android:clickable="true"
+        android:id="@+id/rl_goto_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
@@ -102,7 +108,7 @@
         >
 
         <ImageView
-            android:id="@+id/iv_video"
+            android:id="@+id/iv_video_pic"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:scaleType="fitXY"
@@ -110,9 +116,10 @@
             />
 
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iv_video"
+            android:layout_alignBottom="@+id/iv_video_pic"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="15dp"
@@ -203,7 +210,8 @@
 
 
             <TextView
-                android:id="@+id/tv_session0"
+                android:gravity="left"
+                android:id="@+id/tv_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -229,5 +237,10 @@
 
     </RelativeLayout>
 
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/color_999"
+        android:layout_height="1px"/>
 
 </LinearLayout>

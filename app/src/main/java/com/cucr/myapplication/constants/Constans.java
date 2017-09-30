@@ -13,6 +13,8 @@ public class Constans {
     public static final int TYPE_TWO = 2;
     public static final int TYPE_THREE = 3;
 
+    public static final int TYPE_TEXT = 0;
+
     public static final int TYPE_PICTURE = 1;
 
     public static final int TYPE_VIDEO = 2;

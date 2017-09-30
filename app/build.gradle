@@ -10,6 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.cucr.myapplication"
+        useLibrary'org.apache.http.legacy'
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
@@ -19,16 +20,17 @@ android {
         multiDexEnabled true
         dependencies { compile 'com.android.support:multidex:1.0.1' }
 
+
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a','x86', 'x86_64'
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
 
         manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
+                JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "5ea55ccf04dc7e3f7a83a475", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
 
@@ -39,7 +41,7 @@ android {
         }
     }
 
-    greendao{
+    greendao {
         schemaVersion 1
         daoPackage 'com.cucr.myapplication.gen'
         targetGenDir 'src/main/java'
@@ -74,32 +76,28 @@ dependencies {
     compile project(':lib_slideDateTimePicker')
     //透明导航栏
     compile 'org.zackratos:ultimatebar:1.0.3'
-
     //nohttp联网
     compile 'com.yanzhenjie.nohttp:nohttp:1.1.3'
     compile 'com.yanzhenjie.nohttp:okhttp:1.1.3'
-
     //相册选择图片  这个加载太慢
-//    compile 'com.yanzhenjie:album:2.0.0-alpha'
-//    compile rootProject.ext.dependencies.album
+    //    compile 'com.yanzhenjie:album:2.0.0-alpha'
+    //    compile rootProject.ext.dependencies.album
     compile 'com.jaikydota.imagespickers:imagespickers:1.0.6'
-
     //Glide
-//    compile 'com.github.bumptech.glide:glide:3.6.1'
-
+    //    compile 'com.github.bumptech.glide:glide:3.6.1'
     //数据库GreenDao
     compile 'org.greenrobot:greendao:3.1.0'
-    compile'org.greenrobot:greendao-generator:3.0.0'
-
+    compile 'org.greenrobot:greendao-generator:3.0.0'
     //极光推送
-    compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
-    compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
-
+    compile 'cn.jiguang.sdk:jpush:3.0.3'
+    // 此处以JPush 3.0.3 版本为例。
+    compile 'cn.jiguang.sdk:jcore:1.1.1'
+    // 此处以JCore 1.1.1 版本为例。
     //粉团发布按钮
-//    compile 'com.melnykov:floatingactionbutton:1.3.0'
+    //    compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.github.toanvc:floatingactionmenu:0.8.9'
-
     //照片选择器
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.1'
-
+    //视频播放
+    compile project(':giraffeplayer')
 }

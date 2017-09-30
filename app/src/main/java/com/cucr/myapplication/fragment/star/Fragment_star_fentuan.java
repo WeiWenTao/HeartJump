@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
-import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuan.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
@@ -56,7 +56,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private int rows = 100;
     private RecyclerView rlv_fentuan;
     private QueryFtInfos mQueryFtInfos;
-    private XingWenAdapter mAdapter;
+    private FtAdapter mAdapter;
 
     @Nullable
     @Override
@@ -67,11 +67,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
-            queryFtInfo();
             initView();
             initRlV();
         }
-
+        queryFtInfo();
         return view;
     }
 
@@ -80,26 +79,28 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
-                if (mQueryFtInfos.isSuccess()){
+                if (mQueryFtInfos.isSuccess()) {
+                    MyLogger.jLog().i("mQueryFtInfos:"+mQueryFtInfos);
                     mAdapter.setData(mQueryFtInfos);
-                }else {
+                } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
             }
-
-
         });
     }
 
     private void initRlV() {
         rlv_fentuan.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter = new XingWenAdapter(mContext);
+        mAdapter = new FtAdapter(mContext);
+
         rlv_fentuan.setAdapter(mAdapter);
     }
 
     private void initView() {
         rlv_fentuan = (RecyclerView) view.findViewById(R.id.rlv_fentuan);
         rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
+
+
         mFam = (FloatingActionsMenu) view.findViewById(R.id.multiple_actions);
         action_a = (FloatingActionButton) view.findViewById(R.id.action_a);
         action_b = (FloatingActionButton) view.findViewById(R.id.action_b);
@@ -148,7 +149,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        MyLogger.jLog().i("onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(mContext, PublishActivity.class);
         if (resultCode == RESULT_OK) {
