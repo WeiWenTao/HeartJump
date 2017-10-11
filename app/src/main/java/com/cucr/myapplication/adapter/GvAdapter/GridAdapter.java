@@ -53,7 +53,9 @@ public class GridAdapter extends BaseAdapter {
         ImageView iv = cvh.getIv(R.id.iv_image);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
-                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .showImageOnLoading(R.drawable.ic_launcher)  // 加载时的占位图
+                .showImageOnFail(R.drawable.ic_launcher)  // 加载失败占位图
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + attrFileList.get(position).getFileUrl(), iv, options);

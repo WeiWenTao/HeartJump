@@ -53,12 +53,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             >
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
+             <!--<intent-filter> -->
+             <!--<action android:name="android.intent.action.MAIN"/> -->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER"/> -->
+             <!--</intent-filter> -->
         </activity>
 
         <!-- share sdk -->
@@ -129,6 +129,11 @@
         <activity android:name=".activity.myHomePager.FocusActivity">
         </activity>
         <activity android:name=".activity.pay.PayCenterActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".activity.pay.StarMoneyActivity">
         </activity>
@@ -245,6 +250,8 @@
         </receiver>
 
         <activity android:name=".activity.fenTuan.ImagePagerActivity">
+        </activity>
+        <activity android:name=".activity.comment.FtPicAndTextComment">
         </activity>
     </application>
 

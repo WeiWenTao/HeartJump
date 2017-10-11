@@ -64,7 +64,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         this.mActivity = activity;
         this.mRequest = request;
         if (activity != null && isLoading) {
-            mWaitDialog = new WaitDialog(activity);
+            mWaitDialog = new WaitDialog(activity,"请稍后...");
             mWaitDialog.setCancelable(canCancel);
             mWaitDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override

@@ -138,6 +138,7 @@ public class FragmentFans extends BaseFragment {
 
     private void initVp() {
         mViewPager.setAdapter(new StarPagerAdapter(getFragmentManager(), mDataList));
+        mViewPager.setOffscreenPageLimit(2);
     }
 
     //初始化标签栏

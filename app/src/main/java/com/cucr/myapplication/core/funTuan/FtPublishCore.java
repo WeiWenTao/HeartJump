@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.funTuan;
 
 import android.app.Activity;
 
+import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -11,6 +12,8 @@ import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
+import com.cucr.myapplication.widget.dialog.DialogProgress;
+import com.cucr.myapplication.widget.dialog.WaitDialog;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.HttpHandler;
@@ -20,9 +23,11 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.lidroid.xutils.http.client.multipart.MIME;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.OnUploadListener;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -42,6 +47,8 @@ public class FtPublishCore implements FenTuanInterf {
     private Activity activity;
     private List<Binary> files;
     private String sign;
+    private WaitDialog dialog;
+    private DialogProgress dialog_progress;
     private OnUpLoadListener listener;
     private int type;
     /**
@@ -53,6 +60,10 @@ public class FtPublishCore implements FenTuanInterf {
 
     public FtPublishCore(Activity activity) {
         this.activity = activity;
+        dialog = new WaitDialog(activity,"正在上传...");
+        dialog_progress = new DialogProgress(activity, R.style.BirthdayStyleTheme);
+        //点击屏幕外部和返回键不响应
+
         files = new ArrayList<>();
         mQueue = NoHttp.newRequestQueue();
         // 设置连接超时
@@ -74,9 +85,11 @@ public class FtPublishCore implements FenTuanInterf {
 
         //图片
         if (type == 1) {
-            for (LocalMedia localMedia : mData) {
-                String compressPath = localMedia.getCompressPath();
-                files.add(new FileBinary(new File(compressPath), compressPath.substring(compressPath.lastIndexOf("/"))));
+            for (int i = 0; i < mData.size(); i++) {
+                String compressPath = mData.get(i).getCompressPath();
+                BasicBinary binary = new FileBinary(new File(compressPath), compressPath.substring(compressPath.lastIndexOf("/")));
+                binary.setUploadListener(i,mOnUploadListener);
+                files.add(binary);
             }
             request.add("file", files);
             mQueue.add(Constans.TYPE_ONE, request, callback);
@@ -85,8 +98,6 @@ public class FtPublishCore implements FenTuanInterf {
         } else if (type == 2) {
             LocalMedia localMedia = mData.get(0);
             String videoPath = localMedia.getPath();
-
-
             //文件上传地址
             String uploadHost = HttpContans.HTTP_HOST + HttpContans.ADDRESS_PUBLISH_FT_INFO;
             RequestParams params = new RequestParams();
@@ -96,11 +107,11 @@ public class FtPublishCore implements FenTuanInterf {
             params.addBodyParameter("startId", starId + "");
             params.addBodyParameter("type", type + "");
             params.addBodyParameter("content", content + "");
-            params.addBodyParameter(SpConstant.SIGN,sign);
+            params.addBodyParameter(SpConstant.SIGN, sign);
 
             // 文件的路径
             params.addBodyParameter("file", new File(videoPath), videoPath.substring(videoPath.lastIndexOf("/")), MIME.ENC_BINARY, "utf-8");
-            MyLogger.jLog().i("videoPath:"+videoPath);
+            MyLogger.jLog().i("videoPath:" + videoPath);
             mSend = mUtils.send(HttpRequest.HttpMethod.POST, uploadHost, params,
                     new RequestCallBack<String>() {
 
@@ -108,6 +119,7 @@ public class FtPublishCore implements FenTuanInterf {
                         public void onStart() {
                             super.onStart();
                             MyLogger.jLog().i("开始上传");
+                            dialog_progress.show();
                         }
 
                         @Override
@@ -115,28 +127,63 @@ public class FtPublishCore implements FenTuanInterf {
                                               boolean isUploading) {
                             super.onLoading(total, current, isUploading);
                             MyLogger.jLog().i(current + "/" + total);
+                            dialog_progress.setProgress((int) (current * 100 / total));
                         }
 
                         @Override
                         public void onSuccess(ResponseInfo<String> arg0) {
                             MyLogger.jLog().i("上传成功");
                             listener.OnUpLoadVideoListener(arg0);
+                            dialog_progress.dismiss();
                         }
 
                         @Override
                         public void onFailure(HttpException arg0, String arg1) {
-                            System.out.println(arg0 + ":" + arg1);
                             MyLogger.jLog().i(arg1);
+                            dialog_progress.dismiss();
                         }
                     });
+
         }
     }
+
+
+    /**
+     * 文件上传监听。
+     */
+    private OnUploadListener mOnUploadListener = new OnUploadListener() {
+
+        @Override
+        public void onStart(int what) {// 这个文件开始上传。
+            MyLogger.jLog().i("UploadonStart");
+        }
+
+        @Override
+        public void onCancel(int what) {// 这个文件的上传被取消时。
+            MyLogger.jLog().i("UploadonCancel");
+        }
+
+        @Override
+        public void onProgress(int what, int progress) {// 这个文件的上传进度发生边耍
+            MyLogger.jLog().i("第"+what+"张:"+progress);
+        }
+
+        @Override
+        public void onFinish(int what) {// 文件上传完成
+            MyLogger.jLog().i("UploadonFinish");
+        }
+
+        @Override
+        public void onError(int what, Exception exception) {// 文件上传发生错误。
+            MyLogger.jLog().i("UploadonError");
+        }
+    };
 
     //回调
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+            dialog.show();
         }
 
         @Override
@@ -148,6 +195,7 @@ public class FtPublishCore implements FenTuanInterf {
                     } else if (type == 0) {
                         listener.OnUpLoadTextListener(response);
                     }
+                    dialog.dismiss();
                     break;
 
             }
@@ -157,13 +205,14 @@ public class FtPublishCore implements FenTuanInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, activity);
+            dialog.dismiss();
             switch (what) {
                 case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("粉团查询请求失败");
+
                     break;
 
                 case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("福利活动请求失败");
+
                     break;
             }
         }

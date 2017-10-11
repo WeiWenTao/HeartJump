@@ -16,6 +16,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -82,6 +83,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
 
     //当前rb
     private RadioButton currentRB;
+    private int mMoney;
 
 
     @Override
@@ -115,13 +117,19 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
                 }
                 tv_pay_now.setText("立即充值");
 
-
                 if (et_other.hasFocus()) {
                     CommonUtils.hideKeyBorad(v.getContext(), v, false);
                     tv_other_yuan.setVisibility(View.VISIBLE);
                     et_other.setHint("      ");
-
                 }
+
+                //et无法响应第一次点击事件  获取焦点时处理事件
+                if (TextUtils.isEmpty(et_other.getText())) {
+                    tv_pay_now.setText("立即充值");
+                    tv_pay_now.setEnabled(false);
+                    MyLogger.jLog().i("tv_pay_now.setEnabled(false);");
+                }
+
             }
         });
 
@@ -143,11 +151,20 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
                 if (!TextUtils.isEmpty(s)) {
                     tv_pay_now.setText("立即充值  " + (Integer.parseInt(s.toString()) / 10.0f) + "元");
                 } else {
-                    tv_pay_now.setText("立即充值  " + 0f + "元");
+                    tv_pay_now.setText("立即充值");
+                    tv_pay_now.setEnabled(false);
+                    MyLogger.jLog().i("tv_pay_now.setEnabled(false);");
+
+                    if ((rg1.getCheckedRadioButtonId() != -1 || rg2.getCheckedRadioButtonId() != -1 || rg3.getCheckedRadioButtonId() != -1)) {
+                        tv_pay_now.setEnabled(true);
+                        MyLogger.jLog().i("tv_pay_now.setEnabled(true);");
+                    }
+
                 }
             }
         });
 
+        //不知为何 edittext无法响应第一次点击事件
         et_other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,10 +180,17 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
                     //preId清零
                     preId = 0;
                 }
+
                 tv_other_yuan.setVisibility(View.VISIBLE);
                 et_other.setHint("      ");
                 CommonUtils.hideKeyBorad(v.getContext(), v, false);
-                tv_pay_now.setText("立即充值");
+
+                if (TextUtils.isEmpty(et_other.getText())) {
+                    tv_pay_now.setText("立即充值");
+                    tv_pay_now.setEnabled(false);
+                    MyLogger.jLog().i("tv_pay_now.setEnabled(false);");
+                }
+
             }
         });
     }
@@ -177,9 +201,13 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         if (!TextUtils.isEmpty(s.trim()) && Integer.parseInt(s) > 0) {
             tv_pay_now.setEnabled(true);
             MyLogger.jLog().i("setEnabled(true);");
-        } else{
+        } else {
             tv_pay_now.setEnabled(false);
             MyLogger.jLog().i("setEnabled(false);");
+            if (rg1.getCheckedRadioButtonId() != -1 || rg2.getCheckedRadioButtonId() != -1 || rg3.getCheckedRadioButtonId() != -1) {
+                tv_pay_now.setEnabled(true);
+                MyLogger.jLog().i("setEnabled(true);");
+            }
         }
     }
 
@@ -219,7 +247,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
 
         //设置为可点击 // TODO: 2017/9/16  
         tv_pay_now.setEnabled(true);
-        MyLogger.jLog().i("onCheckedChanged true");
+        MyLogger.jLog().i("tv_pay_now.setEnabled(true);");
 
         //隐藏软键盘
         CommonUtils.hideKeyBorad(this, et_other, true);
@@ -228,8 +256,6 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         et_other.clearComposingText();
         et_other.setHint("其他数量");
         et_other.setCursorVisible(false);
-
-
 
 
         RadioButton rbNow = ((RadioButton) findViewById(checkedId));
@@ -242,13 +268,23 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         }
         preId = checkedId;
         currentRB = (RadioButton) findViewById(preId);
-        int money = moneys.get(checkedId);
-        tv_pay_now.setText("立即充值  " + (money / 10) + "元");
+        mMoney = moneys.get(checkedId);
+        tv_pay_now.setText("立即充值  " + (mMoney / 10) + "元");
     }
 
     @OnClick(R.id.tv_pay_now)
     public void payNow(View view) {
 
+        if (mMoney == 0 && TextUtils.isEmpty(et_other.getText())) {
+            ToastUtils.showToast("请选择金额");
+            return;
+        }
+
+        if (!TextUtils.isEmpty(et_other.getText())) {
+            MyLogger.jLog().i("金额是1:" + (Integer.parseInt(et_other.getText().toString()) / 10.0f));
+        } else {
+            MyLogger.jLog().i("金额是2:" + mMoney / 10.0f );
+        }
         mDailogPayStyle.show();
     }
 

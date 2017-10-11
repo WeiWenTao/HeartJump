@@ -50,7 +50,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
                              String text, Integer dataId, OnCommonListener listener) {
 
         this.listener = listener;
-        mWaitDialog = new WaitDialog(activity);
+        mWaitDialog = new WaitDialog(activity,"正在提交...");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
                 + HttpContans.ADDRESS_QIYE_RZ, RequestMethod.POST);

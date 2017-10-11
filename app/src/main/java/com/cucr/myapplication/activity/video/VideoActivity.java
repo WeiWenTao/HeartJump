@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.ViderRecommendAdapter;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -37,6 +38,7 @@ public class VideoActivity extends Activity {
     RelativeLayout rl_commend_bar;
 
     private String url;
+    private QueryFtInfos.RowsBean rowsBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,10 @@ public class VideoActivity extends Activity {
 
         initVideo();
 
-        url = HttpContans.HTTP_HOST + getIntent().getStringExtra("path");
+        //获取视频信息
+        rowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("rowsBean");
+        url = HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getFileUrl();
+//        url = HttpContans.HTTP_HOST + getIntent().getStringExtra("path");
 
         player.setDefaultRetryTime(5 * 1000);
         player.play(url);

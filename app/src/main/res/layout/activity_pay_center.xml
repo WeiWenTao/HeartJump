@@ -20,10 +20,10 @@
         >
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             >
 
@@ -246,17 +246,17 @@
             </LinearLayout>
 
             <TextView
-                android:enabled="false"
-                android:textSize="@dimen/sp_18"
                 android:id="@+id/tv_pay_now"
                 android:layout_width="300dp"
                 android:layout_height="@dimen/dp_40"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/selector_shenhe"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="立即充值"
                 android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
                 />
 
         </LinearLayout>

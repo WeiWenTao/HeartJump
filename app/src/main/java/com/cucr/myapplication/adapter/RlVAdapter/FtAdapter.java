@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.activity.video.VideoActivity;
 import com.cucr.myapplication.adapter.GvAdapter.GridAdapter;
@@ -38,6 +37,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private final LayoutInflater mLayoutInflater;
     private QueryFtInfos mQueryFtInfos;
+    private List<QueryFtInfos.RowsBean> rows;
 
     public FtAdapter(Context context) {
         this.context = context;
@@ -46,6 +46,12 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setData(QueryFtInfos mQueryFtInfos) {
         this.mQueryFtInfos = mQueryFtInfos;
+        rows = mQueryFtInfos.getRows();
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<QueryFtInfos.RowsBean> newData){
+        rows.addAll(newData);
         notifyDataSetChanged();
     }
 
@@ -72,15 +78,22 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //获取条目类型
     @Override
     public int getItemViewType(int position) {
-        QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
+        QueryFtInfos.RowsBean rowsBean = rows.get(position);
         return rowsBean.getType();
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
+        final QueryFtInfos.RowsBean rowsBean = rows.get(position);
 // -------------------------------------------------------------------------------------------------
         if (holder instanceof Tp1_Holder) {  //视频
+
+            //跳转信息
+            final Intent intent = new Intent(context, VideoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("rowsBean", rowsBean);//序列化,要注意转化(Serializable)
+            intent.putExtras(bundle);//发送数据
+
             //头像
             ImageLoader.getInstance().displayImage(rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic);
             //视频封面
@@ -92,6 +105,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             if (TextUtils.isEmpty(rowsBean.getContent())) {
                 ((Tp1_Holder) holder).tv_content.setVisibility(View.GONE);
+            }else {
+                ((Tp1_Holder) holder).tv_content.setVisibility(View.VISIBLE);
             }
             ((Tp1_Holder) holder).tv_time.setText(CommonUtils.secToTime(rowsBean.getAttrFileList().get(0).getTimeCount()));    //时长
             ((Tp1_Holder) holder).tv_session.setText(rowsBean.getCommentCount() + "");    //评论数量
@@ -101,8 +116,6 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).rl_goto_video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, VideoActivity.class);
-                    intent.putExtra("path", rowsBean.getAttrFileList().get(0).getFileUrl());
                     context.startActivity(intent);
                 }
             });
@@ -119,7 +132,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).rl_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toComment(position);
+                    context.startActivity(intent);
                 }
             });
 
@@ -132,7 +145,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
 // -------------------------------------------------------------------------------------------------
-        } else if (holder instanceof Tp2_Holder) {    //图片
+        } else if (holder instanceof Tp2_Holder) {
+            //图片
             ImageLoader.getInstance().displayImage(rowsBean.getUserHeadPortrait(), ((Tp2_Holder) holder).iv_pic);     //头像
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
@@ -141,6 +155,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             if (TextUtils.isEmpty(rowsBean.getContent())) {
                 ((Tp2_Holder) holder).tv_content.setVisibility(View.GONE);
+            }else {
+                ((Tp2_Holder) holder).tv_content.setVisibility(View.VISIBLE);
             }
             ((Tp2_Holder) holder).tv_session.setText(rowsBean.getCommentCount() + "");    //评论数量
             ((Tp2_Holder) holder).tv_favorite.setText(rowsBean.getGiveUpCount() + "");    //点赞数量
@@ -172,7 +188,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).rl_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toComment(position);
+                    // TODO: 2017/9/30  
                 }
             });
 
@@ -206,7 +222,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp3_Holder) holder).rl_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toComment(position);
+                    // TODO: 2017/9/30  
                 }
             });
 
@@ -224,10 +240,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (mQueryFtInfos == null || mQueryFtInfos.getRows() == null || mQueryFtInfos.getRows().size() == 0) {
+        if (mQueryFtInfos == null || rows == null || rows.size() == 0) {
             return 0;
         }
-        return mQueryFtInfos.getRows().size();
+        return rows.size();
     }
 
 

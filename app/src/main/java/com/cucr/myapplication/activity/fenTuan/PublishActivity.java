@@ -63,6 +63,7 @@ public class PublishActivity extends Activity {
     private int fileType;
     private GridImageAdapter mAdapter;
     private FtPublishCore core;
+    private boolean needRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,7 +279,6 @@ public class PublishActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
@@ -357,6 +357,11 @@ public class PublishActivity extends Activity {
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");
                     MyLogger.jLog().i("发布pic成功");
+                    needRefresh = true;
+                    Intent intent = getIntent();
+                    intent.putExtra("needRefresh",needRefresh);
+                    setResult(10,intent);
+                    finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
                 }
@@ -369,6 +374,11 @@ public class PublishActivity extends Activity {
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布视频成功");
                     MyLogger.jLog().i("发布video成功");
+                    needRefresh = true;
+                    Intent intent = getIntent();
+                    intent.putExtra("needRefresh",needRefresh);
+                    setResult(10,intent);
+                    finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
                 }
@@ -382,6 +392,7 @@ public class PublishActivity extends Activity {
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");
                     MyLogger.jLog().i("发布text成功");
+                    finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
                 }
@@ -394,5 +405,6 @@ public class PublishActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         core.stopRequest();
+
     }
 }

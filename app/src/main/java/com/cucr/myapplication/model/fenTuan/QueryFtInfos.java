@@ -241,7 +241,7 @@ public class QueryFtInfos implements Serializable {
             this.attrFileList = attrFileList;
         }
 
-        public static class FansTeamBean {
+        public static class FansTeamBean implements Serializable {
             /**
              * contentCount : 100
              * fansCount : 100

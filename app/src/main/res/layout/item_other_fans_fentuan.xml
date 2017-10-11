@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     >
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rlv_fentuan"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/color_999"
-        android:dividerHeight="1dp"
-        ></android.support.v7.widget.RecyclerView>
+        <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+            android:id="@+id/rlv_fentuan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/color_999"
+            android:dividerHeight="1dp"
+            ></com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView>
 
 
     <toan.android.floatingactionmenu.FloatingActionsMenu
@@ -39,9 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
-            fab:fab_size="mini"
             fab:fab_colorPressed="#ff0"
             fab:fab_icon="@drawable/bnt_p"
+            fab:fab_size="mini"
             fab:fab_title="照片"
             />
 

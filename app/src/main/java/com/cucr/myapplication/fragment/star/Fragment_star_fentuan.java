@@ -8,10 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
@@ -22,6 +22,7 @@ import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -42,7 +43,7 @@ import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 /**
  * Created by 911 on 2017/6/24.
  */
-public class Fragment_star_fentuan extends Fragment implements View.OnClickListener {
+public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener {
 
     private View view;
     private Context mContext;
@@ -53,8 +54,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     // TODO: 2017/9/22 eventBus 获取
     private int starId = 5;
     private int page = 1;
-    private int rows = 100;
-    private RecyclerView rlv_fentuan;
+    private int rows = 5;
+    private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
     private QueryFtInfos mQueryFtInfos;
     private FtAdapter mAdapter;
 
@@ -74,37 +75,46 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         return view;
     }
 
+
     private void queryFtInfo() {
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-                    MyLogger.jLog().i("mQueryFtInfos:"+mQueryFtInfos);
                     mAdapter.setData(mQueryFtInfos);
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
+                rlv_fentuan.complete();
             }
         });
     }
 
     private void initRlV() {
-        rlv_fentuan.setLayoutManager(new LinearLayoutManager(mContext));
+        LinearLayoutManager layout = new LinearLayoutManager(mContext);
+        rlv_fentuan.getRecyclerView().setLayoutManager(layout);
         mAdapter = new FtAdapter(mContext);
-
         rlv_fentuan.setAdapter(mAdapter);
+
+        TextView textView = new TextView(mContext);
+        textView.setText("empty view");
+        rlv_fentuan.setEmptyView(textView);
+
     }
 
     private void initView() {
-        rlv_fentuan = (RecyclerView) view.findViewById(R.id.rlv_fentuan);
-        rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
+//        rlv_fentuan = (RecyclerView) view.findViewById(R.id.rlv_fentuan);
+//        rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
 
+        rlv_fentuan = (SwipeRecyclerView) view.findViewById(R.id.rlv_fentuan);
+        rlv_fentuan.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
+        rlv_fentuan.setOnLoadListener(this);
 
         mFam = (FloatingActionsMenu) view.findViewById(R.id.multiple_actions);
         action_a = (FloatingActionButton) view.findViewById(R.id.action_a);
         action_b = (FloatingActionButton) view.findViewById(R.id.action_b);
-        mFam.attachToRecyclerView(rlv_fentuan);
+        mFam.attachToRecyclerView(rlv_fentuan.getRecyclerView());
         action_a.setOnClickListener(this);
         action_b.setOnClickListener(this);
 
@@ -150,6 +160,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        MyLogger.jLog().i("onActivityResult");
         Intent intent = new Intent(mContext, PublishActivity.class);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -178,7 +189,14 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                     intent.putExtra("type", Constans.TYPE_VIDEO);
                     break;
             }
-            startActivity(intent);
+            startActivityForResult(intent, 3);
+        }
+
+        MyLogger.jLog().i("requestCode=" + requestCode);
+        MyLogger.jLog().i("resultCode=" + resultCode);
+        if (requestCode == 3 && resultCode == 10) {
+            onRefresh();
+            rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
     }
 
@@ -186,5 +204,34 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onDestroy() {
         super.onDestroy();
         queryCore.stopRequest();
+    }
+
+
+    //刷新的时候查询最新数据 page = 1
+    @Override
+    public void onRefresh() {
+        page = 1;
+        queryFtInfo();
+    }
+
+    @Override
+    public void onLoadMore() {
+        page++;
+        queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
+                //判断是否还有数据
+                if (mQueryFtInfos.getTotal() <= page * rows) {
+                    rlv_fentuan.onNoMore("没有更多了");
+                }
+                if (mQueryFtInfos.isSuccess()) {
+                    mAdapter.addData(mQueryFtInfos.getRows());
+                } else {
+                    ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
+                }
+                rlv_fentuan.complete();
+            }
+        });
     }
 }

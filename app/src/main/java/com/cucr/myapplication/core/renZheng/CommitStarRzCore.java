@@ -53,7 +53,7 @@ public class CommitStarRzCore implements CommitStarRZ {
                              Integer id,
                              OnCommonListener listener) {
         this.listener = listener;
-        mWaitDialog = new WaitDialog(activity);
+        mWaitDialog = new WaitDialog(activity,"正在提交...");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
                 + HttpContans.ADDRESS_STAR_RZ, RequestMethod.POST);

@@ -47,8 +47,8 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
                 .add("startId", starId)
-                .add("page", 1)
-                .add("rows", 100)
+                .add("page", page)
+                .add("rows", rows)
                 .add("queryMine", false)    //false查询所有人 ， true查询自己发的；
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖

@@ -10,12 +10,12 @@ import android.view.Window;
 
 public class WaitDialog extends ProgressDialog {
 
-    public WaitDialog(Context context) {
+    public WaitDialog(Context context,String title) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setCanceledOnTouchOutside(false);
         setProgressStyle(STYLE_SPINNER);
-        setMessage("请稍后。。。");
+        setMessage(title);
     }
 
 }

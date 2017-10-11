@@ -36,7 +36,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //share sdk 初始化
         ShareSDK.initSDK(this);
 
@@ -107,7 +106,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     private void initView() {
 //        mFragments.add(new HomeFragment());              //首页
-        mFragments.add(new FragmentHotAndFocusNews());              //首页
+        mFragments.add(new FragmentHotAndFocusNews());     //首页
         mFragments.add(new FragmentHuoDongAndFuLi());
 
         mFragments.add(new DaBangFragment());            //打榜

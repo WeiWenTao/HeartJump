@@ -103,11 +103,11 @@ public class CityDao {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    cursor.close();
+                    db.close();
                 }
             }
-
-            cursor.close();
-            db.close();
         }
         return citys;
     }
@@ -132,11 +132,12 @@ public class CityDao {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    cursor.close();
+                    db.close();
                 }
             }
 
-            cursor.close();
-            db.close();
         }
         return locationData;
     }
@@ -162,11 +163,12 @@ public class CityDao {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    cursor.close();
+                    db.close();
                 }
             }
 
-            cursor.close();
-            db.close();
         }
         return locationData;
     }
