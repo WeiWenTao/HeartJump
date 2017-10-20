@@ -38,6 +38,11 @@ public class StarRecommendAdapter extends BaseAdapter {
     private FocusCore mCore;
     private int newPosition;
 
+    public void setData(List<StarListInfos.RowsBean> rows){
+        this.rows = rows;
+        notifyDataSetChanged();
+    }
+
     public void setCheck(int position) {
         checked = position;
         notifyDataSetChanged();

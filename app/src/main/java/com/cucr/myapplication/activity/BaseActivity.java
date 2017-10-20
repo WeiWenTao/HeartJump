@@ -56,9 +56,13 @@ public abstract class BaseActivity extends Activity {
         findViewById(R.id.iv_base_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackBefore();
                 finish();
             }
         });
-
     }
+
+    protected void onBackBefore(){
+
+    };
 }

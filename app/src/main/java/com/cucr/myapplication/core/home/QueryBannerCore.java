@@ -26,7 +26,7 @@ public class QueryBannerCore implements QueryHomeBanner {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();;
+    private RequestQueue mQueue = NoHttp.newRequestQueue();
     private OnCommonListener commonListener;
 
     private Activity activity;

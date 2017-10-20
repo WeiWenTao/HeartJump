@@ -11,14 +11,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuan.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -43,7 +45,7 @@ import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 /**
  * Created by 911 on 2017/6/24.
  */
-public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener {
+public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt {
 
     private View view;
     private Context mContext;
@@ -57,7 +59,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private int rows = 5;
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
     private QueryFtInfos mQueryFtInfos;
+    private QueryFtInfos mQueryFtInfoss;
     private FtAdapter mAdapter;
+    private Integer giveNum;
+    private int position = -1;
 
     @Nullable
     @Override
@@ -86,7 +91,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
-                rlv_fentuan.complete();
             }
         });
     }
@@ -96,10 +100,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
         mAdapter = new FtAdapter(mContext);
         rlv_fentuan.setAdapter(mAdapter);
-
-        TextView textView = new TextView(mContext);
-        textView.setText("empty view");
-        rlv_fentuan.setEmptyView(textView);
+        mAdapter.setOnClickBt(this);
+//        TextView textView = new TextView(mContext);
+//        textView.setText("empty view");
+//        rlv_fentuan.setEmptyView(textView);
 
     }
 
@@ -198,6 +202,17 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             onRefresh();
             rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
+
+
+        if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
+            QueryFtInfos.RowsBean mRowsBean = (QueryFtInfos.RowsBean) data.getSerializableExtra("rowsBean");
+            final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
+            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
+            rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
+            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+            mAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
@@ -212,6 +227,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onRefresh() {
         page = 1;
         queryFtInfo();
+        rlv_fentuan.complete();
+
     }
 
     @Override
@@ -220,18 +237,71 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
+                mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
                 //判断是否还有数据
-                if (mQueryFtInfos.getTotal() <= page * rows) {
+                if (mQueryFtInfoss.getTotal() <= page * rows) {
                     rlv_fentuan.onNoMore("没有更多了");
                 }
-                if (mQueryFtInfos.isSuccess()) {
-                    mAdapter.addData(mQueryFtInfos.getRows());
+                if (mQueryFtInfoss.isSuccess()) {
+                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
+                    mAdapter.addData(mQueryFtInfoss.getRows());
                 } else {
-                    ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
+                    ToastUtils.showToast(mQueryFtInfoss.getErrorMsg());
                 }
                 rlv_fentuan.complete();
             }
         });
     }
+
+    @Override
+    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
+
+        queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (commonRebackMsg.isSuccess()) {
+                    if (rowsBean.isIsGiveUp()) {
+                        giveNum = rowsBean.getGiveUpCount() - 1;
+                        MyLogger.jLog().i("setIsGiveUp(false)");
+                        rowsBean.setIsGiveUp(false);
+                        rowsBean.setGiveUpCount(giveNum);
+                    } else {
+                        giveNum = rowsBean.getGiveUpCount() + 1;
+                        MyLogger.jLog().i("setIsGiveUp(true)");
+                        rowsBean.setIsGiveUp(true);
+                        rowsBean.setGiveUpCount(giveNum);
+                    }
+                    mAdapter.notifyDataSetChanged();
+
+                } else {
+                    ToastUtils.showToast(commonRebackMsg.getMsg());
+                }
+
+            }
+        });
+
+
+    }
+
+    //评论
+    @Override
+    public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean isFormConmmomd) {
+        this.position = position;
+        MyLogger.jLog().i("Commendposition:"+position);
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("rowsBean", rowsBean);
+        intent.putExtra("isFormConmmomd", isFormConmmomd);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
+
+    }
+
+
+    //分享
+    @Override
+    public void onClickshare(int position) {
+
+    }
+
 }

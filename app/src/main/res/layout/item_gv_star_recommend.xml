@@ -18,7 +18,6 @@
             android:layout_width="173dp"
             android:layout_height="234dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/star2"
             app:sriv_left_top_corner_radius="49dp"
             app:sriv_right_bottom_corner_radius="49dp"
             />

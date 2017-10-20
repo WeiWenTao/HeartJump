@@ -37,7 +37,9 @@
             />
 
         <LinearLayout
+            android:paddingLeft="@dimen/dp_10"
             android:id="@+id/ll_goods"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -49,12 +51,12 @@
                 android:layout_width="@dimen/dp_18"
                 android:layout_height="@dimen/dp_15"
                 android:layout_gravity="center_vertical"
-                android:clickable="true"
                 android:paddingRight="@dimen/dp_5"
                 android:src="@drawable/good_selector"
                 />
 
             <TextView
+                android:id="@+id/tv_givecount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -67,10 +69,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_50"
+            android:layout_marginRight="@dimen/dp_40"
             android:layout_toLeftOf="@id/ll_goods"
             >
 

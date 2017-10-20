@@ -9,6 +9,7 @@ public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
 
+
 //    public static final String HTTP_HOST = "http://192.168.1.122:8080";
 
     //注册
@@ -51,7 +52,7 @@ public class HttpContans {
     public static final String ADDRESS_HOME_BANNER = "/interface/mobileBannerAction/banner";
 
     //用户余额
-    public static final String ADDRESS_USER_MONEY = "/interface/userMoneyAction/recharge";
+    public static final String ADDRESS_USER_MONEY = "/interface/userMoneyAction/balance";
 
     //明星查询
     public static final String ADDRESS_QUERY_STAR = "/interface/mobileStartAction/query";
@@ -83,4 +84,15 @@ public class HttpContans {
     //查询粉团动态
     public static final String ADDRESS_QUERY_FT_INFO = "/interface/mobileContentAction/queryInfo";
 
+    //支付宝支付接口
+    public static final String ADDRESS_ALIPAY_PAY = "/interface/pay/alipaySign";
+
+    //支付宝验证接口
+    public static final String ADDRESS_ALIPAY_CHECK = "/interface/pay/payCheck";
+
+    //粉团文章点赞
+    public static final String ADDRESS_FT_GOOD = "/interface/mobileContentAction/giveUp";
+
+    //粉团评论查询
+    public static final String ADDRESS_FT_COMMENT = "/interface/mobileContentAction/commentQuery";
 }

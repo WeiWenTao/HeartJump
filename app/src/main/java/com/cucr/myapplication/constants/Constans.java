@@ -12,6 +12,7 @@ public class Constans {
     public static final int TYPE_ONE = 1;
     public static final int TYPE_TWO = 2;
     public static final int TYPE_THREE = 3;
+    public static final int TYPE_FORE = 4;
 
     public static final int TYPE_TEXT = 0;
 
@@ -57,5 +58,11 @@ public class Constans {
 
     //企业认证
     public static final int RZ_QIYE = 1;
+
+    //Activity跳转请求码
+    public static final int REQUEST_CODE = 999;
+
+    //Activity跳转结果码
+    public static final int RESULT_CODE = 998;
 
 }

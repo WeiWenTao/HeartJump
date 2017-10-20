@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     //根据常过来的索引切换fragment
     private void initFragment(int i) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.ll_container, mFragments.get(i)).commit() ;
+        fragmentManager.beginTransaction().replace(R.id.ll_container, mFragments.get(i)).commit();
     }
 
     private void initView() {

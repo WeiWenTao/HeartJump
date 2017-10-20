@@ -1,7 +1,9 @@
 package com.cucr.myapplication.activity.video;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +18,13 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.ViderRecommendAdapter;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import org.zackratos.ultimatebar.UltimateBar;
+
+import java.lang.reflect.Method;
 
 import tcking.github.com.giraffeplayer.GiraffePlayer;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
@@ -115,10 +120,13 @@ public class VideoActivity extends Activity {
         ultimateBar.setImmersionBar();
 
         //设置导航栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && checkDeviceHasNavigationBar(this)) {
+            boolean b = checkDeviceHasNavigationBar(this);
+            MyLogger.jLog().i("hasNB?"+b);
             getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_commend_bar.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(this));
+
             rl_commend_bar.setLayoutParams(layoutParams);
         }
 
@@ -127,6 +135,30 @@ public class VideoActivity extends Activity {
         lv_video_recommend.addHeaderView(headerView, null, true);
         lv_video_recommend.setHeaderDividersEnabled(false);
         lv_video_recommend.setAdapter(new ViderRecommendAdapter());
+    }
+
+    //判断手机是否有导航栏的方法
+    public static boolean checkDeviceHasNavigationBar(Context context) {
+        boolean hasNavigationBar = false;
+        Resources rs = context.getResources();
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            hasNavigationBar = rs.getBoolean(id);
+        }
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+            if ("1".equals(navBarOverride)) {
+                hasNavigationBar = false;
+            } else if ("0".equals(navBarOverride)) {
+                hasNavigationBar = true;
+            }
+        } catch (Exception e) {
+
+        }
+        return hasNavigationBar;
+
     }
 
 

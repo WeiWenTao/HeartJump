@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     >
 
-        <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
-            android:id="@+id/rlv_fentuan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/color_999"
-            android:dividerHeight="1dp"
-            ></com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView>
+    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+        android:id="@+id/rlv_fentuan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/color_999"
+        android:dividerHeight="1dp"
+        ></com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView>
 
 
     <toan.android.floatingactionmenu.FloatingActionsMenu

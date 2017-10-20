@@ -1,6 +1,7 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
-import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -26,9 +28,13 @@ public class StarListAdapter extends RecyclerView.Adapter {
     private List<MyFocusStarInfo.RowsBean> list;
     private int clickPosition;
 
-    public StarListAdapter(Context context, List list) {
+    public StarListAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setData(List<MyFocusStarInfo.RowsBean> list){
         this.list = list;
+        notifyDataSetChanged();
     }
 
     public void setPosition(int clickPosition) {
@@ -56,7 +62,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
             ((MyAddHolder) holder).iv_add_star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtils.showToast(context, "添加");
+                    context.startActivity(new Intent(context, StarListForAddActivity.class));
                 }
             });
 
@@ -85,6 +91,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        MyLogger.jLog().i("list:"+list);
         return list == null ? 0 : list.size() + 1;
     }
 

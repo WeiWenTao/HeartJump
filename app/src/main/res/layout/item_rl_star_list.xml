@@ -18,6 +18,7 @@
         android:background="@drawable/cricle_bg"
         app:civ_border_overlay="false"
         app:civ_border_width="1dp"
+        android:scaleType="centerCrop"
         app:civ_border_color="@color/white"
         />
 

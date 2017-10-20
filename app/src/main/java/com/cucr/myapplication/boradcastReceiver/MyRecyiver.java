@@ -1,4 +1,4 @@
-package com.cucr.myapplication.boradReceiver;
+package com.cucr.myapplication.boradcastReceiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -2,8 +2,10 @@ package com.cucr.myapplication;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -20,7 +22,11 @@ import cn.jpush.android.api.JPushInterface;
  */
 
 public class MyApplication extends Application {
+
     private static MyApplication _instance;
+
+    private static DisplayImageOptions options;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -64,6 +70,14 @@ public class MyApplication extends Application {
 
         // NoHttp详细使用文档：http://doc.nohttp.net
 
+        options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .showImageOnLoading(R.drawable.ic_launcher)  // 加载时的占位图
+                .showImageOnFail(R.drawable.ic_launcher)  // 加载失败占位图
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+
         //创建默认的ImageLoader配置参数
         ImageLoaderConfiguration configuration = ImageLoaderConfiguration
                 .createDefault(this);
@@ -80,6 +94,10 @@ public class MyApplication extends Application {
 
     public static MyApplication getInstance() {
         return _instance;
+    }
+
+    public static DisplayImageOptions getOptions() {
+        return options;
     }
 
 }

@@ -56,13 +56,13 @@ public class QueryMyFocusStars extends BaseCore implements MyFocusStars {
         //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
         request.setCacheKey(HttpContans.ADDRESS_MY_FOCUS);
         //没有缓存才去请求网络
-        request.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
 
         request(0, request, callback, false, true);
     }
 
     @Override
     public Activity getChildActivity() {
-        return mActivity;
+        return null;
     }
 }

@@ -24,6 +24,12 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
+    <!-- 支付宝 -->
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -32,6 +38,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         >
+
+        <!-- 支付宝 -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            >
+        </activity>
 
         <!-- 测试类 -->
         <uses-library android:name="android.test.runner"/>
@@ -53,12 +77,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             >
 
-             <!--<intent-filter> -->
-             <!--<action android:name="android.intent.action.MAIN"/> -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER"/> -->
-             <!--</intent-filter> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- share sdk -->
@@ -129,11 +153,13 @@
         <activity android:name=".activity.myHomePager.FocusActivity">
         </activity>
         <activity android:name=".activity.pay.PayCenterActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
 
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".activity.pay.StarMoneyActivity">
         </activity>
@@ -236,7 +262,7 @@
             >
         </activity>
 
-        <receiver android:name=".boradReceiver.MyRecyiver">
+        <receiver android:name=".boradcastReceiver.MyRecyiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION"/>
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/>
@@ -252,6 +278,10 @@
         <activity android:name=".activity.fenTuan.ImagePagerActivity">
         </activity>
         <activity android:name=".activity.comment.FtPicAndTextComment">
+        </activity>
+        <activity android:name=".activity.star.StarListForAddActivity">
+        </activity>
+        <activity android:name=".activity.fenTuan.FtSecondCommentActivity">
         </activity>
     </application>
 
