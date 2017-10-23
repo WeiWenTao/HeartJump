@@ -27,6 +27,7 @@ public class FtCommentCore implements FenTuanComment {
     private Context context;
     private RequestQueue mQueue;
     private OnCommonListener queryCommentListener;
+    private OnCommonListener commentGoodsListener;
 
     public FtCommentCore(Context context) {
         this.context = context;
@@ -36,7 +37,7 @@ public class FtCommentCore implements FenTuanComment {
     @Override
     public void queryFtComment(Integer dataId, Integer page, Integer rows, OnCommonListener listener) {
         queryCommentListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT_QUERY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
@@ -47,6 +48,21 @@ public class FtCommentCore implements FenTuanComment {
 //        //请求网络失败才去请求缓存
 //        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
         mQueue.add(Constans.TYPE_ONE, request, callback);
+    }
+
+    @Override
+    public void ftCommentGoods(Integer contentId, Integer commentId, OnCommonListener listener) {
+        commentGoodsListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT_GOODS, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+                .add("commentId", commentId)
+                .add("contentId", contentId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+//        //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
+//        request.setCacheKey(HttpContans.ADDRESS_FT_COMMENT);
+//        //请求网络失败才去请求缓存
+//        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
+        mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
     //回调
@@ -60,11 +76,13 @@ public class FtCommentCore implements FenTuanComment {
         public void onSucceed(int what, Response<String> response) {
             switch (what) {
                 case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("粉团评论查询成功，Cache?"+response.isFromCache());
+                    MyLogger.jLog().i("粉团评论查询成功，Cache?" + response.isFromCache());
                     queryCommentListener.onRequestSuccess(response);
                     break;
 
                 case Constans.TYPE_TWO:
+                    MyLogger.jLog().i("粉团评论点赞成功，Cache?" + response.isFromCache());
+                    commentGoodsListener.onRequestSuccess(response);
                     break;
             }
 
@@ -79,6 +97,7 @@ public class FtCommentCore implements FenTuanComment {
                     break;
 
                 case Constans.TYPE_TWO:
+                    MyLogger.jLog().i("粉团评论点赞失败");
                     break;
             }
         }

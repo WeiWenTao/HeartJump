@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/white"
               android:orientation="vertical"
     >
@@ -12,7 +13,7 @@
         android:orientation="horizontal"
         >
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_userhead"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
@@ -56,10 +57,10 @@
 
                 <ImageView
                     android:id="@+id/iv_good"
-                    android:layout_width="@dimen/dp_15"
-                    android:layout_height="@dimen/dp_13"
+                    android:layout_width="@dimen/dp_25"
+                    android:layout_height="23dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp_5"
+                    android:padding="@dimen/dp_5"
                     android:layout_toLeftOf="@id/tv_good_value"
                     android:src="@drawable/good_selector"
                     />
@@ -85,19 +86,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <com.vanniktech.emoji.EmojiTextView
         android:id="@+id/tv_comment_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_10"
         android:layout_marginLeft="60dp"
+        android:textIsSelectable="true"
         android:text="哇哇哇！行走的荷尔蒙，帅死了！"
         android:textColor="#333"
+        app:emojiSize="@dimen/sp_15"
         android:textSize="@dimen/sp_15"
         />
 
     <LinearLayout
-
         android:id="@+id/ll_comment_more"
         android:layout_width="match_parent"
         android:layout_height="28dp"

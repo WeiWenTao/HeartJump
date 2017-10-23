@@ -67,6 +67,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MyLogger.jLog().i("onCreateView");
         mContext = container.getContext();
         queryCore = new QueryFtInfoCore(mContext);
         mGson = new Gson();
@@ -82,6 +83,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
 
     private void queryFtInfo() {
+        MyLogger.jLog().i("queryFtInfo");
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -96,6 +98,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
     private void initRlV() {
+        MyLogger.jLog().i("initRlV");
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
         mAdapter = new FtAdapter(mContext);
@@ -108,6 +111,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
     private void initView() {
+        MyLogger.jLog().i("initView");
 //        rlv_fentuan = (RecyclerView) view.findViewById(R.id.rlv_fentuan);
 //        rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
 
@@ -218,6 +222,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
+        MyLogger.jLog().i("onDestroy");
         queryCore.stopRequest();
     }
 
@@ -233,6 +238,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
     @Override
     public void onLoadMore() {
+        MyLogger.jLog().i("onLoadMore");
         page++;
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
@@ -255,7 +261,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
     @Override
     public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
-
+        MyLogger.jLog().i("onClickGoods");
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -263,12 +269,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                 if (commonRebackMsg.isSuccess()) {
                     if (rowsBean.isIsGiveUp()) {
                         giveNum = rowsBean.getGiveUpCount() - 1;
-                        MyLogger.jLog().i("setIsGiveUp(false)");
                         rowsBean.setIsGiveUp(false);
                         rowsBean.setGiveUpCount(giveNum);
                     } else {
                         giveNum = rowsBean.getGiveUpCount() + 1;
-                        MyLogger.jLog().i("setIsGiveUp(true)");
                         rowsBean.setIsGiveUp(true);
                         rowsBean.setGiveUpCount(giveNum);
                     }
@@ -287,6 +291,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //评论
     @Override
     public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean isFormConmmomd) {
+        MyLogger.jLog().i("onClickCommends");
         this.position = position;
         MyLogger.jLog().i("Commendposition:"+position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);

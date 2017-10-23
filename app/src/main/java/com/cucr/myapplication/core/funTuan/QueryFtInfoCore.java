@@ -27,6 +27,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     private OnCommonListener ftQuerylistener;
     private OnCommonListener ftGoodlistener;
+    private OnCommonListener toCommentlistener;
 
     /**
      * 请求队列。
@@ -47,7 +48,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
-        MyLogger.jLog().i("userId="+((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
+        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
         request.add("startId", starId)
                 .add("page", page)
                 .add("rows", rows)
@@ -62,9 +63,9 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     @Override
     public void ftGoods(int contentId, OnCommonListener listener) {
-        ftGoodlistener= listener;
-        MyLogger.jLog().i("contentId="+contentId);
-        MyLogger.jLog().i("userId="+((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
+        ftGoodlistener = listener;
+        MyLogger.jLog().i("contentId=" + contentId);
+        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_GOOD, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
@@ -72,6 +73,24 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
+
+    @Override
+    public void toComment(int contentId, int commentId, String content, OnCommonListener listener) {
+        toCommentlistener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT, RequestMethod.POST);
+        // 添加普通参数。
+        if (commentId != -1) {
+            //一级评论不用传
+            request.add("commentParentId", commentId);
+        }
+        request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+                .add("dataId", contentId)    //文章id
+                .add("comment", content)    //数据
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+
+        mQueue.add(Constans.TYPE_THREE, request, callback);
+    }
+
 
     //回调
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
@@ -92,6 +111,11 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                     MyLogger.jLog().i("粉团点赞查询成功，Cache?" + response.isFromCache());
                     ftGoodlistener.onRequestSuccess(response);
                     break;
+
+                case Constans.TYPE_THREE:
+                    MyLogger.jLog().i("粉团评论成功，Cache?" + response.isFromCache());
+                    toCommentlistener.onRequestSuccess(response);
+                    break;
             }
 
         }
@@ -107,6 +131,10 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                 case Constans.TYPE_TWO:
                     MyLogger.jLog().i("粉团点赞请求失败");
                     break;
+
+                case Constans.TYPE_THREE:
+                    MyLogger.jLog().i("粉团评论请求失败");
+                    break;
             }
         }
 
@@ -116,7 +144,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         }
     };
 
-    public void stopRequest(){
+    public void stopRequest() {
         mQueue.cancelAll();
         mQueue.stop();
     }

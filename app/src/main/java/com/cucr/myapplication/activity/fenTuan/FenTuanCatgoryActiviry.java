@@ -3,9 +3,14 @@ package com.cucr.myapplication.activity.fenTuan;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Px;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +26,7 @@ import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaShangStyle;
@@ -29,14 +35,29 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiImageView;
+import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.emoji.Emoji;
+import com.vanniktech.emoji.listeners.OnEmojiBackspaceClickListener;
+import com.vanniktech.emoji.listeners.OnEmojiClickListener;
+import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
+import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
+import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
+import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.Serializable;
 import java.util.List;
 
 import static com.cucr.myapplication.utils.MyLogger.jLog;
+import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanCatgoryActiviry extends BaseActivity {
+public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods {
+
+    //根布局
+    @ViewInject(R.id.rootview)
+    ViewGroup rootview;
 
     //评论列表
     @ViewInject(R.id.lv_ft_catgory)
@@ -50,6 +71,27 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
     @ViewInject(R.id.tv_givecount)
     TextView tv_givecount;
 
+    //评论框
+    @ViewInject(R.id.et_comment)
+    EmojiEditText et_comment;
+
+    //评论数量
+    @ViewInject(R.id.tv_comment_count)
+    TextView tv_comment_count;
+
+    //评论和点赞
+    @ViewInject(R.id.ll_comment_good)
+    LinearLayout ll_comment_good;
+
+    //表情和发送
+    @ViewInject(R.id.ll_emoji_send)
+    LinearLayout ll_emoji_send;
+
+    //表情按钮
+    @ViewInject(R.id.iv_emoji)
+    ImageView iv_emoji;
+
+
 
     private DialogDaShangStyle mDialogDaShangStyle;
     private boolean mHasPicture;
@@ -62,11 +104,14 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
     private QueryFtInfoCore queryCore;
     private Intent mIntent;
     private FtCatgoryAadapter mAdapter;
+    //emoji表情
+    private EmojiPopup emojiPopup;
 
     @Override
     protected void initChild() {
         initTitle("详情");
         initData();
+        setUpEmojiPopup();
         initLV();
         getDatas();
     }
@@ -86,18 +131,18 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
     private void upDataInfo() {
         tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
         iv_zan.setImageResource(mRowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        tv_comment_count.setText(mRowsBean.getCommentCount() + "");
     }
 
     private void getDatas() {
         page = 1;
-        rows = 10;
-//        mRowsBean.getId()
-        mCommentCore.queryFtComment(2, page, rows, new OnCommonListener() {
+        rows = 100;
+        mCommentCore.queryFtComment(mRowsBean.getId(), page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
                 if (ftCommentInfo.isSuccess()) {
-                    MyLogger.jLog().i("ftCommentInfo:"+ftCommentInfo);
+                    MyLogger.jLog().i("ftCommentInfo:" + ftCommentInfo);
                     mAdapter.setData(ftCommentInfo.getRows());
                 } else {
                     ToastUtils.showToast(ftCommentInfo.getErrorMsg());
@@ -130,10 +175,13 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
         lv_ft_catgory.addHeaderView(lvHead, null, true);
         lv_ft_catgory.setHeaderDividersEnabled(false);
         mAdapter = new FtCatgoryAadapter(this);
+        mAdapter.setClickGoodsListener(this);
         lv_ft_catgory.setAdapter(mAdapter);
         if (mIsFormConmmomd) {
             lv_ft_catgory.setSelection(1);
         }
+
+        et_comment.setOnFocusChangeListener(this);
     }
 
     private void initLvHeader(View lvHead) {
@@ -160,7 +208,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, options);
         tv_neckname.setText(mRowsBean.getCreateUserName());
         tv_time_form.setText(mRowsBean.getCreaetTime());
-        tv_lookcount.setText(mRowsBean.getReadCount()+"");
+        tv_lookcount.setText(mRowsBean.getReadCount() + "");
         tv_content.setText(mRowsBean.getContent());
 
         lvHead.findViewById(R.id.tv_dashang).setOnClickListener(new View.OnClickListener() {
@@ -225,10 +273,56 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
         setResult(Constans.RESULT_CODE, intent);
     }
 
+    //emoji表情
+    @OnClick(R.id.iv_emoji)
+    public void clickEmoji(View view){
+        emojiPopup.toggle();
+    }
+
+    //发送按钮
+    @OnClick(R.id.tv_send)
+    public void clickSend(View view){
+        //一级评论传-1
+        queryCore.toComment(mRowsBean.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (commonRebackMsg.isSuccess()){
+                    ToastUtils.showToast("评论成功!");
+                    //查询一遍
+                    getDatas();
+                    et_comment.setText("");
+                    emojiPopup.dismiss();
+                    CommonUtils.hideKeyBorad(FenTuanCatgoryActiviry.this,rootview,true);
+                    et_comment.clearFocus();
+                    mRowsBean.setCommentCount(mRowsBean.getCommentCount()+1);
+                    upDataInfo();
+                }else {
+                    ToastUtils.showToast(commonRebackMsg.getMsg());
+                }
+            }
+        });
+    }
+
+
+
+
+    @Override protected void onStop() {
+        if (emojiPopup != null) {
+            emojiPopup.dismiss();
+        }
+        super.onStop();
+    }
+
     //返回操作
     @Override
     protected void onBackBefore() {
-        setData();
+        if (emojiPopup != null && emojiPopup.isShowing()) {
+            emojiPopup.dismiss();
+        } else {
+            setData();
+        }
+
     }
 
     @Override
@@ -237,4 +331,69 @@ public class FenTuanCatgoryActiviry extends BaseActivity {
         finish();
     }
 
+    //根据状态改变发送栏
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        ll_emoji_send.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+        ll_comment_good.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
+    }
+
+    private void setUpEmojiPopup() {
+        emojiPopup = EmojiPopup.Builder.fromRootView(rootview)
+                .setOnEmojiBackspaceClickListener(new OnEmojiBackspaceClickListener() {
+                    @Override public void onEmojiBackspaceClick(final View v) {
+                        Log.d(TAG, "Clicked on Backspace");
+                    }
+                })
+                .setOnEmojiClickListener(new OnEmojiClickListener() {
+                    @Override public void onEmojiClick(@NonNull final EmojiImageView imageView, @NonNull final Emoji emoji) {
+                        Log.d(TAG, "Clicked on emoji");
+                    }
+                })
+                .setOnEmojiPopupShownListener(new OnEmojiPopupShownListener() {
+                    @Override public void onEmojiPopupShown() {
+                        iv_emoji.setImageResource(R.drawable.ic_keyboard);
+                    }
+                })
+                .setOnSoftKeyboardOpenListener(new OnSoftKeyboardOpenListener() {
+                    @Override public void onKeyboardOpen(@Px final int keyBoardHeight) {
+                        Log.d(TAG, "Opened soft keyboard");
+                    }
+                })
+                .setOnEmojiPopupDismissListener(new OnEmojiPopupDismissListener() {
+                    @Override public void onEmojiPopupDismiss() {
+                        iv_emoji.setImageResource(R.drawable.icon_face);
+                    }
+                })
+                .setOnSoftKeyboardCloseListener(new OnSoftKeyboardCloseListener() {
+                    @Override public void onKeyboardClose() {
+                        Log.d(TAG, "Closed soft keyboard");
+                    }
+                })
+                .build(et_comment);
+    }
+
+    @Override
+    public void clickGoods(final FtCommentInfo.RowsBean rowsBean) {
+        mCommentCore.ftCommentGoods(rowsBean.getContentId(), rowsBean.getId(), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (commonRebackMsg.isSuccess()){
+                    if (rowsBean.getIsGiveUp()) {
+                        giveNum = rowsBean.getGiveUpCount() - 1;
+                        rowsBean.setIsGiveUp(false);
+                        rowsBean.setGiveUpCount(giveNum);
+                    } else {
+                        giveNum = rowsBean.getGiveUpCount() + 1;
+                        rowsBean.setIsGiveUp(true);
+                        rowsBean.setGiveUpCount(giveNum);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }else {
+                    ToastUtils.showToast(FenTuanCatgoryActiviry.this,commonRebackMsg.getMsg());
+                }
+            }
+        });
+    }
 }

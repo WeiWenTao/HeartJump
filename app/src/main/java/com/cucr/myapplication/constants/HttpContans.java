@@ -9,7 +9,6 @@ public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
 
-
 //    public static final String HTTP_HOST = "http://192.168.1.122:8080";
 
     //注册
@@ -94,5 +93,11 @@ public class HttpContans {
     public static final String ADDRESS_FT_GOOD = "/interface/mobileContentAction/giveUp";
 
     //粉团评论查询
-    public static final String ADDRESS_FT_COMMENT = "/interface/mobileContentAction/commentQuery";
+    public static final String ADDRESS_FT_COMMENT_QUERY = "/interface/mobileContentAction/commentQuery";
+
+    //粉团评论
+    public static final String ADDRESS_FT_COMMENT = "/interface/mobileContentAction/comment";
+
+    //粉团评论点赞
+    public static final String ADDRESS_FT_COMMENT_GOODS = "/interface/mobileContentAction/commentGiveUp";
 }

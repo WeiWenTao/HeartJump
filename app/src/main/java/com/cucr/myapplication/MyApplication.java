@@ -8,6 +8,8 @@ import android.support.multidex.MultiDex;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -37,6 +39,9 @@ public class MyApplication extends Application {
         //极光推送初始化
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+
+        //emoji表情初始化
+        EmojiManager.install(new IosEmojiProvider());
 
         _instance = this;
 

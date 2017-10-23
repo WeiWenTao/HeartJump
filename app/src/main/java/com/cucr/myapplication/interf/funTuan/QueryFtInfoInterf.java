@@ -10,4 +10,6 @@ public interface QueryFtInfoInterf {
     void queryFtInfo(int strId, boolean queryMine, int page, int rows, OnCommonListener listener);
 
     void ftGoods(int contentId, OnCommonListener listener);
+
+    void toComment(int contentId,int commentId,String content, OnCommonListener listener);
 }

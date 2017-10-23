@@ -11,12 +11,12 @@
         android:layout_height="wrap_content"
         >
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
             android:layout_margin="@dimen/dp_10"
-            android:src="@drawable/pic1"
+            android:src="@drawable/img_user"
             />
 
         <LinearLayout
@@ -38,7 +38,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_5"
                 android:orientation="horizontal"
                 >
 
@@ -90,7 +90,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:lineSpacingExtra="@dimen/dp_4"
-        android:maxLines="3"
         android:text="除夕夜上微博，边看边聊嗨！今天是除夕，先给大家用家乡话拜年啦~今晚还要记得~新的一年，大吉大利！"
         android:textColor="#333"
         android:textSize="@dimen/sp_15"
