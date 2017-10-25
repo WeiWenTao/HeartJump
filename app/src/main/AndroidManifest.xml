@@ -283,6 +283,8 @@
         </activity>
         <activity android:name=".activity.fenTuan.FtSecondCommentActivity">
         </activity>
+        <activity android:name=".activity.setting.InvateActivity">
+        </activity>
     </application>
 
 </manifest>

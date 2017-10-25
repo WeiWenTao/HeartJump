@@ -5,6 +5,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
 
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -28,6 +31,8 @@ public class MyApplication extends Application {
     private static MyApplication _instance;
 
     private static DisplayImageOptions options;
+
+    private static RequestOptions glideOptions;
 
     @Override
     public void onCreate() {
@@ -78,8 +83,8 @@ public class MyApplication extends Application {
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .showImageOnLoading(R.drawable.ic_launcher)  // 加载时的占位图
-                .showImageOnFail(R.drawable.ic_launcher)  // 加载失败占位图
+                .showImageOnLoading(R.drawable.pic_bg)  // 加载时的占位图
+                .showImageOnFail(android.R.drawable.stat_notify_error)  // 加载失败占位图
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
 
@@ -89,12 +94,21 @@ public class MyApplication extends Application {
 
         //Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(configuration);
+
+
+        glideOptions = new RequestOptions()
+                .placeholder(R.drawable.pic_bg)
+                .error(android.R.drawable.stat_notify_error)
+                .priority(Priority.LOW)
+                //.skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
     }
 
     //解决重复依赖bug
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base); MultiDex.install(this);
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static MyApplication getInstance() {
@@ -103,6 +117,10 @@ public class MyApplication extends Application {
 
     public static DisplayImageOptions getOptions() {
         return options;
+    }
+
+    public static RequestOptions getGlideOptions() {
+        return glideOptions;
     }
 
 }

@@ -35,14 +35,18 @@ public class FtCommentCore implements FenTuanComment {
     }
 
     @Override
-    public void queryFtComment(Integer dataId, Integer page, Integer rows, OnCommonListener listener) {
+    public void queryFtComment(Integer dataId,Integer parentId, Integer page, Integer rows, OnCommonListener listener) {
         queryCommentListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT_QUERY, RequestMethod.POST);
+        if (parentId != -1){
+            request.add("parentId", parentId);
+        }
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
                 .add("dataId", dataId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+
 //        //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
 //        request.setCacheKey(HttpContans.ADDRESS_FT_COMMENT);
 //        //请求网络失败才去请求缓存

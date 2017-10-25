@@ -1,18 +1,16 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.cucr.myapplication.R;
+import com.bumptech.glide.Glide;
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.widget.photoView.PhotoView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -52,14 +50,19 @@ public class ImgPagerAdapter extends PagerAdapter {
 
         view.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-        DisplayImageOptions options = new DisplayImageOptions.Builder()//
-//                        .showImageOnLoading(R.mipmap.ic_launcher) // 加载中显示的默认图片
-                .showImageOnFail(R.mipmap.ic_launcher) // 设置加载失败的默认图片
-                .cacheInMemory(true) // 内存缓存
-                .cacheOnDisk(true) // sdcard缓存
-                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
-                .build();//
-        ImageLoader.getInstance().displayImage(url, view, options);
+//        DisplayImageOptions options = new DisplayImageOptions.Builder()//
+////                        .showImageOnLoading(R.mipmap.ic_launcher) // 加载中显示的默认图片
+//                .showImageOnFail(R.mipmap.ic_launcher) // 设置加载失败的默认图片
+//                .cacheInMemory(true) // 内存缓存
+//                .cacheOnDisk(true) // sdcard缓存
+//                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
+//                .build();//
+//        ImageLoader.getInstance().displayImage(url, view, options);
+
+        Glide.with(context).load(url)
+                .apply(MyApplication.getGlideOptions())
+                .into(view);
+
 
         container.addView(view);
         return view;

@@ -425,7 +425,7 @@ public class CommonUtils {
 
 
     /**
-     * unicode 转字符串
+     * unicode 转字符串   直接设置给控件
      */
     public static String unicode2String(String unicode) {
 
@@ -447,7 +447,7 @@ public class CommonUtils {
 
 
     /**
-     * 字符串转换unicode
+     * 字符串转换unicode  传给服务器
      */
     public static String string2Unicode(String string) {
 

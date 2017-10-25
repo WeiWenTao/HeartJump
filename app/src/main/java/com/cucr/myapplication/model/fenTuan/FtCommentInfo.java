@@ -1,12 +1,13 @@
 package com.cucr.myapplication.model.fenTuan;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2017/10/18.
  */
 
-public class FtCommentInfo {
+public class FtCommentInfo implements Serializable {
 
     /**
      * errorMsg :
@@ -52,7 +53,7 @@ public class FtCommentInfo {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         @Override
         public String toString() {
             return "RowsBean{" +
@@ -88,7 +89,16 @@ public class FtCommentInfo {
         private String releaseTime;
         private int type;
         private UserBean user;
-        private List<ChildListBean> childList;
+        private List<FtCommentInfo.RowsBean> childList;
+        private int childListSize;
+
+        public int getCommentCount() {
+            return childListSize;
+        }
+
+        public void setCommentCount(int childListSize) {
+            this.childListSize = childListSize;
+        }
 
         public String getComment() {
             return comment;
@@ -154,15 +164,15 @@ public class FtCommentInfo {
             this.user = user;
         }
 
-        public List<ChildListBean> getChildList() {
+        public List<FtCommentInfo.RowsBean> getChildList() {
             return childList;
         }
 
-        public void setChildList(List<ChildListBean> childList) {
+        public void setChildList(List<FtCommentInfo.RowsBean> childList) {
             this.childList = childList;
         }
 
-        public static class UserBean {
+        public static class UserBean implements Serializable {
             @Override
             public String toString() {
                 return "UserBean{" +
@@ -207,7 +217,7 @@ public class FtCommentInfo {
             }
         }
 
-        public static class ChildListBean {
+        /*public static class ChildListBean implements Serializable {
 
             @Override
             public String toString() {
@@ -224,17 +234,17 @@ public class FtCommentInfo {
                         '}';
             }
 
-            /**
-             * childList : []
-             * comment : 2
-             * contentId : 2
-             * giveUpCount : null
-             * id : 2
-             * isGiveUp : 0
-             * releaseTime : 2017-08-30 15:02:01
-             * type : 0
-             * user : {"id":17,"name":"wiki","userHeadPortrait":"/static/ys_image/933dd507-e2a2-4e33-a573-3271cbcbfedf.png"}
-             */
+            *//**
+         * childList : []
+         * comment : 2
+         * contentId : 2
+         * giveUpCount : null
+         * id : 2
+         * isGiveUp : 0
+         * releaseTime : 2017-08-30 15:02:01
+         * type : 0
+         * user : {"id":17,"name":"wiki","userHeadPortrait":"/static/ys_image/933dd507-e2a2-4e33-a573-3271cbcbfedf.png"}
+         *//*
 
             private String comment;
             private int contentId;
@@ -245,6 +255,7 @@ public class FtCommentInfo {
             private int type;
             private UserBeanX user;
             private List<?> childList;
+
 
             public String getComment() {
                 return comment;
@@ -318,12 +329,12 @@ public class FtCommentInfo {
                 this.childList = childList;
             }
 
-            public static class UserBeanX {
-                /**
-                 * id : 17
-                 * name : wiki
-                 * userHeadPortrait : /static/ys_image/933dd507-e2a2-4e33-a573-3271cbcbfedf.png
-                 */
+            public static class UserBeanX implements Serializable {
+                *//**
+         * id : 17
+         * name : wiki
+         * userHeadPortrait : /static/ys_image/933dd507-e2a2-4e33-a573-3271cbcbfedf.png
+         *//*
 
                 private int id;
                 private String name;
@@ -362,7 +373,7 @@ public class FtCommentInfo {
                             '}';
                 }
             }
-        }
+        }*/
     }
 
     @Override

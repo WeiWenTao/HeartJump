@@ -18,11 +18,11 @@ import android.widget.TextView;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity;
-import com.cucr.myapplication.activity.fenTuan.FtSecondCommentActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.CommonViewHolder;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.text.MyClickGoHomePager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.vanniktech.emoji.EmojiTextView;
@@ -75,25 +75,40 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
         EmojiTextView tv_comment_content = cvh.getView(R.id.tv_comment_content, EmojiTextView.class);
         TextView tv_comment_size = cvh.getTv(R.id.tv_comment_size);
         LinearLayout ll_comment_more = cvh.getView(R.id.ll_comment_more, LinearLayout.class);
+        LinearLayout ll_item = cvh.getView(R.id.ll_item, LinearLayout.class);
+
 
         //设置点击监听
         userHead.setOnClickListener(this);
         tv_username.setOnClickListener(this);
         tv_comment_time.setOnClickListener(this);
-        ll_comment_more.setOnClickListener(this);
+        ll_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener!= null){
+                    clickGoodsListener.clickItem(mRowsBean);
+                }
+            }
+        });
         iv_good.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickGoodsListener.clickGoods(mRowsBean);
+                if (clickGoodsListener!= null){
+                    clickGoodsListener.clickGoods(mRowsBean);
+                }
             }
         });
 
         //是否有二级评论
-        boolean hasSecondCom = mRowsBean.getChildList().size() > 0;
+        boolean hasSecondCom = mRowsBean.getCommentCount() > 0;
         ll_comment_more.setVisibility(hasSecondCom ? View.VISIBLE : View.GONE);
+//        MyLogger.jLog().i("position:"+position+",commentCount:"+mRowsBean.getCommentCount());
+//        MyLogger.jLog().i("position:"+position+",size:"+mRowsBean.getChildList().size());
+
         if (hasSecondCom) {
             //获取二级评论的第一个用户
-            String commentName = mRowsBean.getChildList().get(0).getUser().getName();
+//            String commentName = mRowsBean.getChildList().get(0).getUser().getName();
+            String commentName = "aaa";
 
             SpannableString sp = new SpannableString(commentName + "等人");
 
@@ -108,13 +123,15 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
 
             //设置TextView可点击
             tv_comment.setMovementMethod(LinkMovementMethod.getInstance());
-            tv_comment_size.setText("共" + mRowsBean.getChildList().size() + "条评论");
+
+            tv_comment_size.setText("共" + mRowsBean.getCommentCount() + "条评论");
         }
 
 
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getOptions());
         tv_comment_time.setText(mRowsBean.getReleaseTime());
+        MyLogger.jLog().i("position="+position+",IsGiveUp()"+mRowsBean.getIsGiveUp());
         iv_good.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(mRowsBean.getGiveUpCount() + "");
         tv_username.setText(mRowsBean.getUser().getName());
@@ -131,11 +148,6 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
             case R.id.iv_userhead:
                 mContext.startActivity(new Intent(mContext, PersonalMainPagerActivity.class));
                 break;
-
-            case R.id.ll_comment_more:
-                mContext.startActivity(new Intent(mContext, FtSecondCommentActivity.class));
-                break;
-
         }
     }
 
@@ -148,5 +160,6 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
 
     public interface OnClickCommentGoods{
         void clickGoods(FtCommentInfo.RowsBean mRowsBean);
+        void clickItem(FtCommentInfo.RowsBean mRowsBean);
     }
 }

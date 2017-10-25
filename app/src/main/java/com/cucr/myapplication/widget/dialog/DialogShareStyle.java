@@ -44,12 +44,12 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_share);
+
         initView();
 
     }
 
     private void initView() {
-        LinearLayout ll_share_ft =   (LinearLayout) findViewById(R.id.ll_share_ft);
         LinearLayout ll_share_wxhy = (LinearLayout) findViewById(R.id.ll_share_wxhy);
         LinearLayout ll_share_pyq = (LinearLayout) findViewById(R.id.ll_share_pyq);
         LinearLayout ll_share_qqhy = (LinearLayout) findViewById(R.id.ll_share_qqhy);
@@ -58,7 +58,6 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         LinearLayout ll_share_copy_link = (LinearLayout) findViewById(R.id.ll_share_copy_link);
         ImageView iv_cancle = (ImageView) findViewById(R.id.iv_cancle);
 
-        ll_share_ft.setOnClickListener(this);
         ll_share_wxhy.setOnClickListener(this);
         ll_share_pyq.setOnClickListener(this);
         ll_share_qqhy.setOnClickListener(this);
@@ -70,10 +69,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_share_ft:
-                sharToFT();
-                break;
+        switch (v.getId()) {
 
             case R.id.ll_share_wxhy:
                 sharToWxhy();
@@ -106,12 +102,12 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         }
     }
 
-    public void ToastShow(Context context, ViewGroup root, String tvString){
-        View layout = LayoutInflater.from(context).inflate(R.layout.toast_xml,root);
+    public void ToastShow(Context context, ViewGroup root, String tvString) {
+        View layout = LayoutInflater.from(context).inflate(R.layout.toast_xml, root);
         TextView text = (TextView) layout.findViewById(R.id.text);
         text.setText(tvString);
         text.setTextColor(Color.WHITE);
-       Toast toast = new Toast(context);
+        Toast toast = new Toast(context);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
@@ -172,15 +168,17 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         sp.setSite("发布分享的网站名称");
         sp.setSiteUrl("发布分享网站的地址");
 
-        Platform qzone = ShareSDK.getPlatform (QZone.NAME);
+        Platform qzone = ShareSDK.getPlatform(QZone.NAME);
 // 设置分享事件回调（注：回调放在不能保证在主线程调用，不可以在里面直接处理UI操作）
-        qzone.setPlatformActionListener (new PlatformActionListener() {
+        qzone.setPlatformActionListener(new PlatformActionListener() {
             public void onError(Platform arg0, int arg1, Throwable arg2) {
                 //失败的回调，arg:平台对象，arg1:表示当前的动作，arg2:异常信息
             }
+
             public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
                 //分享成功的回调
             }
+
             public void onCancel(Platform arg0, int arg1) {
                 //取消分享的回调
             }
@@ -227,11 +225,14 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
 
         pyq.share(sp);
     }
+
     //分享到微信好友
     private void sharToWxhy() {
         Wechat.ShareParams sp = new Wechat.ShareParams();
         sp.setText("微信好友");
         sp.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+
+
 
         Platform wxhy = ShareSDK.getPlatform(Wechat.NAME);
         wxhy.setPlatformActionListener(new PlatformActionListener() {
@@ -254,11 +255,6 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         wxhy.share(sp);
     }
 
-    //分享到粉团
-    private void sharToFT() {
-
-        showShare(WechatMoments.NAME);
-    }
 
     private void showShare(String platform) {
         final OnekeyShare oks = new OnekeyShare();

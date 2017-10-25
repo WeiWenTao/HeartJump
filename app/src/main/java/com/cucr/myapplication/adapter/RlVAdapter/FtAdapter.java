@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.activity.video.VideoActivity;
@@ -97,7 +98,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             intent.putExtras(bundle);//发送数据
 
             //头像
-            ImageLoader.getInstance().displayImage(rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic);
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getOptions());
             //视频封面
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video_pic);
 
@@ -165,14 +166,14 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 // -------------------------------------------------------------------------------------------------
         } else if (holder instanceof Tp2_Holder) {
             //图片
-            ImageLoader.getInstance().displayImage(rowsBean.getUserHeadPortrait(), ((Tp2_Holder) holder).iv_pic);     //头像
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp2_Holder) holder).iv_pic, MyApplication.getOptions());     //头像
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp2_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
             ((Tp2_Holder) holder).gridview.setAdapter(new GridAdapter(context, rowsBean.getAttrFileList()));  //图片列表
             ((Tp2_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             ((Tp2_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
-            MyLogger.jLog().i("position:"+position+"ISGIVEUP_GETVIEW:"+rowsBean.isIsGiveUp());
+            MyLogger.jLog().i("position:" + position + "ISGIVEUP_GETVIEW:" + rowsBean.isIsGiveUp());
             if (TextUtils.isEmpty(rowsBean.getContent())) {
                 ((Tp2_Holder) holder).tv_content.setVisibility(View.GONE);
             } else {
@@ -211,7 +212,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickCommends(position,rowsBean, true, true);
+                        mOnClickBt.onClickCommends(position, rowsBean, true, true);
                     }
                 }
             });
@@ -231,14 +232,14 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickCommends(position,rowsBean, true, false);
+                        mOnClickBt.onClickCommends(position, rowsBean, true, false);
                     }
                 }
             });
 
 // -------------------------------------------------------------------------------------------------
         } else { //文字
-            ImageLoader.getInstance().displayImage(rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic);     //头像
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getOptions());     //头像
             ((Tp3_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp3_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp3_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
@@ -261,7 +262,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickCommends(position,rowsBean, false, true);
+                        mOnClickBt.onClickCommends(position, rowsBean, false, true);
                     }
                 }
             });
@@ -281,7 +282,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickCommends(position,rowsBean, false, false);
+                        mOnClickBt.onClickCommends(position, rowsBean, false, false);
                     }
                 }
             });
@@ -482,7 +483,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnClickBt {
         void onClickGoods(int position, QueryFtInfos.RowsBean rowsBean);
 
-        void onClickCommends(int position,QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
+        void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
 
         void onClickshare(int position);
 

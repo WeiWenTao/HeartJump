@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_invate"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/invite_bg"
+    tools:context="com.cucr.myapplication.activity.setting.InvateActivity"
+    android:fitsSystemWindows="true"
+    >
+
+    <RelativeLayout
+        android:fitsSystemWindows="true"
+        android:id="@+id/comment_head"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBarHight"
+
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            android:id="@+id/tv_base_title"
+            style="@style/TitleStyle"
+            android:text="邀请有礼"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_content1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comment_head"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="275dp"
+        android:text="邀请好友注册后"
+        android:textColor="#ffff45"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_content2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="你和你的小伙伴都能获得50星币哦"
+        android:textColor="#ffff45"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:clickable="true"
+        android:onClick="invate"
+        android:id="@+id/tv_invate"
+        android:layout_width="140dp"
+        android:layout_height="41.5dp"
+        android:layout_below="@id/tv_content2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="立即邀请"
+        android:textColor="#ff4f49"
+        android:textSize="18sp"
+        android:background="@drawable/btn_bg"
+        />
+
+</RelativeLayout>
