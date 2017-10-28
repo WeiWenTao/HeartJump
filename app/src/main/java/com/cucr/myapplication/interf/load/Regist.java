@@ -11,7 +11,7 @@ import com.cucr.myapplication.listener.load.OnRegistListener;
 
 public interface Regist {
 
-    void regist(Context context, String yzm, String phoneNum, String nickName, String psw, OnRegistListener listener);
+    void regist(Context context, String phoneNum, String nickName, String psw, OnRegistListener listener,boolean isRegist);
 
     void getYzm(Context context, String userName, OnGetYzmListener loginListener);
 }

@@ -16,11 +16,19 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.HomeNewsPagerAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 
 /**
  * Created by cucr on 2017/9/9.
@@ -105,6 +113,28 @@ public class FragmentHotAndFocusNews extends BaseFragment {
         }
     }
 
+
+    @OnClick(R.id.iv_search)
+    public void clickSearch(View view){
+        Platform wechat= ShareSDK.getPlatform(SinaWeibo.NAME);
+        wechat.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                MyLogger.jLog().i("onComplete");
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                MyLogger.jLog().i("onError:"+platform+","+i+","+throwable);
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                MyLogger.jLog().i("onCancel");
+            }
+        });
+        wechat.authorize();
+    }
 
     @Override
     protected boolean needHeader() {

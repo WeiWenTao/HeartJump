@@ -241,11 +241,13 @@
         <activity android:name=".activity.BaseActivity">
         </activity>
         <activity android:name=".activity.regist.LoadActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".activity.regist.RegistActivity">
         </activity>
@@ -284,6 +286,15 @@
         <activity android:name=".activity.fenTuan.FtSecondCommentActivity">
         </activity>
         <activity android:name=".activity.setting.InvateActivity">
+        </activity>
+        <activity android:name=".activity.regist.NewLoadActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.regist.NewRegistActivity" android:screenOrientation="portrait">
+
         </activity>
     </application>
 

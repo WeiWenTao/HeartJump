@@ -49,19 +49,30 @@ public class RegistCore implements Regist {
 
 
     @Override
-    public void regist(Context context, String yzm, String phoneNum, String nickName, String psw, OnRegistListener registListener) {
+    public void regist(Context context, String yzm, String phoneNum, String psw, OnRegistListener registListener, boolean isRegist) {
         this.mContext = context;
         this.registListener = registListener;
+        if (isRegist) {
+            Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
+            request.add("checkCode", yzm) // 账号。
+                    .add("phone", phoneNum)
+                    .add("password", psw) // 密码。
+                    // 设置取消标志。
+                    .setCancelSign(flag);
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
-        request.add("checkCode", yzm) // 账号。
-                .add("phone", phoneNum)
-                .add("name", nickName) // 用户名。
-                .add("password", psw) // 密码。
-                // 设置取消标志。
-                .setCancelSign(flag);
+            mQueue.add(REQUEST_REGIST, request, responseListener);
+        } else {
+            Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FORGET_PSW, RequestMethod.POST);
+            request.add("phoneNumber", phoneNum) // 账号。
+                    .add("code", yzm)
+                    .add("password", psw) // 密码。
+                    // 设置取消标志。
+                    .setCancelSign(flag);
 
-        mQueue.add(REQUEST_REGIST, request, responseListener);
+            mQueue.add(REQUEST_REGIST, request, responseListener);
+        }
+
+
     }
 
     @Override

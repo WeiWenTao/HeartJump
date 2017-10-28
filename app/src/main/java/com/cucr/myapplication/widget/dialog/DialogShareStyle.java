@@ -133,7 +133,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     //分享到新浪微博
     private void sharToSina() {
         SinaWeibo.ShareParams sp = new SinaWeibo.ShareParams();
-        sp.setText("新浪微博");
+        sp.setText("新浪微博"+"https://www.baidu.com/s?wd=%E5%BE%AE%E5%8D%9A%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0&ie=utf8&tn=93063693_hao_pg");
         sp.setImagePath("");
 
 

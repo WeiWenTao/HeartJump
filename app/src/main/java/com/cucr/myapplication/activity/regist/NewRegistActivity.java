@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -26,7 +24,6 @@ import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.text.NameLengthFilter;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -41,7 +38,10 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class RegistActivity extends Activity implements TextWatcher {
+/**
+ * 注册和忘记密码共用一个activity
+ */
+public class NewRegistActivity extends Activity {
 
     //电话号码
     @ViewInject(R.id.et_phone_num)
@@ -55,20 +55,17 @@ public class RegistActivity extends Activity implements TextWatcher {
     @ViewInject(R.id.tv_get_yanzhengm)
     TextView tv_get_yanzhengm;
 
-    //昵称
-    @ViewInject(R.id.et_nickname)
-    EditText et_nickname;
-
     //设置密码
     @ViewInject(R.id.et_set_psw)
     EditText et_set_psw;
 
-    //注册按钮
-    @ViewInject(R.id.tv_regist)
-    TextView tv_regist;
+    //心跳条款
+    @ViewInject(R.id.ll_rules)
+    LinearLayout ll_rules;
 
-    //用于记录验证码是否正在获取
-    private boolean runningThree;
+    //用户行为
+    @ViewInject(R.id.tv_action)
+    TextView tv_action;
 
     //注册核心
     private RegistCore mRegistCore;
@@ -77,80 +74,104 @@ public class RegistActivity extends Activity implements TextWatcher {
     private String mSetPsw;
     private Set<String> tags;
 
+    //用于记录验证码是否正在获取
+    private boolean runningThree;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regist);
-        ViewUtils.inject(this);
-        initBar();
-
-        initView();
-    }
-
-    private void initView() {
-
-        mGson = new Gson();
-        mRegistCore = new RegistCore();
-        et_phone_num.addTextChangedListener(this);
-        et_yanzhengm.addTextChangedListener(this);
-        et_nickname.addTextChangedListener(this);
-        et_set_psw.addTextChangedListener(this);
-
-        InputFilter[] inputFilters = new InputFilter[1];
-        NameLengthFilter nameLengthFilter = new NameLengthFilter(12);
-        inputFilters[0] = nameLengthFilter;
-        //限制长度 中文算两个字符
-        et_nickname.setFilters(inputFilters);
-    }
-
-
-    protected void initBar() {
-        UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        if (et_phone_num.length() > 0
-                && et_yanzhengm.length() > 0
-                && et_nickname.length() > 0
-                && et_set_psw.length() > 0) {
-            tv_regist.setEnabled(true);
-        } else {
-            tv_regist.setEnabled(false);
-        }
-    }
-
+    //验证码倒计时
     private CountDownTimer downTimer = new CountDownTimer(60 * 1000, 1000) {
         @Override
         public void onTick(long l) {
             runningThree = true;
             tv_get_yanzhengm.setText("(" + (l / 1000) + "s)重新获取");
-            tv_get_yanzhengm.setEnabled(false);
+            tv_get_yanzhengm.setClickable(false);
         }
 
         @Override
         public void onFinish() {
             runningThree = false;
             tv_get_yanzhengm.setText("重新获取");
-            tv_get_yanzhengm.setEnabled(true);
+            tv_get_yanzhengm.setClickable(true);
         }
     };
+    private boolean mIsRegist;
 
-    //点击获取验证码
-    @OnClick(R.id.tv_get_yanzhengm)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_regist);
+        ViewUtils.inject(this);
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
+
+        initViews();
+    }
+
+    private void initViews() {
+        mIsRegist = getIntent().getBooleanExtra("isRegist", false);
+        //是否是注册注册行为
+        if (!mIsRegist) {
+            ll_rules.setVisibility(View.GONE);
+            tv_action.setText("登 录");
+        }
+
+        mGson = new Gson();
+        mRegistCore = new RegistCore();
+
+    }
+
+    //用户行为
+    @OnClick(R.id.tv_action)
+    public void clickBt(View view) {
+        mPhoneNum = et_phone_num.getText().toString().trim();
+        String yzm = et_yanzhengm.getText().toString();
+        mSetPsw = et_set_psw.getText().toString();
+
+        if (!mPhoneNum.matches(Constans.PHONE_REGEX)) {
+            ToastUtils.showToast(this, "手机号码有误哦");
+            return;
+        }
+
+        //密码小于6位
+        if (mSetPsw.length() < 6) {
+            ToastUtils.showToast(this, "用户密码最少为6位哦");
+            return;
+        }
+
+        mRegistCore.regist(this, yzm, mPhoneNum, mSetPsw, new OnRegistListener() {
+            @Override
+            public void OnRegistSuccess(Response<String> response) {
+                //获取结果
+                String result = response.get();
+                //复用验证码的javabean
+                ReBackMsg yzmInfo = mGson.fromJson(result, ReBackMsg.class);
+                //判断是否注册成功
+                if (yzmInfo.isSuccess()) {
+                    ToastUtils.showToast(mIsRegist?"注册成功!":"设置新密码成功!");
+//                    存储账号和密码等信息
+                    SpUtil.setParam(NewRegistActivity.this, SpConstant.USER_NAEM, mPhoneNum);
+                    SpUtil.setParam(NewRegistActivity.this, SpConstant.PASSWORD, mSetPsw);
+
+                    //登录请求 // TODO: 2017/10/27  
+                    logRequest();
+
+                } else {
+                    ToastUtils.showToast(NewRegistActivity.this, yzmInfo.getMsg());
+                }
+            }
+
+            @Override
+            public void onRegistFailed() {
+
+            }
+        },mIsRegist);
+    }
+
+    //获取验证码
+    @OnClick(R.id.ll_getyzm)
     public void clickGetYzm(View view) {
+        if (runningThree){
+            return;
+        }
         String phone_num = et_phone_num.getText().toString().trim();
 
         if (!phone_num.matches(Constans.PHONE_REGEX)) {
@@ -168,7 +189,7 @@ public class RegistActivity extends Activity implements TextWatcher {
                 if (!yzmInfo.isSuccess()) {
                     //success = false 密码错误
                     // 显示服务器返回的错误信息
-                    ToastUtils.showToast(RegistActivity.this, yzmInfo.getMsg());
+                    ToastUtils.showToast(NewRegistActivity.this, yzmInfo.getMsg());
                     MyLogger.jLog().i("验证码获取失败");
                 } else {
                     MyLogger.jLog().i("验证码获取成功");
@@ -182,64 +203,10 @@ public class RegistActivity extends Activity implements TextWatcher {
         });
     }
 
-    //点击注册
-    @OnClick(R.id.tv_regist)
-    public void regist(View view) {
-        mPhoneNum = et_phone_num.getText().toString().trim();
-        String yzm = et_yanzhengm.getText().toString();
-        String userName = et_nickname.getText().toString();
-        mSetPsw = et_set_psw.getText().toString();
-
-        if (!mPhoneNum.matches(Constans.PHONE_REGEX)){
-            ToastUtils.showToast(this, "手机号码有误哦");
-            return;
-        }
-
-        //用户名检测
-        if (userName.matches(Constans.USERNAME_REGEX)) {
-            ToastUtils.showToast(this, "用户名不能有特殊字符哦");
-            return;
-        }
-
-        //密码小于6位
-        if (mSetPsw.length()<6){
-            ToastUtils.showToast(this, "用户密码最少为6位哦");
-            return;
-        }
-
-        mRegistCore.regist(this, yzm, mPhoneNum, mSetPsw, new OnRegistListener() {
-            @Override
-            public void OnRegistSuccess(Response<String> response) {
-                //获取结果
-                String result = response.get();
-                //复用验证码的javabean
-                ReBackMsg yzmInfo = mGson.fromJson(result, ReBackMsg.class);
-                //判断是否注册成功
-                if (yzmInfo.isSuccess()) {
-                    ToastUtils.showToast(RegistActivity.this, "注册成功！");
-//                    存储账号和密码等信息
-                    SpUtil.setParam(RegistActivity.this, SpConstant.USER_NAEM, mPhoneNum);
-                    SpUtil.setParam(RegistActivity.this, SpConstant.PASSWORD, mSetPsw);
-
-                    //登录请求
-                    logRequest();
-
-                } else {
-                    ToastUtils.showToast(RegistActivity.this, yzmInfo.getMsg());
-                }
-            }
-
-            @Override
-            public void onRegistFailed() {
-
-            }
-        },true);
-    }
-
     //登录请求
     private void logRequest() {
         //TODO 输入判断
-        new LoginCore().login(RegistActivity.this, mPhoneNum, mSetPsw, new OnLoginListener() {
+        new LoginCore().login(NewRegistActivity.this, mPhoneNum, mSetPsw, new OnLoginListener() {
             @Override
             public void onSuccess(Response<String> response) {
                 tags = new HashSet<String>();
@@ -252,28 +219,28 @@ public class RegistActivity extends Activity implements TextWatcher {
                     //设置极光推送的tag
                     tags.add(loadSuccess.getRoleId() + "");
                     MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
-                    JPushInterface.setTags(RegistActivity.this, tags, new TagAliasCallback() {
+                    JPushInterface.setTags(NewRegistActivity.this, tags, new TagAliasCallback() {
                         @Override
                         public void gotResult(int i, String s, Set<String> set) {
                             MyLogger.jLog().i("设置tags成功");
                         }
                     });
 //                    保存密钥
-                    SpUtil.setParam(RegistActivity.this, SpConstant.SIGN, loadSuccess.getSign());
+                    SpUtil.setParam(NewRegistActivity.this, SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
-                    SpUtil.setParam(RegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
+                    SpUtil.setParam(NewRegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存用户名和密码
-                    SpUtil.setParam(RegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
+                    SpUtil.setParam(NewRegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存认证信息
-                    SpUtil.getParam(RegistActivity.this,SpConstant.ROLEID,loadSuccess.getRoleId());
+                    SpUtil.getParam(NewRegistActivity.this, SpConstant.ROLEID, loadSuccess.getRoleId());
 //                    跳转到主界面
-                    RegistActivity.this.startActivity(new Intent(RegistActivity.this, MainActivity.class));
-                    RegistActivity.this.finish();
+                    NewRegistActivity.this.startActivity(new Intent(NewRegistActivity.this, MainActivity.class));
+                    NewRegistActivity.this.finish();
 
                 } else {
                     //success = false 密码错误
                     // 显示服务器返回的错误信息
-                    ToastUtils.showToast(RegistActivity.this, loadUserInfo.getMsg());
+                    ToastUtils.showToast(NewRegistActivity.this, loadUserInfo.getMsg());
 
                 }
             }
@@ -290,4 +257,11 @@ public class RegistActivity extends Activity implements TextWatcher {
         super.onDestroy();
         mRegistCore.stopReques();
     }
+
+    @OnClick(R.id.iv_back)
+    public void clickBack(View view){
+        finish();
+    }
+
+
 }

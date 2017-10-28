@@ -52,9 +52,9 @@
     <SinaWeibo
         Id="1"
         SortId="1"
-        AppKey="568898243"
-        AppSecret="38a4f8204cc784f81f9f0daaf31e02e3"
-        RedirectUrl="http://www.sharesdk.cn"
+        AppKey="3008130677"
+        AppSecret="c3d7b94e018e217fddbb2f57fc97d650"
+        RedirectUrl="http://www.cucrxt.com"
         ShareByAppClient="true"
         Enable="true" />
 
@@ -88,7 +88,7 @@
     <Wechat
         Id="4"
         SortId="4"
-        AppId="wx4868b35061f87885"
+        AppId="wx1d5944a5c264919d"
         AppSecret="64020361b8ec4c99936c0e3999a9f249"
         BypassApproval="true"
         Enable="true" />

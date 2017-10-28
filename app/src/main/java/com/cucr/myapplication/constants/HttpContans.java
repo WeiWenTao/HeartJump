@@ -20,7 +20,10 @@ public class HttpContans {
     //动态登录
     public static final String ADDRESS_DONGTAI_LOAD = "/interface/user/dynamicLogin";
 
-    //动态登录
+    //忘记密码
+    public static final String ADDRESS_FORGET_PSW = "/interface/user/forgivePass";
+
+    //密码登录
     public static final String ADDRESS_PSW_LOAD = "/interface/user/login";
 
     //用户信息编辑

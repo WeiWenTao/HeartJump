@@ -54,7 +54,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private QueryFtInfoCore queryCore;
     private Gson mGson;
     // TODO: 2017/9/22 eventBus 获取
-    private int starId = 5;
+    private int starId = 29;
     private int page = 1;
     private int rows = 5;
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
