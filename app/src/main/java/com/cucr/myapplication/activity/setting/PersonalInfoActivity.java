@@ -513,8 +513,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     //保存
     @OnClick(R.id.tv_save)
     public void saveInfo(View view) {
-        int userId = (int) SpUtil.getParam(this, SpConstant.USER_ID, -1);
-        String sign = (String) SpUtil.getParam(this, SpConstant.SIGN, "");
+        int userId = (int) SpUtil.getParam(SpConstant.USER_ID, -1);
+        String sign = (String) SpUtil.getParam(SpConstant.SIGN, "");
         MyLogger.jLog().i("sign:" + sign);
         String nickName = et_nickname.getText().toString();
         String singName = et_my_sign.getText().toString();

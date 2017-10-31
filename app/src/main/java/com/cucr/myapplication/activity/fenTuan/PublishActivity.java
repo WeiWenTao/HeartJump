@@ -349,7 +349,7 @@ public class PublishActivity extends Activity {
 
 //        photoUpload();
 
-        core.publishFtInfo(5, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
+        core.publishFtInfo(29, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
             @Override
             public void OnUpLoadPicListener(Response<String> response) {
                 MyLogger.jLog().i("response:"+response.get());

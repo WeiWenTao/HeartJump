@@ -48,7 +48,7 @@ public class StarJourney extends BaseCore implements Journey {
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_JOURNEY, RequestMethod.POST);
         tripTime = tripTime + " 00:00:00";
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(mActivity, SpConstant.USER_ID, -1)))
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("place", CommonUtils.replaceOtherChars(place))
                 .add("tripTime", tripTime)
                 .add("title", content)
@@ -63,7 +63,7 @@ public class StarJourney extends BaseCore implements Journey {
         this.delJourneyListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DELETE_JOURNEY, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(mActivity, SpConstant.USER_ID, -1)))
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
 

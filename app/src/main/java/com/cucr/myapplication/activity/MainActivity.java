@@ -77,13 +77,16 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         RadioButton rb_2 = (RadioButton) findViewById(R.id.rb_2);
         RadioButton rb_3 = (RadioButton) findViewById(R.id.rb_3);
         RadioButton rb_4 = (RadioButton) findViewById(R.id.rb_4);
+        RadioButton rb_mid = (RadioButton) findViewById(R.id.rb_mid);
 //        rb_4.setVisibility(View.GONE);
 
         //底部导航栏距离
-        initDrawable(rb_1, 0, 0, 22, 22);
-        initDrawable(rb_2, 0, 0, 18, 21);
-        initDrawable(rb_3, 0, 0, 22, 20);
-        initDrawable(rb_4, 0, 0, 17, 22);
+        initDrawable(rb_1, 0, 0, 22, 25);
+        initDrawable(rb_2, 0, 0, 21, 23);
+        initDrawable(rb_mid, 0, 0, 23, 23);
+        initDrawable(rb_3, 0, 0, 22, 25);
+        initDrawable(rb_4, 0, 0, 22, 22);
+
     }
 
     //初始化rb中的图片大小

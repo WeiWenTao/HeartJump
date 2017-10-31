@@ -161,7 +161,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     @OnClick(R.id.tv_perform_duihuan)
     public void performDuihuan(View view) {
         initMsg();
-        mCore.onDuiHuan(this, CommonUtils.replaceOtherChars(mReceived_local), mReceived_address, mReceive_person, mReceive_num, mNum, mShopId, new OnCommonListener() {
+        mCore.onDuiHuan(CommonUtils.replaceOtherChars(mReceived_local), mReceived_address, mReceive_person, mReceive_num, mNum, mShopId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);

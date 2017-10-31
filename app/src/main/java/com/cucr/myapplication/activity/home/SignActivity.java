@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.signcalendar.SignCalendar;
 
 import java.text.SimpleDateFormat;
@@ -30,17 +31,31 @@ public class SignActivity extends BaseActivity {
         calendar = (SignCalendar) findViewById(R.id.sc_main);
 
         //初始化标题日期
-        mTv.setText(calendar.getCalendarYear()+" - "+calendar.getCalendarMonth());
+        mTv.setText(calendar.getCalendarYear() + " - " + calendar.getCalendarMonth());
 
-        List<String> list = new ArrayList<String>();
+//------------------------------------------------------
+        List<String> list = new ArrayList<>();
         list.add(date);
+        list.add("2017-10-21");
+        MyLogger.jLog().i("date:" + date);
 //              当天日期标记
         calendar.addMarks(list, 0);
-
+//------------------------------------------------------
         calendar.setOnCalendarDateChangedListener(new SignCalendar.OnCalendarDateChangedListener() {
             @Override
             public void onCalendarDateChanged(int year, int month) {
-                mTv.setText(year+" - "+month);
+                mTv.setText(year + " - " + month);
+            }
+        });
+
+        calendar.setOnCalendarClickListener(new SignCalendar.OnCalendarClickListener() {
+            @Override
+            public void onCalendarClick(int row, int col, String dateFormat) {
+                if (calendar.hasMarked(dateFormat)) {
+                    calendar.removeMark(dateFormat);
+                } else {
+                    calendar.addMark(dateFormat, 0);
+                }
             }
         });
     }

@@ -56,7 +56,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     // TODO: 2017/9/22 eventBus 获取
     private int starId = 29;
     private int page = 1;
-    private int rows = 5;
+    private int rows = 2;
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
     private QueryFtInfos mQueryFtInfos;
     private QueryFtInfos mQueryFtInfoss;
@@ -68,8 +68,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MyLogger.jLog().i("onCreateView");
-        mContext = container.getContext();
-        queryCore = new QueryFtInfoCore(mContext);
+        mContext = MyApplication.getInstance();
+        queryCore = new QueryFtInfoCore();
         mGson = new Gson();
         //view的复用
         if (view == null) {
@@ -83,12 +83,13 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
 
     private void queryFtInfo() {
-        MyLogger.jLog().i("queryFtInfo");
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
+                MyLogger.jLog().i("queryFtInfo:" + response.get());
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
+                    MyLogger.jLog().i("mQueryFtInfos.getRows:" + mQueryFtInfos.getRows().size() + ":" + mQueryFtInfos.getRows());
                     mAdapter.setData(mQueryFtInfos);
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
@@ -244,12 +245,15 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
+                MyLogger.jLog().i("mQueryFtInfoss.getRows:" + mQueryFtInfoss.getRows().size() + ":" + mQueryFtInfos.getRows());
                 //判断是否还有数据
                 if (mQueryFtInfoss.getTotal() <= page * rows) {
                     rlv_fentuan.onNoMore("没有更多了");
+                    MyLogger.jLog().i("onNoMore(没有更多了);");
                 }
                 if (mQueryFtInfoss.isSuccess()) {
-                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
+//                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
+                    MyLogger.jLog().i("addAll(mQueryFtInfoss.getRows())");
                     mAdapter.addData(mQueryFtInfoss.getRows());
                 } else {
                     ToastUtils.showToast(mQueryFtInfoss.getErrorMsg());
@@ -293,7 +297,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean isFormConmmomd) {
         MyLogger.jLog().i("onClickCommends");
         this.position = position;
-        MyLogger.jLog().i("Commendposition:"+position);
+        MyLogger.jLog().i("Commendposition:" + position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
         intent.putExtra("rowsBean", rowsBean);

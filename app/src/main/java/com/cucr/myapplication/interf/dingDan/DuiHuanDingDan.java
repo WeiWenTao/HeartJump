@@ -1,7 +1,5 @@
 package com.cucr.myapplication.interf.dingDan;
 
-import android.content.Context;
-
 import com.cucr.myapplication.listener.OnCommonListener;
 
 /**
@@ -9,5 +7,5 @@ import com.cucr.myapplication.listener.OnCommonListener;
  */
 
 public interface DuiHuanDingDan {
-    void onDuiHuan(Context context, String local, String address, String rececivedPerson, String rececivedPhone, int num, int shopId, OnCommonListener listener);
+    void onDuiHuan(String local, String address, String rececivedPerson, String rececivedPhone, int num, int shopId, OnCommonListener listener);
 }

@@ -79,7 +79,7 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mGson = new Gson();
         mContext = container.getContext();
-        mCore = new FuLiCore(getActivity());
+        mCore = new FuLiCore();
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_fuli, container, false);

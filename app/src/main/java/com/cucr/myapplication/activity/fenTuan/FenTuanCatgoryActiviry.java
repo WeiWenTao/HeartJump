@@ -124,9 +124,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);
         mRowsBean = (QueryFtInfos.RowsBean) mIntent.getSerializableExtra("rowsBean");
         jLog().i("mRowsBean:" + mRowsBean);
-        mCommentCore = new FtCommentCore(this);
+        mCommentCore = new FtCommentCore();
         upDataInfo();
-        queryCore = new QueryFtInfoCore(this);
+        queryCore = new QueryFtInfoCore();
     }
 
     private void upDataInfo() {

@@ -24,6 +24,7 @@ import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 
 /**
  * Created by 911 on 2017/4/10.
@@ -32,17 +33,21 @@ import com.cucr.myapplication.utils.CommonUtils;
 public class MineFragment extends BaseFragment {
 
     private RelativeLayout head;
+    private Intent mIntent;
 
     @Override
     protected void initView(View childView) {
         head = (RelativeLayout) childView.findViewById(R.id.head);
+        mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         initHead();
 
         ImageView iv_mine_msg = (ImageView) childView.findViewById(R.id.iv_header_msg);
         RelativeLayout rl_setting = (RelativeLayout) childView.findViewById(R.id.rl_setting);
         RelativeLayout rl_enter_home_pager = (RelativeLayout) childView.findViewById(R.id.rl_enter_mypager);
         LinearLayout ll_mine_focus = (LinearLayout) childView.findViewById(R.id.ll_mine_focus);
-        LinearLayout ll_mine_fans = (LinearLayout) childView.findViewById(R.id.ll_mine_dongtai);
+        LinearLayout ll_mine_dongtai = (LinearLayout) childView.findViewById(R.id.ll_mine_dongtai);
+        LinearLayout ll_mine_fans = (LinearLayout) childView.findViewById(R.id.ll_mine_fans);
         LinearLayout ll_pay = (LinearLayout) childView.findViewById(R.id.ll_pay);
         RelativeLayout rl_pay_center = (RelativeLayout) childView.findViewById(R.id.rl_pay_center);
         RelativeLayout rl_ren_zheng = (RelativeLayout) childView.findViewById(R.id.rl_ren_zheng);
@@ -66,6 +71,7 @@ public class MineFragment extends BaseFragment {
         rl_enter_home_pager.setOnClickListener(this);
         ll_mine_focus.setOnClickListener(this);
         ll_mine_fans.setOnClickListener(this);
+        ll_mine_dongtai.setOnClickListener(this);
         ll_pay.setOnClickListener(this);
         rl_pay_center.setOnClickListener(this);
         rl_ren_zheng.setOnClickListener(this);
@@ -104,49 +110,59 @@ public class MineFragment extends BaseFragment {
 
             //跳转到消息界面
             case R.id.iv_header_msg:
-                mContext.startActivity(new Intent(mContext, MessageActivity.class));
+                mIntent.setClass(mContext,MessageActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //设置
             case R.id.rl_setting:
-                mContext.startActivity(new Intent(mContext, SettingActivity.class));
+                mIntent.setClass(mContext,SettingActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //进入个人资料
             case R.id.rl_enter_mypager:
-                startActivity(new Intent(mContext, PersonalInfoActivity.class));
+                mIntent.setClass(mContext,PersonalInfoActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //关注
             case R.id.ll_mine_focus:
-                mContext.startActivity(new Intent(mContext, FocusActivity.class));
+                mIntent.setClass(mContext,FocusActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
 
             //粉丝
             case R.id.ll_mine_fans:
-                mContext.startActivity(new Intent(mContext, FocusActivity.class));
+                MyLogger.jLog().i("ll_mine_fans");
+                mIntent.setClass(mContext,FocusActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
 
             //动态
             case R.id.ll_mine_dongtai:
-                mContext.startActivity(new Intent(mContext, DongTaiActivity.class));
+                mIntent.setClass(mContext,DongTaiActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //星币
             case R.id.ll_pay:
-                mContext.startActivity(new Intent(mContext, StarMoneyActivity.class));
+                mIntent.setClass(mContext,StarMoneyActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //充值中心
             case R.id.rl_pay_center:
-                mContext.startActivity(new Intent(mContext, PayCenterActivity.class));
+                mIntent.setClass(mContext,PayCenterActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //认证
             case R.id.rl_ren_zheng:
-                mContext.startActivity(new Intent(mContext, RenZhengActivity.class));
+                mIntent.setClass(mContext,RenZhengActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //票务
@@ -156,17 +172,20 @@ public class MineFragment extends BaseFragment {
 
             //预约
             case R.id.rl_my_yuyue:
-                mContext.startActivity(new Intent(mContext, MyYuYueActivity.class));
+                mIntent.setClass(mContext,MyYuYueActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //行程
             case R.id.rl_my_journey:
-                mContext.startActivity(new Intent(mContext, MyJourneyActivity.class));
+                mIntent.setClass(mContext,MyJourneyActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
             //邀请有礼
             case R.id.rl_yaoqing:
-                mContext.startActivity(new Intent(mContext, InvateActivity.class));
+                mIntent.setClass(mContext,InvateActivity.class);
+                mContext.startActivity(mIntent);
                 break;
 
         }

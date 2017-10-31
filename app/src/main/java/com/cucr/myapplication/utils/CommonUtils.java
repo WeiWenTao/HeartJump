@@ -424,26 +424,79 @@ public class CommonUtils {
     }
 
 
+
+    public static String unicode2String(String unicode) {
+        StringBuffer string = new StringBuffer();
+        String[] hex = unicode.split("\\\\u");
+        String[] mineHex = unicode.split("\\\\");
+        for (int i = 0; i < hex.length; i++) {
+            if("".equals(hex[i])){
+                continue;
+            }
+            System.out.println(hex[i]);
+            if(hex[i].length()>4){
+                //找出u的位置
+                int index=mineHex[i].indexOf("u");
+                if(index==0){
+                    //第一位
+                    int data = Integer.parseInt(hex[i].substring(0, 4), 16);// 追加成string
+                    string.append((char) data);
+                    string.append(hex[i].substring(4));
+                }else{
+                    //其他位置
+                    if(index>0){
+                        //前面
+                        string.append(hex[i].substring(0,index<0?0:index));
+                        //自己
+                        int data = Integer.parseInt(hex[i].substring(index, 4), 16);// 追加成string
+                        string.append((char) data);
+                        //后面
+                        string.append(hex[i].substring(index+4,hex[i].length()));
+                    }else{
+                        string.append(hex[i]);
+                    }
+                }
+            }else if(hex[i].length()==4){
+                if(mineHex[i].indexOf("u")==0){
+                    int data = Integer.parseInt(hex[i], 16);// 追加成string
+                    string.append((char) data);
+                }else{
+                    string.append(hex[i]);
+                }
+            }else{
+                string.append(hex[i]);
+            }
+        }
+        return string.toString();
+    }
+
+
+
     /**
      * unicode 转字符串   直接设置给控件
      */
-    public static String unicode2String(String unicode) {
-
+   /* public static String unicode2String(String unicode) {
+        MyLogger.jLog().i("unicode:" + unicode);
         StringBuffer string = new StringBuffer();
 
         String[] hex = unicode.split("\\\\u");
 
         for (int i = 1; i < hex.length; i++) {
-
+            MyLogger.jLog().i("i:" + hex[i]);
             // 转换出每一个代码点
-            int data = Integer.parseInt(hex[i], 16);
-
-            // 追加成string
-            string.append((char) data);
+            if (hex[i].length() > 4) {
+                int data = Integer.parseInt(hex[i].substring(0, 4), 16);
+                // 追加成string
+                string.append((char) data);
+                string.append(hex[i].substring(4));
+            } else {
+                int data = Integer.parseInt(hex[i], 16);// 追加成string
+                string.append((char) data);
+            }
         }
 
         return string.toString();
-    }
+    }*/
 
 
     /**
@@ -457,12 +510,10 @@ public class CommonUtils {
 
             // 取出每一个字符
             char c = string.charAt(i);
-            if(c < 256)//ASC11表中的字符码值不够4位,补00
+            if (c < 256)//ASC11表中的字符码值不够4位,补00
             {
                 unicode.append("\\u00");
-            }
-            else
-            {
+            } else {
                 unicode.append("\\u");
             }
             // 转换为unicode

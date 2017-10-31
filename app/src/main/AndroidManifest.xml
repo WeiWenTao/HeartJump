@@ -39,6 +39,20 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         >
 
+        <!--PictureSelector 6.0以上 拍照bug-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"
+                />
+        </provider>
+
+
         <!-- 支付宝 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -76,13 +90,12 @@
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             >
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
 
-
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
 
         <!-- share sdk -->
@@ -180,6 +193,10 @@
         <activity android:name=".activity.setting.ClipActivity">
         </activity>
         <activity android:name=".activity.home.SignActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".activity.JourneyAndTopic.JourneyCatgoryActivity">
         </activity>
@@ -240,17 +257,6 @@
         </activity>
         <activity android:name=".activity.BaseActivity">
         </activity>
-        <activity android:name=".activity.regist.LoadActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity android:name=".activity.regist.RegistActivity">
-        </activity>
         <activity
             android:name=".activity.fuli.DingDanActivity"
             android:launchMode="singleTask"
@@ -287,13 +293,19 @@
         </activity>
         <activity android:name=".activity.setting.InvateActivity">
         </activity>
-        <activity android:name=".activity.regist.NewLoadActivity" android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity
+            android:name=".activity.regist.NewLoadActivity"
+            android:screenOrientation="portrait"
+            >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
-        <activity android:name=".activity.regist.NewRegistActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.regist.NewRegistActivity"
+            android:screenOrientation="portrait"
+            >
 
         </activity>
     </application>

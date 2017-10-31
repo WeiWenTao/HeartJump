@@ -95,6 +95,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             final Intent intent = new Intent(context, VideoActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("rowsBean", rowsBean);//序列化,要注意转化(Serializable)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtras(bundle);//发送数据
 
             //头像
@@ -143,7 +144,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             //点赞
-            ((Tp1_Holder) holder).iv_favorite3.setOnClickListener(new View.OnClickListener() {
+            ((Tp1_Holder) holder).ll_good.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -218,7 +219,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             //点赞
-            ((Tp2_Holder) holder).iv_favorite3.setOnClickListener(new View.OnClickListener() {
+            ((Tp2_Holder) holder).ll_good.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
@@ -268,7 +269,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             //点赞
-            ((Tp3_Holder) holder).iv_favorite3.setOnClickListener(new View.OnClickListener() {
+            ((Tp3_Holder) holder).ll_good.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
@@ -357,6 +358,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.ll_type1)
         private LinearLayout ll_type1;
 
+        //点赞热力区域
+        @ViewInject(R.id.ll_good)
+        private LinearLayout ll_good;
+
 
         public Tp1_Holder(View itemView) {
             super(itemView);
@@ -414,6 +419,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.ll_type2)
         private LinearLayout ll_type2;
 
+        //点赞区域
+        @ViewInject(R.id.ll_good)
+        private LinearLayout ll_good;
+
         public Tp2_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -467,6 +476,9 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.ll_type3)
         private LinearLayout ll_type3;
 
+        //点赞区域
+        @ViewInject(R.id.ll_good)
+        private LinearLayout ll_good;
 
         public Tp3_Holder(View itemView) {
             super(itemView);

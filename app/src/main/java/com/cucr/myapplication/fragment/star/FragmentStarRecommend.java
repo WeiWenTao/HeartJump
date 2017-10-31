@@ -48,7 +48,7 @@ public class FragmentStarRecommend extends Fragment {
     }
 
     private void initGV(final Context context) {
-        mGvAdapter = new StarRecommendAdapter(context,rows,getActivity());
+        mGvAdapter = new StarRecommendAdapter(context,rows);
         gv_star_recommend.setAdapter(mGvAdapter);
         gv_star_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -146,25 +146,13 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:text="1249"
-            android:textColor="#929292"
-            android:textSize="@dimen/sp_13"
-            />
-
 
 
         <RelativeLayout
             android:id="@+id/rl_comment"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/iv_favorite3"
+            android:layout_toLeftOf="@id/ll_good"
             android:layout_marginRight="50dp"
             >
 
@@ -207,22 +195,42 @@
             <!--/>-->
         </RelativeLayout>
 
-        <ImageView
-
-            android:id="@+id/iv_favorite3"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="33dp"
-
-            android:paddingBottom="@dimen/dp_10"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_5"
-            android:paddingTop="@dimen/dp_10"
-            android:src="@drawable/icon_good_nor"
+        <LinearLayout
+            android:id="@+id/ll_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tv_favorite"
-            android:layout_toStartOf="@+id/tv_favorite"
-            />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
 
+
+            <ImageView
+                android:id="@+id/iv_favorite3"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/tv_favorite"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_10"
+                android:src="@drawable/icon_good_nor"
+                />
+
+            <TextView
+                android:id="@+id/tv_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="1249"
+                android:textColor="#929292"
+                android:textSize="@dimen/sp_13"
+                />
+        </LinearLayout>
 
     </RelativeLayout>
 

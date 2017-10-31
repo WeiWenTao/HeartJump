@@ -32,7 +32,7 @@ public class QueryRzResult extends BaseCore implements QueryRz {
     public void queryRz(int type, final OnCommonListener listener) {
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_RZ, RequestMethod.POST);
         // 添加普通参数。
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(mActivity, SpConstant.USER_ID, -1)));
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("type", type);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
         //回调

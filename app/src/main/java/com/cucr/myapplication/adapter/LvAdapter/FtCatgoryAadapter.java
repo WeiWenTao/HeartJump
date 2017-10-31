@@ -76,7 +76,7 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
         TextView tv_comment_size = cvh.getTv(R.id.tv_comment_size);
         LinearLayout ll_comment_more = cvh.getView(R.id.ll_comment_more, LinearLayout.class);
         LinearLayout ll_item = cvh.getView(R.id.ll_item, LinearLayout.class);
-
+        LinearLayout ll_good = cvh.getView(R.id.rl_good, LinearLayout.class);
 
         //设置点击监听
         userHead.setOnClickListener(this);
@@ -90,7 +90,7 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
                 }
             }
         });
-        iv_good.setOnClickListener(new View.OnClickListener() {
+        ll_good.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (clickGoodsListener!= null){
@@ -131,10 +131,10 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getOptions());
         tv_comment_time.setText(mRowsBean.getReleaseTime());
-        MyLogger.jLog().i("position="+position+",IsGiveUp()"+mRowsBean.getIsGiveUp());
         iv_good.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(mRowsBean.getGiveUpCount() + "");
         tv_username.setText(mRowsBean.getUser().getName());
+        MyLogger.jLog().i("getComment:"+mRowsBean.getComment());
         tv_comment_content.setText(CommonUtils.unicode2String(mRowsBean.getComment()));
         return cvh.convertView;
     }

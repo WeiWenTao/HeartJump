@@ -37,7 +37,7 @@ public class DingDanCore extends BaseCore implements DuiHuanDingDan {
     }
 
     @Override
-    public void onDuiHuan(Context context, String local, String address, String rececivedPerson,
+    public void onDuiHuan(String local, String address, String rececivedPerson,
                           String rececivedPhone, int num, int shopId, final OnCommonListener listener) {
         this.context = context;
         this.listener = listener;
@@ -45,7 +45,7 @@ public class DingDanCore extends BaseCore implements DuiHuanDingDan {
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_SHOP, RequestMethod.POST);
 
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("shopId", shopId);
         request.add("num", num);
         request.add("adress", local);
@@ -53,7 +53,6 @@ public class DingDanCore extends BaseCore implements DuiHuanDingDan {
         request.add("addressee", rececivedPerson);
         request.add("addresseePhone", rececivedPhone);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
-
 
         //回调
         HttpListener<String> callback = new HttpListener<String>() {
@@ -68,7 +67,6 @@ public class DingDanCore extends BaseCore implements DuiHuanDingDan {
                 MyLogger.jLog().i("请求失败");
             }
         };
-
 
         request(0, request, callback, false, true);
     }

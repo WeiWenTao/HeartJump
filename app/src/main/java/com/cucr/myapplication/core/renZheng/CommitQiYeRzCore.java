@@ -1,7 +1,6 @@
 package com.cucr.myapplication.core.renZheng;
 
-import android.app.Activity;
-
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.renZheng.CommitQiYeRZ;
@@ -33,14 +32,10 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
     private RequestQueue mQueue;
 
     private Object sign = new Object();
-
-    private Activity activity;
-
     private OnCommonListener listener;
     private WaitDialog mWaitDialog;
 
-    public CommitQiYeRzCore(Activity activity) {
-        this.activity = activity;
+    public CommitQiYeRzCore() {
         mQueue = NoHttp.newRequestQueue();
     }
 
@@ -50,13 +45,13 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
                              String text, Integer dataId, OnCommonListener listener) {
 
         this.listener = listener;
-        mWaitDialog = new WaitDialog(activity,"正在提交...");
+        mWaitDialog = new WaitDialog(MyApplication.getInstance(),"正在提交...");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
                 + HttpContans.ADDRESS_QIYE_RZ, RequestMethod.POST);
 
         // 添加请求参数。
-        request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1))) // String型。
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) // String型。
                 .add("userName", userName) // int型。
                 .add("contact", contact) // double型。
                 .add("companyName", companyName) // flocat型。
@@ -65,7 +60,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
         if (dataId != null) {
             request.add("dataId", dataId); // flocat型。
         }
-        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
 
         if (pic1 != "1") {
             BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")));
@@ -122,7 +117,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
         @Override
         public void onFailed(int what, Response<String> response) {
             //TODO 特别注意：这里可能有人会想到是不是每个地方都要这么判断，其实不用，请参考HttpResponseListener类的封装，你也可以这么封装。
-            HttpExceptionUtil.showTsByException(response, activity);
+            HttpExceptionUtil.showTsByException(response,MyApplication.getInstance());
         }
     };
 

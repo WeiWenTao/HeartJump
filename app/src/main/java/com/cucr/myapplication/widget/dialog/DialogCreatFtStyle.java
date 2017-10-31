@@ -15,7 +15,6 @@ import com.cucr.myapplication.R;
 public class DialogCreatFtStyle extends Dialog {
 
 
-
     public DialogCreatFtStyle(Context context, int themeResId) {
         super(context, themeResId);
     }

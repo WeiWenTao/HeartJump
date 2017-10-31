@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.RlvPersonalJourneyAdapter;
 import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
@@ -42,7 +43,7 @@ public class Fragment_star_xingcheng extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MyLogger.jLog().i("onCreateView");
-        mContext = container.getContext();
+        mContext = MyApplication.getInstance();
         mGson = new Gson();
         //view的复用
         if (view == null) {
@@ -56,7 +57,7 @@ public class Fragment_star_xingcheng extends Fragment {
 
 
     private void queryJourney() {
-        mCore = new QueryJourneyList(mContext);
+        mCore = new QueryJourneyList();
         // TODO: 2017/9/6 starId eventBus获取
         mCore.queryJourneySchedule(1, new OnCommonListener() {
             @Override

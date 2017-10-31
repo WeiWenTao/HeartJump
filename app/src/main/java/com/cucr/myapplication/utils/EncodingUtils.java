@@ -60,7 +60,7 @@ public class EncodingUtils {
 //        }
 
         //第九步:对拼接好的参数进行MD5加密
-        paramsBuilder.append(SpUtil.getParam(context, SpConstant.SIGN, "error"));
+        paramsBuilder.append(SpUtil.getParam(SpConstant.SIGN, "error"));
 
 
         String params = paramsBuilder.toString();

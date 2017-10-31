@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.login;
 
 import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.load.LoadByPsw;
@@ -49,10 +50,10 @@ public class LoginCore implements LoadByPsw {
     private Object flag = new Object();
 
     @Override
-    public void login(final Context context, String userName, String psw, final OnLoginListener loginListener) {
+    public void login( String userName, String psw, final OnLoginListener loginListener) {
         this.loginListener = loginListener;
-        this.context = context;
-        String sign = (String) SpUtil.getParam(context, SpConstant.SIGN, "");
+        this.context = MyApplication.getInstance();
+        String sign = (String) SpUtil.getParam(SpConstant.SIGN, "");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PSW_LOAD, RequestMethod.POST);
 

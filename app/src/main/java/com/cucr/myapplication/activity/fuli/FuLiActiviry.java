@@ -63,7 +63,7 @@ public class FuLiActiviry extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     protected void initChild() {
-        mCore = new FuLiCore(this);
+        mCore = new FuLiCore();
         initTitle("福利");
 //        ThreadUtils.getInstance().execute(new Runnable() {
 //            @Override

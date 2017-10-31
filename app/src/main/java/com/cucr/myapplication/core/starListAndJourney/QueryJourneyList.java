@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.starListAndJourney;
 
 import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -33,8 +34,8 @@ public class QueryJourneyList implements QueryJourney {
      */
     private RequestQueue mQueue;
 
-    public QueryJourneyList(Context context) {
-        this.context = context;
+    public QueryJourneyList() {
+        this.context = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
@@ -43,9 +44,9 @@ public class QueryJourneyList implements QueryJourney {
     public void queryJourneySchedule(int starId, OnCommonListener commonListener) {
         this.scheduleListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_JOURNEY_SCHEDULE, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 // TODO: 2017/9/19 eventBus传值  这里暂用userid代替
-                .add("startId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+                .add("startId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 
         //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
@@ -66,10 +67,10 @@ public class QueryJourneyList implements QueryJourney {
         queryListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_JOURNEY, RequestMethod.POST);
         // 添加普通参数。
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("rows", 10)
                 .add("page", page)
-                .add("startId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1))) //不传tripTime查所有 明星的starId就是自己
+                .add("startId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) //不传tripTime查所有 明星的starId就是自己
                 .add("tripTime", tripTime)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 

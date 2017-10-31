@@ -33,8 +33,8 @@ public class PayCenterCore implements PayCenterInterf {
     private OnCommonListener userMoneyListener;
     private Context context;
 
-    public PayCenterCore(Context context) {
-        this.context = context;
+    public PayCenterCore() {
+        this.context = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
@@ -43,7 +43,7 @@ public class PayCenterCore implements PayCenterInterf {
     public void aliPay(double howMuch, String subject, OnCommonListener listener) {
         aliPayListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ALIPAY_PAY, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("timeout_express", "30m");
         request.add("product_code", "QUICK_MSECURITY_PAY");
         request.add("total_amount", howMuch + "");
@@ -65,7 +65,7 @@ public class PayCenterCore implements PayCenterInterf {
     public void queryResult(String order, PayLisntener listener) {
         payResultListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ALIPAY_CHECK, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("orderNo", order)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 
@@ -79,7 +79,7 @@ public class PayCenterCore implements PayCenterInterf {
     public void queryUserMoney(OnCommonListener listener) {
         userMoneyListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_USER_MONEY, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_FORE, request, responseListener);
     }

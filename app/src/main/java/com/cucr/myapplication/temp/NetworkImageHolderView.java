@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -26,6 +27,6 @@ public class NetworkImageHolderView implements Holder<String> {
 
     @Override
     public void UpdateUI(Context context, final int position, String data) {
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + data, imageView);
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + data, imageView, MyApplication.getOptions());
     }
 }

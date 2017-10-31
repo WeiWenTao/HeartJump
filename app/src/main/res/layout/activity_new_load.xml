@@ -11,10 +11,22 @@
     >
 
     <ImageView
+        android:id="@+id/iv_cancle"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_30"
+        android:layout_gravity="right"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_30"
+        android:padding="@dimen/dp_5"
+        android:src="@drawable/sgi_cancel"
+        />
+
+    <ImageView
         android:layout_width="84dp"
         android:layout_height="86dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="15dp"
         android:src="@drawable/sgi_logo"
         />
 

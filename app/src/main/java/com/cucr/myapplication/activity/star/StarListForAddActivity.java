@@ -50,7 +50,7 @@ public class StarListForAddActivity extends Activity {
         mCore = new QueryStarList(this);
         mGson = new Gson();
 //        mRows = new ArrayList<>();
-        mGvAdapter = new StarRecommendAdapter(this,mRows,this);
+        mGvAdapter = new StarRecommendAdapter(this,mRows);
         gv_star_list.setAdapter(mGvAdapter);
     }
 

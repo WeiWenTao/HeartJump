@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.funTuan;
 
 import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -29,8 +30,8 @@ public class FtCommentCore implements FenTuanComment {
     private OnCommonListener queryCommentListener;
     private OnCommonListener commentGoodsListener;
 
-    public FtCommentCore(Context context) {
-        this.context = context;
+    public FtCommentCore() {
+        this.context = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
@@ -41,7 +42,7 @@ public class FtCommentCore implements FenTuanComment {
         if (parentId != -1){
             request.add("parentId", parentId);
         }
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
                 .add("dataId", dataId)
@@ -58,7 +59,7 @@ public class FtCommentCore implements FenTuanComment {
     public void ftCommentGoods(Integer contentId, Integer commentId, OnCommonListener listener) {
         commentGoodsListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT_GOODS, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("commentId", commentId)
                 .add("contentId", contentId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));

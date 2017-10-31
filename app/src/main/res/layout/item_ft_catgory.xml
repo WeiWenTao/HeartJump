@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/ll_item"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/white"
               android:orientation="vertical"
-              android:id="@+id/ll_item"
     >
 
     <LinearLayout
@@ -43,28 +43,42 @@
                     android:textSize="@dimen/sp_14"
                     />
 
-                <TextView
-                    android:id="@+id/tv_good_value"
+                <LinearLayout
+                    android:paddingLeft="@dimen/dp_10"
+                    android:orientation="horizontal"
+                    android:id="@+id/rl_good"
+                    android:gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:paddingBottom="1dp"
-                    android:text="23"
-                    android:textColor="#929292"
-                    android:textSize="@dimen/sp_12"
-                    />
+                    android:paddingRight="@dimen/dp_10"
+                    >
 
-                <ImageView
-                    android:id="@+id/iv_good"
-                    android:layout_width="@dimen/dp_25"
-                    android:layout_height="23dp"
-                    android:layout_centerVertical="true"
-                    android:padding="@dimen/dp_5"
-                    android:layout_toLeftOf="@id/tv_good_value"
-                    android:src="@drawable/good_selector"
-                    />
+
+
+                    <ImageView
+                        android:id="@+id/iv_good"
+                        android:layout_width="@dimen/dp_25"
+                        android:layout_height="23dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tv_good_value"
+                        android:padding="@dimen/dp_5"
+                        android:src="@drawable/good_selector"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_good_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingBottom="1dp"
+                        android:text="23"
+                        android:textColor="#929292"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -92,11 +106,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_10"
         android:layout_marginLeft="60dp"
-        android:textIsSelectable="true"
         android:text="哇哇哇！行走的荷尔蒙，帅死了！"
         android:textColor="#333"
-        app:emojiSize="@dimen/sp_15"
+        android:textIsSelectable="true"
         android:textSize="@dimen/sp_15"
+        app:emojiSize="@dimen/sp_15"
         />
 
     <LinearLayout

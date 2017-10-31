@@ -76,7 +76,7 @@ public class FtPublishCore implements FenTuanInterf {
         this.type = type;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PUBLISH_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)))
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", starId)
                 .add("type", type)
                 .add("content", content);
@@ -103,7 +103,7 @@ public class FtPublishCore implements FenTuanInterf {
             RequestParams params = new RequestParams();
 
             // token的值，身份的唯一标识
-            params.addBodyParameter("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)) + "");
+            params.addBodyParameter("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)) + "");
             params.addBodyParameter("startId", starId + "");
             params.addBodyParameter("type", type + "");
             params.addBodyParameter("content", content + "");

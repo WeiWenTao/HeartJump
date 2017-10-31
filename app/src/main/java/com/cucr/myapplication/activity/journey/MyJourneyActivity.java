@@ -37,7 +37,7 @@ public class MyJourneyActivity extends BaseActivity implements ItemTouchListener
 
     @Override
     protected void initChild() {
-        mCore = new QueryJourneyList(this);
+        mCore = new QueryJourneyList();
         mJourneyCore = new StarJourney(null);
         //查询明星行程
         QueryStarJourneyList();

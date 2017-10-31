@@ -1,7 +1,5 @@
 package com.cucr.myapplication.interf.load;
 
-import android.content.Context;
-
 import com.cucr.myapplication.listener.OnLoginListener;
 
 /**
@@ -9,5 +7,5 @@ import com.cucr.myapplication.listener.OnLoginListener;
  */
 
 public interface LoadByPsw {
-     void login(Context context,String userName, String psw, OnLoginListener loginListener);
+     void login(String userName, String psw, OnLoginListener loginListener);
 }

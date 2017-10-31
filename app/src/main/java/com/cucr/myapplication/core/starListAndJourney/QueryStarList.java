@@ -36,7 +36,7 @@ public class QueryStarList extends BaseCore implements StarListInfo {
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)));
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("type", type);
 //        request.add("code", code);
         request.add("page", page);

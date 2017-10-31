@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
+
     <RelativeLayout
-        android:background="@color/white"
         android:id="@+id/rl_dabang"
         android:layout_width="match_parent"
         android:layout_height="81dp"
+        android:background="@color/white"
         >
 
-        <ImageView
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_10"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user_icon_dabang"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
             android:src="@drawable/pic1_focus"
             />
 
         <RelativeLayout
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="61dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_toRightOf="@id/iv_user_icon_dabang"
             android:orientation="vertical"
@@ -30,53 +32,63 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
                 android:text="我是陈先森啊"
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_16"
                 />
 
-
             <TextView
-                android:layout_below="@id/tv_name"
                 android:id="@+id/tv_num"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
-                android:text="第 4 名"
-                android:textColor="@color/color_999"
-                android:textSize="@dimen/sp_13"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="心跳值"
+                android:textColor="@color/xtred"
+                android:textSize="@dimen/sp_12"
                 />
 
             <TextView
-                android:layout_marginLeft="@dimen/dp_5"
-                android:layout_alignBottom="@id/tv_num"
-                android:layout_toRightOf="@id/tv_num"
                 android:id="@+id/tv_xingbi"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_5"
-                android:text="56684星币"
-                android:textColor="@color/color_999"
+                android:layout_alignBottom="@id/tv_num"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:layout_toRightOf="@id/tv_num"
+                android:text="12345"
+                android:textColor="@color/xtred"
                 android:textSize="@dimen/sp_13"
                 />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_dabang"
-            android:clickable="true"
-            android:layout_centerInParent="true"
-            android:layout_width="65dp"
-            android:layout_height="25dp"
+        <LinearLayout
+            android:id="@+id/ll_dabang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/btn_bg_sel"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_20"
             android:gravity="center"
-            android:text="我要打榜"
-            android:textColor="@color/pink"
-            android:textSize="@dimen/sp_12"
-            android:layout_marginRight="@dimen/dp_10"
-            />
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="16.5dp"
+                android:src="@drawable/icon_award"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="打榜"
+                android:textColor="@color/xtred"
+                android:textSize="@dimen/sp_12"
+                />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

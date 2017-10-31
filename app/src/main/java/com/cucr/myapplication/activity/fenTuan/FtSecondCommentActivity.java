@@ -107,8 +107,8 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     }
 
     private void initDatas() {
-        mCommentCore = new FtCommentCore(this);
-        queryCore = new QueryFtInfoCore(this);
+        mCommentCore = new FtCommentCore();
+        queryCore = new QueryFtInfoCore();
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
 
         upDataInfo();

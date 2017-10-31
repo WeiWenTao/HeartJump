@@ -103,6 +103,7 @@ public class QueryFtInfos implements Serializable {
         private String createUserName;
         private Integer dataType;
         private FansTeamBean fansTeam;
+        private SysHytInfo sysHytInfo;
         private Integer giveUpCount;
         private Integer id;
         private Boolean isGiveUp;
@@ -239,6 +240,84 @@ public class QueryFtInfos implements Serializable {
 
         public void setAttrFileList(List<AttrFileListBean> attrFileList) {
             this.attrFileList = attrFileList;
+        }
+
+        public static class SysHytInfo implements Serializable {
+            private String createTime;
+            private Integer createUserId;
+            private Integer id;
+            private String name;
+            private String picUrl;
+            private Integer startId;
+
+            public SysHytInfo(String createTime, Integer createUserId, Integer id, String name, String picUrl, Integer startId) {
+                this.createTime = createTime;
+                this.createUserId = createUserId;
+                this.id = id;
+                this.name = name;
+                this.picUrl = picUrl;
+                this.startId = startId;
+            }
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
+
+            public Integer getCreateUserId() {
+                return createUserId;
+            }
+
+            public void setCreateUserId(Integer createUserId) {
+                this.createUserId = createUserId;
+            }
+
+            public Integer getId() {
+                return id;
+            }
+
+            public void setId(Integer id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPicUrl() {
+                return picUrl;
+            }
+
+            public void setPicUrl(String picUrl) {
+                this.picUrl = picUrl;
+            }
+
+            public Integer getStartId() {
+                return startId;
+            }
+
+            public void setStartId(Integer startId) {
+                this.startId = startId;
+            }
+
+            @Override
+            public String toString() {
+                return "SysHytInfo{" +
+                        "createTime='" + createTime + '\'' +
+                        ", createUserId=" + createUserId +
+                        ", id=" + id +
+                        ", name='" + name + '\'' +
+                        ", picUrl='" + picUrl + '\'' +
+                        ", startId=" + startId +
+                        '}';
+            }
         }
 
         public static class FansTeamBean implements Serializable {

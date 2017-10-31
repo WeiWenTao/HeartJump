@@ -62,7 +62,9 @@ public class StarListAdapter extends RecyclerView.Adapter {
             ((MyAddHolder) holder).iv_add_star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, StarListForAddActivity.class));
+                    Intent intent = new Intent(context, StarListForAddActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
 

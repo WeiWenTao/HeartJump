@@ -119,7 +119,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         mDailogPayStyle = new DialogPayStyle(this, R.style.ShowAddressStyleTheme);
         mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.ShowAddressStyleTheme);
         mDailogPayStyle.setOnClickPay(this);
-        payCore = new PayCenterCore(this);
+        payCore = new PayCenterCore();
         queryMoney();
 
         initET();

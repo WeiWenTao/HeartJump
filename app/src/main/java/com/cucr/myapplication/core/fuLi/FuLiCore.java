@@ -1,7 +1,8 @@
 package com.cucr.myapplication.core.fuLi;
 
-import android.app.Activity;
+import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -25,26 +26,27 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 public class FuLiCore implements QueryFuLi {
 
-    private Activity mActivity;
+    private Context mContext;
     private OnCommonListener fuLiListener;
     private OnCommonListener huoDongListener;
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
-    public FuLiCore(Activity activiry) {
-        mActivity = activiry;
+    public FuLiCore() {
+        mContext = MyApplication.getInstance();
+        mQueue = NoHttp.newRequestQueue();
     }
 
     @Override
     public void QueryDuiHuan(int page, int rows, final OnCommonListener listener) {
         this.fuLiListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_GOODS, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(mActivity, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
-                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
         request.setCacheKey(HttpContans.ADDRESS_FULI_GOODS);
         //没有缓存才去请求网络
@@ -57,10 +59,10 @@ public class FuLiCore implements QueryFuLi {
     public void QueryHuoDong(int page, int rows, OnCommonListener listener) {
         this.huoDongListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_ACTIVE, RequestMethod.POST);
-        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(mActivity, SpConstant.USER_ID, -1)))
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
-                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
         request.setCacheKey(HttpContans.ADDRESS_FULI_ACTIVE);
@@ -94,7 +96,7 @@ public class FuLiCore implements QueryFuLi {
 
         @Override
         public void onFailed(int what, Response<String> response) {
-            HttpExceptionUtil.showTsByException(response, mActivity);
+            HttpExceptionUtil.showTsByException(response, mContext);
             switch (what) {
                 case Constans.TYPE_ONE:
                     MyLogger.jLog().i("福利商品请求失败");

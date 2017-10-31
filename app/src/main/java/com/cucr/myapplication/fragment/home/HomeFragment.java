@@ -21,6 +21,7 @@ import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.Home.HomeBannerInfo;
 import com.cucr.myapplication.temp.NetworkImageHolderView;
 import com.cucr.myapplication.utils.ThreadUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -203,7 +204,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 
     private void initARL() {
 
-
 //        网络加载例子
         convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
             @Override
@@ -220,7 +220,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                 .setOnItemClickListener(this);
         convenientBanner.startTurning(3000);
         convenientBanner.setManualPageable(true);//设置不能手动影响
-
     }
 
     private void queryBanner() {
@@ -229,10 +228,15 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 HomeBannerInfo homeBannerInfo = mGson.fromJson(response.get(), HomeBannerInfo.class);
-                for (HomeBannerInfo.ObjBean objBean : homeBannerInfo.getObj()) {
-                    pics.add(objBean.getFileUrl());
+                if (homeBannerInfo.isSuccess()){
+                    for (HomeBannerInfo.ObjBean objBean : homeBannerInfo.getObj()) {
+                        pics.add(objBean.getFileUrl());
+                    }
+                    initARL();
+                }else {
+                    ToastUtils.showToast(homeBannerInfo.getMsg());
                 }
-                initARL();
+
             }
         });
     }

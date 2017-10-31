@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.funTuan;
 
 import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -36,19 +37,20 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     private Context context;
 
-    public QueryFtInfoCore(Context context) {
-        this.context = context;
+    public QueryFtInfoCore() {
+        this.context = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
 
+    //查询粉团信息
     @Override
     public void queryFtInfo(int starId, boolean queryMine, int page, int rows, OnCommonListener listener) {
         ftQuerylistener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
-        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("startId", starId)
                 .add("page", page)
                 .add("rows", rows)
@@ -61,19 +63,21 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
 
+    //点赞
     @Override
     public void ftGoods(int contentId, OnCommonListener listener) {
         ftGoodlistener = listener;
         MyLogger.jLog().i("contentId=" + contentId);
-        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)));
+        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_GOOD, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", contentId)    //数据id
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
+    //评论
     @Override
     public void toComment(int contentId, int commentId, String content, OnCommonListener listener) {
         toCommentlistener = listener;
@@ -83,7 +87,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
             //一级评论不用传
             request.add("commentParentId", commentId);
         }
-        request.add("userId", ((int) SpUtil.getParam(context, SpConstant.USER_ID, -1)))
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", contentId)    //文章id
                 .add("comment", content)    //数据
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));

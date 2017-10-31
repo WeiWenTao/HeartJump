@@ -7,9 +7,9 @@ package com.cucr.myapplication.constants;
 
 public class HttpContans {
     //服务器
-    public static final String HTTP_HOST = "http://101.132.96.199";
+//    public static final String HTTP_HOST = "http://101.132.96.199";
 
-//    public static final String HTTP_HOST = "http://192.168.1.122:8080";
+    public static final String HTTP_HOST = "http://192.168.1.122:8080";
 
     //注册
     public static final String ADDRESS_REGIST = "/interface/user/regist";
@@ -83,7 +83,7 @@ public class HttpContans {
     //粉团发布动态
     public static final String ADDRESS_PUBLISH_FT_INFO = "/interface/mobileContentAction/applyInfo";
 
-    //查询粉团动态
+    //查询粉团信息
     public static final String ADDRESS_QUERY_FT_INFO = "/interface/mobileContentAction/queryInfo";
 
     //支付宝支付接口
@@ -103,4 +103,10 @@ public class HttpContans {
 
     //粉团评论点赞
     public static final String ADDRESS_FT_COMMENT_GOODS = "/interface/mobileContentAction/commentGiveUp";
+
+    //榜单查询
+    public static final String ADDRESS_BANG_DAN_INFO = "/interface/mobileBillboardAction/billboardList";
+
+    //打榜
+    public static final String ADDRESS_DA_BANG = "/interface/mobileBillboardAction/dabang";
 }

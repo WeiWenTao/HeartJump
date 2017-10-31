@@ -35,8 +35,8 @@ public class MyRecyiver extends BroadcastReceiver {
             String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
 
-            System.out.println("收到了自定义消息@@消息内容是:"+ content);
-            System.out.println("收到了自定义消息@@消息extra是:"+ extra);
+            System.out.println("收到了自定义消息@@消息内容是:" + content);
+            System.out.println("收到了自定义消息@@消息extra是:" + extra);
 
             //**************解析推送过来的json数据并存放到集合中 begin******************
             Map<String, Object> map = new HashMap<String, Object>();
@@ -68,8 +68,8 @@ public class MyRecyiver extends BroadcastReceiver {
             String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
             System.out.println("用户点击打开了通知");
-            System.out.println("content"+content);
-            System.out.println("extra"+extra);
+            System.out.println("content" + content);
+            System.out.println("extra" + extra);
             // 在这里可以自己写代码去定义用户点击后的行为
             Intent i = new Intent(context, MainActivity.class); // 自定义打开的界面
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

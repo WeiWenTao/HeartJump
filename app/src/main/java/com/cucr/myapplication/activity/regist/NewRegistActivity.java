@@ -148,8 +148,8 @@ public class NewRegistActivity extends Activity {
                 if (yzmInfo.isSuccess()) {
                     ToastUtils.showToast(mIsRegist?"注册成功!":"设置新密码成功!");
 //                    存储账号和密码等信息
-                    SpUtil.setParam(NewRegistActivity.this, SpConstant.USER_NAEM, mPhoneNum);
-                    SpUtil.setParam(NewRegistActivity.this, SpConstant.PASSWORD, mSetPsw);
+                    SpUtil.setParam(SpConstant.USER_NAEM, mPhoneNum);
+                    SpUtil.setParam(SpConstant.PASSWORD, mSetPsw);
 
                     //登录请求 // TODO: 2017/10/27  
                     logRequest();
@@ -206,10 +206,10 @@ public class NewRegistActivity extends Activity {
     //登录请求
     private void logRequest() {
         //TODO 输入判断
-        new LoginCore().login(NewRegistActivity.this, mPhoneNum, mSetPsw, new OnLoginListener() {
+        new LoginCore().login(mPhoneNum, mSetPsw, new OnLoginListener() {
             @Override
             public void onSuccess(Response<String> response) {
-                tags = new HashSet<String>();
+                tags = new HashSet<>();
                 String s = response.get();
                 Gson gson = new Gson();
                 LoadUserInfo loadUserInfo = gson.fromJson(s, LoadUserInfo.class);
@@ -226,13 +226,13 @@ public class NewRegistActivity extends Activity {
                         }
                     });
 //                    保存密钥
-                    SpUtil.setParam(NewRegistActivity.this, SpConstant.SIGN, loadSuccess.getSign());
+                    SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
-                    SpUtil.setParam(NewRegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
+                    SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存用户名和密码
-                    SpUtil.setParam(NewRegistActivity.this, SpConstant.USER_ID, loadSuccess.getUserId());
+                    SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存认证信息
-                    SpUtil.getParam(NewRegistActivity.this, SpConstant.ROLEID, loadSuccess.getRoleId());
+                    SpUtil.getParam(SpConstant.ROLEID, loadSuccess.getRoleId());
 //                    跳转到主界面
                     NewRegistActivity.this.startActivity(new Intent(NewRegistActivity.this, MainActivity.class));
                     NewRegistActivity.this.finish();

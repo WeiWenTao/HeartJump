@@ -48,11 +48,10 @@ public class StarRecommendAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public StarRecommendAdapter(Context context, List<StarListInfos.RowsBean> rows, Activity activity) {
+    public StarRecommendAdapter(Context context, List<StarListInfos.RowsBean> rows) {
         this.mContext = context;
         this.rows = rows;
-        this.activity = activity;
-        mCore = new FocusCore(activity);
+        mCore = new FocusCore();
         initDialog();
     }
 

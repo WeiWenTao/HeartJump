@@ -36,7 +36,7 @@ public class QueryPersonalMsgCore extends BaseCore implements QueryPersonalInfo 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_USERINFO, RequestMethod.POST);
         // 添加普通参数。
 
-        request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)));
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
         request.setCacheKey(EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));

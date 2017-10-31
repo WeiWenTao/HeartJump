@@ -1,7 +1,8 @@
 package com.cucr.myapplication.core.focus;
 
-import android.app.Activity;
+import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -26,17 +27,18 @@ import com.yanzhenjie.nohttp.rest.Response;
  */
 
 public class FocusCore implements Focus {
-    private Activity activity;
+    private Context mContext;
     private Gson mGson;
     private OnCommonListener focusListener, cancaleFocusListener;
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
-    public FocusCore(Activity activity) {
+    public FocusCore() {
         mGson = new Gson();
-        this.activity = activity;
+        this.mContext = MyApplication.getInstance();
+        mQueue = NoHttp.newRequestQueue();
     }
 
     @Override
@@ -44,9 +46,9 @@ public class FocusCore implements Focus {
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TO_FOCUS, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)));
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("startId", id);
-        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
 
@@ -55,9 +57,9 @@ public class FocusCore implements Focus {
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_CANCLE_FOCUS, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(activity, SpConstant.USER_ID, -1)));
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("startId", id);
-        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
@@ -78,25 +80,25 @@ public class FocusCore implements Focus {
             ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
             if (what == Constans.TYPE_ONE) {
                 if (reBackMsg.isSuccess()) {
-                    ToastUtils.showToast(activity, "关注成功！");
+                    ToastUtils.showToast(mContext, "关注成功！");
                     MyLogger.jLog().i("关注成功");
                 } else {
-                    ToastUtils.showToast(activity, reBackMsg.getMsg());
+                    ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }
 
             } else {
                 if (reBackMsg.isSuccess()) {
-                    ToastUtils.showToast(activity, "已取消关注！");
+                    ToastUtils.showToast(mContext, "已取消关注！");
                     MyLogger.jLog().i("取消关注成功");
                 } else {
-                    ToastUtils.showToast(activity, reBackMsg.getMsg());
+                    ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }
             }
         }
 
         @Override
         public void onFailed(int what, Response<String> response) {
-            HttpExceptionUtil.showTsByException(response, activity);
+            HttpExceptionUtil.showTsByException(response, mContext);
             MyLogger.jLog().i("请求失败");
         }
 
