@@ -39,7 +39,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);
         headView = View.inflate(mContext, R.layout.head_dabang, null);
         ViewUtils.inject(this, headView);
-        mDialog = new DialogDaBangStyle(mContext, R.style.BirthdayStyleTheme);
+        mDialog = new DialogDaBangStyle(childView.getContext(), R.style.BirthdayStyleTheme);
         mDialog.setConfirmListener(this);
 
         queryBdInfo();
@@ -50,7 +50,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         mAdapter.setOnDaBang(new DaBangAdapter.OnDaBang() {
             @Override
             public void daBang(BangDanInfo.RowsBean rowsBean) {
-
+                mDialog.show();
             }
         });
     }

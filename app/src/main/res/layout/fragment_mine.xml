@@ -305,7 +305,7 @@
                     <ImageView
                         android:id="@+id/iv_ren_zheng"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_ca"
+                        android:src="@drawable/m_rz"
                         />
 
                     <TextView
@@ -322,6 +322,35 @@
                         />
                 </RelativeLayout>
 
+                <!--要求-->
+                <RelativeLayout
+                    android:id="@+id/rl_require"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_require"
+                        style="@style/My_iv"
+                        android:src="@drawable/m_requires"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_require"
+                        android:text="我的要求"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+
+                </RelativeLayout>
+
                 <!--预约-->
                 <RelativeLayout
                     android:id="@+id/rl_my_yuyue"
@@ -334,7 +363,7 @@
                     <ImageView
                         android:id="@+id/iv_my_yuyue"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_task"
+                        android:src="@drawable/m_appoinment"
                         />
 
                     <TextView
@@ -363,7 +392,7 @@
                     <ImageView
                         android:id="@+id/iv_my_journey"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_task"
+                        android:src="@drawable/m_xc"
                         />
 
                     <TextView
@@ -391,7 +420,7 @@
                     <ImageView
                         android:id="@+id/iv_my_pay"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_pay"
+                        android:src="@drawable/m_cz"
                         />
 
                     <TextView
@@ -419,7 +448,7 @@
                     <ImageView
                         android:id="@+id/iv_my_task"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_gift"
+                        android:src="@drawable/m_invate"
                         />
 
                     <TextView
@@ -461,7 +490,7 @@
                     <ImageView
                         android:id="@+id/iv_my_setting"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_set"
+                        android:src="@drawable/m_set"
                         />
 
                     <TextView
@@ -488,7 +517,7 @@
                     <ImageView
                         android:id="@+id/iv_my_rl_piaowu"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_tic"
+                        android:src="@drawable/m_pw"
                         />
 
                     <TextView

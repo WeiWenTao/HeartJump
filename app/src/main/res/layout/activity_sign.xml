@@ -33,7 +33,6 @@
     <RelativeLayout
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_25"
-        android:background="@drawable/sign"
         android:layout_width="293dp"
         android:layout_height="338dp"
         >

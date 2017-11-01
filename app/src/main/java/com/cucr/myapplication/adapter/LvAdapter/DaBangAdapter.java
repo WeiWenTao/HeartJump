@@ -55,11 +55,11 @@ public class DaBangAdapter extends BaseAdapter {
         LinearLayout ll_dabang = cvh.getView(R.id.ll_dabang, LinearLayout.class);
         ImageView userHead = cvh.getView(R.id.iv_user_icon_dabang, ImageView.class); //用户头像
         TextView tv_name = cvh.getView(R.id.tv_name, TextView.class);   //用户名
-        TextView tv_num = cvh.getView(R.id.tv_num, TextView.class);     //心跳值
+        TextView tv_xingbi = cvh.getView(R.id.tv_xingbi, TextView.class);     //心跳值
 
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST+rowsBean.getUserHeadPortrait(),userHead, MyApplication.getOptions());
         tv_name.setText(rowsBean.getRealName());
-        tv_num.setText(rowsBean.getUserMoney());
+        tv_xingbi.setText(rowsBean.getUserMoney()+"");
 
         ll_dabang.setOnClickListener(new View.OnClickListener() {
             @Override

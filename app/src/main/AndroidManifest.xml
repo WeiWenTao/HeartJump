@@ -39,7 +39,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         >
 
-        <!--PictureSelector 6.0以上 拍照bug-->
+        <!-- PictureSelector 6.0以上 拍照bug -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -51,7 +51,6 @@
                 android:resource="@xml/file_paths"
                 />
         </provider>
-
 
         <!-- 支付宝 -->
         <activity
@@ -90,12 +89,13 @@
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             >
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
 
 
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- share sdk -->
@@ -193,10 +193,6 @@
         <activity android:name=".activity.setting.ClipActivity">
         </activity>
         <activity android:name=".activity.home.SignActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".activity.JourneyAndTopic.JourneyCatgoryActivity">
         </activity>
@@ -297,16 +293,21 @@
             android:name=".activity.regist.NewLoadActivity"
             android:screenOrientation="portrait"
             >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.regist.NewRegistActivity"
             android:screenOrientation="portrait"
             >
-
+        </activity>
+        <activity android:name=".activity.setting.MyRequiresActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
     </application>
 

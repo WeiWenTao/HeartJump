@@ -34,7 +34,7 @@
                 android:layout_height="70dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/dp_5"
-                android:src="@drawable/pic2_live"
+                android:src="@drawable/pic_bg"
                 app:civ_border_color="#ffd014"
                 app:civ_border_width="0.5dp"
                 />
@@ -140,7 +140,7 @@
                 android:layout_height="85dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="6dp"
-                android:src="@drawable/pic2_live"
+                android:src="@drawable/pic_bg"
                 app:civ_border_color="#ff1430"
                 app:civ_border_width="0.5dp"
                 />
@@ -245,7 +245,7 @@
                 android:layout_height="70dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/dp_5"
-                android:src="@drawable/pic2_live"
+                android:src="@drawable/pic_bg"
                 app:civ_border_color="#14a4ff"
                 app:civ_border_width="0.5dp"
                 />

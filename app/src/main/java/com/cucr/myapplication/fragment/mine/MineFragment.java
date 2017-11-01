@@ -18,6 +18,7 @@ import com.cucr.myapplication.activity.pay.PayCenterActivity;
 import com.cucr.myapplication.activity.pay.StarMoneyActivity;
 import com.cucr.myapplication.activity.journey.MyJourneyActivity;
 import com.cucr.myapplication.activity.setting.InvateActivity;
+import com.cucr.myapplication.activity.setting.MyRequiresActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
@@ -55,6 +56,7 @@ public class MineFragment extends BaseFragment {
         RelativeLayout rl_my_yuyue = (RelativeLayout) childView.findViewById(R.id.rl_my_yuyue);
         RelativeLayout rl_my_journey = (RelativeLayout) childView.findViewById(R.id.rl_my_journey);
         RelativeLayout rl_yaoqing = (RelativeLayout) childView.findViewById(R.id.rl_yaoqing);
+        RelativeLayout rl_require = (RelativeLayout) childView.findViewById(R.id.rl_require);
 
 //        如果是企业用户
 //        if (){
@@ -78,6 +80,7 @@ public class MineFragment extends BaseFragment {
         rl_piaowu.setOnClickListener(this);
         rl_my_yuyue.setOnClickListener(this);
         rl_my_journey.setOnClickListener(this);
+        rl_require.setOnClickListener(this);
 
     }
 
@@ -185,6 +188,12 @@ public class MineFragment extends BaseFragment {
             //邀请有礼
             case R.id.rl_yaoqing:
                 mIntent.setClass(mContext,InvateActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+             //我的要求
+            case R.id.rl_require:
+                mIntent.setClass(mContext,MyRequiresActivity.class);
                 mContext.startActivity(mIntent);
                 break;
 
