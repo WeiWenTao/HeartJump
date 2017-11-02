@@ -8,10 +8,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.model.fuli.DuiHuanGoosInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.coverflow.GalleryRecyclerView;
@@ -19,6 +24,7 @@ import com.cucr.myapplication.widget.coverflow.Item;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -39,6 +45,8 @@ public class DuiHuanCatgoryActivity extends Activity {
 //            ,R.mipmap.test16,R.mipmap.test17,R.mipmap.test18,R.mipmap.test19,R.mipmap.test20,R.mipmap.test21,R.mipmap.test22,R.mipmap.test23};
     private List<Item> mlist = new ArrayList<>();
     private int[] mImgs = new int[20];
+    private Intent mIntent;
+    private List<DuiHuanGoosInfo.RowsBean> mDatas;
 
 
     @Override
@@ -46,29 +54,12 @@ public class DuiHuanCatgoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dui_huan_catgory);
         ViewUtils.inject(this);
-
+        mIntent = getIntent();
+        mDatas = (List<DuiHuanGoosInfo.RowsBean>) mIntent.getSerializableExtra("datas");
         //沉浸栏
         initHeader();
-        //初始化数据
-        initData();
         //初始化gallery
         initView();
-
-
-
-    }
-
-
-
-    /**
-     * 初始化数据
-     */
-    private void initData() {
-        for (int i = 0; i < mImgs.length; i++) {
-            Item item = new Item();
-            item.setName(i + "km");
-            mlist.add(item);
-        }
     }
 
     private void initView() {
@@ -77,12 +68,12 @@ public class DuiHuanCatgoryActivity extends Activity {
         mGalleryRecyclerView.setCanScale(true);
         mGalleryRecyclerView.setBaseScale(0.65f);
         mGalleryRecyclerView.setBaseAlpha(0.5f);
-        mGalleryRecyclerView.selectItem(getIntent().getIntExtra("position",0));
+        mGalleryRecyclerView.selectItem(mIntent.getIntExtra("position", 0));
 //        mGalleryRecyclerView.setBaseScale(0.5f); //间距
 //        mGalleryRecyclerView.setBaseAlpha(0.95f);//透明度
 //        mGalleryRecyclerView.setSelectedItem(3);//被选中的条目
 
-        mGalleryRecyclerView.setAdapter(new CommonAdapter<Item>(this, R.layout.item_duihuan, mlist) {
+      /*  mGalleryRecyclerView.setAdapter(new CommonAdapter<Item>(this, R.layout.item_duihuan, ) {
             @Override
             public void convert(ViewHolder holder, final Item s, final int position) {
 //                holder.setImageResource(R.id.img_duihuan,R.drawable.star1_new);
@@ -93,12 +84,45 @@ public class DuiHuanCatgoryActivity extends Activity {
                     }
                 });
             }
+        });*/
+
+        mGalleryRecyclerView.setAdapter(new CommonAdapter<DuiHuanGoosInfo.RowsBean>(this, R.layout.item_duihuan, mDatas) {
+            @Override
+            protected void convert(ViewHolder holder, final DuiHuanGoosInfo.RowsBean data, int position) {
+                //库存
+                ((TextView) holder.getView(R.id.tv_surplus)).setText("数量: " + data.getStock());
+                //名称
+                ((TextView) holder.getView(R.id.tv_name)).setText(data.getShopName());
+                //价格
+                ((TextView) holder.getView(R.id.tv_price)).setText(data.getShopPrice() + "星币");
+                //封面
+                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + data.getShopPicUrl(), ((ImageView) holder.getView(R.id.img_duihuan)), MyApplication.getImageLoaderOptions());
+
+                //没有库存不能兑换
+                if (data.getStock() > 0) {
+                    holder.getView(R.id.tv_duihuan).setEnabled(true);
+                } else {
+                    holder.getView(R.id.tv_duihuan).setEnabled(false);
+                }
+
+                //兑换按钮
+                holder.getView(R.id.tv_duihuan).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DuiHuanCatgoryActivity.this, DingDanActivity.class);
+                        intent.putExtra("data",data);
+                        startActivity(intent);
+                    }
+                });
+            }
         });
+
+
         mGalleryRecyclerView.setOnViewSelectedListener(new GalleryRecyclerView.OnViewSelectedListener() {
             @Override
             public void onSelected(View view, final int position) {
                 if (position == mImgs.length - 1)
-                ToastUtils.showToast(DuiHuanCatgoryActivity.this,"到最后了哦");
+                    ToastUtils.showToast(DuiHuanCatgoryActivity.this, "到最后了哦");
             }
         });
 
@@ -106,7 +130,7 @@ public class DuiHuanCatgoryActivity extends Activity {
 
     //返回
     @OnClick(R.id.iv_fuli_duihuan_back)
-    public void back(View view){
+    public void back(View view) {
         finish();
     }
 

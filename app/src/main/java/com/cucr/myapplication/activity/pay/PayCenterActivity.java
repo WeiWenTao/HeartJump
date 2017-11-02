@@ -249,7 +249,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         moneys.put(R.id.rg1_rb2, 100);
         moneys.put(R.id.rg1_rb3, 200);
 
-        moneys.put(R.id.rg2_rb1, 300);
+        moneys.put(R.id.rg2_rb1, 100);
         moneys.put(R.id.rg2_rb2, 500);
         moneys.put(R.id.rg2_rb3, 800);
 

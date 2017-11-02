@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fuli.DuiHuanGoosInfo;
@@ -26,6 +27,7 @@ public class FuLiDuiHuanAdapter extends RecyclerView.Adapter<FuLiDuiHuanAdapter.
 
     public void setDate(List<DuiHuanGoosInfo.RowsBean> list){
         this.list = list;
+        notifyDataSetChanged();
     }
 
     public FuLiDuiHuanAdapter(Context context, List<DuiHuanGoosInfo.RowsBean> list) {
@@ -46,7 +48,7 @@ public class FuLiDuiHuanAdapter extends RecyclerView.Adapter<FuLiDuiHuanAdapter.
     public void onBindViewHolder(FiLiDuiHuanHolder holder, final int position) {
         //设置图片
         if (list!= null){
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + list.get(position).getShopPicUrl(), holder.iv_duihuan_icon);
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + list.get(position).getShopPicUrl(), holder.iv_duihuan_icon, MyApplication.getImageLoaderOptions());
             holder.tv_goods_price.setText(list.get(position).getShopPrice()+"星币");
         }
 

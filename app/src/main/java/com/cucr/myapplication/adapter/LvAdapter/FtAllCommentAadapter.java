@@ -89,7 +89,7 @@ public class FtAllCommentAadapter extends BaseAdapter implements View.OnClickLis
 
 
         //设置数据
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + childListBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + childListBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_comment_time.setText(childListBean.getReleaseTime());
         iv_good.setImageResource(childListBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(childListBean.getGiveUpCount() + "");

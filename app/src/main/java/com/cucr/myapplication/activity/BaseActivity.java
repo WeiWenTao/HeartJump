@@ -47,7 +47,7 @@ public abstract class BaseActivity extends Activity {
     //初始化沉浸栏、标题内容、返回键
     protected void initBar() {
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
 
         //这里要用findViewbyid的形式找控件，用注解会为空
         tv_title = (TextView) findViewById(R.id.tv_base_title);

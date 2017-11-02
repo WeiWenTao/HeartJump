@@ -1,12 +1,13 @@
 package com.cucr.myapplication.model.fuli;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2017/8/30.
  */
 
-public class ActiveInfo {
+public class ActiveInfo implements Serializable {
 
     /**
      * errorMsg :
@@ -52,7 +53,7 @@ public class ActiveInfo {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable{
         /**
          * activeName : 测试福利活动
          * createTime : 2017-08-16 15:18:07

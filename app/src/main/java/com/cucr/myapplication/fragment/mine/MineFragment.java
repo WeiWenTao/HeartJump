@@ -13,10 +13,10 @@ import android.widget.RelativeLayout;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
-import com.cucr.myapplication.activity.myHomePager.FocusActivity;
-import com.cucr.myapplication.activity.pay.PayCenterActivity;
-import com.cucr.myapplication.activity.pay.StarMoneyActivity;
 import com.cucr.myapplication.activity.journey.MyJourneyActivity;
+import com.cucr.myapplication.activity.myHomePager.FocusActivity;
+import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
+import com.cucr.myapplication.activity.pay.TxRecordActivity;
 import com.cucr.myapplication.activity.setting.InvateActivity;
 import com.cucr.myapplication.activity.setting.MyRequiresActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
@@ -152,13 +152,13 @@ public class MineFragment extends BaseFragment {
 
             //星币
             case R.id.ll_pay:
-                mIntent.setClass(mContext,StarMoneyActivity.class);
+                mIntent.setClass(mContext,TxRecordActivity.class);
                 mContext.startActivity(mIntent);
                 break;
 
             //充值中心
             case R.id.rl_pay_center:
-                mIntent.setClass(mContext,PayCenterActivity.class);
+                mIntent.setClass(mContext,PayCenterActivity_new.class);
                 mContext.startActivity(mIntent);
                 break;
 

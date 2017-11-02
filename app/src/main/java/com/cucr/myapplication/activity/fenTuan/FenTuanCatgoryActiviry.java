@@ -203,7 +203,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         mTv_all_comment = (TextView) lvHead.findViewById(R.id.tv_all_comment);
 
         //设置数据
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
         tv_neckname.setText(mRowsBean.getCreateUserName());
         tv_time_form.setText(mRowsBean.getCreaetTime());
         tv_lookcount.setText(mRowsBean.getReadCount() + "");

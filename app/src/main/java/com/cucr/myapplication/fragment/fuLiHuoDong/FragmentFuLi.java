@@ -33,6 +33,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -164,6 +165,7 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void OnItemClick(View view, int position) {
                 Intent intent = new Intent(view.getContext(), DuiHuanCatgoryActivity.class);
+                intent.putExtra("datas", (Serializable) goodInfos);
                 intent.putExtra("position", position);
                 startActivity(intent);
             }

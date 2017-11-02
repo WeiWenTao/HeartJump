@@ -10,7 +10,7 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/zise"
         >
 
         <android.support.design.widget.TabLayout
@@ -26,9 +26,9 @@
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
             app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/pink"
+            app:tabSelectedTextColor="@color/xtred"
             app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/white"
+            app:tabTextColor="@color/zongse"
             ></android.support.design.widget.TabLayout>
 
         <ImageView

@@ -129,7 +129,7 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
 
 
         //设置数据
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_comment_time.setText(mRowsBean.getReleaseTime());
         iv_good.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(mRowsBean.getGiveUpCount() + "");

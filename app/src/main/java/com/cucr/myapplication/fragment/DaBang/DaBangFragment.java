@@ -12,6 +12,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.dabang.BangDanCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.dabang.BangDanInfo;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -33,6 +34,10 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     private DaBangAdapter mAdapter;
     private View headView;
     private DialogDaBangStyle mDialog;
+    private int starId;
+    private BangDanInfo.RowsBean mRowsBean1;
+    private BangDanInfo.RowsBean mRowsBean2;
+    private BangDanInfo.RowsBean mRowsBean3;
 
     @Override
     protected void initView(View childView) {
@@ -51,15 +56,16 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
             @Override
             public void daBang(BangDanInfo.RowsBean rowsBean) {
                 mDialog.show();
+                starId = rowsBean.getId();
             }
         });
     }
 
     private void initHead(List<BangDanInfo.RowsBean> rows) {
 
-        BangDanInfo.RowsBean rowsBean1 = rows.get(0);
-        BangDanInfo.RowsBean rowsBean2 = rows.get(1);
-        BangDanInfo.RowsBean rowsBean3 = rows.get(2);
+        mRowsBean1 = rows.get(0);
+        mRowsBean2 = rows.get(1);
+        mRowsBean3 = rows.get(2);
 
         ImageView userHead1 = (ImageView) headView.findViewById(R.id.iv_head1);
         ImageView userHead2 = (ImageView) headView.findViewById(R.id.iv_head2);
@@ -71,17 +77,17 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         TextView tv_num2 = (TextView) headView.findViewById(R.id.tv_num2);
         TextView tv_num3 = (TextView) headView.findViewById(R.id.tv_num3);
 
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean1.getUserHeadPortrait(), userHead1, MyApplication.getOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean2.getUserHeadPortrait(), userHead2, MyApplication.getOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean3.getUserHeadPortrait(), userHead3, MyApplication.getOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean1.getUserHeadPortrait(), userHead1, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean2.getUserHeadPortrait(), userHead2, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean3.getUserHeadPortrait(), userHead3, MyApplication.getImageLoaderOptions());
 
-        tv_name1.setText(rowsBean1.getRealName());
-        tv_name2.setText(rowsBean2.getRealName());
-        tv_name3.setText(rowsBean3.getRealName());
+        tv_name1.setText(mRowsBean1.getRealName());
+        tv_name2.setText(mRowsBean2.getRealName());
+        tv_name3.setText(mRowsBean3.getRealName());
 
-        tv_num1.setText(rowsBean1.getUserMoney() + "");
-        tv_num2.setText(rowsBean2.getUserMoney() + "");
-        tv_num3.setText(rowsBean3.getUserMoney() + "");
+        tv_num1.setText(mRowsBean1.getUserMoney() + "");
+        tv_num2.setText(mRowsBean2.getUserMoney() + "");
+        tv_num3.setText(mRowsBean3.getUserMoney() + "");
     }
 
     private void queryBdInfo() {
@@ -89,6 +95,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         mCore.queryBangDanInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
+                MyLogger.jLog().i("queryBangDanInfo:" + response.get());
                 BangDanInfo bangDanInfo = mGson.fromJson(response.get(), BangDanInfo.class);
                 if (bangDanInfo.isSuccess()) {
                     mAdapter.setData(bangDanInfo.getRows());
@@ -103,16 +110,19 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     @OnClick(R.id.iv_dabang_first)
     public void daBangFirst(View view) {
         mDialog.show();
+        starId = mRowsBean1.getId();
     }
 
     @OnClick(R.id.iv_dabang_second)
     public void daBangSecond(View view) {
         mDialog.show();
+        starId = mRowsBean2.getId();
     }
 
     @OnClick(R.id.iv_dabang_third)
     public void daBangThird(View view) {
         mDialog.show();
+        starId = mRowsBean3.getId();
     }
 
     @Override
@@ -128,6 +138,18 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
 
     @Override
     public void onClickConfirm(int howMuch) {
-        MyLogger.jLog().i("howMuch:" + howMuch);
+        mCore.daBang(howMuch, starId, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+
+                CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (msg.isSuccess()) {
+                    ToastUtils.showToast("打榜成功!");
+                    queryBdInfo();
+                } else {
+                    ToastUtils.showToast(msg.getMsg());
+                }
+            }
+        });
     }
 }

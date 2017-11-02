@@ -59,12 +59,11 @@ public class BangDanCore implements BangDan {
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
-
     //回调
     OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+        
         }
 
         @Override

@@ -10,10 +10,10 @@ import com.cucr.myapplication.utils.CommonViewHolder;
 /**
  * Created by 911 on 2017/4/25.
  */
-public class LvExpenseCalendarAdapter extends BaseAdapter {
+public class TxRecordAdapter extends BaseAdapter {
     @Override
     public int getCount() {
-        return 3;
+        return 10;
     }
 
     @Override

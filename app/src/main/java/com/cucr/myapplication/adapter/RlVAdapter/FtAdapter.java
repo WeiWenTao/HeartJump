@@ -99,7 +99,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             intent.putExtras(bundle);//发送数据
 
             //头像
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());
             //视频封面
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video_pic);
 
@@ -167,7 +167,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 // -------------------------------------------------------------------------------------------------
         } else if (holder instanceof Tp2_Holder) {
             //图片
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp2_Holder) holder).iv_pic, MyApplication.getOptions());     //头像
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp2_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());     //头像
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp2_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
@@ -240,7 +240,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 // -------------------------------------------------------------------------------------------------
         } else { //文字
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getOptions());     //头像
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());     //头像
             ((Tp3_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp3_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp3_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量

@@ -8,12 +8,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.shangPing.DingDanCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.fuli.DuiHuanGoosInfo;
 import com.cucr.myapplication.model.login.LoadUserInfo;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -22,17 +25,26 @@ import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDingDanStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 public class DingDanActivity extends BaseActivity implements TextWatcher {
 
-    //兑换规则
-    @ViewInject(R.id.iv_rule)
-    private ImageView iv_rule;
-
     //确定兑换
     @ViewInject(R.id.tv_perform_duihuan)
     private TextView tv_perform_duihuan;
+
+    //商品名称
+    @ViewInject(R.id.tv_goods_name)
+    private TextView tv_goods_name;
+
+    //商品价格
+    @ViewInject(R.id.tv_goods_price)
+    private TextView tv_goods_price;
+
+    //商品封面
+    @ViewInject(R.id.iv_goods_pic)
+    private ImageView iv_goods_pic;
 
     //数量显示框
     @ViewInject(R.id.tv_show_goods_num)
@@ -65,13 +77,19 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     private String mReceive_num;
     private String mReceived_local;
     private String mReceived_address;
-    private int mShopId;
+    private DuiHuanGoosInfo.RowsBean mData;
 
     @Override
     protected void initChild() {
         mDialogDingDanStyle = new DialogDingDanStyle(this, R.style.BirthdayStyleTheme);
         mCore = new DingDanCore(this);
-
+        //获取数据
+        mData = (DuiHuanGoosInfo.RowsBean) getIntent().getSerializableExtra("data");
+        //初始化商品数据
+        tv_goods_name.setText(mData.getShopName());
+        tv_goods_price.setText(mData.getShopPrice()+"星币");
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST+ mData.getShopPicUrl(),iv_goods_pic, MyApplication.getImageLoaderOptions());
+        //设置监听
         et_receive_person_name.addTextChangedListener(this);
         et_receive_person_local_catgory.addTextChangedListener(this);
         tv_receive_person_local.addTextChangedListener(this);
@@ -91,8 +109,6 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
         mReceived_local = tv_receive_person_local.getText().toString();
         //详细地址
         mReceived_address = et_receive_person_local_catgory.getText().toString();
-        //商品id  由上个页面跳转获得
-        mShopId = 3;
     }
 
     //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
@@ -100,6 +116,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+
         LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
 
         if (location != null) {
@@ -161,7 +178,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     @OnClick(R.id.tv_perform_duihuan)
     public void performDuihuan(View view) {
         initMsg();
-        mCore.onDuiHuan(CommonUtils.replaceOtherChars(mReceived_local), mReceived_address, mReceive_person, mReceive_num, mNum, mShopId, new OnCommonListener() {
+        mCore.onDuiHuan(CommonUtils.replaceOtherChars(mReceived_local), mReceived_address, mReceive_person, mReceive_num, mNum, mData.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);

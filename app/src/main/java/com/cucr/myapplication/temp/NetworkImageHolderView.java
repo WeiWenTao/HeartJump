@@ -27,6 +27,6 @@ public class NetworkImageHolderView implements Holder<String> {
 
     @Override
     public void UpdateUI(Context context, final int position, String data) {
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + data, imageView, MyApplication.getOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + data, imageView, MyApplication.getImageLoaderOptions());
     }
 }

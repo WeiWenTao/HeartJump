@@ -174,7 +174,9 @@
             <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activity.pay.StarMoneyActivity">
+        <activity android:name=".activity.pay.TxRecordActivity">
+        </activity>
+        <activity android:name=".activity.pay.PayCenterActivity_new">
         </activity>
         <activity android:name=".activity.setting.SettingMessageActivity">
         </activity>
@@ -295,6 +297,7 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -304,10 +307,13 @@
             >
         </activity>
         <activity android:name=".activity.setting.MyRequiresActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".activity.pay.XbTxActivity">
         </activity>
     </application>
 

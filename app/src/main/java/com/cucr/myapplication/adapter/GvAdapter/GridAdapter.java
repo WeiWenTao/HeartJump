@@ -59,7 +59,7 @@ public class GridAdapter extends BaseAdapter {
                 .showImageOnFail(R.drawable.ic_launcher)  // 加载失败占位图
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + attrFileList.get(position).getFileUrl(), iv, MyApplication.getOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + attrFileList.get(position).getFileUrl(), iv, MyApplication.getImageLoaderOptions());
 //       Glide.with(mContext).load(HttpContans.HTTP_HOST + attrFileList.get(position).getFileUrl()).into(iv);
         return cvh.convertView;
     }

@@ -1,12 +1,13 @@
 package com.cucr.myapplication.model.fuli;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2017/8/25.
  */
 
-public class DuiHuanGoosInfo {
+public class DuiHuanGoosInfo implements Serializable  {
 
     /**
      * rows : [{"id":3,"shopContent":"测试的","shopName":"测试商品1","shopPicUrl":"/static/ys_image/8923d563-ed3d-4a8c-9742-890c51ff3439.jpg","shopPrice":10}]
@@ -69,7 +70,7 @@ public class DuiHuanGoosInfo {
                 '}';
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         /**
          * id : 3
          * shopContent : 测试的

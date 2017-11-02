@@ -116,7 +116,7 @@ public class MyApplication extends Application {
         return _instance;
     }
 
-    public static DisplayImageOptions getOptions() {
+    public static DisplayImageOptions getImageLoaderOptions() {
         return options;
     }
 
