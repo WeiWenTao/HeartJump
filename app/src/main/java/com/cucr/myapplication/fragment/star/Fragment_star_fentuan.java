@@ -55,6 +55,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private Gson mGson;
     // TODO: 2017/9/22 eventBus 获取
     private int starId = 29;
+    private int qYStarId; //企业用户可以直接传递id
+
     private int page = 1;
     private int rows = 2;
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
@@ -64,10 +66,13 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private Integer giveNum;
     private int position = -1;
 
+    public Fragment_star_fentuan(int id) {
+        qYStarId = id;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MyLogger.jLog().i("onCreateView");
         mContext = MyApplication.getInstance();
         queryCore = new QueryFtInfoCore();
         mGson = new Gson();
@@ -83,13 +88,16 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
 
     private void queryFtInfo() {
+        // TODO: 2017/11/3
+        //如果是企业用户
+        /*if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+            starId = qYStarId;
+        }*/
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("queryFtInfo:" + response.get());
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-                    MyLogger.jLog().i("mQueryFtInfos.getRows:" + mQueryFtInfos.getRows().size() + ":" + mQueryFtInfos.getRows());
                     mAdapter.setData(mQueryFtInfos);
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
@@ -112,7 +120,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
     private void initView() {
-        MyLogger.jLog().i("initView");
 //        rlv_fentuan = (RecyclerView) view.findViewById(R.id.rlv_fentuan);
 //        rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
 

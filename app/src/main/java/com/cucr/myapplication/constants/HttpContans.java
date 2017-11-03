@@ -112,4 +112,7 @@ public class HttpContans {
 
     //打榜
     public static final String ADDRESS_ADD_REQUIREMENT = "/interface/mobileRequirementAction/addRequirement";
+
+    //预约
+    public static final String ADDRESS_ADD_APPOINMENT = "/interface/mobileStartAppointment/appointment";
 }

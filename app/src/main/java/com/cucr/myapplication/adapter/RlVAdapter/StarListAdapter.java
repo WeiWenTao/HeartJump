@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.HttpContans;
@@ -73,7 +74,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
             MyFocusStarInfo.RowsBean rowsBean = list.get(position);
             CircleImageView iv_head = ((MyStarHolder) holder).iv_head;
 
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getStartPicUrl(), iv_head);
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getStartPicUrl(), iv_head, MyApplication.getImageLoaderOptions());
 
             iv_head.setOnClickListener(new View.OnClickListener() {
                 @Override

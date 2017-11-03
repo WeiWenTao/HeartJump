@@ -101,7 +101,7 @@ public class LoginCore implements LoadByPsw {
             //状态码
             int responseCode = response.getHeaders().getResponseCode();
             if (what == NOHTTP_WHAT_1) {
-                if (loginListener != null && responseCode == 200) {
+                if (loginListener != null) {
                     loginListener.onSuccess(response);
 
                 }else {

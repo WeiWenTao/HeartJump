@@ -192,6 +192,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList = rowsBean.getAttrFileList();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("imgs", (Serializable) attrFileList);//序列化,要注意转化(Serializable)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtras(bundle);//发送数据
                     intent.putExtra("position", position);
                     context.startActivity(intent);

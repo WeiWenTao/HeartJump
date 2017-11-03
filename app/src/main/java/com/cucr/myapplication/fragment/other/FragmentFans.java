@@ -19,14 +19,19 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
+import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.alipay.PayResult;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarList;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
 import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
@@ -35,12 +40,14 @@ import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.others.FragmentInfos;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
+import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -93,20 +100,62 @@ public class FragmentFans extends BaseFragment {
     @ViewInject(R.id.magic_indicator_personal_page)
     private MagicIndicator magicIndicator;
 
+    //粉丝数量
+    @ViewInject(R.id.tv_fans)
+    private TextView tv_fans;
+
+    //明星姓名
+    @ViewInject(R.id.tv_starname)
+    private TextView tv_starname;
+
+    //标题姓名
+    @ViewInject(R.id.tv_star_title)
+    private TextView tv_star_title;
+
+    //明星封面
+    @ViewInject(R.id.backdrop)
+    private ImageView backdrop;
+
     //是否需要显示
     private boolean isShow = true;
     private StarListAdapter mAdapter;
     private QueryMyFocusStars mCore;
     private List<MyFocusStarInfo.RowsBean> mRows;
+    private QueryStarList mStarCore;
+    private int page = 1;
+    private int rows = 100;
+    private int type = 2;
 
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
+
+
         mCore = new QueryMyFocusStars(getActivity());
         initRlv();
+        mAdapter.setPosition(0);
         initHead();
         initIndicator();
         initVp();
+    }
+
+    private void initDatas(int starId) {
+        mStarCore = new QueryStarList(getActivity());
+        mStarCore.queryStarList(type, page, rows, starId, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
+                if (starInfos.isSuccess()){
+                    StarListInfos.RowsBean rowsBean = starInfos.getRows().get(0);
+                    tv_fans.setText("粉丝 "+rowsBean.getFansCount());
+                    tv_starname.setText(rowsBean.getRealName());
+                    tv_star_title.setText(rowsBean.getRealName());
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST+rowsBean.getUserPicCover(),backdrop, MyApplication.getImageLoaderOptions());
+                }else {
+                    ToastUtils.showToast(starInfos.getErrorMsg());
+                }
+            }
+        });
     }
 
     @Override
@@ -123,6 +172,10 @@ public class FragmentFans extends BaseFragment {
                 if (Info.isSuccess()) {
                     mRows = Info.getRows();
                     mAdapter.setData(mRows);
+                    if (mRows == null || mRows.size() == 0){
+                        return;
+                    }
+                    initDatas(mRows.get(0).getStartId());
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
                 }
@@ -137,7 +190,8 @@ public class FragmentFans extends BaseFragment {
             @Override
             public void onClickPosition(View view, int position) {
                 mAdapter.setPosition(position);
-                //TODO: 2017/9/6 查询数据
+                initDatas(mRows.get(position).getStartId());
+                initDrawer(false);
             }
         });
         drawer_rcv.setAdapter(mAdapter);
@@ -162,7 +216,8 @@ public class FragmentFans extends BaseFragment {
         //        if (明星用户) {
         mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
 //        }
-        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(), "粉团"));
+        //这里随便传个数 粉团的有参构造 StarPagerForQiYeActivity_111界面用
+        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(-1), "粉团"));
         mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
 
 
@@ -181,7 +236,7 @@ public class FragmentFans extends BaseFragment {
                 SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 4.0f);
                 simplePagerTitleView.setText(mDataList.get(index).getTitle());
                 simplePagerTitleView.setNormalColor(Color.parseColor("#bfbfbf"));
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#f68d89"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#ff4f49"));
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -195,12 +250,12 @@ public class FragmentFans extends BaseFragment {
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
-                indicator.setLineHeight(UIUtil.dip2px(context, 2));
-                indicator.setLineWidth(UIUtil.dip2px(context, 35));
-                indicator.setRoundRadius(UIUtil.dip2px(context, 1));
+                indicator.setLineHeight(UIUtil.dip2px(context, 4));
+                indicator.setLineWidth(UIUtil.dip2px(context, 18));
+                indicator.setRoundRadius(UIUtil.dip2px(context, 2));
                 indicator.setStartInterpolator(new AccelerateInterpolator());
                 indicator.setEndInterpolator(new DecelerateInterpolator(2.0f));
-                indicator.setColors(Color.parseColor("#f68d89"));
+                indicator.setColors(Color.parseColor("#ff4f49"));
                 return indicator;
             }
         });
@@ -316,10 +371,17 @@ public class FragmentFans extends BaseFragment {
         };
     };
 
-
+    //消息界面
     @OnClick(R.id.iv_header_msg)
     public void pay(View view) {
         startActivity(new Intent(mContext, MessageActivity.class));
     }
+
+    //预约界面
+    @OnClick(R.id.tv_yuyue)
+    public void yuYue(View view) {
+        startActivity(new Intent(mContext, YuYueCatgoryActivity.class));
+    }
+
 
 }

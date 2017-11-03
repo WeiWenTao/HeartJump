@@ -259,7 +259,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
     //支付宝支付逻辑
     public void alipay() {
         MyLogger.jLog().i("finalMoney:" + finalMoney);
-        payCore.aliPay(money, "心跳充值", new OnCommonListener() {
+        payCore.aliPay(finalMoney, "心跳充值", new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 final PayInfo payInfo = mGson.fromJson(response.get(), PayInfo.class);

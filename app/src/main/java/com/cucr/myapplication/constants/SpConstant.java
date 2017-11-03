@@ -7,6 +7,9 @@ package com.cucr.myapplication.constants;
 public class SpConstant {
 
     //sp文件名
+    public static final String SP_STATUS = "status";
+
+    //sp文件名
     public static final String SP_NAME = "config";
 
     //是否首次运行

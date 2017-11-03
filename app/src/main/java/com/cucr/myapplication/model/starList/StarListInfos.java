@@ -1,12 +1,13 @@
 package com.cucr.myapplication.model.starList;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2017/9/5.
  */
 
-public class StarListInfos {
+public class StarListInfos implements Serializable{
 
     /**
      * errorMsg :
@@ -52,7 +53,7 @@ public class StarListInfos {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable{
         /**
          * fansCount : null
          * id : 5

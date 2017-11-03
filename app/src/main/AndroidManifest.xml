@@ -154,7 +154,7 @@
             android:launchMode="singleTask"
             >
         </activity>
-        <activity android:name=".activity.yuyue.PersonalHomePageActivity">
+        <activity android:name=".activity.yuyue.PersonalHomePageActivity_111">
         </activity>
         <activity
             android:name=".activity.setting.PersonalInfoActivity"
@@ -314,6 +314,9 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".activity.pay.XbTxActivity">
+        </activity>
+
+        <activity android:name=".activity.star.StarPagerForQiYeActivity_111" android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         </activity>
     </application>
 

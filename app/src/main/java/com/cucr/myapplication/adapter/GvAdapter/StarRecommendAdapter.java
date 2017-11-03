@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
@@ -123,6 +122,7 @@ public class StarRecommendAdapter extends BaseAdapter {
         //是否关注  0：未关注      1：已关注
         final int isfollow = rowsBean.getIsfollow();
 
+        MyLogger.jLog().i("position:"+position+",isfollow"+isfollow);
         if (isfollow == 0) {
             tv_focus.setText("加关注");
             tv_focus.setTextColor(resources.getColor(R.color.pink));
@@ -154,13 +154,13 @@ public class StarRecommendAdapter extends BaseAdapter {
         });
 
 
-        //点击事件
-        rl_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), position + "", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        //点击事件
+//        rl_item.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(v.getContext(), position + "", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return cvh.convertView;
     }

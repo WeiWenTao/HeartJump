@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.renZheng.CommitStarRzCore;
 import com.cucr.myapplication.core.renZheng.QueryRzResult;
 import com.cucr.myapplication.listener.OnCommonListener;
@@ -34,6 +35,7 @@ import com.cucr.myapplication.model.RZ.RzResult;
 import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.picture.MyLoader;
 import com.google.gson.Gson;
@@ -207,6 +209,8 @@ public class StarRZ extends Fragment {
 
             case 2:
                 tv_commit_check.setText("审核通过，重新登录账号才有效哦");
+                //审核通过 保存身份
+                SpUtil.setParam(SpConstant.SP_STATUS,0);
                 break;
         }
     }

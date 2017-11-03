@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity;
+import com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity_111;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.utils.CommonViewHolder;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
@@ -197,7 +197,7 @@ public class JourneyCatgoryAdapter extends BaseAdapter implements View.OnClickLi
 
             case R.id.ll_star_page:
 
-                mContext.startActivity(new Intent(mContext, PersonalHomePageActivity.class));
+                mContext.startActivity(new Intent(mContext, PersonalHomePageActivity_111.class));
                 break;
 
 

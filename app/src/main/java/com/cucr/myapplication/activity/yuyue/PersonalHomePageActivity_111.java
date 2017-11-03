@@ -3,9 +3,7 @@ package com.cucr.myapplication.activity.yuyue;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
@@ -34,19 +32,15 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import java.util.Arrays;
 import java.util.List;
 
-public class PersonalHomePageActivity extends AppCompatActivity {
+public class PersonalHomePageActivity_111 extends AppCompatActivity {
 
     private static final String[] CHANNELS = new String[]{"星闻", "行程"};
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private ViewPager mViewPager;
-
-
     private AppBarLayout mAppBarLayout;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private Toolbar mToolbar;
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

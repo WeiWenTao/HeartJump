@@ -89,7 +89,7 @@ public class FocusCore implements Focus {
             } else {
                 if (reBackMsg.isSuccess()) {
                     ToastUtils.showToast(mContext, "已取消关注！");
-                    MyLogger.jLog().i("取消关注成功");
+                    MyLogger.jLog().i("已取消关注");
                 } else {
                     ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }

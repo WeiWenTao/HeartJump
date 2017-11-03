@@ -69,15 +69,12 @@ public class ApointmentFragmentA extends BaseFragment {
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
-
+        mCore = new QueryStarList(getActivity());
         initSP();
 
         queryStar();
 
         initHead();
-
-
-//        initVP();
 
     }
 
@@ -89,22 +86,21 @@ public class ApointmentFragmentA extends BaseFragment {
         mList.add("100万-150万");
         mList.add("ww");
 
-        sp1.setAdapter(new MySpAdapter(mContext,mList));
-        sp2.setAdapter(new MySpAdapter(mContext,mList));
-        sp3.setAdapter(new MySpAdapter(mContext,mList));
+        sp1.setAdapter(new MySpAdapter(mContext, mList));
+        sp2.setAdapter(new MySpAdapter(mContext, mList));
+        sp3.setAdapter(new MySpAdapter(mContext, mList));
 
 
     }
 
     private void queryStar() {
-        mCore = new QueryStarList(getActivity());
-        mCore.queryStarList(1, 1, 10, 1, new OnCommonListener() {
+        mCore.queryStarList(1, 1, 10, 0, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
                     mRows = starListInfos.getRows();
-
+                    MyLogger.jLog().i("queryStarmRows:" + mRows);
                     initVP();
                 } else {
                     ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
@@ -137,13 +133,13 @@ public class ApointmentFragmentA extends BaseFragment {
 
     private void initVP() {
         mFragments = new ArrayList<>();
-        for (int i = 0; i < mRows.size(); i++) {
-            MyLogger.jLog().i("i=" + i + ",mRows:" + mRows.get(i));
-        }
+//        for (int i = 0; i < mRows.size(); i++) {
+//            MyLogger.jLog().i("i=" + i + ",mRows:" + mRows.get(i));
+//        }
         mFragments.add(new FragmentStarRecommend(mRows));
 //      快速导航栏
 //      mFragments.add(new FragmentStarClassify());
-        mFragments.add(new FragmentStarRecommend(mRows));
+//        mFragments.add(new FragmentStarRecommend(mRows));
         vp_recommed_star.setAdapter(new YuYuePagerAdapter(getFragmentManager(), mFragments));
     }
 

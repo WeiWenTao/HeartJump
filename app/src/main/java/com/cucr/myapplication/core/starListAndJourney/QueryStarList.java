@@ -31,16 +31,19 @@ public class QueryStarList extends BaseCore implements StarListInfo {
     }
 
     @Override
-    public void queryStarList(int type, int page, int row, int code, final OnCommonListener onCommonListener) {
+    public void queryStarList(int type, int page, int row, int startId, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("type", type);
-//        request.add("code", code);
         request.add("page", page);
         request.add("rows", row);
+
+        if (startId != 0) {
+            request.add("startId", startId);
+        }
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
 
         //回调

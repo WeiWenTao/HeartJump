@@ -3,7 +3,6 @@ package com.cucr.myapplication.activity.yuyue;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
@@ -13,24 +12,23 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
+import com.cucr.myapplication.core.yuyue.YuYueCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.model.setting.LocationData;
-import com.cucr.myapplication.utils.CommonUtils;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,6 +73,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
 
     //日期格式
     private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    private YuYueCore mCore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,22 +168,9 @@ public class YuYueCatgoryActivity extends FragmentActivity {
 
     //沉浸栏
     private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(this, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
+        mCore = new YuYueCore();
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
     }
 
     //活动开始时间
@@ -198,7 +184,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
                 //.setMaxDate(maxDate)
                 .setIs24HourTime(true)
                 //.setTheme(SlideDateTimePicker.HOLO_LIGHT)
-                .setIndicatorColor(Color.parseColor("#f68d89"))
+                .setIndicatorColor(getResources().getColor(R.color.xtred))
                 .build()
                 .show();
     }
@@ -242,5 +228,9 @@ public class YuYueCatgoryActivity extends FragmentActivity {
         }
     };
 
+    @OnClick(R.id.tv_commit_yuyue)
+    public void yuYue(View view){
+//        mCore.yuYueStar();
+    }
 
 }

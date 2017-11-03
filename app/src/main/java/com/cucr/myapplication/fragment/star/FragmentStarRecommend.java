@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.yuyue.PersonalHomePageActivity;
+import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 import com.cucr.myapplication.model.starList.StarListInfos;
 
@@ -38,7 +38,7 @@ public class FragmentStarRecommend extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //view的复用
-        if (view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.fragment_star_recommend, container, false);
         }
         gv_star_recommend = (GridView) view.findViewById(R.id.gv_star_recommend);
@@ -48,15 +48,25 @@ public class FragmentStarRecommend extends Fragment {
     }
 
     private void initGV(final Context context) {
-        mGvAdapter = new StarRecommendAdapter(context,rows);
+        mGvAdapter = new StarRecommendAdapter(context, rows);
         gv_star_recommend.setAdapter(mGvAdapter);
         gv_star_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                mGvAdapter.setCheck(position);
-                context.startActivity(new Intent(context,PersonalHomePageActivity.class));
+                final StarListInfos.RowsBean rowsBean = rows.get(position);
+                Intent intent = new Intent(context, StarPagerForQiYeActivity_111.class);
+                intent.putExtra("data", rowsBean);
+                context.startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rows.get(0).setIsfollow(1);
+        mGvAdapter.setData(rows);
     }
 
     @Override

@@ -9,6 +9,12 @@ import java.io.File;
  */
 
 public class Constans {
+
+    //用户身份
+    public static final int STATUS_STAR = 0;
+    public static final int STATUS_QIYE = 1;
+    public static final int TYPE_EVERYONE = -1;
+
     public static final int TYPE_ONE = 1;
     public static final int TYPE_TWO = 2;
     public static final int TYPE_THREE = 3;
