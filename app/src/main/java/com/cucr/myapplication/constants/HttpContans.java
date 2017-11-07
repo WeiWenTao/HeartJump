@@ -110,9 +110,15 @@ public class HttpContans {
     //打榜
     public static final String ADDRESS_DA_BANG = "/interface/mobileBillboardAction/dabang";
 
-    //打榜
+    //添加要求
     public static final String ADDRESS_ADD_REQUIREMENT = "/interface/mobileRequirementAction/addRequirement";
 
     //预约
     public static final String ADDRESS_ADD_APPOINMENT = "/interface/mobileStartAppointment/appointment";
+
+    //礼物信息
+    public static final String ADDRESS_QUERY_GFITINFO = "interface/mobileHelpTeamAction/idealMoneyList";
+
+    //背包信息
+    public static final String ADDRESS_QUERY_BACKPACKINFO = "interface/mobileGiftAction/mineIdealMoneyList";
 }

@@ -16,23 +16,23 @@ import java.util.List;
 public class CityDao {
 
     //查询所有的省
-    public static List<LocationData> queryProvience(){
+    public static List<LocationData> queryProvience() {
         List<LocationData> prviences = null;
         SQLiteDatabase db = SQLiteDatabase.openDatabase(Constans.LOCATION_PATH, null, SQLiteDatabase.OPEN_READONLY);
-        if (db.isOpen()){
+        if (db.isOpen()) {
             prviences = new ArrayList<>();
             LocationData locationData = null;
             Cursor cursor = db.query(Constans.TABLENAME_PROVINCE, null, null, null, null, null, null);
 
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 try {
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
-                String code = cursor.getString(cursor.getColumnIndex("code"));
-                byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
-                String name = new String(names,"gbk");
-                locationData = new LocationData(id,code,name,null);
-                prviences.add(locationData);
-                locationData = null;
+                    int id = cursor.getInt(cursor.getColumnIndex("id"));
+                    String code = cursor.getString(cursor.getColumnIndex("code"));
+                    byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
+                    String name = new String(names, "gbk");
+                    locationData = new LocationData(id, code, name, null);
+                    prviences.add(locationData);
+                    locationData = null;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -45,25 +45,25 @@ public class CityDao {
 
 
     //根据pcode查市 下一级
-    public static List<LocationData> queryCityByPcode(String pCode){
+    public static List<LocationData> queryCityByPcode(String pCode) {
         List<LocationData> citys = null;
         SQLiteDatabase db = SQLiteDatabase.openDatabase(Constans.LOCATION_PATH, null, SQLiteDatabase.OPEN_READONLY);
-        if (db.isOpen()){
+        if (db.isOpen()) {
             Cursor cursor = db.query(Constans.TABLENAME_CITY, null, "pcode = ?", new String[]{pCode}, null, null, null);
             LocationData locationData = null;
             citys = new ArrayList<>();
 
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 try {
 
                     int id = cursor.getInt(cursor.getColumnIndex("id"));
                     String code = cursor.getString(cursor.getColumnIndex("code"));
                     String pcode = cursor.getString(cursor.getColumnIndex("pcode"));
                     byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
-                    String name = new String(names,"gbk");
+                    String name = new String(names, "gbk");
 
 
-                    locationData = new LocationData(id,code,name,pcode);
+                    locationData = new LocationData(id, code, name, pcode);
                     citys.add(locationData);
                     locationData = null;
 
@@ -79,60 +79,57 @@ public class CityDao {
     }
 
     //根据pcode查区 下一级
-    public static List<LocationData> queryDistrictByPcode(String pCode){
+    public static List<LocationData> queryDistrictByPcode(String pCode) {
         List<LocationData> citys = null;
         SQLiteDatabase db = SQLiteDatabase.openDatabase(Constans.LOCATION_PATH, null, SQLiteDatabase.OPEN_READONLY);
-        if (db.isOpen()){
+        if (db.isOpen()) {
             Cursor cursor = db.query(Constans.TABLENAME_DISTRICT, null, "pcode = ?", new String[]{pCode}, null, null, null);
             LocationData locationData = null;
             citys = new ArrayList<>();
-
-            while (cursor.moveToNext()){
-                try {
+            try {
+                while (cursor.moveToNext()) {
 
                     int id = cursor.getInt(cursor.getColumnIndex("id"));
                     String code = cursor.getString(cursor.getColumnIndex("code"));
                     String pcode = cursor.getString(cursor.getColumnIndex("pcode"));
                     byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
-                    String name = new String(names,"gbk");
-
-
-                    locationData = new LocationData(id,code,name,pcode);
+                    String name = new String(names, "gbk");
+                    locationData = new LocationData(id, code, name, pcode);
                     citys.add(locationData);
                     locationData = null;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }finally {
-                    cursor.close();
-                    db.close();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cursor.close();
+                db.close();
             }
+
         }
         return citys;
     }
 
     //根据pcode查省 上一级
-    public static LocationData queryPrivnceBycode(String codes){
+    public static LocationData queryPrivnceBycode(String codes) {
         SQLiteDatabase db = SQLiteDatabase.openDatabase(Constans.LOCATION_PATH, null, SQLiteDatabase.OPEN_READONLY);
         LocationData locationData = null;
-        if (db.isOpen()){
+        if (db.isOpen()) {
             Cursor cursor = db.query(Constans.TABLENAME_PROVINCE, null, "code = ?", new String[]{codes}, null, null, null);
 
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 try {
 
                     int id = cursor.getInt(cursor.getColumnIndex("id"));
                     String code = cursor.getString(cursor.getColumnIndex("code"));
                     byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
-                    String name = new String(names,"gbk");
+                    String name = new String(names, "gbk");
 
 
-                    locationData = new LocationData(id,code,name,null);
+                    locationData = new LocationData(id, code, name, null);
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     cursor.close();
                     db.close();
                 }
@@ -143,23 +140,23 @@ public class CityDao {
     }
 
     //根据pcode查市 上一级
-    public static LocationData queryCityBycode(String codes){
+    public static LocationData queryCityBycode(String codes) {
         SQLiteDatabase db = SQLiteDatabase.openDatabase(Constans.LOCATION_PATH, null, SQLiteDatabase.OPEN_READONLY);
         LocationData locationData = null;
-        if (db.isOpen()){
+        if (db.isOpen()) {
             Cursor cursor = db.query(Constans.TABLENAME_CITY, null, "code = ?", new String[]{codes}, null, null, null);
 
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 try {
 
                     int id = cursor.getInt(cursor.getColumnIndex("id"));
                     String code = cursor.getString(cursor.getColumnIndex("code"));
                     String pcode = cursor.getString(cursor.getColumnIndex("pcode"));
                     byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
-                    String name = new String(names,"gbk");
+                    String name = new String(names, "gbk");
 
 
-                    locationData = new LocationData(id,code,name,pcode);
+                    locationData = new LocationData(id, code, name, pcode);
 
                 } catch (Exception e) {
                     e.printStackTrace();

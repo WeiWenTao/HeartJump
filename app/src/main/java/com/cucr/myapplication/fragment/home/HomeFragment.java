@@ -13,7 +13,6 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.news.NewsActivity;
 import com.cucr.myapplication.activity.photos.PhotoActivity;
-import com.cucr.myapplication.activity.video.VideoActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
 import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
@@ -129,7 +128,8 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 
                 switch (position) {
                     case 2:
-                        startActivity(new Intent(mContext, VideoActivity.class));
+//                        startActivity(new Intent(mContext, VideoActivity.class));
+                        startActivity(new Intent(mContext, NewsActivity.class));
                         break;
 
                     case 3:

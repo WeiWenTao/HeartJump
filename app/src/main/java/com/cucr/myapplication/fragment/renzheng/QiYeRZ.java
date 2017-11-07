@@ -152,6 +152,9 @@ public class QiYeRZ extends Fragment {
     private String nagetiveBitmap;
 
     private ImageLoader instance;
+    private String mCompanyName;
+
+    private String mCompanyContact;
 
     @Nullable
     @Override
@@ -181,8 +184,10 @@ public class QiYeRZ extends Fragment {
                     if (obj == null) {
                         return;
                     }
-                    String companyName = obj.getCompanyName(); //企业名称
-                    String companyContact = obj.getCompanyContact();  //企业联系方式
+                    //企业名称
+                    mCompanyName = obj.getCompanyName();
+                    //企业联系方式
+                    mCompanyContact = obj.getCompanyContact();
                     String getUserName = obj.getUserName();  //认证人姓名
                     String contact = obj.getContact();  //认证人联系方式
                     String position = obj.getPosition();  //认证人职位
@@ -192,7 +197,7 @@ public class QiYeRZ extends Fragment {
                     String pic3 = obj.getPic3();    //营业执照
                     String info = obj.getInfo();    //审核未通过信息
                     dataId = obj.getId();
-                    backShow(companyName, companyContact, getUserName, contact, position, result, pic1, pic2, pic3, info);
+                    backShow(mCompanyName, mCompanyContact, getUserName, contact, position, result, pic1, pic2, pic3, info);
                 } else {
                     ToastUtils.showToast(mContext, rzResult.getMsg() + "");
                 }
@@ -233,7 +238,9 @@ public class QiYeRZ extends Fragment {
             case 2:
                 tv_commit_check.setText("审核通过，重新登录账号才有效哦");
                 //审核通过 保存身份
-                SpUtil.setParam(SpConstant.SP_STATUS,1);
+                SpUtil.setParam(SpConstant.SP_STATUS, 1);
+                SpUtil.setParam(SpConstant.SP_QIYE_NAME, mCompanyName);
+                SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, mCompanyContact);
                 break;
         }
     }
@@ -487,7 +494,7 @@ public class QiYeRZ extends Fragment {
 
         mCore.onCommQiYeRZ(et_qiye_name.getText().toString(), et_person_name.getText().toString(),
                 et_person_phone.getText().toString(), et_qiye_contact.getText().toString(),
-                positiveBitmap, nagetiveBitmap, licenseBitmap, et_position.getText().toString(),dataId, new OnCommonListener() {
+                positiveBitmap, nagetiveBitmap, licenseBitmap, et_position.getText().toString(), dataId, new OnCommonListener() {
                     @Override
                     public void onRequestSuccess(Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);

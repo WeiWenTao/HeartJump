@@ -140,7 +140,7 @@ public class StarRZ extends Fragment {
         activity = getActivity();
         mContext = container.getContext();
         mGson = new Gson();
-        mCore = new CommitStarRzCore();
+        mCore = new CommitStarRzCore(mContext);
         mQueryCore = new QueryRzResult(activity);
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_star, container, false);
         ViewUtils.inject(this, rootView);

@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.alipay.PayResult;
@@ -377,11 +376,9 @@ public class FragmentFans extends BaseFragment {
         startActivity(new Intent(mContext, MessageActivity.class));
     }
 
-    //预约界面
+    //预约提示框
     @OnClick(R.id.tv_yuyue)
-    public void yuYue(View view) {
-        startActivity(new Intent(mContext, YuYueCatgoryActivity.class));
+    public void toYuYue(View view){
+        ToastUtils.showToast("企业用户才能预约明星哟,赶快去认证吧!");
     }
-
-
 }

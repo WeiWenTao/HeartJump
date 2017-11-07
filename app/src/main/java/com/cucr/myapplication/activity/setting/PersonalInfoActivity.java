@@ -32,6 +32,7 @@ import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonalInfo;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.model.setting.BirthdayDate;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -258,7 +259,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 tv_birthday_edit.setText(birthdayMsg);
                 MyLogger.jLog().i("birthdayMsg:" + birthdayMsg);
                 mYear = date.getYear() + "";
-                MyLogger.jLog().i("aaa:" + date.getMonth());
                 mMon = (date.getMonth() + (isChange ? 1 : 2)) + "";
                 mDay = date.getDay() + "";
 //                } else {
@@ -525,7 +525,12 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         mCore.save(this, personalInfo, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("成功回调：" + response.get());
+                ReBackMsg msg = mGson.fromJson(response.get(), ReBackMsg.class);
+                if (msg.isSuccess()){
+                    ToastUtils.showToast("保存成功!");
+                }else {
+                    ToastUtils.showToast(msg.getMsg());
+                }
 
             }
         });

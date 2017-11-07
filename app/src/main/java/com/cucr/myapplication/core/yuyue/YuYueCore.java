@@ -40,7 +40,8 @@ public class YuYueCore implements YuYueInterf {
     public void yuYueStar(int starId, String activeName, String activePlace, String activeAdress,
                           String activeStartTime, String activeEndTime, int activeScene,
                           String activeInfo, int peopleCount, OnCommonListener listener) {
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
+        yuYueListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_APPOINMENT, RequestMethod.POST);
         request.add(SpConstant.USER_ID, (int) SpUtil.getParam(SpConstant.USER_ID, -1))
                 .add("startId", starId)
                 .add("activeName", activeName)
@@ -62,7 +63,7 @@ public class YuYueCore implements YuYueInterf {
 
         @Override
         public void onSucceed(int what, Response response) {
-            switch (what){
+            switch (what) {
                 case Constans.TYPE_ONE:
                     yuYueListener.onRequestSuccess(response);
                     break;
@@ -71,7 +72,7 @@ public class YuYueCore implements YuYueInterf {
 
         @Override
         public void onFailed(int what, Response response) {
-            HttpExceptionUtil.showTsByException(response,MyApplication.getInstance());
+            HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
         }
 
         @Override

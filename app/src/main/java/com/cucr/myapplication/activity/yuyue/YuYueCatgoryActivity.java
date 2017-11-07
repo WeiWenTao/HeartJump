@@ -17,16 +17,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.yuyue.YuYueCore;
 import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.setting.LocationData;
+import com.cucr.myapplication.model.starList.StarListInfos;
+import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.SpUtil;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
@@ -37,39 +49,69 @@ public class YuYueCatgoryActivity extends FragmentActivity {
 
     //报价
     @ViewInject(R.id.tv_price)
-    TextView tv_price;
+    private TextView tv_price;
 
     //地区
     @ViewInject(R.id.tv_active_local)
-    TextView tv_active_local;
+    private TextView tv_active_local;
+
+    //明星姓名
+    @ViewInject(R.id.tv_star_name)
+    private TextView tv_star_name;
+
+    //企业名称
+    @ViewInject(R.id.et_qiyename)
+    private TextView et_qiyename;
+
+    //企业联系方式
+    @ViewInject(R.id.et_qiye_contact)
+    private TextView et_qiye_contact;
 
     //详细地区
     @ViewInject(R.id.et_local_catgory)
-    EditText et_local_catgory;
+    private EditText et_local_catgory;
+
+    //活动名称
+    @ViewInject(R.id.et_activename)
+    private EditText et_activename;
+
+    //活动内容
+    @ViewInject(R.id.et_active_content)
+    private EditText et_active_content;
+
+    //活动人数
+    @ViewInject(R.id.et_people)
+    private EditText et_people;
 
     //室内iv
     @ViewInject(R.id.iv_shi_nei)
-    ImageView iv_shi_nei;
+    private ImageView iv_shi_nei;
 
     //室外iv
     @ViewInject(R.id.iv_shi_wai)
-    ImageView iv_shi_wai;
+    private ImageView iv_shi_wai;
+
+    //头像
+    @ViewInject(R.id.iv_head)
+    private ImageView iv_head;
 
     //头部
     @ViewInject(R.id.head)
-    RelativeLayout head;
+    private RelativeLayout head;
 
     //开始时间
     @ViewInject(R.id.tv_time_star)
-    TextView tv_time_star;
+    private TextView tv_time_star;
 
     //结束时间
     @ViewInject(R.id.tv_time_end)
-    TextView tv_time_end;
+    private TextView tv_time_end;
 
+    private StarListInfos.RowsBean mData;
     //定义变量记录是开始时间还是结束时间
     private boolean isEndTime;
-
+    private int scene;//活动场景
+    private Gson mGson;
 
     //日期格式
     private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
@@ -84,33 +126,30 @@ public class YuYueCatgoryActivity extends FragmentActivity {
 
         initHead();
 
-        initTv();
-
-        initTime();
-    }
-
-    private void initTime() {
+        initViews();
 
     }
 
-
-    private void initTv() {
-
-        //模拟获取数据
-        String price = " 56万";
-
-        SpannableString sp = new SpannableString("商业出演" + price + " /场");
-
+    private void initViews() {
+        //回显数据
+        //-----------------------------------------价格-------------------------------------
+        String price = mData.getStartCost() + "万";
+        SpannableString sp = new SpannableString("商业出演 " + price + " /场");
         //设置高亮样式二
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#F68D89")), 4, 4 + price.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         sp.setSpan(new AbsoluteSizeSpan(15, true), 4, 4 + price.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 4, 4 + price.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
         //SpannableString对象设置给TextView
         tv_price.setText(sp);
         //设置TextView可点击
         tv_price.setMovementMethod(LinkMovementMethod.getInstance());
+        //-----------------------------------------价格-------------------------------------
+        tv_star_name.setText(mData.getRealName());
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getStartShowPic(), iv_head, MyApplication.getImageLoaderOptions());
+        scene = 1; //默认场景为室外
 
+        et_qiyename.setText((String) SpUtil.getParam(SpConstant.SP_QIYE_NAME, ""));
+        et_qiye_contact.setText((String) SpUtil.getParam(SpConstant.SP_QIYE_CONTACT, ""));
     }
 
     //活动地区
@@ -151,6 +190,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     public void shiNei(View view) {
         iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
         iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_nor));
+        scene = 0;
     }
 
     //室外
@@ -158,6 +198,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     public void shiWai(View view) {
         iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_nor));
         iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
+        scene = 1;
     }
 
     //返回
@@ -168,9 +209,16 @@ public class YuYueCatgoryActivity extends FragmentActivity {
 
     //沉浸栏
     private void initHead() {
+        //获取数据
+
+        SpUtil.setParam(SpConstant.SP_QIYE_NAME, "测试企业名称");
+        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, "测试企业联系方式");
+
+        mData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
         mCore = new YuYueCore();
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
+        mGson = new Gson();
     }
 
     //活动开始时间
@@ -200,7 +248,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
                 //.setMaxDate(maxDate)
                 .setIs24HourTime(true)
                 //.setTheme(SlideDateTimePicker.HOLO_DARK)
-                .setIndicatorColor(Color.parseColor("#f68d89"))
+                .setIndicatorColor(getResources().getColor(R.color.xtred))
                 .build()
                 .show();
     }
@@ -229,8 +277,45 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     };
 
     @OnClick(R.id.tv_commit_yuyue)
-    public void yuYue(View view){
-//        mCore.yuYueStar();
+    public void yuYue(View view) {
+
+        String activityName = et_activename.getText().toString().trim();
+        String activeLocal = tv_active_local.getText().toString().trim();
+        String localCatgory = et_local_catgory.getText().toString().trim();
+        String starTime = tv_time_star.getText().toString().trim();
+        String endTime = tv_time_end.getText().toString().trim();
+        String activeContent = et_active_content.getText().toString().trim();
+        String peoples = et_people.getText().toString().trim();
+        String qiYeName = et_qiyename.getText().toString().trim();
+        String qiYeContact = et_qiye_contact.getText().toString().trim();
+
+        if (CommonUtils.isEmpty(activityName, activeLocal, localCatgory, starTime, endTime,
+                activeContent, peoples, qiYeName, qiYeContact)) {
+            ToastUtils.showToast("请先完善预约信息哟!");
+            return;
+        }
+
+        mCore.yuYueStar(mData.getId(), activityName, activeLocal, localCatgory, starTime, endTime, scene
+                , activeContent, Integer.parseInt(peoples), new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                        if (msg.isSuccess()) {
+                            ToastUtils.showToast(MyApplication.getInstance(), "已提交预约");
+                            finish();
+                        }else {
+                            ToastUtils.showToast(msg.getMsg());
+                        }
+                    }
+                });
+    }
+
+    @OnClick(R.id.ll_peoples)
+    public void clickPeoples(View view) {
+        et_people.setFocusable(true);
+        et_people.setFocusableInTouchMode(true);
+        et_people.requestFocus();
+        CommonUtils.hideKeyBorad(MyApplication.getInstance(), et_people, false);
     }
 
 }

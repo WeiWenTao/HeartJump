@@ -89,7 +89,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="账号真是姓名"
+            android:hint="账号真实姓名"
             android:textColor="@color/color_333"
             android:textColorHint="#bbb"
             android:textSize="@dimen/sp_15"
@@ -113,6 +113,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/ll_xb"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="@dimen/dp_3"
@@ -123,15 +124,15 @@
         >
 
         <EditText
+            android:id="@+id/et_xb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="right"
             android:inputType="number"
-            android:maxLength="5"
-            android:minWidth="50dp"
             android:textColor="@color/xtred"
             android:textSize="25sp"
+            android:minWidth="0.5dp"
             />
 
         <TextView

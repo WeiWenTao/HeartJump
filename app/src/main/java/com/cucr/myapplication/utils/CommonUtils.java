@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -424,52 +425,50 @@ public class CommonUtils {
     }
 
 
-
     public static String unicode2String(String unicode) {
         StringBuffer string = new StringBuffer();
         String[] hex = unicode.split("\\\\u");
         String[] mineHex = unicode.split("\\\\");
         for (int i = 0; i < hex.length; i++) {
-            if("".equals(hex[i])){
+            if ("".equals(hex[i])) {
                 continue;
             }
             System.out.println(hex[i]);
-            if(hex[i].length()>4){
+            if (hex[i].length() > 4) {
                 //找出u的位置
-                int index=mineHex[i].indexOf("u");
-                if(index==0){
+                int index = mineHex[i].indexOf("u");
+                if (index == 0) {
                     //第一位
                     int data = Integer.parseInt(hex[i].substring(0, 4), 16);// 追加成string
                     string.append((char) data);
                     string.append(hex[i].substring(4));
-                }else{
+                } else {
                     //其他位置
-                    if(index>0){
+                    if (index > 0) {
                         //前面
-                        string.append(hex[i].substring(0,index<0?0:index));
+                        string.append(hex[i].substring(0, index < 0 ? 0 : index));
                         //自己
                         int data = Integer.parseInt(hex[i].substring(index, 4), 16);// 追加成string
                         string.append((char) data);
                         //后面
-                        string.append(hex[i].substring(index+4,hex[i].length()));
-                    }else{
+                        string.append(hex[i].substring(index + 4, hex[i].length()));
+                    } else {
                         string.append(hex[i]);
                     }
                 }
-            }else if(hex[i].length()==4){
-                if(mineHex[i].indexOf("u")==0){
+            } else if (hex[i].length() == 4) {
+                if (mineHex[i].indexOf("u") == 0) {
                     int data = Integer.parseInt(hex[i], 16);// 追加成string
                     string.append((char) data);
-                }else{
+                } else {
                     string.append(hex[i]);
                 }
-            }else{
+            } else {
                 string.append(hex[i]);
             }
         }
         return string.toString();
     }
-
 
 
     /**
@@ -521,5 +520,19 @@ public class CommonUtils {
         }
 
         return unicode.toString();
+    }
+
+    /**
+     * 判断传过来的字符串是否有空
+     * @param arg
+     * @return 有空则返回true
+     */
+    public static boolean isEmpty(String... arg) {
+        for (String s : arg) {
+            if (TextUtils.isEmpty(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

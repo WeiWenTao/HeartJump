@@ -6,8 +6,10 @@ package com.cucr.myapplication.constants;
 
 public class SpConstant {
 
-    //sp文件名
+    //身份信息
     public static final String SP_STATUS = "status";
+    public static final String SP_QIYE_NAME = "qiyeName";
+    public static final String SP_QIYE_CONTACT = "qiyeContact";
 
     //sp文件名
     public static final String SP_NAME = "config";

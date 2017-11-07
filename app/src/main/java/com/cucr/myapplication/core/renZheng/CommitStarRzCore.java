@@ -1,5 +1,7 @@
 package com.cucr.myapplication.core.renZheng;
 
+import android.content.Context;
+
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -35,8 +37,10 @@ public class CommitStarRzCore implements CommitStarRZ {
 
     private OnCommonListener listener;
     private WaitDialog mWaitDialog;
+    private Context context;
 
-    public CommitStarRzCore() {
+    public CommitStarRzCore(Context context) {
+        this.context = context;
         mQueue = NoHttp.newRequestQueue();
     }
 
@@ -49,7 +53,7 @@ public class CommitStarRzCore implements CommitStarRZ {
                              Integer id,
                              OnCommonListener listener) {
         this.listener = listener;
-        mWaitDialog = new WaitDialog(MyApplication.getInstance(),"正在提交...");
+        mWaitDialog = new WaitDialog(context,"正在提交...");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
                 + HttpContans.ADDRESS_STAR_RZ, RequestMethod.POST);
@@ -67,11 +71,13 @@ public class CommitStarRzCore implements CommitStarRZ {
 
 //        FileBinary binary1 = new FileBinary(new File(pic1));
         //"1"代表用户审核未通过 且未重新选择上传照片
+
         if (pic1 != "1") {
             BitmapBinary binary1 = new BitmapBinary(CommonUtils.decodeBitmap(pic1), pic1.substring(pic1.lastIndexOf("/")));
             request.add("pic1", binary1);
             binary1.setUploadListener(0, mOnUploadListener);
         }
+
 
         if (pic2 != "1") {
 //        FileBinary binary2 = new FileBinary(new File(pic2));

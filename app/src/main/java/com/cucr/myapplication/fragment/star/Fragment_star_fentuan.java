@@ -3,29 +3,42 @@ package com.cucr.myapplication.fragment.star;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
+import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuan.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
+import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
+import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -47,6 +60,18 @@ import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
  */
 public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt {
 
+    //礼物
+    @ViewInject(R.id.tv_gift)
+    private TextView gift;
+
+    //礼物和背包 ViewPager
+    @ViewInject(R.id.vp_dahsnag)
+    private NoScrollPager vp_dahsnag;
+
+    //背包
+    @ViewInject(R.id.tv_backpack)
+    private TextView backpack;
+    private PayCenterCore mPayCenterCore;
     private View view;
     private Context mContext;
     private FloatingActionsMenu mFam;
@@ -56,7 +81,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     // TODO: 2017/9/22 eventBus 获取
     private int starId = 29;
     private int qYStarId; //企业用户可以直接传递id
-
     private int page = 1;
     private int rows = 2;
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
@@ -65,6 +89,11 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private FtAdapter mAdapter;
     private Integer giveNum;
     private int position = -1;
+    private PopupWindow popWindow;
+    private LayoutInflater layoutInflater;
+    private FtGiftsInfo mFtGiftsInfo;
+    private DaShangPagerAdapter mDaShangPagerAdapter;
+    private FtBackpackInfo mFtBackpackInfo;
 
     public Fragment_star_fentuan(int id) {
         qYStarId = id;
@@ -74,18 +103,68 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = MyApplication.getInstance();
+        layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         queryCore = new QueryFtInfoCore();
+        mPayCenterCore = new PayCenterCore();
         mGson = new Gson();
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
             initView();
             initRlV();
+            inipopWindow();
+            initInfos();
         }
         queryFtInfo();
         return view;
     }
 
+
+    private void initInfos() {
+        mPayCenterCore.queryUserMoney(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                if (reBackMsg.isSuccess()) {
+                    mDaShangPagerAdapter.setUserMoney(Double.parseDouble(reBackMsg.getMsg()));
+                    MyLogger.jLog().i("打赏信息UserMoney:"+ Double.parseDouble(reBackMsg.getMsg()));
+                } else {
+                    ToastUtils.showToast(reBackMsg.getMsg());
+                }
+            }
+        });
+
+
+        //查询虚拟道具信息
+        queryCore.queryGift(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                if (mFtGiftsInfo.isSuccess()) {
+                    mFtGiftsInfo = mGson.fromJson(response.get(), FtGiftsInfo.class);
+                    mDaShangPagerAdapter.setGiftInfos(mFtGiftsInfo);
+                    MyLogger.jLog().i("打赏信息GiftsInfo:"+ mFtGiftsInfo);
+                } else {
+                    ToastUtils.showToast(mFtGiftsInfo.getErrorMsg());
+                }
+            }
+        });
+
+        //查询背包信息
+        queryCore.queryBackpackInfo(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                if (mFtGiftsInfo.isSuccess()) {
+                    mFtBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
+                    mDaShangPagerAdapter.setBackpackInfos(mFtBackpackInfo);
+                    MyLogger.jLog().i("打赏信息BackpackInfo:"+ mFtBackpackInfo);
+                } else {
+                    ToastUtils.showToast(mFtBackpackInfo.getErrorMsg());
+                }
+            }
+        });
+
+
+    }
 
     private void queryFtInfo() {
         // TODO: 2017/11/3
@@ -124,7 +203,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 //        rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
 
         rlv_fentuan = (SwipeRecyclerView) view.findViewById(R.id.rlv_fentuan);
-        rlv_fentuan.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
+//        rlv_fentuan.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
         rlv_fentuan.setOnLoadListener(this);
 
         mFam = (FloatingActionsMenu) view.findViewById(R.id.multiple_actions);
@@ -230,7 +309,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MyLogger.jLog().i("onDestroy");
         queryCore.stopRequest();
     }
 
@@ -270,6 +348,50 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         });
     }
 
+    //打赏框
+    private void inipopWindow() {
+        if (popWindow == null) {
+            View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
+            ViewUtils.inject(this, view);
+            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            initPop(view);
+        }
+        popWindow.setAnimationStyle(R.style.AnimationFade);
+        popWindow.setFocusable(true);
+        popWindow.setOutsideTouchable(true);
+        popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
+        vp_dahsnag.setAdapter(mDaShangPagerAdapter);
+
+    }
+
+    private void initPop(View view) {
+
+    }
+
+    //礼物
+    @OnClick(R.id.tv_gift)
+    public void gift(View view) {
+        vp_dahsnag.setCurrentItem(0);
+        gift.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setBackgroundColor(getResources().getColor(R.color.zise));
+        gift.setTextColor(getResources().getColor(R.color.xtred));
+        backpack.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    //背包
+    @OnClick(R.id.tv_backpack)
+    public void backpack(View view) {
+        vp_dahsnag.setCurrentItem(1);
+        backpack.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setBackgroundColor(getResources().getColor(R.color.zise));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    //点赞
     @Override
     public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
         MyLogger.jLog().i("onClickGoods");
@@ -288,11 +410,9 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                         rowsBean.setGiveUpCount(giveNum);
                     }
                     mAdapter.notifyDataSetChanged();
-
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
-
             }
         });
 
@@ -310,7 +430,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         intent.putExtra("rowsBean", rowsBean);
         intent.putExtra("isFormConmmomd", isFormConmmomd);
         startActivityForResult(intent, Constans.REQUEST_CODE);
-
     }
 
 
@@ -319,5 +438,12 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onClickshare(int position) {
 
     }
+
+    //打赏
+    @Override
+    public void onClickDaShang(int contentId) {
+        popWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+    }
+
 
 }

@@ -12,4 +12,9 @@ public interface QueryFtInfoInterf {
     void ftGoods(int contentId, OnCommonListener listener);
 
     void toComment(int contentId,int commentId,String content, OnCommonListener listener);
+
+    void queryGift(OnCommonListener listener);
+
+    void queryBackpackInfo(OnCommonListener listener);
+
 }

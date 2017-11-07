@@ -51,7 +51,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                 //返回view给子类
                 initView(childView);
                 initHeader();
-            }else {
+            } else {
                 mRootView = inflater.inflate(getContentLayoutRes(), container, false);
                 initView(mRootView);
             }
@@ -59,7 +59,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         }
 
 
-    return mRootView;
+        return mRootView;
     }
 
 //    protected String initHeadText(){
@@ -81,17 +81,17 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     //初始化头部
     protected void initHeader() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             mHead = (RelativeLayout) mRootView.findViewById(R.id.rl_head);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mHead.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(mContext,73.0f);
+            layoutParams.height = CommonUtils.dip2px(mContext, 73.0f);
             mHead.setLayoutParams(layoutParams);
             mHead.requestLayout();
         }
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getActivity().getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -99,7 +99,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
-
 
 
         iv_search = (ImageView) mRootView.findViewById(R.id.iv_search);

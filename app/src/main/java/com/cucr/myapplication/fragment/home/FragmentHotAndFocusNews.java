@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.HomeNewsPagerAdapter;
-import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.model.login.ReBackMsg1;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -25,12 +24,7 @@ import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
@@ -46,8 +40,7 @@ public class FragmentHotAndFocusNews extends BaseFragment {
     @ViewInject(R.id.vp_hot_focus)
     private ViewPager vp_hot_focus;
 
-    //WebView
-    @ViewInject(R.id.wv)
+
     private WebView wv;
 
     //导航栏
@@ -124,10 +117,11 @@ public class FragmentHotAndFocusNews extends BaseFragment {
     }
 
 
-    // TODO: 2017/11/3
+   /* // TODO: 2017/11/3
     @OnClick(R.id.iv_search)
     public void clickSearch(View view){
-       /* Platform wechat= ShareSDK.getPlatform(SinaWeibo.NAME);
+        wv.setVisibility(View.VISIBLE);
+       *//* Platform wechat= ShareSDK.getPlatform(SinaWeibo.NAME);
         wechat.setPlatformActionListener(new PlatformActionListener() {
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
@@ -144,12 +138,12 @@ public class FragmentHotAndFocusNews extends BaseFragment {
                 MyLogger.jLog().i("onCancel");
             }
         });
-        wechat.authorize();*/
+        wechat.authorize();*//*
         RequestQueue mQueue = NoHttp.newRequestQueue();
         Request<String> request = NoHttp.createStringRequest("http://www.cucrxt.com/interface/test/test", RequestMethod.POST);
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
-    }
+    }*/
 
 
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {

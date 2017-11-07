@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="200dp"
+              android:background="@color/zise"
+              android:orientation="vertical"
+    >
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/tv_gift"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/reward_btn_bg"
+            android:gravity="center"
+            android:text="礼物"
+            android:textColor="@color/xtred"
+            android:textSize="17sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_backpack"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="背包"
+            android:textColor="@color/zongse"
+            android:textSize="17sp"
+            />
+    </RadioGroup>
+
+    <com.cucr.myapplication.widget.viewpager.NoScrollPager
+        android:id="@+id/vp_dahsnag"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        ></com.cucr.myapplication.widget.viewpager.NoScrollPager>
+
+</LinearLayout>

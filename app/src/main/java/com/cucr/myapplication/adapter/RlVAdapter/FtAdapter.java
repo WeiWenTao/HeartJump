@@ -108,6 +108,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
             ((Tp1_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             ((Tp1_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+            ((Tp1_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             if (TextUtils.isEmpty(rowsBean.getContent())) {
                 ((Tp1_Holder) holder).tv_content.setVisibility(View.GONE);
             } else {
@@ -163,7 +164,15 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-
+            //点击打赏
+            ((Tp1_Holder) holder).iv_dashang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDaShang(rowsBean.getId());
+                    }
+                }
+            });
 // -------------------------------------------------------------------------------------------------
         } else if (holder instanceof Tp2_Holder) {
             //图片
@@ -174,6 +183,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).gridview.setAdapter(new GridAdapter(context, rowsBean.getAttrFileList()));  //图片列表
             ((Tp2_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             ((Tp2_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+            ((Tp2_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             MyLogger.jLog().i("position:" + position + "ISGIVEUP_GETVIEW:" + rowsBean.isIsGiveUp());
             if (TextUtils.isEmpty(rowsBean.getContent())) {
                 ((Tp2_Holder) holder).tv_content.setVisibility(View.GONE);
@@ -239,6 +249,16 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
+            //点击打赏
+            ((Tp2_Holder) holder).iv_dashang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDaShang(rowsBean.getId());
+                    }
+                }
+            });
+
 // -------------------------------------------------------------------------------------------------
         } else { //文字
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());     //头像
@@ -249,6 +269,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp3_Holder) holder).tv_session.setText(rowsBean.getCommentCount() + "");    //评论数量
             ((Tp3_Holder) holder).tv_favorite.setText(rowsBean.getGiveUpCount() + "");    //点赞数量
             ((Tp3_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+            ((Tp3_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             //点击分享
             ((Tp3_Holder) holder).rl_share.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -288,6 +309,17 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+
+            //点击打赏
+            ((Tp3_Holder) holder).iv_dashang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDaShang(rowsBean.getId());
+                    }
+                }
+            });
+
         }
     }
 
@@ -364,6 +396,14 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private LinearLayout ll_good;
 
 
+        //打赏人数
+        @ViewInject(R.id.tv_dashang)
+        private TextView tv_dashang;
+
+        //打赏按钮
+        @ViewInject(R.id.iv_dashang)
+        private ImageView iv_dashang;
+
         public Tp1_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -424,6 +464,14 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.ll_good)
         private LinearLayout ll_good;
 
+        //打赏人数
+        @ViewInject(R.id.tv_dashang)
+        private TextView tv_dashang;
+
+        //打赏按钮
+        @ViewInject(R.id.iv_dashang)
+        private ImageView iv_dashang;
+
         public Tp2_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -432,10 +480,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //Text
     class Tp3_Holder extends RecyclerView.ViewHolder {
+
         //用户头像
         @ViewInject(R.id.iv_pic)
         private ImageView iv_pic;
-
 
         //用户昵称
         @ViewInject(R.id.tv_neckname)
@@ -477,6 +525,14 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.ll_type3)
         private LinearLayout ll_type3;
 
+        //打赏人数
+        @ViewInject(R.id.tv_dashang)
+        private TextView tv_dashang;
+
+        //打赏按钮
+        @ViewInject(R.id.iv_dashang)
+        private ImageView iv_dashang;
+
         //点赞区域
         @ViewInject(R.id.ll_good)
         private LinearLayout ll_good;
@@ -499,6 +555,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
 
         void onClickshare(int position);
+
+        void onClickDaShang(int contentId);
 
     }
 }

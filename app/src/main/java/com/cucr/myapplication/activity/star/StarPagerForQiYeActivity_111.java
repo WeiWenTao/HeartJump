@@ -177,7 +177,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         if (mData.getIsfollow() == 1) {
             mCore.cancaleFocus(mData.getId());
             mData.setIsfollow(0);
-        }else {
+        } else {
             mCore.toFocus(mData.getId());
             mData.setIsfollow(1);
         }
@@ -187,7 +187,9 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     //跳转预约界面
     @OnClick(R.id.tv_yuyue)
     public void goYuYue(View view) {
-        startActivity(new Intent(this, YuYueCatgoryActivity.class));
+        Intent intent = new Intent(this, YuYueCatgoryActivity.class);
+        intent.putExtra("data", mData);
+        startActivity(intent);
     }
 
     public void getDatas() {
@@ -203,6 +205,13 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
 
     @OnClick(R.id.iv_base_back)
     public void back(View view) {
+        setResult(111, getIntent().putExtra("data", mData));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(111, getIntent().putExtra("data", mData));
         finish();
     }
 }

@@ -14,7 +14,7 @@ import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
 import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
 import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
-import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
+import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ZipUtil;
 
@@ -117,9 +117,9 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
         //TODO
 //        if (企业用户) {
-        mFragments.add(new ApointmentFragmentA());
+//        mFragments.add(new ApointmentFragmentA());
 //        }else(其他用户){
-//        mFragments.add(new FragmentFans());              //其他
+        mFragments.add(new FragmentFans());              //其他
 //        }
 
 

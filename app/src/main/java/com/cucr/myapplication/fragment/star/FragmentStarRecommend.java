@@ -29,6 +29,7 @@ public class FragmentStarRecommend extends Fragment {
     private StarRecommendAdapter mGvAdapter;
     private View view;
     private List<StarListInfos.RowsBean> rows;
+    private int finalPosition;
 
     public FragmentStarRecommend(List<StarListInfos.RowsBean> rows) {
         this.rows = rows;
@@ -57,7 +58,8 @@ public class FragmentStarRecommend extends Fragment {
                 final StarListInfos.RowsBean rowsBean = rows.get(position);
                 Intent intent = new Intent(context, StarPagerForQiYeActivity_111.class);
                 intent.putExtra("data", rowsBean);
-                context.startActivity(intent);
+                finalPosition = position;
+                startActivityForResult(intent, 222);
             }
         });
     }
@@ -65,7 +67,17 @@ public class FragmentStarRecommend extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // TODO: 2017/11/3  
         rows.get(0).setIsfollow(1);
+        mGvAdapter.setData(rows);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        StarListInfos.RowsBean mData = (StarListInfos.RowsBean) data.getSerializableExtra("data");
+        rows.remove(finalPosition);
+        rows.add(finalPosition, mData);
         mGvAdapter.setData(rows);
     }
 

@@ -58,6 +58,7 @@
                     android:id="@+id/et_qiye_contact"
                     style="@style/RenZheng_et"
                     android:hint="请输入联系电话"
+                    android:inputType="number"
                     />
 
                 <include layout="@layout/horizontal_line_for_ccc"/>
@@ -102,6 +103,7 @@
                     android:id="@+id/et_person_phone"
                     style="@style/RenZheng_et"
                     android:hint="请输入联系电话"
+                    android:inputType="number"
                     />
 
                 <include layout="@layout/horizontal_line_for_ccc"/>

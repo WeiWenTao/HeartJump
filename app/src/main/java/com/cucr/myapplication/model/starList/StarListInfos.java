@@ -7,7 +7,7 @@ import java.util.List;
  * Created by cucr on 2017/9/5.
  */
 
-public class StarListInfos implements Serializable{
+public class StarListInfos implements Serializable {
 
     /**
      * errorMsg :
@@ -53,7 +53,7 @@ public class StarListInfos implements Serializable{
         this.rows = rows;
     }
 
-    public static class RowsBean implements Serializable{
+    public static class RowsBean implements Serializable {
         /**
          * fansCount : null
          * id : 5
@@ -68,6 +68,15 @@ public class StarListInfos implements Serializable{
         private String startShowPic;
         private String userPicCover;
         private int isfollow;
+        private int startCost;
+
+        public int getStartCost() {
+            return startCost;
+        }
+
+        public void setStartCost(int startCost) {
+            this.startCost = startCost;
+        }
 
         public int getIsfollow() {
             return isfollow;
@@ -126,6 +135,7 @@ public class StarListInfos implements Serializable{
                     ", startShowPic='" + startShowPic + '\'' +
                     ", userPicCover='" + userPicCover + '\'' +
                     ", isfollow=" + isfollow +
+                    ", startCost=" + startCost +
                     '}';
         }
     }

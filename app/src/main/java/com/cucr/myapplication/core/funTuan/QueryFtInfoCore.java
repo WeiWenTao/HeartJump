@@ -29,6 +29,8 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     private OnCommonListener ftQuerylistener;
     private OnCommonListener ftGoodlistener;
     private OnCommonListener toCommentlistener;
+    private OnCommonListener queryGiftListener;
+    private OnCommonListener queryBackpackListener;
 
     /**
      * 请求队列。
@@ -95,6 +97,27 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         mQueue.add(Constans.TYPE_THREE, request, callback);
     }
 
+    //查询礼物
+    @Override
+    public void queryGift(OnCommonListener listener) {
+        queryGiftListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_GFITINFO, RequestMethod.POST);
+        mQueue.add(Constans.TYPE_FORE, request, callback);
+    }
+
+
+    //背包
+    @Override
+    public void queryBackpackInfo(OnCommonListener listener) {
+        queryBackpackListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_BACKPACKINFO, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+
+        //无参数
+        mQueue.add(Constans.TYPE_FIVE, request, callback);
+    }
+
 
     //回调
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
@@ -120,6 +143,16 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                     MyLogger.jLog().i("粉团评论成功，Cache?" + response.isFromCache());
                     toCommentlistener.onRequestSuccess(response);
                     break;
+
+                case Constans.TYPE_FORE:
+                    MyLogger.jLog().i("虚拟道具查询成功，Cache?" + response.isFromCache());
+                    queryGiftListener.onRequestSuccess(response);
+                    break;
+
+                case Constans.TYPE_FIVE:
+                    MyLogger.jLog().i("背包信息查询成功，Cache?" + response.isFromCache());
+                    queryBackpackListener.onRequestSuccess(response);
+                    break;
             }
 
         }
@@ -138,6 +171,14 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
                 case Constans.TYPE_THREE:
                     MyLogger.jLog().i("粉团评论请求失败");
+                    break;
+
+                case Constans.TYPE_FORE:
+                    MyLogger.jLog().i("虚拟道具请求失败");
+                    break;
+
+                case Constans.TYPE_FIVE:
+                    MyLogger.jLog().i("背包信息请求失败");
                     break;
             }
         }

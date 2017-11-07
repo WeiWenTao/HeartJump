@@ -58,6 +58,7 @@
                 <EditText
                     android:id="@+id/et_contact"
                     style="@style/RenZheng_et"
+                    android:inputType="number"
                     android:hint="请输入联系方式"
                     />
 
@@ -102,6 +103,7 @@
                 <EditText
                     android:id="@+id/et_star_price"
                     style="@style/RenZheng_et"
+                    android:inputType="number"
                     android:hint="请填写商演费用"
                     />
 

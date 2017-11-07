@@ -97,7 +97,6 @@ public class DongTaiCatgoryActivity extends BaseActivity implements View.OnClick
         popWindow.setAnimationStyle(R.style.AnimationFade);
         popWindow.setFocusable(true);
         popWindow.setOutsideTouchable(true);
-
         popWindow.setBackgroundDrawable(new BitmapDrawable());
 
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

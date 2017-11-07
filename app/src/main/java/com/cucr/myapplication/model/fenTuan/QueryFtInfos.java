@@ -74,6 +74,7 @@ public class QueryFtInfos implements Serializable {
                     ", type=" + type +
                     ", userHeadPortrait='" + userHeadPortrait + '\'' +
                     ", attrFileList=" + attrFileList +
+                    ", dssl=" + dssl +
                     '}';
         }
 
@@ -111,6 +112,16 @@ public class QueryFtInfos implements Serializable {
         private String remarks;
         private String title;
         private Integer type;
+        private Integer dssl;
+
+        public Integer getDssl() {
+            return dssl;
+        }
+
+        public void setDssl(Integer dssl) {
+            this.dssl = dssl;
+        }
+
         private String userHeadPortrait;
         private List<AttrFileListBean> attrFileList;
 
