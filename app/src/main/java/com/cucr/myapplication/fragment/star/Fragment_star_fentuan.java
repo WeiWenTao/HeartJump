@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
@@ -27,6 +28,9 @@ import com.cucr.myapplication.core.funTuan.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
+import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.model.eventBus.EventStarId;
 import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
@@ -45,6 +49,10 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.List;
@@ -71,6 +79,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //背包
     @ViewInject(R.id.tv_backpack)
     private TextView backpack;
+
     private PayCenterCore mPayCenterCore;
     private View view;
     private Context mContext;
@@ -79,8 +88,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private QueryFtInfoCore queryCore;
     private Gson mGson;
     // TODO: 2017/9/22 eventBus 获取
-    private int starId = 29;
-    private int qYStarId; //企业用户可以直接传递id
+    private int starId;
+    private int qYStarId; //企业用户可以直接传递id   企业用户直接点击明星列表进来的  所以只查看点击明星的信息
     private int page = 1;
     private int rows = 2;
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
@@ -91,9 +100,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private int position = -1;
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
-    private FtGiftsInfo mFtGiftsInfo;
     private DaShangPagerAdapter mDaShangPagerAdapter;
-    private FtBackpackInfo mFtBackpackInfo;
 
     public Fragment_star_fentuan(int id) {
         qYStarId = id;
@@ -102,6 +109,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);//订阅
         mContext = MyApplication.getInstance();
         layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         queryCore = new QueryFtInfoCore();
@@ -121,30 +129,28 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
 
     private void initInfos() {
+        //查询用户余额
         mPayCenterCore.queryUserMoney(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                 if (reBackMsg.isSuccess()) {
                     mDaShangPagerAdapter.setUserMoney(Double.parseDouble(reBackMsg.getMsg()));
-                    MyLogger.jLog().i("打赏信息UserMoney:"+ Double.parseDouble(reBackMsg.getMsg()));
                 } else {
                     ToastUtils.showToast(reBackMsg.getMsg());
                 }
             }
         });
 
-
         //查询虚拟道具信息
         queryCore.queryGift(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                if (mFtGiftsInfo.isSuccess()) {
-                    mFtGiftsInfo = mGson.fromJson(response.get(), FtGiftsInfo.class);
-                    mDaShangPagerAdapter.setGiftInfos(mFtGiftsInfo);
-                    MyLogger.jLog().i("打赏信息GiftsInfo:"+ mFtGiftsInfo);
+                FtGiftsInfo ftGiftsInfo = mGson.fromJson(response.get(), FtGiftsInfo.class);
+                if (ftGiftsInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setGiftInfos(ftGiftsInfo);
                 } else {
-                    ToastUtils.showToast(mFtGiftsInfo.getErrorMsg());
+                    ToastUtils.showToast(ftGiftsInfo.getErrorMsg());
                 }
             }
         });
@@ -153,16 +159,15 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         queryCore.queryBackpackInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                if (mFtGiftsInfo.isSuccess()) {
-                    mFtBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
-                    mDaShangPagerAdapter.setBackpackInfos(mFtBackpackInfo);
-                    MyLogger.jLog().i("打赏信息BackpackInfo:"+ mFtBackpackInfo);
+                FtBackpackInfo ftBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
+                MyLogger.jLog().i("ftBackpackInfo:"+response.get());
+                if (ftBackpackInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setBackpackInfos(ftBackpackInfo);
                 } else {
-                    ToastUtils.showToast(mFtBackpackInfo.getErrorMsg());
+                    ToastUtils.showToast(ftBackpackInfo.getMsg());
                 }
             }
         });
-
 
     }
 
@@ -185,6 +190,23 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         });
     }
 
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(EventStarId event) {
+        starId = event.getStarId();
+        MyLogger.jLog().i("EventStarId："+starId);
+        queryFtInfo();
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onMyEvent(EventFIrstStarId event) {
+        starId = event.getFirstId();
+        MyLogger.jLog().i("EventFIrstStarId："+starId);
+        queryFtInfo();
+    }
+
     private void initRlV() {
         MyLogger.jLog().i("initRlV");
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
@@ -192,6 +214,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         mAdapter = new FtAdapter(mContext);
         rlv_fentuan.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
+
 //        TextView textView = new TextView(mContext);
 //        textView.setText("empty view");
 //        rlv_fentuan.setEmptyView(textView);
@@ -270,6 +293,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
                     intent.putExtra("data", (Serializable) localMedias);
                     intent.putExtra("type", Constans.TYPE_PICTURE);
+                    intent.putExtra("starId",starId);
                     break;
 
                 case Constans.TYPE_TWO:
@@ -321,6 +345,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         rlv_fentuan.complete();
 
     }
+
 
     @Override
     public void onLoadMore() {
@@ -439,11 +464,27 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
     }
 
-    //打赏
+    //弹出打赏框
     @Override
     public void onClickDaShang(int contentId) {
         popWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        //可以考虑用eventbus传值
+        EventBus.getDefault().postSticky(new EventContentId(contentId));
+    }
+
+    @Override
+    public void onClickDsRecored(int contentId) {
+        Intent intent = new Intent(mContext, DaShangCatgoryActivity.class);
+        intent.putExtra("contentId",contentId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);//解除订阅
+        EventBus.getDefault().removeAllStickyEvents(); //移除所有粘性事件
+    }
 }

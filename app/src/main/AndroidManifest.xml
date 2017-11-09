@@ -315,8 +315,16 @@
         </activity>
         <activity android:name=".activity.pay.XbTxActivity">
         </activity>
-
-        <activity android:name=".activity.star.StarPagerForQiYeActivity_111" android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity
+            android:name=".activity.star.StarPagerForQiYeActivity_111"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            >
+        </activity>
+        <activity android:name=".activity.fenTuan.DaShangCatgoryActivity">
+        </activity>
+        <activity android:name=".activity.fenTuan.DaShangRecordActivity">
+        </activity>
+        <activity android:name=".activity.TestWebViewActivity">
         </activity>
     </application>
 

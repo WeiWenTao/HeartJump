@@ -117,8 +117,14 @@ public class HttpContans {
     public static final String ADDRESS_ADD_APPOINMENT = "/interface/mobileStartAppointment/appointment";
 
     //礼物信息
-    public static final String ADDRESS_QUERY_GFITINFO = "interface/mobileHelpTeamAction/idealMoneyList";
+    public static final String ADDRESS_QUERY_GFITINFO = "/interface/mobileGiftAction/idealMoneyList";
 
     //背包信息
-    public static final String ADDRESS_QUERY_BACKPACKINFO = "interface/mobileGiftAction/mineIdealMoneyList";
+    public static final String ADDRESS_QUERY_BACKPACKINFO = "/interface/mobileGiftAction/mineIdealMoneyList";
+
+    //粉团打赏
+    public static final String ADDRESS_DA_SHANG = "/interface/mobileGiftAction/reward";
+
+    //打赏列表
+    public static final String ADDRESS_DS_LIST = "/interface/mobileGiftAction/rewardList";
 }

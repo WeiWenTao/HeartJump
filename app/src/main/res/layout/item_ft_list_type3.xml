@@ -227,15 +227,21 @@
             android:src="@drawable/reward_icon"
             />
 
+
         <TextView
             android:id="@+id/tv_dashang"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_6"
-            android:layout_weight="1"
+            android:paddingLeft="@dimen/dp_6"
             android:text="10人打赏了道具"
             android:textColor="#5d1111"
             android:textSize="@dimen/sp_13"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             />
 
         <ImageView

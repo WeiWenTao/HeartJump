@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/star_bg_starhome"
+                    android:src="@drawable/pic_bg"
                     app:layout_collapseMode="parallax"
                     />
 
@@ -59,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="明星姓名"
+                        android:text="赵丽颖"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_18"
                         />
@@ -151,7 +151,6 @@
                 android:id="@+id/tv_star_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="明星姓名"
                 android:textColor="@color/pink"
                 android:textSize="@dimen/sp_18"
                 />

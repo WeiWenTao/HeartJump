@@ -2,7 +2,6 @@ package com.cucr.myapplication.widget.coverflow;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Handler;
@@ -10,19 +9,19 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 
 import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_FLING;
 import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
-import static com.cucr.myapplication.R.id.gallery;
+import static com.alipay.sdk.app.statistic.c.w;
 
 /**
  * Created by dalong on 2016/12/1.
@@ -200,10 +199,16 @@ public class GalleryRecyclerView extends RecyclerView {
         if (i == 0) {
             mLinearLayoutManager.scrollToPositionWithOffset(i, CommonUtils.dip2px(getContext(), -130.0f));
         } else {
-            mLinearLayoutManager.scrollToPositionWithOffset(i, CommonUtils.dip2px(getContext(), 50.0f));
+//            mLinearLayoutManager.scrollToPositionWithOffset(i, CommonUtils.dip2px(getContext(), 60.0f));
+            mLinearLayoutManager.scrollToPositionWithOffset(i, CommonUtils.dip2px(getContext(), 65.0f));
+            if (CommonUtils.dip2px(getContext(), 50.0f) >= 150) {
+                mLinearLayoutManager.scrollToPositionWithOffset(i, CommonUtils.dip2px(getContext(), 50.0f));
+            }else {
+                mLinearLayoutManager.scrollToPositionWithOffset(i, CommonUtils.dip2px(getContext(), 66.0f));
+            }
+
         }
         mLinearLayoutManager.setStackFromEnd(true);
-
 
 
     }

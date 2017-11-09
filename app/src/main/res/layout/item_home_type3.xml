@@ -10,7 +10,8 @@
     <ImageView
         android:layout_width="125dp"
         android:layout_height="80dp"
-        android:background="@color/gray"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test_111"
         />
 
     <RelativeLayout
@@ -23,10 +24,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="此处是明星标题"
+            android:text="冯轲首次还原2年前求婚真相 对张靓颖冷漠是因为一个电话"
             android:textSize="@dimen/sp_15"
             android:textColor="@color/color_333"
-            android:maxLines="1"
+            android:lineSpacingExtra="@dimen/dp_3"
             />
 
         <TextView

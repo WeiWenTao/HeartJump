@@ -10,9 +10,9 @@ import android.widget.Toast;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.news.NewsActivity;
-import com.cucr.myapplication.activity.photos.PhotoActivity;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
 import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
@@ -125,21 +125,31 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                 //跳转到评论和喜欢界面
 //                startActivity(new Intent(mContext, CommentAndLikeActivity.class));
 //                startActivity(new Intent(mContext, position  == 2 ? VideoActivity.class : NewsActivity.class));
-
+                // TODO: 2017/11/9 伪数据
+                Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
                 switch (position) {
-                    case 2:
+                    case 1:
 //                        startActivity(new Intent(mContext, VideoActivity.class));
-                        startActivity(new Intent(mContext, NewsActivity.class));
+//                        startActivity(new Intent(mContext, NewsActivity.class));
+                        intent.putExtra("url", "https://view.inews.qq.com/a/ENT2017110302821106?from=singlemessage&isappinstalled=0");
                         break;
 
+                    case 2:
+//                        startActivity(new Intent(mContext, NewsActivity.class));
+                        intent.putExtra("url", "http://vlike.qq.com/n/#20171109A05MTE00");
+                        break;
                     case 3:
-                        startActivity(new Intent(mContext, NewsActivity.class));
+                        intent.putExtra("url", "http://vlike.qq.com/n/#20171108A0ICDC00");
+//                        startActivity(new Intent(mContext, NewsActivity.class));
                         break;
 
                     default:
-                        startActivity(new Intent(mContext, PhotoActivity.class));
+                        intent.putExtra("url", "https://view.inews.qq.com/a/ENT2017110302821106?from=singlemessage&isappinstalled=0");
+//                        startActivity(new Intent(mContext, PhotoActivity.class));
                         break;
+
                 }
+                startActivity(intent);
             }
         });
     }
@@ -201,7 +211,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     }
 
 
-
     private void initARL() {
 
 //        网络加载例子
@@ -228,12 +237,12 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 HomeBannerInfo homeBannerInfo = mGson.fromJson(response.get(), HomeBannerInfo.class);
-                if (homeBannerInfo.isSuccess()){
+                if (homeBannerInfo.isSuccess()) {
                     for (HomeBannerInfo.ObjBean objBean : homeBannerInfo.getObj()) {
                         pics.add(objBean.getFileUrl());
                     }
                     initARL();
-                }else {
+                } else {
                     ToastUtils.showToast(homeBannerInfo.getMsg());
                 }
 

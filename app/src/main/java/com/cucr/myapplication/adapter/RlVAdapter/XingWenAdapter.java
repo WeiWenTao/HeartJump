@@ -34,22 +34,22 @@ public class XingWenAdapter extends RecyclerView.Adapter<XingWenAdapter.XinWenHo
         XingWenAdapter.XinWenHolder holder = null;
         switch (viewType){
             case 0:
-                View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_type1,parent,false);
+                View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xingwen_type1,parent,false);
                 holder = new XingWenAdapter.XinWenHolder(view1);
                 break;
 
             case 1:
-                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_type2,parent,false);
+                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xingwen_type2,parent,false);
                 holder = new XingWenAdapter.XinWenHolder(view2);
                 break;
 
             case 2:
-                View view3 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_type3,parent,false);
+                View view3 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xingwen_type3,parent,false);
                 holder = new XingWenAdapter.XinWenHolder(view3);
                 break;
 
             default:
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_type1,parent,false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_xingwen_type1,parent,false);
                 holder = new XingWenAdapter.XinWenHolder(view);
                 break;
         }

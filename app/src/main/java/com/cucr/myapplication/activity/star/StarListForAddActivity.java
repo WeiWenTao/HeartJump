@@ -61,7 +61,7 @@ public class StarListForAddActivity extends Activity {
         rows = 10;
         page = 1;
         //参数: 2:查全部
-        mCore.queryStarList(2, page, rows, 0, new OnCommonListener() {
+        mCore.queryStar(2, page, rows, 0, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);

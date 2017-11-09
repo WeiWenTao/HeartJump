@@ -31,7 +31,7 @@ public class QueryStarList extends BaseCore implements StarListInfo {
     }
 
     @Override
-    public void queryStarList(int type, int page, int row, int startId, final OnCommonListener onCommonListener) {
+    public void queryStar(int type, int page, int row, int startId, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);

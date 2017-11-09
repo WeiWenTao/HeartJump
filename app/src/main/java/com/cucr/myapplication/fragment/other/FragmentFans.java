@@ -37,6 +37,8 @@ import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.model.eventBus.EventStarId;
 import com.cucr.myapplication.model.others.FragmentInfos;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
 import com.cucr.myapplication.model.starList.StarListInfos;
@@ -58,6 +60,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,39 +133,40 @@ public class FragmentFans extends BaseFragment {
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
 
-
+        mStarCore = new QueryStarList(getActivity());
         mCore = new QueryMyFocusStars(getActivity());
         initRlv();
         mAdapter.setPosition(0);
         initHead();
         initIndicator();
         initVp();
+        queryMsg();
     }
 
+    //初始化明星封面数据
     private void initDatas(int starId) {
-        mStarCore = new QueryStarList(getActivity());
-        mStarCore.queryStarList(type, page, rows, starId, new OnCommonListener() {
+        mStarCore.queryStar(type, page, rows, starId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
-                if (starInfos.isSuccess()){
+                if (starInfos.isSuccess()) {
                     StarListInfos.RowsBean rowsBean = starInfos.getRows().get(0);
-                    tv_fans.setText("粉丝 "+rowsBean.getFansCount());
+                    tv_fans.setText("粉丝 " + rowsBean.getFansCount());
                     tv_starname.setText(rowsBean.getRealName());
                     tv_star_title.setText(rowsBean.getRealName());
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST+rowsBean.getUserPicCover(),backdrop, MyApplication.getImageLoaderOptions());
-                }else {
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
                 }
             }
         });
     }
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         queryMsg();
-    }
+    }*/
 
     private void queryMsg() {
         mCore.queryMyFocuses(new OnCommonListener() {
@@ -171,9 +176,11 @@ public class FragmentFans extends BaseFragment {
                 if (Info.isSuccess()) {
                     mRows = Info.getRows();
                     mAdapter.setData(mRows);
-                    if (mRows == null || mRows.size() == 0){
+                    if (mRows == null || mRows.size() == 0) {
                         return;
                     }
+                    //默认查询第一个明星数据
+                    EventBus.getDefault().post(new EventFIrstStarId(mRows.get(0).getStartId()));
                     initDatas(mRows.get(0).getStartId());
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
@@ -191,6 +198,8 @@ public class FragmentFans extends BaseFragment {
                 mAdapter.setPosition(position);
                 initDatas(mRows.get(position).getStartId());
                 initDrawer(false);
+                //eventBus传递数据
+                EventBus.getDefault().post(new EventStarId(mRows.get(position).getStartId()));
             }
         });
         drawer_rcv.setAdapter(mAdapter);
@@ -367,7 +376,9 @@ public class FragmentFans extends BaseFragment {
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     //消息界面
@@ -378,7 +389,7 @@ public class FragmentFans extends BaseFragment {
 
     //预约提示框
     @OnClick(R.id.tv_yuyue)
-    public void toYuYue(View view){
+    public void toYuYue(View view) {
         ToastUtils.showToast("企业用户才能预约明星哟,赶快去认证吧!");
     }
 }

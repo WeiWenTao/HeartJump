@@ -1,6 +1,7 @@
 package com.cucr.myapplication.fragment.home;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
@@ -16,6 +17,8 @@ import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.HomeSearchActivity;
+import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.HomeNewsPagerAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.model.login.ReBackMsg1;
@@ -24,6 +27,7 @@ import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -144,6 +148,17 @@ public class FragmentHotAndFocusNews extends BaseFragment {
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }*/
+
+    @OnClick(R.id.iv_search)
+    public void toSearch(View view){
+        startActivity(new Intent(MyApplication.getInstance(), HomeSearchActivity.class));
+    }
+
+
+    @OnClick(R.id.iv_header_msg)
+    public void toMsg(View view){
+        startActivity(new Intent(MyApplication.getInstance(), MessageActivity.class));
+    }
 
 
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {

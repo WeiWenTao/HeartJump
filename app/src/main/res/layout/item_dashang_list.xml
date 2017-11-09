@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_item"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="80.5dp"
+              android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_ds_userhead"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_margin="@dimen/dp_10"
+            android:src="@drawable/banner1"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_ds_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户昵称"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <TextView
+                android:id="@+id/tv_ds_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="2017-10-10 20:23"
+                android:textColor="@color/color_666"
+                android:textSize="@dimen/sp_10"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_ds_img"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_20"
+            android:src="@drawable/kiss_s"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#ccc"
+        android:layout_height="0.5dp"/>
+
+
+</LinearLayout>

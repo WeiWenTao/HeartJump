@@ -306,7 +306,7 @@ public class CommonUtils {
     }
 
     /**
-     * 判断当前事件是否过期
+     * 判断当前time是否过期
      *
      * @param day
      * @return 早于今天返回false

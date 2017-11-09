@@ -50,6 +50,7 @@ public class PublishActivity extends Activity {
 
     private List<LocalMedia> mData;
     private ItemTouchHelper mItemTouchHelper;
+    private int starId;
 
     //预览列表
     @ViewInject(R.id.picture_list)
@@ -295,6 +296,7 @@ public class PublishActivity extends Activity {
     private void getData() {
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", -1);
+        starId = intent.getIntExtra("starId", -1);
         mData = (List<LocalMedia>) intent.getSerializableExtra("data");
 
         switch (mType) {
@@ -349,7 +351,7 @@ public class PublishActivity extends Activity {
 
 //        photoUpload();
 
-        core.publishFtInfo(29, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
+        core.publishFtInfo(starId, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
             @Override
             public void OnUpLoadPicListener(Response<String> response) {
                 MyLogger.jLog().i("response:"+response.get());

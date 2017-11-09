@@ -8,24 +8,31 @@ import java.util.List;
 
 public class FtBackpackInfo {
 
+
     /**
-     * errorMsg :
-     * rows : [{"balance":100,"id":1,"userAccountType":1,"userId":31}]
+     * msg :
+     * obj : {"zjg":100,"list":[{"balance":100,"id":1,"userAccountType":{"id":1,"name":"道具1","picUrl":"","proportion":1},"userId":31}]}
      * success : true
-     * total : 1
      */
 
-    private String errorMsg;
+    private String msg;
+    private ObjBean obj;
     private boolean success;
-    private int total;
-    private List<RowsBean> rows;
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public ObjBean getObj() {
+        return obj;
+    }
+
+    public void setObj(ObjBean obj) {
+        this.obj = obj;
     }
 
     public boolean isSuccess() {
@@ -36,85 +43,121 @@ public class FtBackpackInfo {
         this.success = success;
     }
 
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public List<RowsBean> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<RowsBean> rows) {
-        this.rows = rows;
-    }
-
-    public static class RowsBean {
-        @Override
-        public String toString() {
-            return "RowsBean{" +
-                    "balance=" + balance +
-                    ", id=" + id +
-                    ", userAccountType=" + userAccountType +
-                    ", userId=" + userId +
-                    '}';
-        }
-
+    public static class ObjBean {
         /**
-         * balance : 100
-         * id : 1
-         * userAccountType : 1
-         * userId : 31
+         * zjg : 100
+         * list : [{"balance":100,"id":1,"userAccountType":{"id":1,"name":"道具1","picUrl":"","proportion":1},"userId":31}]
          */
 
-        private int balance;
-        private int id;
-        private int userAccountType;
-        private int userId;
+        private int zjg;
+        private List<ListBean> list;
 
-        public int getBalance() {
-            return balance;
+        public int getZjg() {
+            return zjg;
         }
 
-        public void setBalance(int balance) {
-            this.balance = balance;
+        public void setZjg(int zjg) {
+            this.zjg = zjg;
         }
 
-        public int getId() {
-            return id;
+        public List<ListBean> getList() {
+            return list;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setList(List<ListBean> list) {
+            this.list = list;
         }
 
-        public int getUserAccountType() {
-            return userAccountType;
-        }
+        public static class ListBean {
+            /**
+             * balance : 100
+             * id : 1
+             * userAccountType : {"id":1,"name":"道具1","picUrl":"","proportion":1}
+             * userId : 31
+             */
 
-        public void setUserAccountType(int userAccountType) {
-            this.userAccountType = userAccountType;
-        }
+            private int balance;
+            private int id;
+            private UserAccountTypeBean userAccountType;
+            private int userId;
 
-        public int getUserId() {
-            return userId;
-        }
+            public int getBalance() {
+                return balance;
+            }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-    }
+            public void setBalance(int balance) {
+                this.balance = balance;
+            }
 
-    @Override
-    public String toString() {
-        return "FtBackpackInfo{" +
-                "errorMsg='" + errorMsg + '\'' +
-                ", success=" + success +
-                ", total=" + total +
-                ", rows=" + rows +
-                '}';
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public UserAccountTypeBean getUserAccountType() {
+                return userAccountType;
+            }
+
+            public void setUserAccountType(UserAccountTypeBean userAccountType) {
+                this.userAccountType = userAccountType;
+            }
+
+            public int getUserId() {
+                return userId;
+            }
+
+            public void setUserId(int userId) {
+                this.userId = userId;
+            }
+
+            public static class UserAccountTypeBean {
+                /**
+                 * id : 1
+                 * name : 道具1
+                 * picUrl :
+                 * proportion : 1
+                 */
+
+                private int id;
+                private String name;
+                private String picUrl;
+                private int proportion;
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getPicUrl() {
+                    return picUrl;
+                }
+
+                public void setPicUrl(String picUrl) {
+                    this.picUrl = picUrl;
+                }
+
+                public int getProportion() {
+                    return proportion;
+                }
+
+                public void setProportion(int proportion) {
+                    this.proportion = proportion;
+                }
+            }
+        }
     }
 }

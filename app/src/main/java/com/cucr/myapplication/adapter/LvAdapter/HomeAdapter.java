@@ -38,7 +38,7 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
 
     @Override
     public int getCount() {
-        return 30;
+        return 4;
     }
 
     @Override

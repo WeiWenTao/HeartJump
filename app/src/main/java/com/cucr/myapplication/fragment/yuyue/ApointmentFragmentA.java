@@ -94,7 +94,7 @@ public class ApointmentFragmentA extends BaseFragment {
     }
 
     private void queryStar() {
-        mCore.queryStarList(1, 1, 10, 0, new OnCommonListener() {
+        mCore.queryStar(1, 1, 10, 0, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);

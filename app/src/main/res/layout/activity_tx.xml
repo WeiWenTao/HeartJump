@@ -67,10 +67,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_15"
                 android:background="@null"
-                android:hint="请输入支付宝账号"
+                android:hint="支付宝账号"
                 android:textColor="@color/color_333"
                 android:textColorHint="#bbb"
                 android:textSize="@dimen/sp_15"
+                android:inputType="number"
                 />
         </LinearLayout>
 
@@ -130,9 +131,9 @@
             android:background="@null"
             android:gravity="right"
             android:inputType="number"
+            android:minWidth="1dp"
             android:textColor="@color/xtred"
             android:textSize="25sp"
-            android:minWidth="0.5dp"
             />
 
         <TextView

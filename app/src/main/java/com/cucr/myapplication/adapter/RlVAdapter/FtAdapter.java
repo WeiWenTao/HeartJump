@@ -173,6 +173,16 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+
+            //打赏列表
+            ((Tp1_Holder) holder).tv_dashang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDsRecored(rowsBean.getId());
+                    }
+                }
+            });
 // -------------------------------------------------------------------------------------------------
         } else if (holder instanceof Tp2_Holder) {
             //图片
@@ -259,6 +269,16 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
+            //打赏列表
+            ((Tp2_Holder) holder).tv_dashang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDsRecored(rowsBean.getId());
+                    }
+                }
+            });
+
 // -------------------------------------------------------------------------------------------------
         } else { //文字
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());     //头像
@@ -316,6 +336,16 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
                         mOnClickBt.onClickDaShang(rowsBean.getId());
+                    }
+                }
+            });
+
+            //打赏列表
+            ((Tp3_Holder) holder).tv_dashang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDsRecored(rowsBean.getId());
                     }
                 }
             });
@@ -557,6 +587,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onClickshare(int position);
 
         void onClickDaShang(int contentId);
+
+        void onClickDsRecored(int contentId);
 
     }
 }

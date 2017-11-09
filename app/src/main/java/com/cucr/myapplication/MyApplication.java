@@ -11,7 +11,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.squareup.leakcanary.LeakCanary;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -40,7 +39,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         //内存泄漏框架
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
 
         //极光推送初始化
         JPushInterface.setDebugMode(true);

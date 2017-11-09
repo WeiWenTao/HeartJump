@@ -50,7 +50,7 @@ public class LoginCore implements LoadByPsw {
     private Object flag = new Object();
 
     @Override
-    public void login( String userName, String psw, final OnLoginListener loginListener) {
+    public void login(String userName, String psw, final OnLoginListener loginListener) {
         this.loginListener = loginListener;
         this.context = MyApplication.getInstance();
         String sign = (String) SpUtil.getParam(SpConstant.SIGN, "");
@@ -104,8 +104,8 @@ public class LoginCore implements LoadByPsw {
                 if (loginListener != null) {
                     loginListener.onSuccess(response);
 
-                }else {
-                    ToastUtils.showToast(context,"未知错误:"+responseCode);
+                } else {
+                    ToastUtils.showToast(context, "未知错误:" + responseCode);
                 }
             }
         }

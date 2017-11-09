@@ -87,7 +87,7 @@
         android:maxLines="3"
         android:textSize="@dimen/sp_15"
         android:textColor="#333"
-        android:text="此处是图集标题。。。"
+        android:text="章泽天与网红合照，网友：天然跟整容真的差太多"
         android:id="@+id/textView"
         />
     
@@ -115,28 +115,31 @@
         >
 
         <ImageView
-            android:background="@color/gray"
+            android:scaleType="centerCrop"
             android:layout_marginRight="@dimen/dp_5"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:id="@+id/imageView2"
+            android:src="@drawable/test_555"
             />
         <!--android:src="@drawable/img1"-->
 
         <ImageView
-            android:background="@color/gray"
+            android:scaleType="centerCrop"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/dp_5"
+            android:src="@drawable/test_333"
             />
 
         <ImageView
-            android:background="@color/gray"
+            android:scaleType="centerCrop"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
+            android:src="@drawable/test_444"
             />
     </LinearLayout>
 

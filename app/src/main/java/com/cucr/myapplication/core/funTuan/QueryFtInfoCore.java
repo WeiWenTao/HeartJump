@@ -51,9 +51,8 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         ftQuerylistener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
-        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
-        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
-        request.add("startId", starId)
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("startId", starId)
                 .add("page", page)
                 .add("rows", rows)
                 .add("queryMine", false)    //false查询所有人 ， true查询自己发的；
