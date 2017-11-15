@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fuli.DuiHuanCatgoryActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.FuLiAdapter;
@@ -79,7 +80,7 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mGson = new Gson();
-        mContext = container.getContext();
+        mContext = MyApplication.getInstance();
         mCore = new FuLiCore();
         //view的复用
         if (view == null) {

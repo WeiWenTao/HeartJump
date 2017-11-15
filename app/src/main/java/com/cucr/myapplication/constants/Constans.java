@@ -28,7 +28,6 @@ public class Constans {
     public static final int TYPE_VIDEO = 2;
 
 
-
     public static final int TYPE_OTHER = -1;
 
     public static final String POSITION = "position";
@@ -72,4 +71,15 @@ public class Constans {
     //Activity跳转结果码
     public static final int RESULT_CODE = 998;
 
+    //礼物类型 么么哒
+    public static final int GIFT_KISS = 1;
+
+    //礼物类型 666
+    public static final int GIFT_666 = 2;
+
+    //礼物类型 钻石
+    public static final int GIFT_DIAMON = 3;
+
+    //礼物类型 火箭
+    public static final int GIFT_ROCKET = 4;
 }

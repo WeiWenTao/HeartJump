@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.adapter.PagerAdapter.HuoDongFuLiPagerAdapter;
+import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
@@ -45,6 +45,7 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     RelativeLayout head;
 
     private List<Fragment> mFragments;
+    private List<String> tytles;
 
     @Override
     protected void initView(View childView) {
@@ -59,16 +60,18 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
 
     private void initVP() {
         mFragments = new ArrayList<>();
+        tytles = new ArrayList<>();
 
         mFragments.add(new FragmentFuLi());
         mFragments.add(new FragmentHuoDong());
-
+        tytles.add("福利");
+        tytles.add("活动");
 //        mFragments.add(new FragmentStarRecommend());
 //      快速导航栏
 //      mFragments.add(new FragmentStarClassify());
 //        mFragments.add(new FragmentStarRecommend());
 
-        vp_fuli_huodong.setAdapter(new HuoDongFuLiPagerAdapter(getFragmentManager(), mFragments));
+        vp_fuli_huodong.setAdapter(new CommonPagerAdapter(getFragmentManager(), mFragments,tytles));
     }
 
 

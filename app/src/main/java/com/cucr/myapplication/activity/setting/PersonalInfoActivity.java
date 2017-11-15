@@ -2,7 +2,6 @@ package com.cucr.myapplication.activity.setting;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,21 +20,23 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.editPersonalInfo.EditInfoCore;
-import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonalInfo;
+import com.cucr.myapplication.model.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.model.setting.BirthdayDate;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.GetPathFromUri4kitkat;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -44,6 +45,8 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,11 +111,11 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private String photoSaveName;//图pian名
     private String path;//图片全路径
     private EditInfoCore mCore;//编辑
-    private QueryPersonalMsgCore mQucryCore;//查询
     private String mProvince = "";
     private String mCity = "";
     private String mTemppath = "";
     private String birthdayMsg;
+    private PersonMessage.ObjBean obj;
 
 
     public PersonalInfoActivity() {
@@ -122,18 +125,16 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initChild() {
+        initTitle("个人资料");
 
         //用户编辑
         mCore = new EditInfoCore(this);
         //查询
-        mQucryCore = new QueryPersonalMsgCore(this);
-
-
-        initTitle("个人资料");
+        obj = (PersonMessage.ObjBean) getIntent().getSerializableExtra("data");
+        //初始化对话框
+        mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, true);
 
         initHead();
-
-        initDialog();
 
         initView();
     }
@@ -145,49 +146,30 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     //初始化控件
     private void initView() {
-
-        queryMsg();
-
         //将editText光标放置末尾
         et_my_sign.setSelection(et_my_sign.getText().length());
         et_nickname.setSelection(et_nickname.getText().length());
-    }
 
-    private void queryMsg() {
-        MyLogger.jLog().i("Thread");
-        mQucryCore.queryPersonalInfo(new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
-                boolean success = personMessage.isSuccess();
-                if (success) {
-                    PersonMessage.ObjBean obj = mGson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
+        //头像回显
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
+        //昵称回显
+        et_nickname.setText(obj.getName());
+        //性别回显
+        tv_gender.setText(obj.getSex() == 0 ? "男" : "女");
+        //电话回显
+        tv_phone.setText(obj.getPhone());
 
-                    //头像回显
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
-                    //昵称回显
-                    et_nickname.setText(obj.getName());
-                    //性别回显
-                    tv_gender.setText(obj.getSex() == 0 ? "男" : "女");
-                    //电话回显
-                    tv_phone.setText(obj.getPhone());
-
-                    if (obj.getBirthday() == null) {
-                        obj.setBirthday(CommonUtils.getCurrentDate() + "00:00:00");
-                    }
-                    tv_birthday_edit.setText(obj.getBirthday().substring(0, 10));
-                    tv_set_location.setText(obj.getProvinceName() + " " + obj.getCityName());
-                    mProvince = obj.getProvinceName();
-                    mCity = obj.getCityName();
-                    et_my_sign.setText(obj.getSignName());
-                    //生日回显
-                    birthdayMsg = obj.getBirthday().substring(0, 10);
-                    MyLogger.jLog().i("saved:" + birthdayMsg);
-                } else {
-                    ToastUtils.showToast(PersonalInfoActivity.this, personMessage.getMsg());
-                }
-            }
-        });
+        if (obj.getBirthday() == null) {
+            obj.setBirthday(CommonUtils.getCurrentDate() + "00:00:00");
+        }
+        tv_birthday_edit.setText(obj.getBirthday().substring(0, 10));
+        tv_set_location.setText(obj.getProvinceName() + " " + obj.getCityName());
+        mProvince = obj.getProvinceName();
+        mCity = obj.getCityName();
+        et_my_sign.setText(obj.getSignName());
+        //生日回显
+        birthdayMsg = obj.getBirthday().substring(0, 10);
+        MyLogger.jLog().i("saved:" + birthdayMsg);
     }
 
 
@@ -208,27 +190,14 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         super.onNewIntent(intent);
         setIntent(intent);
         LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
-
         if (location != null) {
-
-
             mCity = location.getName();
-
             LocationData locationData = CityDao.queryPrivnceBycode(location.getpCode());
             mProvince = locationData.getName();
-
             tv_set_location.setText(mProvince + "  " + mCity);
         }
 
     }
-
-
-    //初始化对话框
-    private void initDialog() {
-        mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, true);
-
-    }
-
 
     //选择生日
     @OnClick(R.id.rl_birthday)
@@ -236,14 +205,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         if (TextUtils.isEmpty(dateText)) {
             dateText = CommonUtils.getCurrentDate();
         }
-
-        MyLogger.jLog().i("dateText:" + dateText);
-
         mYear = dateText.substring(0, 4).trim();
         mMon = dateText.substring(5, 7).trim();
         mDay = dateText.substring(8, 10).trim();
-
-        MyLogger.jLog().i("mYear:" + mYear + ",mMon:" + mMon + ",mDay:" + mDay);
 
         //初始化日期数据
         mBirthdayStyle.initDate(Integer.parseInt(mYear), Integer.parseInt(mMon), Integer.parseInt(mDay));
@@ -346,28 +310,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-//    private void initPopBg(boolean isIn) {
-//
-//        //防止重复创建对象
-//        AlphaAnimation animation1 = null;
-//        AlphaAnimation animation2 = null;
-//
-//        //进入动画
-//        if (animation1 == null) {
-//            animation1 = new AlphaAnimation(0.0f, 1.0f);
-//        }
-//
-//        //退出动画
-//        if (animation2 == null) {
-//            animation2 = new AlphaAnimation(1.0f, 0.0f);
-//        }
-//
-//        animation1.setDuration(200);
-//        animation2.setDuration(200);
-//        fl_pop_bg.setAnimation(isIn ? animation1 : animation2);
-//        fl_pop_bg.setVisibility(isIn ? View.VISIBLE : View.GONE);
-//
-//    }
 
     @SuppressWarnings("deprecation")
     private void showPopupWindow(View parent) {
@@ -379,12 +321,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         popWindow.setAnimationStyle(R.style.AnimationFade);
         popWindow.setFocusable(true);
         popWindow.setOutsideTouchable(true);
-
         popWindow.setBackgroundDrawable(new BitmapDrawable());
-
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-
         popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -438,7 +377,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     /**
      * 图片选择及拍照结果
      */
-    @SuppressWarnings("deprecation")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
@@ -452,20 +390,23 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 uri = data.getData();
                 String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = managedQuery(uri, proj, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(column_index);// 图片在的路径
+//                Cursor cursor = managedQuery(uri, proj, null, null, null);
+//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                cursor.moveToFirst();
+//                this.path = cursor.getString(column_index);// 图片在的路径
+
+                path = GetPathFromUri4kitkat.getPath(MyApplication.getInstance(), uri);
+
                 Intent intent3 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
-                intent3.putExtra("path", path);
+                intent3.putExtra("path", this.path);
                 startActivityForResult(intent3, IMAGE_COMPLETE);
                 break;
 
             case PHOTOTAKE://拍照
-                path = photoSavePath + photoSaveName;
-                uri = Uri.fromFile(new File(path));
+                this.path = photoSavePath + photoSaveName;
+                uri = Uri.fromFile(new File(this.path));
                 Intent intent2 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
-                intent2.putExtra("path", path);
+                intent2.putExtra("path", this.path);
                 startActivityForResult(intent2, IMAGE_COMPLETE);
                 break;
 
@@ -515,7 +456,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     public void saveInfo(View view) {
         int userId = (int) SpUtil.getParam(SpConstant.USER_ID, -1);
         String sign = (String) SpUtil.getParam(SpConstant.SIGN, "");
-        MyLogger.jLog().i("sign:" + sign);
         String nickName = et_nickname.getText().toString();
         String singName = et_my_sign.getText().toString();
         int sex = tv_gender.getText().equals("男") ? 0 : 1;
@@ -526,15 +466,14 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onRequestSuccess(Response<String> response) {
                 ReBackMsg msg = mGson.fromJson(response.get(), ReBackMsg.class);
-                if (msg.isSuccess()){
+                if (msg.isSuccess()) {
                     ToastUtils.showToast("保存成功!");
-                }else {
+                    EventBus.getDefault().post(new EventQueryPersonalInfo());
+                } else {
                     ToastUtils.showToast(msg.getMsg());
                 }
-
             }
         });
-
     }
 
     @Override
@@ -568,7 +507,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         mCore.stopRequest();
-        mQucryCore.stopRequest();
         super.onDestroy();
     }
 }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
 
@@ -26,7 +27,7 @@ public class Fragment_star_xingwen extends Fragment {
         //view的复用
         if (view == null){
             view = inflater.inflate(R.layout.item_personal_pager_xingwen, container, false);
-            initRlV(container.getContext());
+            initRlV(MyApplication.getInstance());
         }
 
         return view;

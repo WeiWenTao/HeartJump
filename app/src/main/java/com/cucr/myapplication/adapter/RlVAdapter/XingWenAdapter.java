@@ -65,7 +65,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<XingWenAdapter.XinWenHo
 
     @Override
     public int getItemCount() {
-        return 20;
+        return 3;
     }
 
 

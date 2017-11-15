@@ -17,6 +17,7 @@ import com.cucr.myapplication.core.daShang.DaShangCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -93,7 +94,7 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
         holder.ll_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventContentId event = EventBus.getDefault().getStickyEvent(EventContentId.class);
+                final EventContentId event = EventBus.getDefault().getStickyEvent(EventContentId.class);
                 mCore.reward(event.getContentId(), listBean.getUserAccountType().getId(), listBean.getUserAccountType().getId(), 1, //rewardMoney 打赏数量
                         new OnCommonListener() {
                             @Override
@@ -102,6 +103,8 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
                                 if (msg.isSuccess()) {
                                     giftCount++;
                                     ToastUtils.showToast("打赏" + giftCount + "个" + listBean.getUserAccountType().getName() + "成功");
+                                    //打赏成功eventvus传值  粉团播放动画
+                                    EventBus.getDefault().post(new EventRewardGifts(listBean.getUserAccountType().getPicUrl(),listBean.getUserAccountType().getId()));
                                     listBean.setBalance(listBean.getBalance() - 1);
                                     if (mClickDashang != null) {
                                         mClickDashang.clickDaShang(listBean.getUserAccountType().getProportion());

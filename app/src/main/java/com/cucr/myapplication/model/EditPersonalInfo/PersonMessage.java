@@ -1,10 +1,12 @@
 package com.cucr.myapplication.model.EditPersonalInfo;
 
+import java.io.Serializable;
+
 /**
  * Created by 911 on 2017/8/18.
  */
 
-public class PersonMessage {
+public class PersonMessage implements Serializable {
 
     /**
      * msg :
@@ -40,7 +42,7 @@ public class PersonMessage {
         this.success = success;
     }
 
-    public static class ObjBean {
+    public static class ObjBean implements Serializable{
         /**
          * age : 0
          * areaId : 3

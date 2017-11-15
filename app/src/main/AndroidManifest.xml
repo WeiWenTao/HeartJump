@@ -326,6 +326,8 @@
         </activity>
         <activity android:name=".activity.TestWebViewActivity">
         </activity>
+        <activity android:name=".activity.fenTuan.DsDuiHuanActivity">
+        </activity>
     </application>
 
 </manifest>

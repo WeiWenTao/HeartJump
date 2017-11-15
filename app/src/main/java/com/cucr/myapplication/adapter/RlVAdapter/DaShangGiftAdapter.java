@@ -17,6 +17,7 @@ import com.cucr.myapplication.core.daShang.DaShangCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -102,6 +103,7 @@ public class DaShangGiftAdapter extends RecyclerView.Adapter<DaShangGiftAdapter.
                             public void onRequestSuccess(Response<String> response) {
                                 CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                                 if (msg.isSuccess()) {
+                                    EventBus.getDefault().post(new EventRewardGifts(rowsBean.getPicUrl(),rowsBean.getId()));
                                     giftCount++;
                                     ToastUtils.showToast("打赏" + giftCount + "个" + rowsBean.getName() + "成功");
                                     if (mClickDashang != null){

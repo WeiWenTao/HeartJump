@@ -62,18 +62,18 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
     LinearLayout ll_star_page;
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
-        CommonViewHolder cvh1 = null;
-        CommonViewHolder cvh2 = null;
-        CommonViewHolder cvh3 = null;
-
-
-
+        CommonViewHolder cvh1;
+        CommonViewHolder cvh2;
+        CommonViewHolder cvh3;
 
         int type = getItemViewType(position % 3);
             switch (type){
                 case Constans.TYPE_ONE:
                     cvh1 = CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout.item_home_type1,null);
-
+                    if (position > 1){
+                        cvh1.getIv(R.id.iv_video).setImageResource(R.drawable.video);
+                        cvh1.getTv(R.id.textView).setText("");
+                    }
                   /*  rl_share = cvh1.getView(R.id.rl_share, RelativeLayout.class);
                     rl_comment = cvh1.getView(R.id.rl_comment, RelativeLayout.class);
 

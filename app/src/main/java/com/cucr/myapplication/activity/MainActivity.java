@@ -31,6 +31,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private List<Fragment> mFragments = new ArrayList<>();
     private RadioGroup mRg_mian_fragments;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

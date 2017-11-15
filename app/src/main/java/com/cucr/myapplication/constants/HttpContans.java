@@ -127,4 +127,10 @@ public class HttpContans {
 
     //打赏列表
     public static final String ADDRESS_DS_LIST = "/interface/mobileGiftAction/rewardList";
+
+    //打赏我的
+    public static final String ADDRESS_DS_ME = "/interface/mobileGiftAction/rewardHis";
+
+    //道具提现
+    public static final String ADDRESS_GIFT_TX = "/interface/mobileTransactionAction/propWithdrawals";
 }

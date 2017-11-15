@@ -1,6 +1,7 @@
 package com.cucr.myapplication.activity.setting;
 
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -11,6 +12,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.core.starListAndJourney.StarRequireCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.signcalendar.SignCalendar;
 import com.google.gson.Gson;
@@ -110,6 +112,26 @@ public class MyRequiresActivity extends BaseActivity {
                     calendar.addMark(dateFormat, 0);
                     markDates.add(dateFormat);
                 }
+            }
+        });
+
+        calendar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        MyLogger.jLog().i("ACTION_DOWN");
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        MyLogger.jLog().i("ACTION_MOVE");
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        MyLogger.jLog().i("ACTION_UP");
+                        break;
+                }
+                return true;
             }
         });
     }

@@ -19,6 +19,7 @@ import android.widget.ViewFlipper;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 
 import java.util.Calendar;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Created by 911 on 2017/5/4.
  */
 
-public class SignCalendar extends ViewFlipper implements GestureDetector.OnGestureListener {
+public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGestureListener*/ {
     public static final int COLOR_BG_WEEK_TITLE = Color.parseColor("#ffffff"); // 星期标题背景颜色
     public static final int COLOR_TX_WEEK_TITLE = Color.parseColor("#666666"); // 星期标题文字颜色
     public static final int BEFORE_TODAY_BACKGROUND = Color.parseColor("#666666"); // 星期标题文字颜色
@@ -91,7 +92,7 @@ public class SignCalendar extends ViewFlipper implements GestureDetector.OnGestu
     private void init() {
         setBackgroundColor(COLOR_BG_CALENDAR);
         // 实例化收拾监听器
-        gd = new GestureDetector(this.getContext(), this);
+//        gd = new GestureDetector(this.getContext(), this);
         // 初始化日历翻动动画
         push_left_in = AnimationUtils.loadAnimation(getContext(), R.anim.push_left_in);
         push_left_out = AnimationUtils.loadAnimation(getContext(), R.anim.push_left_out);
@@ -758,15 +759,63 @@ public class SignCalendar extends ViewFlipper implements GestureDetector.OnGestu
     public void onLongPress(MotionEvent e) {
     }
 
+//    @Override
+//    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//
+//        // 向左/上滑动
+//        if (e1.getX() - e2.getX() > 20) {
+//            nextMonth();
+//        }
+//        // 向右/下滑动
+//        else if (e1.getX() - e2.getX() < -20) {
+//            lastMonth();
+//        }
+//
+//        return true;
+//    }
+
+    private int starX;
+    private int starY;
+    private int endX;
+    private int endY;
+    private boolean isNext;
+
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        // 向左/上滑动
-        if (e1.getX() - e2.getX() > 20) {
-            nextMonth();
-        }
-        // 向右/下滑动
-        else if (e1.getX() - e2.getX() < -20) {
-            lastMonth();
+    public boolean onFilterTouchEventForSecurity(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                MyLogger.jLog().i("ACTION_DOWN");
+                starX = (int) event.getX();
+                starY = (int) event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                MyLogger.jLog().i("ACTION_MOVE");
+                endX = (int) event.getX();
+                endY = (int) event.getY();
+                if (Math.abs(endX - starY) > Math.abs(endY - starY)) {
+                    if (endX - starX > 0) {
+                        MyLogger.jLog().i("ACTION_> 0");
+                        isNext = true;
+                    } else {
+                        MyLogger.jLog().i("ACTION_< 0");
+                        isNext = false;
+                    }
+                }
+                starX = endX;
+                starY = endY;
+                break;
+            case MotionEvent.ACTION_UP:
+                MyLogger.jLog().i("ACTION_UP");
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                MyLogger.jLog().i("ACTION_CANCEL");
+                if (isNext){
+                    nextMonth();
+                }else {
+                    lastMonth();
+                }
+                break;
+
         }
         return true;
     }

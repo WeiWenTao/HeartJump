@@ -1,12 +1,13 @@
 package com.cucr.myapplication.model.fenTuan;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2017/11/7.
  */
 
-public class FtBackpackInfo {
+public class FtBackpackInfo implements Serializable {
 
 
     /**
@@ -43,7 +44,7 @@ public class FtBackpackInfo {
         this.success = success;
     }
 
-    public static class ObjBean {
+    public static class ObjBean implements Serializable  {
         /**
          * zjg : 100
          * list : [{"balance":100,"id":1,"userAccountType":{"id":1,"name":"道具1","picUrl":"","proportion":1},"userId":31}]
@@ -68,7 +69,7 @@ public class FtBackpackInfo {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable  {
             /**
              * balance : 100
              * id : 1
@@ -113,7 +114,7 @@ public class FtBackpackInfo {
                 this.userId = userId;
             }
 
-            public static class UserAccountTypeBean {
+            public static class UserAccountTypeBean implements Serializable  {
                 /**
                  * id : 1
                  * name : 道具1

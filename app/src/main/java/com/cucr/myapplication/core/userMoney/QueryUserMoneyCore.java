@@ -36,7 +36,7 @@ public class QueryUserMoneyCore implements QueryUserMoney {
     @Override
     public void queryMoney() {
         flag = new Object();
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_USER_MONEY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, (int)SpUtil.getParam(SpConstant.USER_ID,-1))
         .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()))
 

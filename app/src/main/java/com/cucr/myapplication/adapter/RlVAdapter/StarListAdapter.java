@@ -1,5 +1,6 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -28,9 +29,11 @@ public class StarListAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<MyFocusStarInfo.RowsBean> list;
     private int clickPosition;
+    private Activity mActivity;
 
-    public StarListAdapter(Context context) {
+    public StarListAdapter(Context context, Activity mActivity) {
         this.context = context;
+        this.mActivity = mActivity;
     }
 
     public void setData(List<MyFocusStarInfo.RowsBean> list){
@@ -65,7 +68,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     Intent intent = new Intent(context, StarListForAddActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
+                    mActivity.startActivityForResult(intent,111);
                 }
             });
 
@@ -91,6 +94,10 @@ public class StarListAdapter extends RecyclerView.Adapter {
         }
     }
 
+
+    public int getClickPosition() {
+        return clickPosition;
+    }
 
     @Override
     public int getItemCount() {

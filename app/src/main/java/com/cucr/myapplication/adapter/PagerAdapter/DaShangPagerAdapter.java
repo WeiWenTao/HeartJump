@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.fenTuan.DsDuiHuanActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
 import com.cucr.myapplication.adapter.RlVAdapter.DaShangBackpackAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.DaShangGiftAdapter;
@@ -46,6 +47,7 @@ public class DaShangPagerAdapter extends PagerAdapter {
 
     public void setBackpackInfos(FtBackpackInfo mFtBackpackInfo) {
         this.mFtBackpackInfo = mFtBackpackInfo;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -124,7 +126,9 @@ public class DaShangPagerAdapter extends PagerAdapter {
         view.findViewById(R.id.tv_go_duihuan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mContext.startActivity(new Intent(mContext, x.class));
+                Intent intent = new Intent(mContext, DsDuiHuanActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
             }
         });
     }
@@ -138,5 +142,10 @@ public class DaShangPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

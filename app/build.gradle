@@ -108,5 +108,6 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     //eventBus
     compile 'org.greenrobot:eventbus:3.0.0'
-
+    //gif
+    compile 'com.github.Cutta:GifView:1.1'
 }

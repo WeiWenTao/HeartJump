@@ -29,6 +29,7 @@ import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.model.eventBus.EventStarId;
 import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
@@ -106,6 +107,9 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         qYStarId = id;
     }
 
+    public Fragment_star_fentuan() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -123,6 +127,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             inipopWindow();
             initInfos();
         }
+
         queryFtInfo();
         return view;
     }
@@ -155,12 +160,18 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             }
         });
 
+        queryBackpack();
+
+
+    }
+
+    private void queryBackpack() {
         //查询背包信息
         queryCore.queryBackpackInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtBackpackInfo ftBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
-                MyLogger.jLog().i("ftBackpackInfo:"+response.get());
+                MyLogger.jLog().i("ftBackpackInfo:" + response.get());
                 if (ftBackpackInfo.isSuccess()) {
                     mDaShangPagerAdapter.setBackpackInfos(ftBackpackInfo);
                 } else {
@@ -168,7 +179,12 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                 }
             }
         });
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void eventData(EventDuiHuanSuccess event) {
+        MyLogger.jLog().i("queryBackpack");
+        queryBackpack();
     }
 
     private void queryFtInfo() {
@@ -182,6 +198,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
+                    MyLogger.jLog().i("mQueryFtInfos:"+mQueryFtInfos);
                     mAdapter.setData(mQueryFtInfos);
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
@@ -191,20 +208,24 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
 
-
+    //切换明星的时候
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
         starId = event.getStarId();
-        MyLogger.jLog().i("EventStarId："+starId);
+        page = 1;
+        rows = 2;
+        MyLogger.jLog().i("EventStarId：" + starId);
+        if (queryCore == null){
+            queryCore = new QueryFtInfoCore();
+        }
         queryFtInfo();
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onMyEvent(EventFIrstStarId event) {
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true) //在ui线程执行
+    public void onDataSynEvent(EventFIrstStarId event) {
         starId = event.getFirstId();
-        MyLogger.jLog().i("EventFIrstStarId："+starId);
-        queryFtInfo();
+        MyLogger.jLog().i("EventFIrstStarId：" + starId);
     }
 
     private void initRlV() {
@@ -228,10 +249,12 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         rlv_fentuan = (SwipeRecyclerView) view.findViewById(R.id.rlv_fentuan);
 //        rlv_fentuan.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
         rlv_fentuan.setOnLoadListener(this);
+        rlv_fentuan.setOnLoadListener(this);
 
         mFam = (FloatingActionsMenu) view.findViewById(R.id.multiple_actions);
         action_a = (FloatingActionButton) view.findViewById(R.id.action_a);
         action_b = (FloatingActionButton) view.findViewById(R.id.action_b);
+
         mFam.attachToRecyclerView(rlv_fentuan.getRecyclerView());
         action_a.setOnClickListener(this);
         action_b.setOnClickListener(this);
@@ -293,11 +316,11 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
                     intent.putExtra("data", (Serializable) localMedias);
                     intent.putExtra("type", Constans.TYPE_PICTURE);
-                    intent.putExtra("starId",starId);
+                    intent.putExtra("starId", starId);
                     break;
 
                 case Constans.TYPE_TWO:
-                    // 图片选择结果回调
+                    // 视频选择结果回调
                     List<LocalMedia> video = PictureSelector.obtainMultipleResult(data);
                     // 例如 LocalMedia 里面返回三种path
                     // 1.media.getPath(); 为原图path
@@ -475,7 +498,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onClickDsRecored(int contentId) {
         Intent intent = new Intent(mContext, DaShangCatgoryActivity.class);
-        intent.putExtra("contentId",contentId);
+        intent.putExtra("contentId", contentId);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

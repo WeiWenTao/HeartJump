@@ -13,13 +13,15 @@ import java.util.List;
  * 粉团页面的pagerAdapter
  */
 
-public class HuoDongFuLiPagerAdapter extends FragmentPagerAdapter {
+public class CommonPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragments;
+    private List<String> tytles;
 
-    public HuoDongFuLiPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public CommonPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> tytles) {
         super(fm);
         this.fragments = fragments;
+        this.tytles = tytles;
     }
 
 
@@ -35,13 +37,6 @@ public class HuoDongFuLiPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0:
-                return "福利";
-
-            case 1:
-                return "活动";
-        }
-        return null;
+        return tytles.get(position);
     }
 }

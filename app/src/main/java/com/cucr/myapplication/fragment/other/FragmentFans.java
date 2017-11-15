@@ -1,15 +1,14 @@
 package com.cucr.myapplication.fragment.other;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,14 +19,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
-import com.cucr.myapplication.alipay.PayResult;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarList;
@@ -38,12 +36,14 @@ import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.eventBus.EventStarId;
 import com.cucr.myapplication.model.others.FragmentInfos;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -62,18 +62,17 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by cucr on 2017/8/31.
  */
 
 public class FragmentFans extends BaseFragment {
-
-    private List<FragmentInfos> mDataList;
 
     //头部
     @ViewInject(R.id.head)
@@ -119,6 +118,12 @@ public class FragmentFans extends BaseFragment {
     @ViewInject(R.id.backdrop)
     private ImageView backdrop;
 
+    //礼物动画
+    @ViewInject(R.id.iv_gift)
+    private ImageView iv_gift;
+
+    private List<FragmentInfos> mDataList;
+
     //是否需要显示
     private boolean isShow = true;
     private StarListAdapter mAdapter;
@@ -131,17 +136,17 @@ public class FragmentFans extends BaseFragment {
 
     @Override
     protected void initView(View childView) {
+        EventBus.getDefault().register(this);
         ViewUtils.inject(this, childView);
-
         mStarCore = new QueryStarList(getActivity());
         mCore = new QueryMyFocusStars(getActivity());
         initRlv();
-        mAdapter.setPosition(0);
         initHead();
         initIndicator();
         initVp();
-        queryMsg();
+//        queryMsg();
     }
+
 
     //初始化明星封面数据
     private void initDatas(int starId) {
@@ -162,13 +167,15 @@ public class FragmentFans extends BaseFragment {
         });
     }
 
-   /* @Override
+    @Override
     public void onResume() {
         super.onResume();
         queryMsg();
-    }*/
+        mAdapter.setPosition(0);
+    }
 
     private void queryMsg() {
+        MyLogger.jLog().i("queryMsg");
         mCore.queryMyFocuses(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -180,7 +187,7 @@ public class FragmentFans extends BaseFragment {
                         return;
                     }
                     //默认查询第一个明星数据
-                    EventBus.getDefault().post(new EventFIrstStarId(mRows.get(0).getStartId()));
+                    EventBus.getDefault().postSticky(new EventFIrstStarId(mRows.get(0).getStartId()));
                     initDatas(mRows.get(0).getStartId());
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
@@ -191,7 +198,7 @@ public class FragmentFans extends BaseFragment {
 
     private void initRlv() {
         drawer_rcv.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mAdapter = new StarListAdapter(mContext);
+        mAdapter = new StarListAdapter(mContext, getActivity());
         mAdapter.setOnClick(new StarListAdapter.OnClick() {
             @Override
             public void onClickPosition(View view, int position) {
@@ -212,7 +219,7 @@ public class FragmentFans extends BaseFragment {
 
     private void initVp() {
         mViewPager.setAdapter(new StarPagerAdapter(getFragmentManager(), mDataList));
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(1);
     }
 
     //初始化标签栏
@@ -294,6 +301,102 @@ public class FragmentFans extends BaseFragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(EventRewardGifts event) {
+        MyLogger.jLog().i("打赏动画");
+        iv_gift.setVisibility(View.VISIBLE);
+        MyLogger.jLog().i(event);
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + event.getGiftPic(), iv_gift);
+
+
+        switch (event.getGiftId()) {
+
+            case Constans.GIFT_KISS:      //么么哒
+                iv_gift.clearAnimation();
+                AnimatorSet mAnimSet = new AnimatorSet();
+                ObjectAnimator scaleXAni = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        0f, 1.4f, 1f, 1f, 1.08f, 1.15f, 1.23f, 1.3f, 1.38f, 1.45f, 1.53f, 1.6f, 1.68f, 1.75f, 1.83f, 1.9f, 1.98f, 2.05f, 2.13f, 2.2f);
+
+                ObjectAnimator scaleYAni = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        0f, 1.4f, 1f, 1f, 1.08f, 1.15f, 1.23f, 1.3f, 1.38f, 1.45f, 1.53f, 1.6f, 1.68f, 1.75f, 1.83f, 1.9f, 1.98f, 2.05f, 2.13f, 2.2f);
+
+                ObjectAnimator alphaAni = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        1f, 1f, 1f, 1f, 0.94f, 0.88f, 0.82f, 0.76f, 0.7f, 0.64f, 0.58f, 0.52f, 0.46f, 0.4f, 0.34f, 0.28f, 0.22f, 0.16f, 0.1f, 0f);
+
+                ObjectAnimator transYAni = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        0f,0f);
+
+                mAnimSet.playTogether(scaleXAni, scaleYAni, alphaAni,transYAni);
+                mAnimSet.setDuration(2000);
+                mAnimSet.start();
+                break;
+
+            case Constans.GIFT_666:       //666
+                AnimatorSet animSet_666 = new AnimatorSet();
+                ObjectAnimator scaleXAni_666 = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.8f, 2.0f);
+
+                ObjectAnimator scaleYAni_666 = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.8f, 2.0f);
+
+                ObjectAnimator alphaAni_666 = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.7f, 0.4f, 0.3f, 0f);
+
+                ObjectAnimator rotateAni_666 = ObjectAnimator.ofFloat(iv_gift, "rotation",
+                        0f, 0f, 0f, 0f, 25f, 0f, 15f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+                ObjectAnimator transYAni_666 = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        -1000f, 0f, 0f, 0f, 0f, 0f, 0f, -200f, -400f);
+
+                animSet_666.playTogether(scaleXAni_666, scaleYAni_666, alphaAni_666, rotateAni_666, transYAni_666);
+                animSet_666.setDuration(2000);
+                animSet_666.start();
+                break;
+
+            case Constans.GIFT_DIAMON:    //钻石
+                AnimatorSet animSet_diamon = new AnimatorSet();
+                ObjectAnimator scaleXAni_diamon = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.6f, 1.7f, 1.8f, 1.9f, 2.0f);
+
+                ObjectAnimator scaleYAni_diamon = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.6f, 1.7f, 1.8f, 1.9f, 2.0f);
+
+                ObjectAnimator alphaAni_diamon = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        0f, 0.3f, 1f, 1f, 1f, 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
+
+                ObjectAnimator rotateAni_diamon = ObjectAnimator.ofFloat(iv_gift, "rotation",
+                        0f, 20f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+                ObjectAnimator transYAni_diamon = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        0f, -20f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+                animSet_diamon.playTogether(scaleXAni_diamon, scaleYAni_diamon, alphaAni_diamon, rotateAni_diamon, transYAni_diamon);
+                animSet_diamon.setDuration(2000);
+                animSet_diamon.start();
+                break;
+
+            case Constans.GIFT_ROCKET:    //火箭
+                AnimatorSet animSet_r = new AnimatorSet();
+                ObjectAnimator scaleXAni_r = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        1f, 2f, 2f, 2f, 2f, 2f, 1.5f, 0.8f);
+
+                ObjectAnimator scaleYAni_r = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        1f, 2f, 2f, 2f, 2f, 2f, 1.5f, 0.8f);
+
+                ObjectAnimator alphaAni_r = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        1f, 1f, 1f, 0.5f, 1f, 0.7f, 1f, 1f, 1f);
+
+                ObjectAnimator transYAni_r = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        1000f, 0f, 0f, 0f, -500f, -1000f, -1500f);
+
+
+                animSet_r.playTogether(scaleXAni_r, scaleYAni_r, alphaAni_r, transYAni_r);
+                animSet_r.setDuration(2600);
+                animSet_r.start();
+                break;
+        }
+    }
+
 
     //显示PopupWindow
     @OnClick(R.id.ll_show_stars)
@@ -347,40 +450,6 @@ public class FragmentFans extends BaseFragment {
         return R.layout.fragment_other_fans;
     }
 
-    //===========================================================================================
-
-
-    private Handler mHandler = new Handler() {
-        @SuppressWarnings("unused")
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1: {
-                    @SuppressWarnings("unchecked")
-                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                    /**
-                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
-                     */
-                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                    String resultStatus = payResult.getResultStatus();
-                    // 判断resultStatus 为9000则代表支付成功
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        Toast.makeText(mContext, "支付失败", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-
-                default:
-                    break;
-            }
-        }
-
-        ;
-    };
-
     //消息界面
     @OnClick(R.id.iv_header_msg)
     public void pay(View view) {
@@ -391,5 +460,11 @@ public class FragmentFans extends BaseFragment {
     @OnClick(R.id.tv_yuyue)
     public void toYuYue(View view) {
         ToastUtils.showToast("企业用户才能预约明星哟,赶快去认证吧!");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 }

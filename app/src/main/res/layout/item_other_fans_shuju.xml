@@ -17,10 +17,9 @@
             >
 
             <ImageView
-                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="550dp"
-                android:src="@drawable/test_final_data"
+                android:layout_height="1500dp"
+                android:src="@drawable/test_data1"
                 />
         </LinearLayout>
 

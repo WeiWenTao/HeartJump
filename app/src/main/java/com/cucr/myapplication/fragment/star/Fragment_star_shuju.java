@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 
 /**
@@ -23,7 +24,7 @@ public class Fragment_star_shuju extends Fragment {
         //view的复用
         if (view == null){
             view = inflater.inflate(R.layout.item_other_fans_shuju, container, false);
-            initRlV(container.getContext());
+            initRlV(MyApplication.getInstance());
         }
 
         return view;
