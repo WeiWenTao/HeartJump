@@ -45,8 +45,7 @@ public class QueryJourneyList implements QueryJourney {
         this.scheduleListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_JOURNEY_SCHEDULE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
-                // TODO: 2017/9/19 eventBus传值  这里暂用userid代替
-                .add("startId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("startId", starId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 
         //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
@@ -68,9 +67,9 @@ public class QueryJourneyList implements QueryJourney {
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_JOURNEY, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
-                .add("rows", 10)
+                .add("rows", rows)
                 .add("page", page)
-                .add("startId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) //不传tripTime查所有 明星的starId就是自己
+                .add("startId",starId ) //不传tripTime查所有 明星的starId就是自己
                 .add("tripTime", tripTime)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 

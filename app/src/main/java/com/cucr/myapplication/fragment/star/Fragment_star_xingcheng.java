@@ -15,6 +15,8 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.RlvPersonalJourneyAdapter;
 import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.model.eventBus.EventStarId;
 import com.cucr.myapplication.model.starJourney.StarJourneyList;
 import com.cucr.myapplication.model.starJourney.StarScheduleLIst;
 import com.cucr.myapplication.utils.MyLogger;
@@ -22,6 +24,10 @@ import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.lantouzi.wheelview.WheelView;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -38,12 +44,22 @@ public class Fragment_star_xingcheng extends Fragment {
     private Gson mGson;
     private List<StarJourneyList.RowsBean> mRows;
     private RlvPersonalJourneyAdapter mAdapter;
+    private int starId;
+    private int page;
+    private int rows;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MyLogger.jLog().i("onCreateView");
         mContext = MyApplication.getInstance();
+        mCore = new QueryJourneyList();
         mGson = new Gson();
         //view的复用
         if (view == null) {
@@ -55,18 +71,38 @@ public class Fragment_star_xingcheng extends Fragment {
         return view;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+    public void onDataSynEvent(EventFIrstStarId event) {
+        starId = event.getFirstId();
+        page = 1;
+        rows = 10;
+        if (event != null) {
+            EventBus.getDefault().removeStickyEvent(event);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+    public void onDataSynEvent(EventStarId event) {
+        starId = event.getStarId();
+        page = 1;
+        rows = 10;
+        queryJourney();
+        queryJourneyByTime(0);
+        if (event != null) {
+            EventBus.getDefault().removeStickyEvent(event);
+        }
+    }
+
 
     private void queryJourney() {
-        mCore = new QueryJourneyList();
-        // TODO: 2017/9/6 starId eventBus获取
-        mCore.queryJourneySchedule(1, new OnCommonListener() {
+        mCore.queryJourneySchedule(starId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarScheduleLIst starScheduleLIst = mGson.fromJson(response.get(), StarScheduleLIst.class);
                 if (starScheduleLIst.isSuccess()) {
                     List<String> obj = starScheduleLIst.getObj();
                     mWheelview.setItems(obj);
-                    if (obj != null && obj.size()>0){
+                    if (obj != null && obj.size() > 0) {
                         queryJourneyByTime(0);
                     }
                     MyLogger.jLog().i("size" + starScheduleLIst.getObj().size());
@@ -118,9 +154,10 @@ public class Fragment_star_xingcheng extends Fragment {
 //        });
     }
 
-    public void queryJourneyByTime(int position){
+    public void queryJourneyByTime(int position) {
         String s = mWheelview.getItems().get(position);
-        mCore.QueyrStarJourney(100, 1, 5, s, new OnCommonListener() {
+        MyLogger.jLog().i("journeyStarid = " + starId);
+        mCore.QueyrStarJourney(rows, page, starId, s, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarJourneyList starJourneys = mGson.fromJson(response.get(), StarJourneyList.class);
@@ -133,5 +170,11 @@ public class Fragment_star_xingcheng extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

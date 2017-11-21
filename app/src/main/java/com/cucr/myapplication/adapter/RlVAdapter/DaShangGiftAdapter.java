@@ -97,6 +97,7 @@ public class DaShangGiftAdapter extends RecyclerView.Adapter<DaShangGiftAdapter.
             @Override
             public void onClick(View v) {
                 final EventContentId event = EventBus.getDefault().getStickyEvent(EventContentId.class);
+
                 mCore.reward(event.getContentId(), 0, rowsBean.getId(), 1,  //rewardMoney 打赏数量
                         new OnCommonListener() {
                             @Override
@@ -114,13 +115,14 @@ public class DaShangGiftAdapter extends RecyclerView.Adapter<DaShangGiftAdapter.
                                 }
                             }
                         });
+
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return ftGiftsInfo.getRows() == null ? 0 : ftGiftsInfo.getRows().size();
+        return ftGiftsInfo == null ? 0 : ftGiftsInfo.getRows().size();
     }
 
     public class GiftViewHolder extends RecyclerView.ViewHolder {

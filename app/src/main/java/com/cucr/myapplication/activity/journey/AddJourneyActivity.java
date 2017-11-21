@@ -57,7 +57,7 @@ public class AddJourneyActivity extends BaseActivity {
 
     //初始化控件
     private void initView() {
-        mCore = new StarJourney(this);
+        mCore = new StarJourney();
         mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, false);
         String dateText = CommonUtils.getCurrentDate();
         String year = dateText.substring(0, 4).trim();

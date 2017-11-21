@@ -14,10 +14,12 @@ import android.widget.ListView;
 import com.cucr.myapplication.R;
 
 /**
- * Created by cucr on 2017/10/9.
+ * 继承自SwipeRefreshLayout,从而实现滑动到底部时上拉加载更多的功能.
+ *
+ * @author mrsimple
  */
-
 public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnScrollListener {
+
     /**
      * 滑动到最下面时的上拉操作
      */
@@ -63,7 +65,7 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-        mListViewFooter = LayoutInflater.from(context).inflate(R.layout.refresh_footer, null,
+        mListViewFooter = LayoutInflater.from(context).inflate(R.layout.layout_refresh_footer, null,
                 false);
     }
 

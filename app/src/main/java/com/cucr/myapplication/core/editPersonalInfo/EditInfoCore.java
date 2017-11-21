@@ -1,22 +1,24 @@
 package com.cucr.myapplication.core.editPersonalInfo;
 
-import android.app.Activity;
 import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.BaseCore;
-import com.cucr.myapplication.interf.nohttp.HttpListener;
 import com.cucr.myapplication.interf.personalinfo.SavePersonalInfo;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonalInfo;
 import com.cucr.myapplication.utils.EncodingUtils;
+import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OnUploadListener;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
@@ -25,13 +27,19 @@ import java.io.File;
  * Created by 911 on 2017/8/15.
  */
 
-public class EditInfoCore extends BaseCore implements SavePersonalInfo {
+public class EditInfoCore implements SavePersonalInfo {
 
-    private Activity activity;
     private OnCommonListener commonListener;
 
-    public EditInfoCore(Activity activity) {
-        this.activity = activity;
+    /**
+     * 请求队列。
+     */
+    private RequestQueue mQueue;
+    private Context mContext;
+
+    public EditInfoCore() {
+        mContext = MyApplication.getInstance();
+        mQueue = NoHttp.newRequestQueue();
     }
 
     @Override
@@ -70,22 +78,34 @@ public class EditInfoCore extends BaseCore implements SavePersonalInfo {
 
         }
 
-
-        //回调
-        HttpListener<String> callback = new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                MyLogger.jLog().i("请求成功");
-                commonListener.onRequestSuccess(response);
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                MyLogger.jLog().i("请求失败");
-            }
-        };
-        request(0, request, callback, false, true);
+        mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
+
+    private OnResponseListener responseListener = new OnResponseListener() {
+        @Override
+        public void onStart(int what) {
+
+        }
+
+        @Override
+        public void onSucceed(int what, Response response) {
+            switch (what) {
+                case Constans.TYPE_ONE:
+                    commonListener.onRequestSuccess(response);
+                    break;
+            }
+        }
+
+        @Override
+        public void onFailed(int what, Response response) {
+            HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
+        }
+    };
 
     /* 文件上传监听。
             */
@@ -117,8 +137,13 @@ public class EditInfoCore extends BaseCore implements SavePersonalInfo {
         }
     };
 
-    @Override
-    public Activity getChildActivity() {
-        return activity;
+
+    //activity destory 时调用
+    public void stopRequest() {
+        // 和声明周期绑定，退出时取消这个队列中的所有请求，当然可以在你想取消的时候取消也可以，不一定和声明周期绑定。
+        mQueue.cancelAll();
+        // 因为回调函数持有了activity，所以退出activity时请停止队列。
+        mQueue.stop();
+
     }
 }

@@ -1,84 +1,145 @@
 package com.cucr.myapplication.activity.journey;
 
 import android.content.Intent;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
 import com.cucr.myapplication.core.starListAndJourney.StarJourney;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.RZ.RzResult;
 import com.cucr.myapplication.model.starJourney.StarJourneyList;
 import com.cucr.myapplication.utils.MyLogger;
-import com.cucr.myapplication.utils.ThreadUtils;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.recyclerView.EndlessRecyclerOnScrollListener;
+import com.cucr.myapplication.widget.recyclerView.LoadMoreWrapper;
 import com.cucr.myapplication.widget.swipeRlv.DemoAdapter;
 import com.cucr.myapplication.widget.swipeRlv.ItemTouchListener;
 import com.cucr.myapplication.widget.swipeRlv.SwipeMenuRecyclerView;
+import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyJourneyActivity extends BaseActivity implements ItemTouchListener {
 
     @ViewInject(R.id.recyclerView)
-    SwipeMenuRecyclerView recyclerView;
+    private SwipeMenuRecyclerView recyclerView;
+
+    @ViewInject(R.id.swipe_refresh_layout)
+    private SwipeRefreshLayout swipe_refresh_layout;
 
     private DemoAdapter mAdapter;
     private QueryJourneyList mCore;
-    private int dataId;             //数据id
     private StarJourney mJourneyCore;
     private List<StarJourneyList.RowsBean> mRows;
+    private LoadMoreWrapper wapper;
+    private int page;
+    private int row = 15;
 
     @Override
     protected void initChild() {
+        ViewUtils.inject(this);
+
         mCore = new QueryJourneyList();
-        mJourneyCore = new StarJourney(null);
+        mJourneyCore = new StarJourney();
+        mRows = new ArrayList<>();
+
+        initRlv();
         //查询明星行程
-        QueryStarJourneyList();
+        queryJourney(true);
 
 
     }
 
-    //查询明星行程
-    private void QueryStarJourneyList() {
-        ThreadUtils.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
-                queryJourney();
+    //isRefresh 刷新还是加载更多
+    private void queryJourney(final boolean isRefresh) {
+        MyLogger.jLog().i("isRefresh:" + isRefresh);
+        if (isRefresh) {
+            page = 1;
+            //第一次进来要自己刷新
+            if (!swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(true);
             }
-        });
-    }
 
-    private void queryJourney() {
-        mCore.QueyrStarJourney(1, 1, 1, null, new OnCommonListener() {
+        } else {
+            if (wapper.getLoadState() == wapper.LOADING_END) {
+                ToastUtils.showEnd();
+//                return;
+            }
+            page++;
+            wapper.setLoadState(wapper.LOADING);
+        }
+        //明星用户就用userid
+        mCore.QueyrStarJourney(row, page, (int) SpUtil.getParam(SpConstant.USER_ID, -1), null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarJourneyList starJourneys = mGson.fromJson(response.get(), StarJourneyList.class);
                 if (starJourneys.isSuccess()) {
-                    mRows = starJourneys.getRows();
-                    initRlv(mRows);
+                    if (swipe_refresh_layout.isRefreshing()) {
+                        swipe_refresh_layout.setRefreshing(false);
+                    }
+                    //是否是刷新
+                    if (isRefresh) {
+                        mRows.clear();
+                        mRows.addAll(starJourneys.getRows());
+                        mAdapter.setData(starJourneys.getRows());
+
+                        //加载更多
+                    } else {
+                        mRows.addAll(starJourneys.getRows());
+                        mAdapter.addData(starJourneys.getRows());
+                        //是否还有数据
+                        if (starJourneys.getTotal() <= page * row) {
+                            wapper.setLoadState(wapper.LOADING_END);
+                        } else {
+                            wapper.setLoadState(wapper.LOADING_COMPLETE);
+                        }
+                    }
+                    wapper.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(MyJourneyActivity.this, starJourneys.getErrorMsg());
+                    ToastUtils.showToast(starJourneys.getErrorMsg());
+                    //加载失败 关闭刷新动画
+                    swipe_refresh_layout.setRefreshing(false);
+                    wapper.setLoadState(wapper.LOADING_COMPLETE);
                 }
             }
         });
     }
 
-    private void initRlv(List<StarJourneyList.RowsBean> rows) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        mAdapter = new DemoAdapter(rows);
-        recyclerView.setAdapter(mAdapter);
+    private void initRlv() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mAdapter = new DemoAdapter();
+        wapper = new LoadMoreWrapper(mAdapter);
+        recyclerView.setAdapter(wapper);
         mAdapter.setItemTouchListener(this);
+
+        // 设置下拉刷新
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryJourney(true);
+                MyLogger.jLog().i("queryJourney(true)");
+            }
+        });
+
+        // 设置加载更多监听
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore() {
+                queryJourney(false);
+                MyLogger.jLog().i("queryJourney(false)");
+            }
+        });
     }
 
 
@@ -103,9 +164,15 @@ public class MyJourneyActivity extends BaseActivity implements ItemTouchListener
                 if (rzResult.isSuccess()) {
                     MyLogger.jLog().i("删除了" + mRows.get(position).getTitle() + " 行程，position：" + position);
                     mRows.remove(position);
-                    mAdapter.notifyItemRemoved(position);
-                    mAdapter.notifyItemRangeChanged(position, mRows.size());
-                }else {
+                    mAdapter.setData(mRows);
+//                    wapper.notifyDataSetChanged();
+                    wapper.notifyItemRemoved(position);
+                    if (position + 1 >= mRows.size()) {
+                        wapper.notifyItemRangeChanged(position, mRows.size());
+                    } else {
+                        wapper.notifyItemRangeChanged(position + 1, mRows.size());
+                    }
+                } else {
                     ToastUtils.showToast(rzResult.getMsg());
                 }
             }
@@ -115,7 +182,8 @@ public class MyJourneyActivity extends BaseActivity implements ItemTouchListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        QueryStarJourneyList();
+        //查询明星行程
+        queryJourney(true);
     }
 
     @Override

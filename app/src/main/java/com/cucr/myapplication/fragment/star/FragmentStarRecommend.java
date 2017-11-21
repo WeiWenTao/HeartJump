@@ -31,9 +31,13 @@ public class FragmentStarRecommend extends Fragment {
     private List<StarListInfos.RowsBean> rows;
     private int finalPosition;
 
+    public FragmentStarRecommend() {
+    }
+
     public FragmentStarRecommend(List<StarListInfos.RowsBean> rows) {
         this.rows = rows;
     }
+
 
     @Nullable
     @Override

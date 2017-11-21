@@ -109,7 +109,7 @@ public class DaShangPagerAdapter extends PagerAdapter {
     private void initBackpack(View view) {
         RecyclerView rl_backpack = (RecyclerView) view.findViewById(R.id.rl_backpack);
         mTv_cost = (TextView) view.findViewById(R.id.tv_cost);
-        mZjg = mFtBackpackInfo.getObj().getZjg();
+        mZjg = mFtBackpackInfo == null ? 0 : mFtBackpackInfo.getObj().getZjg();
         mTv_cost.setText("礼物价值: " + mZjg);
         rl_backpack.setLayoutManager(layoutManager);
         DaShangBackpackAdapter adapter = new DaShangBackpackAdapter(mFtBackpackInfo);

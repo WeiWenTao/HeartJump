@@ -69,7 +69,7 @@ public class ApointmentFragmentA extends BaseFragment {
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
-        mCore = new QueryStarList(getActivity());
+        mCore = new QueryStarList();
         initSP();
 
         queryStar();

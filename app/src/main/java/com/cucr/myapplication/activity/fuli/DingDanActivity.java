@@ -82,7 +82,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     @Override
     protected void initChild() {
         mDialogDingDanStyle = new DialogDingDanStyle(this, R.style.BirthdayStyleTheme);
-        mCore = new DingDanCore(this);
+        mCore = new DingDanCore();
         //获取数据
         mData = (DuiHuanGoosInfo.RowsBean) getIntent().getSerializableExtra("data");
         //初始化商品数据

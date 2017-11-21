@@ -1,6 +1,5 @@
 package com.cucr.myapplication.fragment.renzheng;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -74,7 +73,7 @@ public class StarRZ extends Fragment {
     private CommitStarRzCore mCore;
     private QueryRzResult mQueryCore;
     private Context mContext;
-    private Activity activity;
+
     private Gson mGson;
     private ImageConfig imageConfig;
     private ImageLoader instance;
@@ -137,11 +136,11 @@ public class StarRZ extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activity = getActivity();
+
         mContext = container.getContext();
         mGson = new Gson();
         mCore = new CommitStarRzCore(mContext);
-        mQueryCore = new QueryRzResult(activity);
+        mQueryCore = new QueryRzResult();
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_star, container, false);
         ViewUtils.inject(this, rootView);
         initView();
@@ -394,27 +393,27 @@ public class StarRZ extends Fragment {
     public void commitCheck(View view) {
 
         if (TextUtils.isEmpty(et_name.getText())) {
-            ToastUtils.showToast(activity, "请输入姓名哦");
+            ToastUtils.showToast("请输入姓名哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_contact.getText())) {
-            ToastUtils.showToast(activity, "请输入联系方式哦");
+            ToastUtils.showToast("请输入联系方式哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_belone.getText())) {
-            ToastUtils.showToast(activity, "请输入所属公司哦");
+            ToastUtils.showToast("请输入所属公司哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_star_price.getText())) {
-            ToastUtils.showToast(activity, "请输入商演费用哦");
+            ToastUtils.showToast("请输入商演费用哦");
             return;
         }
 
         if (TextUtils.isEmpty(img_postive_path) || TextUtils.isEmpty(img_nagetive_path)) {
-            ToastUtils.showToast(activity, "请上传照片哦");
+            ToastUtils.showToast("请上传照片哦");
             return;
         }
 
@@ -429,10 +428,10 @@ public class StarRZ extends Fragment {
                     public void onRequestSuccess(Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                         if (reBackMsg.isSuccess()) {
-                            ToastUtils.showToast(activity, "明星认证上传成功！");
+                            ToastUtils.showToast( "明星认证上传成功！");
                             setView(false, "审核中");
                         } else {
-                            ToastUtils.showToast(activity, reBackMsg.getMsg());
+                            ToastUtils.showToast(reBackMsg.getMsg());
                         }
                     }
 

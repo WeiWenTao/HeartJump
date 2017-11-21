@@ -1,6 +1,7 @@
 package com.cucr.myapplication.fragment.star;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -44,25 +45,14 @@ import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.compress.Luban;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.Serializable;
-import java.util.List;
-
 import toan.android.floatingactionmenu.FloatingActionButton;
 import toan.android.floatingactionmenu.FloatingActionsMenu;
-
-import static android.app.Activity.RESULT_OK;
-import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 
 /**
  * Created by 911 on 2017/6/24.
@@ -103,6 +93,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private LayoutInflater layoutInflater;
     private DaShangPagerAdapter mDaShangPagerAdapter;
 
+    @SuppressLint("ValidFragment")
     public Fragment_star_fentuan(int id) {
         qYStarId = id;
     }
@@ -128,7 +119,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             initInfos();
         }
 
-        queryFtInfo();
+
         return view;
     }
 
@@ -193,12 +184,13 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         /*if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
             starId = qYStarId;
         }*/
+        MyLogger.jLog().i("粉团参数 starId=" + starId + ",page=" + page + ",rows=" + rows);
         queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-                    MyLogger.jLog().i("mQueryFtInfos:"+mQueryFtInfos);
+                    MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
                     mAdapter.setData(mQueryFtInfos);
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
@@ -215,17 +207,20 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         page = 1;
         rows = 2;
         MyLogger.jLog().i("EventStarId：" + starId);
-        if (queryCore == null){
+        if (queryCore == null) {
             queryCore = new QueryFtInfoCore();
         }
         queryFtInfo();
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true) //在ui线程执行
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
         starId = event.getFirstId();
-        MyLogger.jLog().i("EventFIrstStarId：" + starId);
+        queryFtInfo();
+        if (event!=null){
+            EventBus.getDefault().removeStickyEvent(event);
+        }
     }
 
     private void initRlV() {
@@ -264,83 +259,54 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         mFam.collapse();
+        Intent intent = new Intent(mContext, PublishActivity.class);
         switch (v.getId()) {
             //照片
             case R.id.action_a:
-                PictureSelector.create(this)
-                        .openGallery(PictureMimeType.ofImage())
-                        .maxSelectNum(9)
-                        .imageSpanCount(4)
-                        .selectionMode(PictureConfig.MULTIPLE)
-                        .previewImage(false)
-                        .compressGrade(Luban.THIRD_GEAR)
-                        .isCamera(true)// 是否显示拍照按钮 true or false
-                        .sizeMultiplier(0.5f)
-                        .compress(true)
-                        .compressMode(LUBAN_COMPRESS_MODE)
-                        .isGif(true)
-                        .previewEggs(true)
-                        .forResult(Constans.TYPE_ONE);
+                intent.putExtra("type", Constans.TYPE_PICTURE);
+//                PictureSelector.create(this)
+//                        .openGallery(PictureMimeType.ofImage())
+//                        .maxSelectNum(9)
+//                        .imageSpanCount(4)
+//                        .selectionMode(PictureConfig.MULTIPLE)
+//                        .previewImage(false)
+//                        .compressGrade(Luban.THIRD_GEAR)
+//                        .isCamera(true)// 是否显示拍照按钮 true or false
+//                        .sizeMultiplier(0.5f)
+//                        .compress(true)
+//                        .compressMode(LUBAN_COMPRESS_MODE)
+//                        .isGif(true)
+//                        .previewEggs(true)
+//                        .forResult(Constans.TYPE_ONE);
                 break;
 
             //视频
             case R.id.action_b:
-                PictureSelector.create(this)
-                        .openGallery(PictureMimeType.ofVideo())
-                        .imageSpanCount(4)
-                        .selectionMode(PictureConfig.SINGLE)
-                        .previewVideo(true)
-                        .videoQuality(1)
-                        .compress(true)
-                        .recordVideoSecond(10)
-                        .forResult(Constans.TYPE_TWO);
+                intent.putExtra("type", Constans.TYPE_VIDEO);
+//                PictureSelector.create(this)
+//                        .openGallery(PictureMimeType.ofVideo())
+//                        .imageSpanCount(4)
+//                        .selectionMode(PictureConfig.SINGLE)
+//                        .previewVideo(true)
+//                        .videoQuality(1)
+//                        .compress(true)
+//                        .recordVideoSecond(10)
+//                        .forResult(Constans.TYPE_TWO);
                 break;
         }
+
+        intent.putExtra("starId", starId);
+        startActivityForResult(intent, 3);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MyLogger.jLog().i("onActivityResult");
-        Intent intent = new Intent(mContext, PublishActivity.class);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case Constans.TYPE_ONE:
-                    // 图片选择结果回调
-                    List<LocalMedia> localMedias = PictureSelector.obtainMultipleResult(data);
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
 
-                    intent.putExtra("data", (Serializable) localMedias);
-                    intent.putExtra("type", Constans.TYPE_PICTURE);
-                    intent.putExtra("starId", starId);
-                    break;
-
-                case Constans.TYPE_TWO:
-                    // 视频选择结果回调
-                    List<LocalMedia> video = PictureSelector.obtainMultipleResult(data);
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                    intent.putExtra("data", (Serializable) video);
-                    intent.putExtra("type", Constans.TYPE_VIDEO);
-                    break;
-            }
-            startActivityForResult(intent, 3);
-        }
-
-        MyLogger.jLog().i("requestCode=" + requestCode);
-        MyLogger.jLog().i("resultCode=" + resultCode);
         if (requestCode == 3 && resultCode == 10) {
             onRefresh();
             rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
-
 
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             QueryFtInfos.RowsBean mRowsBean = (QueryFtInfos.RowsBean) data.getSerializableExtra("rowsBean");

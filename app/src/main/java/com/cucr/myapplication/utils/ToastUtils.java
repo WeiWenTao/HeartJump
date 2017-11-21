@@ -74,6 +74,27 @@ public class ToastUtils {
         oneTime = twoTime;
     }
 
+    public static void showEnd() {
+        String message = "已经到最后一条啦";
+        if (toast == null) {
+            toast = Toast.makeText(MyApplication.getInstance(), message, Toast.LENGTH_SHORT);
+            toast.show();
+            oneTime = System.currentTimeMillis();
+        } else {
+            twoTime = System.currentTimeMillis();
+            if (message.equals(oldMsg)) {
+                if (twoTime - oneTime > Toast.LENGTH_SHORT) {
+                    toast.show();
+                }
+            } else {
+                oldMsg = message;
+                toast.setText(message);
+                toast.show();
+            }
+        }
+        oneTime = twoTime;
+    }
+
     public static void show(Context context, @StringRes int stringId) {
         context = MyApplication.getInstance().getApplicationContext();
         String message = context.getString(stringId);

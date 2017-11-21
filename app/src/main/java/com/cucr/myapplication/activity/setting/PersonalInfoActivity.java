@@ -128,7 +128,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         initTitle("个人资料");
 
         //用户编辑
-        mCore = new EditInfoCore(this);
+        mCore = new EditInfoCore();
         //查询
         obj = (PersonMessage.ObjBean) getIntent().getSerializableExtra("data");
         //初始化对话框
@@ -462,7 +462,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
         PersonalInfo personalInfo = new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath);
 
-        mCore.save(this, personalInfo, new OnCommonListener() {
+        mCore.save(MyApplication.getInstance(), personalInfo, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 ReBackMsg msg = mGson.fromJson(response.get(), ReBackMsg.class);

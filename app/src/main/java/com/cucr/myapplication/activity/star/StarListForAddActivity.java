@@ -47,7 +47,7 @@ public class StarListForAddActivity extends Activity {
     private void initView() {
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
-        mCore = new QueryStarList(this);
+        mCore = new QueryStarList();
         mGson = new Gson();
 //        mRows = new ArrayList<>();
         mGvAdapter = new StarRecommendAdapter(this,mRows);

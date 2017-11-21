@@ -1,8 +1,6 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.widget.ImageView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
 import com.cucr.myapplication.utils.MyLogger;
@@ -29,14 +26,12 @@ public class StarListAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<MyFocusStarInfo.RowsBean> list;
     private int clickPosition;
-    private Activity mActivity;
 
-    public StarListAdapter(Context context, Activity mActivity) {
+    public StarListAdapter(Context context) {
         this.context = context;
-        this.mActivity = mActivity;
     }
 
-    public void setData(List<MyFocusStarInfo.RowsBean> list){
+    public void setData(List<MyFocusStarInfo.RowsBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -66,9 +61,9 @@ public class StarListAdapter extends RecyclerView.Adapter {
             ((MyAddHolder) holder).iv_add_star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, StarListForAddActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mActivity.startActivityForResult(intent,111);
+                    if (mOnClick != null) {
+                        mOnClick.onClickAdd(v);
+                    }
                 }
             });
 
@@ -82,7 +77,9 @@ public class StarListAdapter extends RecyclerView.Adapter {
             iv_head.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnClick.onClickPosition(v, position);
+                    if (mOnClick != null) {
+                        mOnClick.onClickPosition(v, position);
+                    }
                 }
             });
 
@@ -101,7 +98,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        MyLogger.jLog().i("list:"+list);
+        MyLogger.jLog().i("list:" + list);
         return list == null ? 0 : list.size() + 1;
     }
 
@@ -134,6 +131,8 @@ public class StarListAdapter extends RecyclerView.Adapter {
 
     public interface OnClick {
         void onClickPosition(View view, int position);
+
+        void onClickAdd(View view);
     }
 
     private OnClick mOnClick;

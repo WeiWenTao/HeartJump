@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
+import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.constants.Constans;
@@ -36,6 +39,7 @@ import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.model.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.eventBus.EventStarId;
 import com.cucr.myapplication.model.others.FragmentInfos;
@@ -135,17 +139,25 @@ public class FragmentFans extends BaseFragment {
     private int type = 2;
 
     @Override
-    protected void initView(View childView) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MyLogger.jLog().i("EventNotifyStarInfo() 注册");
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void initView(View childView) {
         ViewUtils.inject(this, childView);
-        mStarCore = new QueryStarList(getActivity());
-        mCore = new QueryMyFocusStars(getActivity());
+        mStarCore = new QueryStarList();
+        mCore = new QueryMyFocusStars();
         initRlv();
         initHead();
         initIndicator();
         initVp();
-//        queryMsg();
+        queryMsg();
+        mAdapter.setPosition(0);
     }
+
 
 
     //初始化明星封面数据
@@ -167,11 +179,20 @@ public class FragmentFans extends BaseFragment {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //点击关注或取消关注时再查一遍
+    public void notifyDatas(EventNotifyStarInfo event) {
+        MyLogger.jLog().i("EventNotifyStarInfo() 收到消息了");
         queryMsg();
-        mAdapter.setPosition(0);
+        mAdapter.setPosition(0);//设置第一个被勾选
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        queryMsg();
+//        mAdapter.setPosition(0);
+//        MyLogger.jLog().i("onActivityResult");
     }
 
     private void queryMsg() {
@@ -196,9 +217,10 @@ public class FragmentFans extends BaseFragment {
         });
     }
 
+
     private void initRlv() {
         drawer_rcv.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mAdapter = new StarListAdapter(mContext, getActivity());
+        mAdapter = new StarListAdapter(mContext);
         mAdapter.setOnClick(new StarListAdapter.OnClick() {
             @Override
             public void onClickPosition(View view, int position) {
@@ -208,9 +230,17 @@ public class FragmentFans extends BaseFragment {
                 //eventBus传递数据
                 EventBus.getDefault().post(new EventStarId(mRows.get(position).getStartId()));
             }
+
+            @Override
+            public void onClickAdd(View view) {
+                Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, 111);
+            }
         });
         drawer_rcv.setAdapter(mAdapter);
     }
+
 
     @Override
     protected boolean needHeader() {
@@ -219,7 +249,7 @@ public class FragmentFans extends BaseFragment {
 
     private void initVp() {
         mViewPager.setAdapter(new StarPagerAdapter(getFragmentManager(), mDataList));
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(2);
     }
 
     //初始化标签栏
@@ -324,9 +354,9 @@ public class FragmentFans extends BaseFragment {
                         1f, 1f, 1f, 1f, 0.94f, 0.88f, 0.82f, 0.76f, 0.7f, 0.64f, 0.58f, 0.52f, 0.46f, 0.4f, 0.34f, 0.28f, 0.22f, 0.16f, 0.1f, 0f);
 
                 ObjectAnimator transYAni = ObjectAnimator.ofFloat(iv_gift, "translationY",
-                        0f,0f);
+                        0f, 0f);
 
-                mAnimSet.playTogether(scaleXAni, scaleYAni, alphaAni,transYAni);
+                mAnimSet.playTogether(scaleXAni, scaleYAni, alphaAni, transYAni);
                 mAnimSet.setDuration(2000);
                 mAnimSet.start();
                 break;
@@ -463,8 +493,9 @@ public class FragmentFans extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
+        MyLogger.jLog().i("EventNotifyStarInfo() 注销");
     }
 }

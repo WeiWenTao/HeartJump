@@ -8,6 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.focus.Focus;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
@@ -21,6 +22,8 @@ import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by cucr on 2017/9/5.
@@ -82,6 +85,8 @@ public class FocusCore implements Focus {
                 if (reBackMsg.isSuccess()) {
                     ToastUtils.showToast(mContext, "关注成功！");
                     MyLogger.jLog().i("关注成功");
+                    EventBus.getDefault().post(new EventNotifyStarInfo());
+                    MyLogger.jLog().i("EventNotifyStarInfo() 已发送");
                 } else {
                     ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }
@@ -90,6 +95,8 @@ public class FocusCore implements Focus {
                 if (reBackMsg.isSuccess()) {
                     ToastUtils.showToast(mContext, "已取消关注！");
                     MyLogger.jLog().i("已取消关注");
+                    EventBus.getDefault().post(new EventNotifyStarInfo());
+                    MyLogger.jLog().i("EventNotifyStarInfo() 已发送");
                 } else {
                     ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }

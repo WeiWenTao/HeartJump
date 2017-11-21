@@ -1,44 +1,44 @@
 package com.cucr.myapplication.core.starListAndJourney;
 
-import android.app.Activity;
+import android.content.Context;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.BaseCore;
-import com.cucr.myapplication.interf.nohttp.HttpListener;
 import com.cucr.myapplication.interf.starList.Journey;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.EncodingUtils;
-import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
 /**
  * Created by cucr on 2017/9/6.
  */
 
-public class StarJourney extends BaseCore implements Journey {
+public class StarJourney implements Journey {
 
-    private Activity mActivity;
     private OnCommonListener addJourneyListener;
     private OnCommonListener delJourneyListener;
 
 
+    /**
+     * 请求队列。
+     */
+    private RequestQueue mQueue;
+    private Context mContext;
 
-    public StarJourney(Activity activity) {
-        mActivity = activity;
+    public StarJourney() {
+        mContext = MyApplication.getInstance();
+        mQueue = NoHttp.newRequestQueue();
     }
-
-    @Override
-    public Activity getChildActivity() {
-        return mActivity;
-    }
-
 
 
     //添加行程
@@ -52,9 +52,9 @@ public class StarJourney extends BaseCore implements Journey {
                 .add("place", CommonUtils.replaceOtherChars(place))
                 .add("tripTime", tripTime)
                 .add("title", content)
-                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
-        request(Constans.TYPE_ONE, request, callback, false, true);
+        mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 
     //删除行程
@@ -65,45 +65,37 @@ public class StarJourney extends BaseCore implements Journey {
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)
-                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mActivity, request.getParamKeyValues()));
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
-        request(Constans.TYPE_TWO, request, callback, false, true);
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
-    //回调
-    private HttpListener<String> callback = new HttpListener<String>() {
+    private OnResponseListener responseListener = new OnResponseListener() {
         @Override
-        public void onSucceed(int what, Response<String> response) {
-
-            switch (what) {
-
-                //添加行程
-                case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("添加行程请求成功");
-                    addJourneyListener.onRequestSuccess(response);
-                    break;
-
-                //删除行程
-                case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("删除行程请求成功");
-                    delJourneyListener.onRequestSuccess(response);
-                    break;
-
-            }
+        public void onStart(int what) {
 
         }
 
         @Override
-        public void onFailed(int what, Response<String> response) {
+        public void onSucceed(int what, Response response) {
             switch (what) {
                 case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("添加行程请求失败");
+                    addJourneyListener.onRequestSuccess(response);
                     break;
-
                 case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("删除行程请求失败");
+                    delJourneyListener.onRequestSuccess(response);
                     break;
             }
+        }
+
+        @Override
+        public void onFailed(int what, Response response) {
+            HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
         }
     };
 }

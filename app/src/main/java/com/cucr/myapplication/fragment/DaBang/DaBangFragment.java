@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.DaBang;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -17,6 +18,7 @@ import com.cucr.myapplication.model.dabang.BangDanInfo;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
+import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -28,7 +30,7 @@ import java.util.List;
  * Created by 911 on 2017/6/22.
  */
 
-public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.ClickconfirmListener {
+public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.ClickconfirmListener, RefreshLayout.OnLoadListener, SwipeRefreshLayout.OnRefreshListener {
 
     private BangDanCore mCore;
     private DaBangAdapter mAdapter;
@@ -41,7 +43,11 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
 
     @Override
     protected void initView(View childView) {
+        RefreshLayout myRefreshListView = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
         ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);
+        myRefreshListView.setOnLoadListener(this);
+        myRefreshListView.setOnRefreshListener(this);
+
         headView = View.inflate(mContext, R.layout.head_dabang, null);
         ViewUtils.inject(this, headView);
         mDialog = new DialogDaBangStyle(childView.getContext(), R.style.BirthdayStyleTheme);
@@ -151,5 +157,15 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
                 }
             }
         });
+    }
+
+    @Override
+    public void onLoad() {
+        MyLogger.jLog().i("onLoad");
+    }
+
+    @Override
+    public void onRefresh() {
+        MyLogger.jLog().i("onRefresh");
     }
 }

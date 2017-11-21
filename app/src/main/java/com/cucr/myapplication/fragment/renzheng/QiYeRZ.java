@@ -1,6 +1,5 @@
 package com.cucr.myapplication.fragment.renzheng;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -76,7 +75,6 @@ public class QiYeRZ extends Fragment {
     private CommitQiYeRzCore mCore;
     private QueryRzResult mQueryCore;
     private Context mContext;
-    private Activity activity;
     private Gson mGson;
     private ImageConfig imageConfig;
     //修改的时候要上传dataId
@@ -159,9 +157,8 @@ public class QiYeRZ extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activity = getActivity();
         mCore = new CommitQiYeRzCore();
-        mQueryCore = new QueryRzResult(activity);
+        mQueryCore = new QueryRzResult();
         mContext = container.getContext();
         mGson = new Gson();
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_qiye, container, false);
@@ -463,32 +460,32 @@ public class QiYeRZ extends Fragment {
     @OnClick(R.id.tv_commit_check)
     public void commitCheck(View view) {
         if (TextUtils.isEmpty(et_qiye_name.getText())) {
-            ToastUtils.showToast(activity, "请输入企业名称哦");
+            ToastUtils.showToast( "请输入企业名称哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_qiye_contact.getText())) {
-            ToastUtils.showToast(activity, "请输入企业联系方式哦");
+            ToastUtils.showToast( "请输入企业联系方式哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_person_name.getText())) {
-            ToastUtils.showToast(activity, "请输入认证人姓名哦");
+            ToastUtils.showToast("请输入认证人姓名哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_person_phone.getText())) {
-            ToastUtils.showToast(activity, "请输入认证人联系方式哦");
+            ToastUtils.showToast("请输入认证人联系方式哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_position.getText())) {
-            ToastUtils.showToast(activity, "请输入认证人职位哦");
+            ToastUtils.showToast("请输入认证人职位哦");
             return;
         }
 
         if (licenseBitmap == null || positiveBitmap == null || nagetiveBitmap == null) {
-            ToastUtils.showToast(activity, "请上传照片哦");
+            ToastUtils.showToast("请上传照片哦");
             return;
         }
 
@@ -499,10 +496,10 @@ public class QiYeRZ extends Fragment {
                     public void onRequestSuccess(Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                         if (reBackMsg.isSuccess()) {
-                            ToastUtils.showToast(activity, "企业认证提交成功");
+                            ToastUtils.showToast("企业认证提交成功");
                             setView(false, "审核中");
                         } else {
-                            ToastUtils.showToast(activity, reBackMsg.getMsg());
+                            ToastUtils.showToast(reBackMsg.getMsg());
                         }
                     }
                 });

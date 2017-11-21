@@ -23,8 +23,14 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.SimpleViewHold
         mItemTouchListener = itemTouchListener;
     }
 
-    public DemoAdapter(List<StarJourneyList.RowsBean> rows) {
+    public void setData(List<StarJourneyList.RowsBean> rows) {
         this.rows = rows;
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<StarJourneyList.RowsBean> rows) {
+        this.rows.addAll(rows);
+        notifyDataSetChanged();
     }
 
     @Override

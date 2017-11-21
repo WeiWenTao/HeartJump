@@ -95,6 +95,7 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
             @Override
             public void onClick(View v) {
                 final EventContentId event = EventBus.getDefault().getStickyEvent(EventContentId.class);
+
                 mCore.reward(event.getContentId(), listBean.getUserAccountType().getId(), listBean.getUserAccountType().getId(), 1, //rewardMoney 打赏数量
                         new OnCommonListener() {
                             @Override
@@ -115,13 +116,14 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
                                 }
                             }
                         });
+
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return ftBackpackInfo.getObj().getList() == null ? 0 : ftBackpackInfo.getObj().getList().size();
+        return ftBackpackInfo == null ? 0 : ftBackpackInfo.getObj().getList().size();
     }
 
     public class BackpackViewHolder extends RecyclerView.ViewHolder {

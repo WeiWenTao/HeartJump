@@ -9,14 +9,16 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.widget.clip.ClipImageLayout;
 import com.cucr.myapplication.utils.ImageTools;
+import com.cucr.myapplication.widget.clip.ClipImageLayout;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.io.File;
 
@@ -34,6 +36,8 @@ public class ClipActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clipimage);
         ViewUtils.inject(this);
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
 
         //这步必须要加
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -51,7 +55,7 @@ public class ClipActivity extends Activity {
         }
         mClipImageLayout = (ClipImageLayout) findViewById(R.id.id_clipImageLayout);
         mClipImageLayout.setBitmap(bitmap);
-        ((Button)findViewById(R.id.id_action_clip)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)findViewById(R.id.id_action_clip)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 loadingDialog.show();

@@ -2,6 +2,7 @@ package com.cucr.myapplication.core.funTuan;
 
 import android.app.Activity;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -60,7 +61,7 @@ public class FtPublishCore implements FenTuanInterf {
 
     public FtPublishCore(Activity activity) {
         this.activity = activity;
-        dialog = new WaitDialog(activity,"正在上传...");
+        dialog = new WaitDialog(activity, "正在上传...");
         dialog_progress = new DialogProgress(activity, R.style.BirthdayStyleTheme);
         //点击屏幕外部和返回键不响应
 
@@ -81,14 +82,16 @@ public class FtPublishCore implements FenTuanInterf {
                 .add("type", type)
                 .add("content", content);
         sign = EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues());
-        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(activity, request.getParamKeyValues()));
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
 
         //图片
-        if (type == 1) {
+        if (type == 0) {
+            mQueue.add(Constans.TYPE_ONE, request, callback);
+        } else if (type == 1) {
             for (int i = 0; i < mData.size(); i++) {
                 String compressPath = mData.get(i).getCompressPath();
                 BasicBinary binary = new FileBinary(new File(compressPath), compressPath.substring(compressPath.lastIndexOf("/")));
-                binary.setUploadListener(i,mOnUploadListener);
+                binary.setUploadListener(i, mOnUploadListener);
                 files.add(binary);
             }
             request.add("file", files);
@@ -165,7 +168,7 @@ public class FtPublishCore implements FenTuanInterf {
 
         @Override
         public void onProgress(int what, int progress) {// 这个文件的上传进度发生边耍
-            MyLogger.jLog().i("第"+what+"张:"+progress);
+            MyLogger.jLog().i("第" + what + "张:" + progress);
         }
 
         @Override

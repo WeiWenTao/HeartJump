@@ -125,11 +125,11 @@ public class StarRecommendAdapter extends BaseAdapter {
         MyLogger.jLog().i("position:"+position+",isfollow"+isfollow);
         if (isfollow == 0) {
             tv_focus.setText("加关注");
-            tv_focus.setTextColor(resources.getColor(R.color.pink));
-            tv_focus.setBackgroundDrawable(resources.getDrawable(R.drawable.btn_bg_sel));
+            tv_focus.setTextColor(resources.getColor(R.color.white));
+            tv_focus.setBackgroundDrawable(resources.getDrawable(R.drawable.care_nor));
         } else {
             tv_focus.setText("已关注");
-            tv_focus.setTextColor(resources.getColor(R.color.white));
+            tv_focus.setTextColor(resources.getColor(R.color.pink));
             tv_focus.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_focud_bg));
         }
 
@@ -139,6 +139,7 @@ public class StarRecommendAdapter extends BaseAdapter {
                 if (isfollow == 0) {
                     MyLogger.jLog().i("关注。。。");
                     mCore.toFocus(starId);
+
                     rowsBean.setIsfollow(1);
                 } else {
                     mDialogCanaleFocusStyle.show();

@@ -98,7 +98,7 @@ public class MineFragment extends BaseFragment {
 
     //查询用户信息
     private void queryInfos() {
-        mQucryCore = new QueryPersonalMsgCore(getActivity());
+        mQucryCore = new QueryPersonalMsgCore();
         mQucryCore.queryPersonalInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {

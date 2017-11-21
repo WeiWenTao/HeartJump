@@ -132,6 +132,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 //                        startActivity(new Intent(mContext, VideoActivity.class));
 //                        startActivity(new Intent(mContext, NewsActivity.class));
                         intent.putExtra("url", "https://view.inews.qq.com/a/ENT2017110302821106?from=singlemessage&isappinstalled=0");
+//                        intent.putExtra("url", "http://192.168.1.122:8080/interface/dataPicAction/pic1");
                         break;
 
                     case 2:

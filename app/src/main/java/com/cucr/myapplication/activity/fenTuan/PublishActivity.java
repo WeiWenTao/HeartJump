@@ -40,6 +40,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -178,7 +179,7 @@ public class PublishActivity extends Activity {
         FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         mAdapter = new GridImageAdapter(this, onAddPicClickListener);
-        mAdapter.setList(mData);
+//        mAdapter.setList(mData);
         mAdapter.setSelectMax(mType == Constans.TYPE_PICTURE ? 9 : 1); //根据类型决定最大个数
         recyclerView.setAdapter(mAdapter);
 
@@ -249,7 +250,7 @@ public class PublishActivity extends Activity {
                             .imageSpanCount(4)
                             .selectionMode(PictureConfig.MULTIPLE)
                             .previewImage(false)
-                            .selectionMedia(mData)
+//                            .selectionMedia(mData)
                             .compressGrade(Luban.THIRD_GEAR)
                             .isCamera(true)// 是否显示拍照按钮 true or false
                             .sizeMultiplier(0.5f)
@@ -265,7 +266,7 @@ public class PublishActivity extends Activity {
                     PictureSelector.create(PublishActivity.this)
                             .openGallery(PictureMimeType.ofVideo())
                             .imageSpanCount(4)
-                            .selectionMedia(mData)
+//                            .selectionMedia(mData)
                             .selectionMode(PictureConfig.SINGLE)
                             .previewVideo(true)
                             .compress(true)
@@ -297,7 +298,8 @@ public class PublishActivity extends Activity {
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", -1);
         starId = intent.getIntExtra("starId", -1);
-        mData = (List<LocalMedia>) intent.getSerializableExtra("data");
+        mData = new ArrayList<>();
+//        mData = (List<LocalMedia>) intent.getSerializableExtra("data");
 
         switch (mType) {
             case Constans.TYPE_PICTURE:
@@ -394,6 +396,9 @@ public class PublishActivity extends Activity {
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");
                     MyLogger.jLog().i("发布text成功");
+                    Intent intent = getIntent();
+                    intent.putExtra("needRefresh",needRefresh);
+                    setResult(10,intent);
                     finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
