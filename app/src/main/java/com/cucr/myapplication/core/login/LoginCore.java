@@ -1,8 +1,10 @@
 package com.cucr.myapplication.core.login;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.load.LoadByPsw;
@@ -11,7 +13,7 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
-import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogLoad;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -35,6 +37,7 @@ public class LoginCore implements LoadByPsw {
 
     private OnLoginListener loginListener;
     private Context context;
+    private Activity activity;
 
     /**
      * 请求的时候等待框。
@@ -48,6 +51,12 @@ public class LoginCore implements LoadByPsw {
 
     //标记
     private Object flag = new Object();
+    private final DialogLoad mDailogPayStyle;
+
+    public LoginCore(Activity activity) {
+        this.activity = activity;
+        mDailogPayStyle = new DialogLoad(activity, R.style.ShowAddressStyleTheme);
+    }
 
     @Override
     public void login(String userName, String psw, final OnLoginListener loginListener) {
@@ -93,20 +102,15 @@ public class LoginCore implements LoadByPsw {
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
+            mDailogPayStyle.show();
             MyLogger.jLog().i("密码登录开始");
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            //状态码
-            int responseCode = response.getHeaders().getResponseCode();
-            if (what == NOHTTP_WHAT_1) {
-                if (loginListener != null) {
-                    loginListener.onSuccess(response);
+            if (loginListener != null) {
+                loginListener.onSuccess(response);
 
-                } else {
-                    ToastUtils.showToast(context, "未知错误:" + responseCode);
-                }
             }
         }
 
@@ -121,6 +125,7 @@ public class LoginCore implements LoadByPsw {
         @Override
         public void onFinish(int what) {
             MyLogger.jLog().i("密码登录结束");
+            mDailogPayStyle.dismiss();
         }
     };
 

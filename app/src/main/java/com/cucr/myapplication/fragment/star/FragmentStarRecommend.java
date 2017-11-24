@@ -1,6 +1,8 @@
 package com.cucr.myapplication.fragment.star;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +16,11 @@ import android.widget.GridView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
-import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
+import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapterForQiye;
+import com.cucr.myapplication.model.eventBus.EventXwStarId;
 import com.cucr.myapplication.model.starList.StarListInfos;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -26,7 +31,7 @@ import java.util.List;
 public class FragmentStarRecommend extends Fragment {
 
     private GridView gv_star_recommend;
-    private StarRecommendAdapter mGvAdapter;
+    private StarRecommendAdapterForQiye mGvAdapter;
     private View view;
     private List<StarListInfos.RowsBean> rows;
     private int finalPosition;
@@ -34,8 +39,14 @@ public class FragmentStarRecommend extends Fragment {
     public FragmentStarRecommend() {
     }
 
-    public FragmentStarRecommend(List<StarListInfos.RowsBean> rows) {
+    @SuppressLint("ValidFragment")
+    public FragmentStarRecommend(Activity activity) {
+        mGvAdapter = new StarRecommendAdapterForQiye(activity);
+    }
+
+    public void setData(List<StarListInfos.RowsBean> rows){
         this.rows = rows;
+        mGvAdapter.setData(rows);
     }
 
 
@@ -53,7 +64,7 @@ public class FragmentStarRecommend extends Fragment {
     }
 
     private void initGV(final Context context) {
-        mGvAdapter = new StarRecommendAdapter(context, rows);
+
         gv_star_recommend.setAdapter(mGvAdapter);
         gv_star_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -64,6 +75,10 @@ public class FragmentStarRecommend extends Fragment {
                 intent.putExtra("data", rowsBean);
                 finalPosition = position;
                 startActivityForResult(intent, 222);
+
+                //发送明星id到明星主页
+                EventBus.getDefault().postSticky(new EventXwStarId(rowsBean.getId()));
+
             }
         });
     }
@@ -72,8 +87,8 @@ public class FragmentStarRecommend extends Fragment {
     public void onResume() {
         super.onResume();
         // TODO: 2017/11/3  
-        rows.get(0).setIsfollow(1);
-        mGvAdapter.setData(rows);
+//        rows.get(0).setIsfollow(1);
+//        mGvAdapter.setData(rows);
     }
 
     @Override

@@ -95,7 +95,6 @@
         android:ellipsize="end"
         android:lineSpacingExtra="@dimen/dp_4"
         android:maxLines="3"
-        android:text="联凯尔国际传媒机构（C.U.CR）创始于2002年，通过10余年的发展，已经成为国内一线知名公关传媒机构之一，公司集公关传播、城市营销、媒体投资、文化创意四大业务模块于一体。现在北京和武汉设有南北两大运营中心，同时上海、广州（香港）、成都等地的区域公司正在筹备中，预计在未来5年内形成全国市场五大区域精细化管理的规模。创联凯尔一直密切关注市场动向、紧随客户，凭籍公关行业领跑者的历史使命，在专业的运作系统保障下，为广大客户提供策略性、创造性、整合性和可实施性的全方位一体化的公关解决方案，矢志为政府、非政府组织、国内外知名企业提供一体化的一站式精准公关传播服务。企业独创的MMS、CMS、QMS、SMS、HMS、FMS六大运营管理系统现已成为企业持续经营的有力保障，能够高效地为客户提供360°超乎想象的即时在线服务。"
         android:textColor="@color/color_333"
         android:textSize="@dimen/sp_15"
         />
@@ -115,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:scaleType="fitXY"
-            android:src="@drawable/video"
+            android:src="@drawable/pic_bg"
             />
 
         <TextView
@@ -145,6 +144,7 @@
         >
 
         <RelativeLayout
+            android:layout_marginLeft="@dimen/dp_20"
             android:id="@+id/rl_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,6 +176,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:layout_marginRight="@dimen/dp_20"
             android:id="@+id/ll_good"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,8 +218,7 @@
             android:id="@+id/rl_comment"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
-            android:layout_toLeftOf="@id/ll_good"
+            android:layout_centerHorizontal="true"
             >
 
 
@@ -254,6 +254,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
         android:background="@color/color_999"
         />
 

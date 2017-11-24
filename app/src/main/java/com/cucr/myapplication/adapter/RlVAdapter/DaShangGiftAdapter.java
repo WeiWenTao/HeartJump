@@ -17,6 +17,7 @@ import com.cucr.myapplication.core.daShang.DaShangCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventDsSuccess;
 import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.utils.MyLogger;
@@ -64,7 +65,7 @@ public class DaShangGiftAdapter extends RecyclerView.Adapter<DaShangGiftAdapter.
     }
 
     @Override
-    public void onBindViewHolder(GiftViewHolder holder, int position) {
+    public void onBindViewHolder(GiftViewHolder holder, final int position) {
 
         final FtGiftsInfo.RowsBean rowsBean = ftGiftsInfo.getRows().get(position);
 //        switch (rowsBean.getId()) {
@@ -106,10 +107,12 @@ public class DaShangGiftAdapter extends RecyclerView.Adapter<DaShangGiftAdapter.
                                 if (msg.isSuccess()) {
                                     EventBus.getDefault().post(new EventRewardGifts(rowsBean.getPicUrl(),rowsBean.getId()));
                                     giftCount++;
-                                    ToastUtils.showToast("打赏" + giftCount + "个" + rowsBean.getName() + "成功");
+                                    ToastUtils.showToast("打赏"+ rowsBean.getName() + "成功");
                                     if (mClickDashang != null){
                                         mClickDashang.clickDaShang(rowsBean.getProportion());
                                     }
+                                    EventBus.getDefault().post(new EventDsSuccess(event.getPosition()));
+
                                 } else {
                                     ToastUtils.showToast(msg.getMsg());
                                 }

@@ -89,6 +89,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_star_pager_forqiye);
+
         ViewUtils.inject(this);
         mCore = new FocusCore();
         getDatas();
@@ -114,7 +115,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     private void initIndicator() {
 
         mDataList = new ArrayList<>();
-        //TODO
+
         mDataList.add(new FragmentInfos(new Fragment_star_xingwen(), "星闻"));
         //        if (明星用户) {
         mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
@@ -193,6 +194,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     }
 
     public void getDatas() {
+
         //获取数据
         mData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
         //并初始化
@@ -201,6 +203,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         tv_base_title.setText(mData.getRealName());
         tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+
     }
 
     @OnClick(R.id.iv_base_back)

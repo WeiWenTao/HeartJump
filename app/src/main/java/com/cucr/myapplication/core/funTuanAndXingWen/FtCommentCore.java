@@ -1,4 +1,4 @@
-package com.cucr.myapplication.core.funTuan;
+package com.cucr.myapplication.core.funTuanAndXingWen;
 
 import android.content.Context;
 

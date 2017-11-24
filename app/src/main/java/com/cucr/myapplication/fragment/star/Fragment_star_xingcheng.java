@@ -17,6 +17,7 @@ import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.model.eventBus.EventStarId;
+import com.cucr.myapplication.model.eventBus.EventXwStarId;
 import com.cucr.myapplication.model.starJourney.StarJourneyList;
 import com.cucr.myapplication.model.starJourney.StarScheduleLIst;
 import com.cucr.myapplication.utils.MyLogger;
@@ -71,6 +72,7 @@ public class Fragment_star_xingcheng extends Fragment {
         return view;
     }
 
+    //第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
         starId = event.getFirstId();
@@ -79,18 +81,32 @@ public class Fragment_star_xingcheng extends Fragment {
         if (event != null) {
             EventBus.getDefault().removeStickyEvent(event);
         }
+        queryJourney();
+        queryJourneyByTime(0);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+    //明星id
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
         starId = event.getStarId();
         page = 1;
         rows = 10;
         queryJourney();
         queryJourneyByTime(0);
-        if (event != null) {
-            EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    //查询行程 点击明星列表的时候发送 starid
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+    public void onEvents(EventXwStarId event) {
+        starId = event.getStarId();
+        MyLogger.jLog().i("EventStarId：" + starId);
+        page = 1;
+        rows = 10;
+        if (mCore == null){
+            mCore = new QueryJourneyList();
         }
+        queryJourney();
+        queryJourneyByTime(0);
     }
 
 

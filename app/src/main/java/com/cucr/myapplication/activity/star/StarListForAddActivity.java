@@ -6,7 +6,7 @@ import android.widget.GridView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
-import com.cucr.myapplication.core.starListAndJourney.QueryStarList;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -25,7 +25,7 @@ public class StarListForAddActivity extends Activity {
     @ViewInject(R.id.gv_star_list)
     private GridView gv_star_list;
 
-    private QueryStarList mCore;
+    private QueryStarListCore mCore;
     private Gson mGson;
     private int type;   //查全部
     private int rows;   //每页显示数目
@@ -47,10 +47,10 @@ public class StarListForAddActivity extends Activity {
     private void initView() {
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
-        mCore = new QueryStarList();
+        mCore = new QueryStarListCore();
         mGson = new Gson();
 //        mRows = new ArrayList<>();
-        mGvAdapter = new StarRecommendAdapter(this,mRows);
+        mGvAdapter = new StarRecommendAdapter(this, mRows);
         gv_star_list.setAdapter(mGvAdapter);
     }
 
@@ -61,7 +61,7 @@ public class StarListForAddActivity extends Activity {
         rows = 10;
         page = 1;
         //参数: 2:查全部
-        mCore.queryStar(2, page, rows, 0, new OnCommonListener() {
+        mCore.queryStar(2, page, rows, -1, null, null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);

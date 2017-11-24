@@ -25,11 +25,13 @@ import com.cucr.myapplication.activity.fenTuan.PublishActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.core.funTuan.QueryFtInfoCore;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventDsSuccess;
 import com.cucr.myapplication.model.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.model.eventBus.EventStarId;
@@ -38,6 +40,7 @@ import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
@@ -82,15 +85,16 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private int starId;
     private int qYStarId; //企业用户可以直接传递id   企业用户直接点击明星列表进来的  所以只查看点击明星的信息
     private int page = 1;
-    private int rows = 2;
+    private int rows = 15;
+    private int dataType = 1; //dataType: 0 星闻,1 粉团文章.
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
     private QueryFtInfos mQueryFtInfos;
     private QueryFtInfos mQueryFtInfoss;
     private FtAdapter mAdapter;
     private Integer giveNum;
     private int position = -1;
-    private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
+    private PopupWindow popWindow;
     private DaShangPagerAdapter mDaShangPagerAdapter;
 
     @SuppressLint("ValidFragment")
@@ -119,6 +123,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             initInfos();
         }
 
+        //如果是企业用户  进页面的时候就查一遍
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+            onRefresh();
+        }
 
         return view;
     }
@@ -178,20 +186,34 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         queryBackpack();
     }
 
+    //查询粉团 点击明星列表的时候发送 starid
+//    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+//    public void onEvents(EventXwStarId event) {
+//        starId = event.getStarId();
+//        MyLogger.jLog().i("EventStarId：" + starId);
+//        queryFtInfo();
+//    }
+
+
     private void queryFtInfo() {
         // TODO: 2017/11/3
         //如果是企业用户
-        /*if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
             starId = qYStarId;
-        }*/
+        }
         MyLogger.jLog().i("粉团参数 starId=" + starId + ",page=" + page + ",rows=" + rows);
-        queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(starId, dataType, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
                     mAdapter.setData(mQueryFtInfos);
+                    rlv_fentuan.complete();
+                    if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {
+                        rlv_fentuan.onNoMore("木有了");
+                    }
+                    rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
@@ -205,22 +227,20 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onDataSynEvent(EventStarId event) {
         starId = event.getStarId();
         page = 1;
-        rows = 2;
+        rlv_fentuan.onLoadingMore();
         MyLogger.jLog().i("EventStarId：" + starId);
         if (queryCore == null) {
             queryCore = new QueryFtInfoCore();
         }
         queryFtInfo();
-
     }
 
+    //查询第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
         starId = event.getFirstId();
+        MyLogger.jLog().i("EventStarId：" + starId);
         queryFtInfo();
-        if (event!=null){
-            EventBus.getDefault().removeStickyEvent(event);
-        }
     }
 
     private void initRlV() {
@@ -234,7 +254,14 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 //        TextView textView = new TextView(mContext);
 //        textView.setText("empty view");
 //        rlv_fentuan.setEmptyView(textView);
+    }
 
+    //打赏成功后打赏人数增加
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshDsRecord(EventDsSuccess event) {
+        QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(event.getPosition());
+        rowsBean.setDssl(rowsBean.getDssl() + 1);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void initView() {
@@ -329,35 +356,40 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //刷新的时候查询最新数据 page = 1
     @Override
     public void onRefresh() {
+        if (!rlv_fentuan.getSwipeRefreshLayout().isRefreshing()){
+            rlv_fentuan.getSwipeRefreshLayout().setRefreshing(true);
+        }
         page = 1;
         queryFtInfo();
-        rlv_fentuan.complete();
 
     }
 
 
     @Override
     public void onLoadMore() {
-        MyLogger.jLog().i("onLoadMore");
         page++;
-        queryCore.queryFtInfo(starId, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(starId, dataType, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
                 MyLogger.jLog().i("mQueryFtInfoss.getRows:" + mQueryFtInfoss.getRows().size() + ":" + mQueryFtInfos.getRows());
-                //判断是否还有数据
-                if (mQueryFtInfoss.getTotal() <= page * rows) {
-                    rlv_fentuan.onNoMore("没有更多了");
-                    MyLogger.jLog().i("onNoMore(没有更多了);");
-                }
+
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
                     MyLogger.jLog().i("addAll(mQueryFtInfoss.getRows())");
                     mAdapter.addData(mQueryFtInfoss.getRows());
+                    //判断是否还有数据
+                    if (mQueryFtInfoss.getTotal() <= page * rows) {
+                        rlv_fentuan.onNoMore("没有更多了");
+                        MyLogger.jLog().i("test_onNoMore()");
+                    } else {
+                        rlv_fentuan.complete();
+                        MyLogger.jLog().i("test_complete()");
+                    }
                 } else {
                     ToastUtils.showToast(mQueryFtInfoss.getErrorMsg());
                 }
-                rlv_fentuan.complete();
+
             }
         });
     }
@@ -368,7 +400,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
             ViewUtils.inject(this, view);
             popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-            initPop(view);
         }
         popWindow.setAnimationStyle(R.style.AnimationFade);
         popWindow.setFocusable(true);
@@ -377,14 +408,11 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mDaShangPagerAdapter = new DaShangPagerAdapter();
         vp_dahsnag.setAdapter(mDaShangPagerAdapter);
-
     }
 
-    private void initPop(View view) {
 
-    }
 
-    //礼物
+        //礼物
     @OnClick(R.id.tv_gift)
     public void gift(View view) {
         vp_dahsnag.setCurrentItem(0);
@@ -455,12 +483,13 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
     //弹出打赏框
     @Override
-    public void onClickDaShang(int contentId) {
+    public void onClickDaShang(int contentId, int position) {
         popWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
         //可以考虑用eventbus传值
-        EventBus.getDefault().postSticky(new EventContentId(contentId));
+        EventBus.getDefault().postSticky(new EventContentId(contentId, position));
     }
 
+    //打赏详情
     @Override
     public void onClickDsRecored(int contentId) {
         Intent intent = new Intent(mContext, DaShangCatgoryActivity.class);

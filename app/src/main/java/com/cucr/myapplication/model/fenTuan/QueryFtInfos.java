@@ -75,6 +75,7 @@ public class QueryFtInfos implements Serializable {
                     ", userHeadPortrait='" + userHeadPortrait + '\'' +
                     ", attrFileList=" + attrFileList +
                     ", dssl=" + dssl +
+                    ", locationUrl=" + locationUrl +
                     '}';
         }
 
@@ -110,6 +111,19 @@ public class QueryFtInfos implements Serializable {
         private Boolean isGiveUp;
         private Integer readCount;
         private String remarks;
+        private String locationUrl;
+        private String userHeadPortrait;
+        private List<AttrFileListBean> attrFileList;
+        private int createUserRoleId;
+
+        public String getLocationUrl() {
+            return locationUrl;
+        }
+
+        public void setLocationUrl(String locationUrl) {
+            this.locationUrl = locationUrl;
+        }
+
         private String title;
         private Integer type;
         private Integer dssl;
@@ -122,8 +136,14 @@ public class QueryFtInfos implements Serializable {
             this.dssl = dssl;
         }
 
-        private String userHeadPortrait;
-        private List<AttrFileListBean> attrFileList;
+
+        public int getCreateUserRoleId() {
+            return createUserRoleId;
+        }
+
+        public void setCreateUserRoleId(int createUserRoleId) {
+            this.createUserRoleId = createUserRoleId;
+        }
 
         public Integer getCommentCount() {
             return commentCount == null ? 0 : commentCount;

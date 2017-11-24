@@ -157,7 +157,7 @@ public class QiYeRZ extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mCore = new CommitQiYeRzCore();
+        mCore = new CommitQiYeRzCore(getActivity());
         mQueryCore = new QueryRzResult();
         mContext = container.getContext();
         mGson = new Gson();

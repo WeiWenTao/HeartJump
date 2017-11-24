@@ -23,9 +23,10 @@ import com.yanzhenjie.nohttp.rest.Response;
  * Created by cucr on 2017/9/5.
  */
 
-public class QueryStarList implements StarListInfo {
+public class QueryStarListCore implements StarListInfo {
 
     private OnCommonListener onCommonListener;
+    private OnCommonListener queryZdListener;
 
     /**
      * 请求队列。
@@ -33,13 +34,13 @@ public class QueryStarList implements StarListInfo {
     private RequestQueue mQueue;
     private Context mContext;
 
-    public QueryStarList() {
+    public QueryStarListCore() {
         mContext = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
     @Override
-    public void queryStar(int type, int page, int row, int startId, final OnCommonListener onCommonListener) {
+    public void queryStar(int type, int page, int row, int startId, String userCost, String userType, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
@@ -49,19 +50,43 @@ public class QueryStarList implements StarListInfo {
         request.add("page", page);
         request.add("rows", row);
 
-        if (startId != 0) {
+        if (startId != -1) {
             request.add("startId", startId);
+        }
+        if (userCost != null) {
+            request.add("userCost", userCost);
+        }
+        if (userType != null) {
+            request.add("userType", userType);
         }
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
 
         //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
-        request.setCacheKey(HttpContans.ADDRESS_QUERY_STAR);
-        //没有缓存才去请求网络
+        request.setCacheKey(HttpContans.ADDRESS_QUERY_STAR + type + userCost + userType);
+        //没网的时候请求缓存
         request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
+
+    //查询字段
+    @Override
+    public void queryZiDuan(String actionCode, OnCommonListener onCommonListener) {
+
+        this.queryZdListener = onCommonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_STAR_KEY, RequestMethod.POST);
+        // 添加普通参数。
+        request.add("actionCode", actionCode);
+
+        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
+        request.setCacheKey(HttpContans.ADDRESS_STAR_KEY + actionCode);
+        //没网的时候请求缓存
+        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
+
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
+    }
+
 
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
@@ -71,9 +96,14 @@ public class QueryStarList implements StarListInfo {
 
         @Override
         public void onSucceed(int what, Response response) {
+
             switch (what) {
                 case Constans.TYPE_ONE:
                     onCommonListener.onRequestSuccess(response);
+                    break;
+
+                case Constans.TYPE_TWO:
+                    queryZdListener.onRequestSuccess(response);
                     break;
             }
         }
@@ -90,7 +120,6 @@ public class QueryStarList implements StarListInfo {
     };
 
     public void stopRequest() {
-        mQueue.stop();
         mQueue.cancelAll();
     }
 }

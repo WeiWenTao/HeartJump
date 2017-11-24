@@ -7,5 +7,7 @@ import com.cucr.myapplication.listener.OnCommonListener;
  */
 
 public interface StarListInfo {
-    void queryStar(int type, int page, int row, int starId, OnCommonListener onCommonListener);
+    void queryStar(int type, int page, int row, int starId, String userCost, String userType, OnCommonListener onCommonListener);
+
+    void queryZiDuan(String actionCode, OnCommonListener onCommonListener);
 }

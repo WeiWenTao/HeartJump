@@ -1,16 +1,22 @@
 package com.cucr.myapplication.activity.fenTuan;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
@@ -18,19 +24,29 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.GvAdapter.GridAdapter;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
+import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.core.funTuan.FtCommentCore;
-import com.cucr.myapplication.core.funTuan.QueryFtInfoCore;
+import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
+import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventDsSuccess;
+import com.cucr.myapplication.model.eventBus.EventDuiHuanSuccess;
+import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
+import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaShangStyle;
 import com.cucr.myapplication.widget.gridView.NoScrollGridView;
+import com.cucr.myapplication.widget.viewpager.NoScrollPager;
+import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -45,6 +61,10 @@ import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.List;
@@ -90,8 +110,19 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @ViewInject(R.id.iv_emoji)
     ImageView iv_emoji;
 
+    //礼物和背包 ViewPager
+    @ViewInject(R.id.vp_dahsnag)
+    private NoScrollPager vp_dahsnag;
 
-    private DialogDaShangStyle mDialogDaShangStyle;
+    //礼物
+    @ViewInject(R.id.tv_gift)
+    private TextView gift;
+
+    //背包
+    @ViewInject(R.id.tv_backpack)
+    private TextView backpack;
+
+    private DialogDaShangStyle daShangStyle;
     private boolean mHasPicture;
     private boolean mIsFormConmmomd;
     private QueryFtInfos.RowsBean mRowsBean;
@@ -107,14 +138,68 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private TextView mTv_all_comment;
     private List<FtCommentInfo.RowsBean> mRows;
     private int position;
+    private TextView tv_dashang;
+    //打赏框
+    private PopupWindow popWindow;
+    private DaShangPagerAdapter mDaShangPagerAdapter;
+    private PayCenterCore mPayCenterCore;
 
     @Override
     protected void initChild() {
+        EventBus.getDefault().register(this);
         initTitle("详情");
         initData();
+        initGiftAndBackPack();
         setUpEmojiPopup();
         initLV();
         getDatas();
+    }
+
+    private void initGiftAndBackPack() {
+        mPayCenterCore = new PayCenterCore();
+        //查询用户余额
+        mPayCenterCore.queryUserMoney(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                if (reBackMsg.isSuccess()) {
+                    mDaShangPagerAdapter.setUserMoney(Double.parseDouble(reBackMsg.getMsg()));
+                } else {
+                    ToastUtils.showToast(reBackMsg.getMsg());
+                }
+            }
+        });
+
+        //查询虚拟道具信息
+        queryCore.queryGift(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtGiftsInfo ftGiftsInfo = mGson.fromJson(response.get(), FtGiftsInfo.class);
+                if (ftGiftsInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setGiftInfos(ftGiftsInfo);
+                } else {
+                    ToastUtils.showToast(ftGiftsInfo.getErrorMsg());
+                }
+            }
+        });
+
+        queryBackpack();
+    }
+
+    private void queryBackpack() {
+        //查询背包信息
+        queryCore.queryBackpackInfo(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtBackpackInfo ftBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
+                MyLogger.jLog().i("ftBackpackInfo:" + response.get());
+                if (ftBackpackInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setBackpackInfos(ftBackpackInfo);
+                } else {
+                    ToastUtils.showToast(ftBackpackInfo.getMsg());
+                }
+            }
+        });
     }
 
     //获取传过来的数据
@@ -164,21 +249,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     }
 
     private void initLV() {
-        mDialogDaShangStyle = new DialogDaShangStyle(this, R.style.ShowAddressStyleTheme);
-        mDialogDaShangStyle.setCanceledOnTouchOutside(true);
-        mDialogDaShangStyle.setConfirmListener(new DialogDaShangStyle.ClickconfirmListener() {
-            @Override
-            public void onClickConfirm(int howMuch) {
-                if (howMuch != 0) {
-                    ToastUtils.showToast(FenTuanCatgoryActiviry.this, howMuch + "" + " 星币");
-                }
-                mDialogDaShangStyle.dismiss();
-            }
-        });
-
         View lvHead = View.inflate(this, R.layout.item_ft_catgory_header, null);
+        initPopWindow();
         initLvHeader(lvHead);
-
         lv_ft_catgory.addHeaderView(lvHead, null, true);
         lv_ft_catgory.setHeaderDividersEnabled(false);
         mAdapter = new FtCatgoryAadapter(this);
@@ -187,8 +260,25 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         et_comment.setOnFocusChangeListener(this);
     }
 
+    //打赏框
+    private void initPopWindow() {
+        if (popWindow == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
+            ViewUtils.inject(this, view);
+            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        }
+        popWindow.setAnimationStyle(R.style.AnimationFade);
+        popWindow.setFocusable(true);
+        popWindow.setOutsideTouchable(true);
+        popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
+        vp_dahsnag.setAdapter(mDaShangPagerAdapter);
+    }
 
-    private void initLvHeader(View lvHead) {
+
+    private void initLvHeader(final View lvHead) {
         //头像
         ImageView iv_pic = (ImageView) lvHead.findViewById(R.id.iv_pic);
         //昵称
@@ -201,6 +291,16 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         TextView tv_content = (TextView) lvHead.findViewById(R.id.tv_content);
         //评论内容
         mTv_all_comment = (TextView) lvHead.findViewById(R.id.tv_all_comment);
+        //打赏人数
+        tv_dashang = (TextView) lvHead.findViewById(R.id.tv_dashang);
+        //打赏
+        lvHead.findViewById(R.id.iv_dashang).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWindow.showAtLocation(lvHead, Gravity.BOTTOM, 0, 0);
+                EventBus.getDefault().postSticky(new EventContentId(mRowsBean.getId(), position));
+            }
+        });
 
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
@@ -209,11 +309,14 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         tv_lookcount.setText(mRowsBean.getReadCount() + "");
         tv_content.setText(mRowsBean.getContent());
         mTv_all_comment.setText(mRowsBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
-
-        lvHead.findViewById(R.id.tv_dashang).setOnClickListener(new View.OnClickListener() {
+        tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
+        tv_dashang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialogDaShangStyle.show();
+                Intent intent = new Intent(MyApplication.getInstance(), DaShangCatgoryActivity.class);
+                intent.putExtra("contentId", mRowsBean.getId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 
@@ -410,6 +513,27 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
 
+    //礼物
+    @OnClick(R.id.tv_gift)
+    public void gift(View view) {
+        vp_dahsnag.setCurrentItem(0);
+        gift.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setBackgroundColor(getResources().getColor(R.color.zise));
+        gift.setTextColor(getResources().getColor(R.color.xtred));
+        backpack.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    //背包
+    @OnClick(R.id.tv_backpack)
+    public void backpack(View view) {
+        vp_dahsnag.setCurrentItem(1);
+        backpack.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setBackgroundColor(getResources().getColor(R.color.zise));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -424,5 +548,27 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 //            mAdapter.notifyDataSetChanged();
             getDatas();
         }
+    }
+
+    //兑换成功 再次查询背包信息
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void eventData(EventDuiHuanSuccess event) {
+        MyLogger.jLog().i("queryBackpack");
+        queryBackpack();
+    }
+
+    private int count;
+
+    //打赏成功后打赏人数增加
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshDsRecord(EventDsSuccess event) {
+        count++;
+        tv_dashang.setText(mRowsBean.getDssl() + count + "人打赏了道具");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

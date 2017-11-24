@@ -206,7 +206,7 @@ public class NewRegistActivity extends Activity {
     //登录请求
     private void logRequest() {
         //TODO 输入判断
-        new LoginCore().login(mPhoneNum, mSetPsw, new OnLoginListener() {
+        new LoginCore(this).login(mPhoneNum, mSetPsw, new OnLoginListener() {
             @Override
             public void onSuccess(Response<String> response) {
                 tags = new HashSet<>();

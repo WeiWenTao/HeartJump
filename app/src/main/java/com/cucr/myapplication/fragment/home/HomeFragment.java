@@ -14,11 +14,14 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HomeAdapter;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.Home.HomeBannerInfo;
+import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.temp.NetworkImageHolderView;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -48,10 +51,14 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     private LinearLayout ll_fentuan;
     private QueryBannerCore mCore;
     private List<String> pics;
+    private QueryFtInfoCore mDataCore;
+    private HomeAdapter mAdapter;
+    private QueryFtInfos mQueryFtInfos;
 
     @Override
     protected void initView(View childView) {
         mCore = new QueryBannerCore(getActivity());
+        mDataCore = new QueryFtInfoCore();
         findView(childView);
         initLv();
         ThreadUtils.getInstance().execute(new Runnable() {
@@ -60,6 +67,31 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                 queryBanner();
             }
         });
+        queryFtInfo();
+        mLv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
+                intent.putExtra("url",mQueryFtInfos.getRows().get(position - 1).getLocationUrl());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void queryFtInfo() {
+        mDataCore.queryFtInfo(-1, 0, false, 1, 20, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
+                if (mQueryFtInfos.isSuccess()) {
+                    MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
+                    mAdapter.setData(mQueryFtInfos);
+                } else {
+                    ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
+                }
+            }
+        });
+
     }
 
 
@@ -118,8 +150,10 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 //        mLv_home.setHeaderDividersEnabled(false);
 
         //用父类的Context
-        mLv_home.setAdapter(new HomeAdapter(mContext));
-        mLv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mAdapter = new HomeAdapter();
+        mLv_home.setAdapter(mAdapter);
+
+        /*mLv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //跳转到评论和喜欢界面
@@ -152,7 +186,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                 }
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
 //    @Override

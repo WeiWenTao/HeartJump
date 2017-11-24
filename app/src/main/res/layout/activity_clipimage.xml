@@ -37,7 +37,7 @@
             android:padding="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_10"
             android:background="@drawable/shape_save"
-            android:text="保存"
+            android:text="确定"
             android:textColor="@color/pink"
             android:textSize="12sp" />
 

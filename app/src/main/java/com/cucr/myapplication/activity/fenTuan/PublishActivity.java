@@ -18,7 +18,7 @@ import android.widget.EditText;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.GridImageAdapter;
 import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.core.funTuan.FtPublishCore;
+import com.cucr.myapplication.core.funTuanAndXingWen.FtPublishCore;
 import com.cucr.myapplication.listener.OnUpLoadListener;
 import com.cucr.myapplication.model.RZ.RzResult;
 import com.cucr.myapplication.utils.MyLogger;
@@ -299,17 +299,6 @@ public class PublishActivity extends Activity {
         mType = intent.getIntExtra("type", -1);
         starId = intent.getIntExtra("starId", -1);
         mData = new ArrayList<>();
-//        mData = (List<LocalMedia>) intent.getSerializableExtra("data");
-
-        switch (mType) {
-            case Constans.TYPE_PICTURE:
-                ToastUtils.showToast("图片" + mData.size() + "张");
-                break;
-
-            case Constans.TYPE_VIDEO:
-                ToastUtils.showToast("视频" + mData.size() + "个");
-                break;
-        }
     }
 
     private void initHead() {

@@ -23,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -72,7 +73,6 @@ public class StarRZ extends Fragment {
     private String path;//图片全路径
     private CommitStarRzCore mCore;
     private QueryRzResult mQueryCore;
-    private Context mContext;
 
     private Gson mGson;
     private ImageConfig imageConfig;
@@ -137,9 +137,8 @@ public class StarRZ extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mContext = container.getContext();
         mGson = new Gson();
-        mCore = new CommitStarRzCore(mContext);
+        mCore = new CommitStarRzCore(getActivity());
         mQueryCore = new QueryRzResult();
         View rootView = inflater.inflate(R.layout.fragment_ren_zheng_star, container, false);
         ViewUtils.inject(this, rootView);
@@ -172,7 +171,7 @@ public class StarRZ extends Fragment {
                     String pic2 = obj.getPic2();
                     backShow(getUserName, contact, belongCompany, startCost, result, pic1, pic2, info);
                 } else {
-                    ToastUtils.showToast(mContext, rzResult.getMsg() + "");
+                    ToastUtils.showToast(rzResult.getMsg() + "");
                 }
             }
         });
@@ -216,7 +215,7 @@ public class StarRZ extends Fragment {
 
 
     private void initHead() {
-        layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) MyApplication.getInstance().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         File file = new File(Environment.getExternalStorageDirectory(), "StarAttestation/cache");
         if (!file.exists())

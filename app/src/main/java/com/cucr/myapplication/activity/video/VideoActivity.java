@@ -63,8 +63,8 @@ public class VideoActivity extends Activity {
         player.setDefaultRetryTime(5 * 1000);
         player.play(url);
         player.setShowNavIcon(true);
-
     }
+
 
     private void initVideo() {
         player = new GiraffePlayer(this);

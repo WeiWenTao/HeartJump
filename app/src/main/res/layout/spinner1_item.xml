@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@color/white"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+    >
 
-    
     <TextView
+        android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/tv"
         android:gravity="center"
+        android:textSize="@dimen/dp_12"
+        android:textColor="@color/color_666"
         />
 
     <View
         android:layout_width="match_parent"
+        android:layout_height="1px"
         android:background="@color/color_333"
-        android:layout_height="1px"/>
+        />
 
 </LinearLayout>

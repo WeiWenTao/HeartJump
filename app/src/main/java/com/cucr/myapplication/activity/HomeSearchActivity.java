@@ -77,7 +77,7 @@ public class HomeSearchActivity extends Activity {
         View headerView = View.inflate(this, R.layout.header_home_search, null);
         lv_search.addHeaderView(headerView,null,true);
         lv_search.setHeaderDividersEnabled(false);
-        lv_search.setAdapter(new HomeAdapter(this));
+        lv_search.setAdapter(new HomeAdapter());
     }
 
 

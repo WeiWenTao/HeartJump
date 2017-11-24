@@ -134,6 +134,9 @@ public class HttpContans {
     //道具提现
     public static final String ADDRESS_GIFT_TX = "/interface/mobileTransactionAction/propWithdrawals";
 
-    //道具提现
+    //明星数据
     public static final String ADDRESS_STAR_DATA = "/interface/dataPicAction/pic1";
+
+    //明星查询字段
+    public static final String ADDRESS_STAR_KEY = "/interface/mobileSysCodeAction/getList";
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
@@ -11,6 +12,7 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.CommonViewHolder;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,10 +28,13 @@ public class GridAdapter extends BaseAdapter {
     private Context mContext;
 
     private List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList;
+    private final WindowManager mWm;
 
     public GridAdapter(Context mContext, List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList) {
         this.mContext = mContext;
         this.attrFileList = attrFileList;
+        mWm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+
     }
 
     @Override
@@ -52,6 +57,11 @@ public class GridAdapter extends BaseAdapter {
 
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_ft_pics, null);
         ImageView iv = cvh.getIv(R.id.iv_image);
+        ViewGroup.LayoutParams layoutParams = iv.getLayoutParams();
+        int value = mWm.getDefaultDisplay().getWidth() - CommonUtils.dip2px(mContext, 26.0f);
+        layoutParams.width = value / 3;
+        layoutParams.height = value / 3;
+        iv.setLayoutParams(layoutParams);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)

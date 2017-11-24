@@ -1,6 +1,6 @@
 package com.cucr.myapplication.core.renZheng;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
@@ -37,10 +37,10 @@ public class CommitStarRzCore implements CommitStarRZ {
 
     private OnCommonListener listener;
     private WaitDialog mWaitDialog;
-    private Context context;
+    private Activity activity;
 
-    public CommitStarRzCore(Context context) {
-        this.context = context;
+    public CommitStarRzCore(Activity activity) {
+        this.activity = activity;
         mQueue = NoHttp.newRequestQueue();
     }
 
@@ -53,7 +53,7 @@ public class CommitStarRzCore implements CommitStarRZ {
                              Integer id,
                              OnCommonListener listener) {
         this.listener = listener;
-        mWaitDialog = new WaitDialog(context,"正在提交...");
+        mWaitDialog = new WaitDialog(activity,"正在提交...");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
                 + HttpContans.ADDRESS_STAR_RZ, RequestMethod.POST);

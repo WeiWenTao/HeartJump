@@ -61,7 +61,7 @@ public class NewLoadActivity extends Activity {
 
     private void initViews() {
         //控制层
-        mLoginCore = new LoginCore();
+        mLoginCore = new LoginCore(this);
         //回显账号和密码  如果没有就设置为空串  账号密码由注册时保存到sp中
         mEt_accunt.setText(((String) SpUtil.getParam(SpConstant.USER_NAEM, "")));
         mEt_psw.setText(((String) SpUtil.getParam(SpConstant.PASSWORD, "")));

@@ -1,6 +1,7 @@
 package com.cucr.myapplication.adapter.GvAdapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
@@ -24,8 +26,9 @@ import java.util.List;
  * Created by 911 on 2017/5/22.
  */
 
-public class StarRecommendAdapter extends BaseAdapter {
-    private Activity mContext;
+public class StarRecommendAdapterForQiye extends BaseAdapter {
+    private Context mContext;
+    private Activity activity;
     private int checked = -1;
     private DialogCanaleFocusStyle mDialogCanaleFocusStyle;
     private List<StarListInfos.RowsBean> rows;
@@ -42,9 +45,9 @@ public class StarRecommendAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public StarRecommendAdapter(Activity activity, List<StarListInfos.RowsBean> rows) {
-        this.mContext = activity;
-        this.rows = rows;
+    public StarRecommendAdapterForQiye(Activity activity) {
+        this.activity = activity;
+        this.mContext = MyApplication.getInstance();
         mCore = new FocusCore();
         initDialog();
     }
@@ -52,7 +55,7 @@ public class StarRecommendAdapter extends BaseAdapter {
 
     private void initDialog() {
 
-        mDialogCanaleFocusStyle = new DialogCanaleFocusStyle(mContext, R.style.ShowAddressStyleTheme);
+        mDialogCanaleFocusStyle = new DialogCanaleFocusStyle(activity, R.style.ShowAddressStyleTheme);
         mDialogCanaleFocusStyle.setOnClickBtListener(new DialogCanaleFocusStyle.OnClickBtListener() {
             @Override
             public void clickConfirm() {

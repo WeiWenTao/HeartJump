@@ -1,12 +1,13 @@
 package com.cucr.myapplication.adapter.SpinnerAdapter;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.model.starList.StarListKey;
 import com.cucr.myapplication.utils.CommonViewHolder;
 
 import java.util.List;
@@ -15,18 +16,18 @@ import java.util.List;
  * Created by cucr on 2017/9/18.
  */
 
-public class MySpAdapter extends BaseAdapter {
-    private Context context;
-    private List<String> list;
+public class MySp1Adapter extends BaseAdapter {
 
-    public MySpAdapter(Context context, List<String> list) {
-        this.context = context;
-        this.list = list;
+    private List<StarListKey.RowsBean> rows;
+
+    public void setData(List<StarListKey.RowsBean> rows){
+        this.rows = rows;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return list == null ? 0 : list.size();
+        return rows == null ? 0 : rows.size();
     }
 
     @Override
@@ -41,9 +42,9 @@ public class MySpAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, context, R.layout.spinner_item, null);
+        CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, MyApplication.getInstance(), R.layout.spinner1_item, null);
         TextView tv = cvh.getTv(R.id.tv);
-        tv.setText(list.get(position));
+        tv.setText(rows.get(position).getValueFild());
         return cvh.convertView;
     }
 }

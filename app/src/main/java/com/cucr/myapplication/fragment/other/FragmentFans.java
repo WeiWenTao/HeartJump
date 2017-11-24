@@ -31,7 +31,7 @@ import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
-import com.cucr.myapplication.core.starListAndJourney.QueryStarList;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
 import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
@@ -133,7 +133,7 @@ public class FragmentFans extends BaseFragment {
     private StarListAdapter mAdapter;
     private QueryMyFocusStars mCore;
     private List<MyFocusStarInfo.RowsBean> mRows;
-    private QueryStarList mStarCore;
+    private QueryStarListCore mStarCore;
     private int page = 1;
     private int rows = 100;
     private int type = 2;
@@ -148,7 +148,7 @@ public class FragmentFans extends BaseFragment {
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
-        mStarCore = new QueryStarList();
+        mStarCore = new QueryStarListCore();
         mCore = new QueryMyFocusStars();
         initRlv();
         initHead();
@@ -159,10 +159,9 @@ public class FragmentFans extends BaseFragment {
     }
 
 
-
     //初始化明星封面数据
     private void initDatas(int starId) {
-        mStarCore.queryStar(type, page, rows, starId, new OnCommonListener() {
+        mStarCore.queryStar(type, page, rows, starId, null, null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
@@ -196,7 +195,6 @@ public class FragmentFans extends BaseFragment {
     }
 
     private void queryMsg() {
-        MyLogger.jLog().i("queryMsg");
         mCore.queryMyFocuses(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -249,7 +247,7 @@ public class FragmentFans extends BaseFragment {
 
     private void initVp() {
         mViewPager.setAdapter(new StarPagerAdapter(getFragmentManager(), mDataList));
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     //初始化标签栏

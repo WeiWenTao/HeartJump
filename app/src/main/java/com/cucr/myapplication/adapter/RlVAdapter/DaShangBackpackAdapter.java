@@ -17,6 +17,7 @@ import com.cucr.myapplication.core.daShang.DaShangCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
+import com.cucr.myapplication.model.eventBus.EventDsSuccess;
 import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -110,6 +111,7 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
                                     if (mClickDashang != null) {
                                         mClickDashang.clickDaShang(listBean.getUserAccountType().getProportion());
                                     }
+                                    EventBus.getDefault().post(new EventDsSuccess(event.getPosition()));
                                     notifyDataSetChanged();
                                 } else {
                                     ToastUtils.showToast(msg.getMsg());

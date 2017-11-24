@@ -1,5 +1,7 @@
 package com.cucr.myapplication.core.renZheng;
 
+import android.app.Activity;
+
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -34,9 +36,11 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
     private Object sign = new Object();
     private OnCommonListener listener;
     private WaitDialog mWaitDialog;
+    private Activity activity;
 
-    public CommitQiYeRzCore() {
+    public CommitQiYeRzCore(Activity activity) {
         mQueue = NoHttp.newRequestQueue();
+        this.activity = activity;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
                              String text, Integer dataId, OnCommonListener listener) {
 
         this.listener = listener;
-        mWaitDialog = new WaitDialog(MyApplication.getInstance(),"正在提交...");
+        mWaitDialog = new WaitDialog(activity,"正在提交...");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
                 + HttpContans.ADDRESS_QIYE_RZ, RequestMethod.POST);
