@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -20,7 +20,7 @@ public class SimpleFooterView extends BaseFooterView{
 
     private TextView mText;
 
-    private ProgressBar progressBar;
+    private LinearLayout ll_footview;
 
     public SimpleFooterView(Context context) {
         this(context, null);
@@ -36,7 +36,7 @@ public class SimpleFooterView extends BaseFooterView{
         setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_footer_view, this);
-        progressBar = (ProgressBar) view.findViewById(R.id.footer_view_progressbar);
+        ll_footview = (LinearLayout) view.findViewById(R.id.ll_footview);
         mText = (TextView) view.findViewById(R.id.footer_view_tv);
     }
 
@@ -44,12 +44,12 @@ public class SimpleFooterView extends BaseFooterView{
 
     @Override
     public void onLoadingMore() {
-        progressBar.setVisibility(VISIBLE);
+        ll_footview.setVisibility(VISIBLE);
         mText.setVisibility(GONE);
     }
 
     public void showText(){
-        progressBar.setVisibility(GONE);
+        ll_footview.setVisibility(GONE);
         mText.setVisibility(VISIBLE);
     }
 

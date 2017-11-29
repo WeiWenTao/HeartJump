@@ -206,9 +206,16 @@ public class StarRZ extends Fragment {
                 break;
 
             case 2:
+                tv_commit_check.setEnabled(false);
                 tv_commit_check.setText("审核通过，重新登录账号才有效哦");
-                //审核通过 保存身份
-                SpUtil.setParam(SpConstant.SP_STATUS,0);
+                int status = (int) SpUtil.getParam(SpConstant.SP_STATUS, -1);
+                //如果是明星
+                if (status == Constans.STATUS_STAR){
+                    tv_commit_check.setText("已完成认证");
+                }
+
+//                登录的时候保存身份信息
+//                SpUtil.setParam(SpConstant.SP_STATUS,0);
                 break;
         }
     }

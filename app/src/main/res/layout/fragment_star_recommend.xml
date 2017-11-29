@@ -8,18 +8,29 @@
 
     <!--android:clipToPadding="false"-->
     <!--android:paddingTop="@dimen/dp_10"-->
-    <GridView
-        android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay"
-        android:background="@color/white"
-        android:id="@+id/gv_star_recommend"
+    <!--<GridView-->
+        <!--android:clipToPadding="false"-->
+        <!--android:scrollbarStyle="outsideOverlay"-->
+        <!--android:background="@color/white"-->
+        <!--android:id="@+id/gv_star_recommend"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:paddingLeft="@dimen/dp_10"-->
+        <!--android:paddingRight="@dimen/dp_10"-->
+        <!--android:horizontalSpacing="@dimen/dp_10"-->
+        <!--android:paddingTop="@dimen/dp_10"-->
+        <!--android:listSelector="@android:color/transparent"-->
+        <!--android:numColumns="2"/>-->
+    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+        android:id="@+id/rlv_starlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10"
-        android:horizontalSpacing="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
-        android:listSelector="@android:color/transparent"
-        android:numColumns="2"/>
+        android:divider="@color/color_999"
+        android:dividerHeight="1dp"
+        android:layout_marginLeft="@dimen/dp_3"
+        android:layout_marginRight="@dimen/dp_3"
+        ></com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView>
+
+
 
 </LinearLayout>

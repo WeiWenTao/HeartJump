@@ -1,11 +1,15 @@
 package com.cucr.myapplication.fragment.yuyue;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,21 +21,31 @@ import android.widget.Spinner;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.adapter.PagerAdapter.YuYuePagerAdapter;
+import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
+import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.adapter.SpinnerAdapter.MySp1Adapter;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
-import com.cucr.myapplication.fragment.star.FragmentStarRecommend;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.model.eventBus.EventOnClickCancleFocus;
+import com.cucr.myapplication.model.eventBus.EventOnClickFocus;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.model.starList.StarListKey;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.recyclerView.EndlessRecyclerOnScrollListener;
+import com.cucr.myapplication.widget.recyclerView.LoadMoreWrapper;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,29 +56,33 @@ import java.util.List;
 
 public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemSelectedListener, OnCommonListener {
 
-    //ViewPager
-    @ViewInject(R.id.vp_recommed_star)
-    ViewPager vp_recommed_star;
-
     //sp1
     @ViewInject(R.id.sp_1)
-    Spinner sp1;
+    private Spinner sp1;
 
     //sp2
     @ViewInject(R.id.sp_2)
-    Spinner sp2;
+    private Spinner sp2;
 
     //sp3
     @ViewInject(R.id.sp_3)
-    Spinner sp3;
+    private Spinner sp3;
 
     //头部
     @ViewInject(R.id.head)
-    RelativeLayout head;
+    private RelativeLayout head;
 
-    private List<Fragment> mFragments;
+    //刷新控件
+    @ViewInject(R.id.swipe_refresh_layout)
+    private SwipeRefreshLayout swipe_refresh_layout;
+
+    //列表
+    @ViewInject(R.id.rlv_starlist)
+    private RecyclerView rlv_starlist;
+
     private QueryStarListCore mCore;
     private List<StarListInfos.RowsBean> mRows;
+    private List<StarListInfos.RowsBean> allRows;
     private List<StarListKey.RowsBean> userTypes;     //明星类型
     private List<StarListKey.RowsBean> userCoasts;    //明星价格
     private List<StarListKey.RowsBean> types;         //推荐 关注
@@ -77,18 +95,33 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     private String userType;
     private String userCost;
     private int refresh;
-    private FragmentStarRecommend mFragment;
+    private int finalPosition;
+    private StarListForQiYeAdapter mAdapter;
+    private Context mContext;
+    private LoadMoreWrapper wapper;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
         mCore = new QueryStarListCore();
-
+        mAdapter = new StarListForQiYeAdapter(mContext);
+        allRows = new ArrayList<>();
         rows = 10;
         page = 1;
 
-        initVP();
+        initRlv();
 
         initSP();
 
@@ -96,6 +129,37 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
         initHead();
 
+    }
+
+    private void initRlv() {
+        rlv_starlist.setLayoutManager(new GridLayoutManager(mContext, 2));
+        wapper = new LoadMoreWrapper(mAdapter);
+        rlv_starlist.setAdapter(wapper);
+        initLoad();
+
+        mAdapter.setOnItemClickListener(new StarListForQiYeAdapter.OnItemClickListener() {
+            @Override
+            public void onClickItems(int position) {
+                final StarListInfos.RowsBean rowsBean = allRows.get(position);
+                Intent intent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
+                intent.putExtra("data", rowsBean);
+                finalPosition = position;
+                startActivityForResult(intent, 222);
+                //发送明星id到明星主页
+                EventBus.getDefault().postSticky(new EventFIrstStarId(rowsBean.getId()));
+            }
+        });
+    }
+
+    //关注同步
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        StarListInfos.RowsBean mData = (StarListInfos.RowsBean) data.getSerializableExtra("data");
+        allRows.remove(finalPosition);
+        allRows.add(finalPosition, mData);
+        mAdapter.setData(allRows);
+        wapper.notifyDataSetChanged();
     }
 
     //查询列表字段
@@ -109,6 +173,19 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         //价格区间
         mCore.queryZiDuan("userCost", this);
     }
+
+    //点击关注时
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickfocus(EventOnClickFocus event){
+        wapper.notifyDataSetChanged();
+    }
+
+    //点击取消关注时 刷新页面
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickCanclefocus(EventOnClickCancleFocus event){
+        wapper.notifyDataSetChanged();
+    }
+
 
     private void initSP() {
         userCoasts = new ArrayList<>();
@@ -127,7 +204,13 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         sp3.setOnItemSelectedListener(this);
     }
 
+    //刷新的时候调用
     private void queryStar(int type, String userCost, String userType) {
+        allRows.clear();
+        page = 1;
+        if (!swipe_refresh_layout.isRefreshing()) {
+            swipe_refresh_layout.setRefreshing(true);
+        }
         //企业用户查询的是整页明星  所以不需要starId
         mCore.queryStar(type, page, rows, -1, userCost, userType, new OnCommonListener() {
             @Override
@@ -135,8 +218,10 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
                     mRows = starListInfos.getRows();
-                    mFragment.setData(mRows);
-                    MyLogger.jLog().i("starList:" + mRows);
+                    allRows.addAll(mRows);
+                    mAdapter.setData(allRows);
+                    MyLogger.jLog().i("starList:" + mRows + ",isCache:" + response.isFromCache());
+                    wapper.notifyDataSetChanged();
                 } else {
                     ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
                 }
@@ -163,20 +248,6 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
-    }
-
-
-    private void initVP() {
-        mFragments = new ArrayList<>();
-//        for (int i = 0; i < mRows.size(); i++) {
-//            MyLogger.jLog().i("i=" + i + ",mRows:" + mRows.get(i));
-//        }
-        mFragment = new FragmentStarRecommend(getActivity());
-        mFragments.add(mFragment);
-//      快速导航栏
-//      mFragments.add(new FragmentStarClassify());
-//        mFragments.add(new FragmentStarRecommend(mRows));
-        vp_recommed_star.setAdapter(new YuYuePagerAdapter(getFragmentManager(), mFragments));
     }
 
     @Override
@@ -207,6 +278,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     public void onDestroy() {
         super.onDestroy();
         mCore.stopRequest();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -257,6 +329,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
                 break;
 
             case R.id.sp_2:
+                //传最后一个表示查全部
                 if (position == userTypes.size() - 1) {
                     userType = null;
                 } else {
@@ -278,4 +351,60 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
             queryStar(type, userCost, userType);
         }
     }
+
+
+    //请求完成  如果还在加载  就停止加载(无网络情况)
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onFinish(EventRequestFinish event) {
+        if (swipe_refresh_layout.isRefreshing()) {
+            swipe_refresh_layout.setRefreshing(false);
+        }
+
+        if (wapper.getLoadState() == wapper.LOADING) {
+            wapper.setLoadState(wapper.LOADING_COMPLETE);
+        }
+
+    }
+
+    private void initLoad() {
+        //刷新监听
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryStar(type, userCost, userType);
+            }
+        });
+
+        //上拉监听
+        rlv_starlist.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore() {
+                page++;
+                wapper.setLoadState(wapper.LOADING);
+                //企业用户查询的是整页明星  所以不需要starId
+                mCore.queryStar(type, page, rows, -1, userCost, userType, new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
+                        if (starListInfos.isSuccess()) {
+                            mRows = starListInfos.getRows();
+                            if (starListInfos.getTotal() < rows) {
+                                ToastUtils.showEnd();
+                                wapper.setLoadState(wapper.LOADING_END);
+                            } else {
+                                wapper.setLoadState(wapper.LOADING_COMPLETE);
+                            }
+                            mAdapter.addData(mRows);
+                            allRows.addAll(mRows);
+                            wapper.notifyDataSetChanged();
+                        } else {
+                            ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
 }

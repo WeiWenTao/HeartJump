@@ -112,11 +112,22 @@
         android:background="#eee"
         />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_recommed_star"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rlv_starlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:layout_marginRight="@dimen/dp_3"
+            android:divider="@color/color_999"
+            android:dividerHeight="1dp"
+            ></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <!--android:id="@+id/ll_star_recommend"-->
     <!--android:id="@+id/ll_star_classify"-->

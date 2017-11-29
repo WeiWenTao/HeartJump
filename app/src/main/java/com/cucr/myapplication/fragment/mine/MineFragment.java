@@ -26,13 +26,16 @@ import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.model.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -66,6 +69,18 @@ public class MineFragment extends BaseFragment {
     @ViewInject(R.id.tv_sign)
     private TextView userSign;
 
+    //我的要求(明星)
+    @ViewInject(R.id.rl_require)
+    private RelativeLayout rl_require;
+
+    //我的预约(企业)
+    @ViewInject(R.id.rl_my_yuyue)
+    private RelativeLayout rl_my_yuyue;
+
+    //我的行程(明星)
+    @ViewInject(R.id.rl_my_journey)
+    private RelativeLayout rl_my_journey;
+
     private Intent mIntent;
     private QueryPersonalMsgCore mQucryCore;
     private PersonMessage.ObjBean mObj;
@@ -74,6 +89,7 @@ public class MineFragment extends BaseFragment {
     protected void initView(View childView) {
         EventBus.getDefault().register(this);
         ViewUtils.inject(this, childView);
+        showAndHide();  //分配权限
         initHead();
         queryInfos();
 
@@ -89,6 +105,29 @@ public class MineFragment extends BaseFragment {
 //        普通用户
 //         }else{
 // }
+    }
+
+    //分配权限  先隐藏再根据身份显示
+    private void showAndHide() {
+        switch (((int) SpUtil.getParam(SpConstant.SP_STATUS,0))){
+            case Constans.TYPE_EVERYONE:    //无角色
+
+                break;
+             case Constans.TYPE_ADMIN:      //管理员
+
+                break;
+              case Constans.STATUS_STAR:    //明星
+                  rl_require.setVisibility(View.VISIBLE);   //要求
+                  rl_my_journey.setVisibility(View.VISIBLE);//行程
+                break;
+              case Constans.STATUS_QIYE:    //企业
+                  rl_my_yuyue.setVisibility(View.VISIBLE);  //预约
+                break;
+              case Constans.TYPE_COMMON_USER://普通用户
+
+                break;
+
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //点击保存的时候再查一遍

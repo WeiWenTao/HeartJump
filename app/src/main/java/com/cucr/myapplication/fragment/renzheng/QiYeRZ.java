@@ -140,6 +140,8 @@ public class QiYeRZ extends Fragment {
     @ViewInject(R.id.rl_yinyezhizhao)
     RelativeLayout rl_yinyezhizhao;
 
+
+
     //营业执照
     private String licenseBitmap;
 
@@ -153,6 +155,8 @@ public class QiYeRZ extends Fragment {
     private String mCompanyName;
 
     private String mCompanyContact;
+
+
 
     @Nullable
     @Override
@@ -233,11 +237,21 @@ public class QiYeRZ extends Fragment {
                 break;
 
             case 2:
+                tv_commit_check.setEnabled(false);
                 tv_commit_check.setText("审核通过，重新登录账号才有效哦");
                 //审核通过 保存身份
-                SpUtil.setParam(SpConstant.SP_STATUS, 1);
+//                身份信息登录的时候保存
+//                SpUtil.setParam(SpConstant.SP_STATUS, 1);
                 SpUtil.setParam(SpConstant.SP_QIYE_NAME, mCompanyName);
                 SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, mCompanyContact);
+                int status = (int) SpUtil.getParam(SpConstant.SP_STATUS, -1);
+                //如果是企业
+                if (status == Constans.STATUS_QIYE){
+                    tv_commit_check.setText("已完成认证");
+                    rl_sfz_positive.setEnabled(false);
+                    rl_sfz_nagetive.setEnabled(false);
+                    rl_yinyezhizhao.setEnabled(false);
+                }
                 break;
         }
     }

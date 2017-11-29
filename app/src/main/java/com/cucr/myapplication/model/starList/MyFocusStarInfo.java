@@ -8,11 +8,12 @@ import java.util.List;
 
 public class MyFocusStarInfo {
 
+
     /**
      * errorMsg :
-     * rows : [{"followTime":"2017-08-24 14:15:05","startId":5,"startName":"微文滔","startPicUrl":"/static/ys_image/c9856e8c-1a5b-4730-9262-603116346cd3.jpg","userId":14}]
+     * rows : [{"followTime":"2017-10-30 10:55:14","id":66,"start":{"id":29,"msgRegId":"123456","name":"笨笨的考拉","realName":"陈长义","signName":"你好","userHeadPortrait":"/static/ys_image/dfdbe4d2-4dbd-486a-9576-b4eb59ef45bc.gif"},"user":{"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}},{"followTime":"2017-10-30 10:55:06","id":65,"start":{"id":33,"msgRegId":"","name":"","realName":"林俊杰","signName":"","userHeadPortrait":"/static/ys_image/7f9a1e51-a248-4165-a91a-fcfbaf1e1ccf.gif"},"user":{"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}},{"followTime":"2017-10-30 10:54:53","id":64,"start":{"id":32,"msgRegId":"","name":"","realName":"周杰伦","signName":"","userHeadPortrait":"/static/ys_image/903d9168-68f3-4410-8d24-28b675b0409b.gif"},"user":{"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}}]
      * success : true
-     * total : 0
+     * total : 3
      */
 
     private String errorMsg;
@@ -54,18 +55,16 @@ public class MyFocusStarInfo {
 
     public static class RowsBean {
         /**
-         * followTime : 2017-08-24 14:15:05
-         * startId : 5
-         * startName : 微文滔
-         * startPicUrl : /static/ys_image/c9856e8c-1a5b-4730-9262-603116346cd3.jpg
-         * userId : 14
+         * followTime : 2017-10-30 10:55:14
+         * id : 66
+         * start : {"id":29,"msgRegId":"123456","name":"笨笨的考拉","realName":"陈长义","signName":"你好","userHeadPortrait":"/static/ys_image/dfdbe4d2-4dbd-486a-9576-b4eb59ef45bc.gif"}
+         * user : {"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}
          */
 
         private String followTime;
-        private int startId;
-        private String startName;
-        private String startPicUrl;
-        private int userId;
+        private int id;
+        private StartBean start;
+        private UserBean user;
 
         public String getFollowTime() {
             return followTime;
@@ -75,36 +74,160 @@ public class MyFocusStarInfo {
             this.followTime = followTime;
         }
 
-        public int getStartId() {
-            return startId;
+        public int getId() {
+            return id;
         }
 
-        public void setStartId(int startId) {
-            this.startId = startId;
+        public void setId(int id) {
+            this.id = id;
         }
 
-        public String getStartName() {
-            return startName;
+        public StartBean getStart() {
+            return start;
         }
 
-        public void setStartName(String startName) {
-            this.startName = startName;
+        public void setStart(StartBean start) {
+            this.start = start;
         }
 
-        public String getStartPicUrl() {
-            return startPicUrl;
+        public UserBean getUser() {
+            return user;
         }
 
-        public void setStartPicUrl(String startPicUrl) {
-            this.startPicUrl = startPicUrl;
+        public void setUser(UserBean user) {
+            this.user = user;
         }
 
-        public int getUserId() {
-            return userId;
+        public static class StartBean {
+            /**
+             * id : 29
+             * msgRegId : 123456
+             * name : 笨笨的考拉
+             * realName : 陈长义
+             * signName : 你好
+             * userHeadPortrait : /static/ys_image/dfdbe4d2-4dbd-486a-9576-b4eb59ef45bc.gif
+             */
+
+            private int id;
+            private String msgRegId;
+            private String name;
+            private String realName;
+            private String signName;
+            private String userHeadPortrait;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getMsgRegId() {
+                return msgRegId;
+            }
+
+            public void setMsgRegId(String msgRegId) {
+                this.msgRegId = msgRegId;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getRealName() {
+                return realName;
+            }
+
+            public void setRealName(String realName) {
+                this.realName = realName;
+            }
+
+            public String getSignName() {
+                return signName;
+            }
+
+            public void setSignName(String signName) {
+                this.signName = signName;
+            }
+
+            public String getUserHeadPortrait() {
+                return userHeadPortrait;
+            }
+
+            public void setUserHeadPortrait(String userHeadPortrait) {
+                this.userHeadPortrait = userHeadPortrait;
+            }
         }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
+        public static class UserBean {
+            /**
+             * id : 28
+             * msgRegId : 1104a8979290bcd6bb8
+             * name : 9527
+             * realName :
+             * signName :
+             * userHeadPortrait :
+             */
+
+            private int id;
+            private String msgRegId;
+            private String name;
+            private String realName;
+            private String signName;
+            private String userHeadPortrait;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getMsgRegId() {
+                return msgRegId;
+            }
+
+            public void setMsgRegId(String msgRegId) {
+                this.msgRegId = msgRegId;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getRealName() {
+                return realName;
+            }
+
+            public void setRealName(String realName) {
+                this.realName = realName;
+            }
+
+            public String getSignName() {
+                return signName;
+            }
+
+            public void setSignName(String signName) {
+                this.signName = signName;
+            }
+
+            public String getUserHeadPortrait() {
+                return userHeadPortrait;
+            }
+
+            public void setUserHeadPortrait(String userHeadPortrait) {
+                this.userHeadPortrait = userHeadPortrait;
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ public class StarRequireCore implements StarRequires {
      */
     private RequestQueue mQueue;
     private OnCommonListener addStarRequire;
+    private OnCommonListener queryStarRequire;
 
     public StarRequireCore() {
         mQueue = NoHttp.newRequestQueue();
@@ -41,7 +42,7 @@ public class StarRequireCore implements StarRequires {
                             String qtyq, List<String> startTimeList, OnCommonListener listener) {
         addStarRequire = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_REQUIREMENT, RequestMethod.POST);
-        //id < 0 表示不用传
+        //id < 0 表示不用传  数据id  不传就是新增 传就是修改
         if (id > 0) {
             request.add("id", id);
         }
@@ -61,6 +62,16 @@ public class StarRequireCore implements StarRequires {
 
     }
 
+    @Override
+    public void queryStarRequire(int StarId, OnCommonListener onCommonListener) {
+        queryStarRequire = onCommonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_REQUIREMENT, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("startId", StarId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_TWO, request, callback);
+    }
+
     OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
@@ -69,17 +80,16 @@ public class StarRequireCore implements StarRequires {
 
         @Override
         public void onSucceed(int what, Response<String> response) {
+            MyLogger.jLog().i("onSucceed，结果来自：" + (response.isFromCache() ? "缓存" : "网络"));
             switch (what) {
                 //添加明星要求
                 case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("onSucceed，结果来自：" + (response.isFromCache() ? "缓存" : "网络"));
                     addStarRequire.onRequestSuccess(response);
                     break;
 
 
                 case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("onSucceed，结果来自：" + (response.isFromCache() ? "缓存" : "网络"));
-
+                    queryStarRequire.onRequestSuccess(response);
                     break;
 
 

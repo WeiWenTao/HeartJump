@@ -328,6 +328,7 @@
 
                 <!--要求-->
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/rl_require"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -357,6 +358,7 @@
 
                 <!--预约-->
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/rl_my_yuyue"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -386,6 +388,7 @@
 
                 <!--行程-->
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/rl_my_journey"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

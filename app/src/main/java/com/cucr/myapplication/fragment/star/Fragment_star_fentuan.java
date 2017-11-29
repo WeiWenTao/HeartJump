@@ -131,7 +131,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         return view;
     }
 
-
     private void initInfos() {
         //查询用户余额
         mPayCenterCore.queryUserMoney(new OnCommonListener() {
@@ -240,6 +239,9 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onDataSynEvent(EventFIrstStarId event) {
         starId = event.getFirstId();
         MyLogger.jLog().i("EventStarId：" + starId);
+        if (queryCore == null) {
+            queryCore = new QueryFtInfoCore();
+        }
         queryFtInfo();
     }
 

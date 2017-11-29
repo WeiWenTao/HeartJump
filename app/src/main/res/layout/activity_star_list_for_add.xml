@@ -11,40 +11,55 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/zise"
+        android:fitsSystemWindows="true"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:text="添加明星"
-            android:textColor="@color/pink"
-            android:textSize="@dimen/sp_18"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="@dimen/dp_55"
+            android:layout_marginRight="@dimen/dp_55"
+            app:tabBackground="@null"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabPadding="@dimen/dp_10"
+            app:tabSelectedTextColor="@color/xtred"
+            app:tabTextAppearance="@style/TabLayoutText"
+            app:tabTextColor="@color/zongse"
+            ></android.support.design.widget.TabLayout>
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
             />
 
     </RelativeLayout>
 
-    <GridView
-        android:id="@+id/gv_star_list"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_star_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:clipToPadding="false"
-        android:horizontalSpacing="@dimen/dp_10"
-        android:listSelector="@android:color/transparent"
-        android:numColumns="2"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
-        android:scrollbarStyle="outsideOverlay"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        ></android.support.v4.view.ViewPager>
+
+
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/xtred"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="进入星跳"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        android:visibility="gone"
         />
-
-    <!--android:id="@+id/ll_star_recommend"-->
-    <!--android:id="@+id/ll_star_classify"-->
-
 
 </LinearLayout>
 

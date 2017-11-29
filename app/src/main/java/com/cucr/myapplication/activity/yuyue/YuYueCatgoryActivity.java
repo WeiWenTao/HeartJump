@@ -210,10 +210,6 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     //沉浸栏
     private void initHead() {
         //获取数据
-
-        SpUtil.setParam(SpConstant.SP_QIYE_NAME, "测试企业名称");
-        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, "测试企业联系方式");
-
         mData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
         mCore = new YuYueCore();
         UltimateBar ultimateBar = new UltimateBar(this);

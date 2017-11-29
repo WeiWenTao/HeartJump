@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
+import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
@@ -73,7 +76,6 @@ public class NewRegistActivity extends Activity {
     private String mPhoneNum;
     private String mSetPsw;
     private Set<String> tags;
-
     //用于记录验证码是否正在获取
     private boolean runningThree;
 
@@ -102,7 +104,8 @@ public class NewRegistActivity extends Activity {
         ViewUtils.inject(this);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setImmersionBar();
-
+        tags = new HashSet<>();
+        mGson = new Gson();
         initViews();
     }
 
@@ -184,8 +187,7 @@ public class NewRegistActivity extends Activity {
         mRegistCore.getYzm(this, phone_num, new OnGetYzmListener() {
             @Override
             public void onSuccess(Response<String> response) {
-                String result = response.get();
-                ReBackMsg yzmInfo = mGson.fromJson(result, ReBackMsg.class);
+                ReBackMsg yzmInfo = mGson.fromJson(response.get(), ReBackMsg.class);
                 if (!yzmInfo.isSuccess()) {
                     //success = false 密码错误
                     // 显示服务器返回的错误信息
@@ -209,13 +211,12 @@ public class NewRegistActivity extends Activity {
         new LoginCore(this).login(mPhoneNum, mSetPsw, new OnLoginListener() {
             @Override
             public void onSuccess(Response<String> response) {
-                tags = new HashSet<>();
+
                 String s = response.get();
-                Gson gson = new Gson();
-                LoadUserInfo loadUserInfo = gson.fromJson(s, LoadUserInfo.class);
+                LoadUserInfo loadUserInfo = mGson.fromJson(s, LoadUserInfo.class);
 //                登录成功 保存密钥
                 if (loadUserInfo.isSuccess()) {
-                    LoadSuccess loadSuccess = gson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+                    LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
                     //设置极光推送的tag
                     tags.add(loadSuccess.getRoleId() + "");
                     MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
@@ -231,11 +232,27 @@ public class NewRegistActivity extends Activity {
                     SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存用户名和密码
                     SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
-//                    保存认证信息
-                    SpUtil.getParam(SpConstant.ROLEID, loadSuccess.getRoleId());
-//                    跳转到主界面
-                    NewRegistActivity.this.startActivity(new Intent(NewRegistActivity.this, MainActivity.class));
-                    NewRegistActivity.this.finish();
+//                    保存身份信息
+                    SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
+//                    存储企业用户信息  信息不为空时 存储信息
+                    if (!TextUtils.isEmpty(loadSuccess.getCompanyName())){
+                        SpUtil.setParam(SpConstant.SP_QIYE_NAME,loadSuccess.getCompanyName());
+                        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT,loadSuccess.getCompanyConcat());
+                    }
+//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
+                    if (!((boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false))){
+//                        跳转关注界面
+                        Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
+                        intent.putExtra("formLoad",true);
+                        startActivity(intent);
+                    }else {
+//                        跳转到主界面
+                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+                    }
+
+                    SpUtil.setParam(SpConstant.IS_FIRST_RUN,true);  //登录之后保存登录数据  下次登录判断是否第一次登录
+                    finish();
+
 
                 } else {
                     //success = false 密码错误

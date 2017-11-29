@@ -14,13 +14,13 @@
     <RelativeLayout
         android:id="@+id/rl_personal_info"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="224dp"
         >
 
         <ImageView
             android:id="@+id/iv_fuzzy_bg"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="224dp"
             android:scaleType="centerCrop"
             android:src="@drawable/star3_new"
             />
@@ -29,6 +29,7 @@
             android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="24dp"
             >
 
             <ImageView
@@ -57,18 +58,53 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_star_head"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8"
             android:text="用户昵称"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
             />
+
+        <LinearLayout
+            android:id="@+id/focuses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_nick_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_8"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关注 750"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@color/white"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="粉丝 750"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                />
+        </LinearLayout>
 
         <ImageView
             android:layout_width="@dimen/dp_13"
             android:layout_height="@dimen/dp_13"
             android:layout_alignTop="@id/tv_nick_name"
             android:layout_marginLeft="@dimen/dp_5"
-            android:layout_marginTop="@dimen/dp_3"
+            android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/tv_nick_name"
             android:src="@drawable/icon_girl_"
             />
@@ -77,12 +113,12 @@
             android:id="@+id/tv_user_sign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_nick_name"
+            android:layout_below="@id/focuses"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_8"
             android:text="用户签名用户签名"
             android:textColor="#d4d4d4"
-            android:textSize="@dimen/sp_15"
+            android:textSize="@dimen/sp_12"
             />
 
     </RelativeLayout>

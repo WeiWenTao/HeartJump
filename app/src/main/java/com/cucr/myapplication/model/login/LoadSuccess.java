@@ -14,6 +14,24 @@ public class LoadSuccess {
     private int userId;
     private String sign;
     private int roleId;
+    private String companyName;
+    private String companyConcat;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyConcat() {
+        return companyConcat;
+    }
+
+    public void setCompanyConcat(String companyConcat) {
+        this.companyConcat = companyConcat;
+    }
 
     public int getRoleId() {
         return roleId;

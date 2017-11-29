@@ -13,7 +13,6 @@ import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
@@ -45,10 +44,10 @@ public class QueryMyFocusStars implements MyFocusStars {
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
-        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
-        request.setCacheKey(HttpContans.ADDRESS_MY_FOCUS);
-        //没有缓存才去请求网络
-        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
+//        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
+//        request.setCacheKey(HttpContans.ADDRESS_MY_FOCUS);
+//        //没有缓存才去请求网络
+//        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }

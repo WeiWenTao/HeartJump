@@ -113,6 +113,9 @@ public class HttpContans {
     //添加要求
     public static final String ADDRESS_ADD_REQUIREMENT = "/interface/mobileRequirementAction/addRequirement";
 
+    //要求查询
+    public static final String ADDRESS_QUERY_REQUIREMENT = "/interface/mobileRequirementAction/queryRequirement";
+
     //预约
     public static final String ADDRESS_ADD_APPOINMENT = "/interface/mobileStartAppointment/appointment";
 

@@ -4,22 +4,17 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.PersonalMainPagerAdapter;
 import com.cucr.myapplication.fragment.personalMainPager.DongTaiFragment;
 import com.cucr.myapplication.fragment.personalMainPager.StarFragment;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
-import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -34,19 +29,17 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
+import org.zackratos.ultimatebar.UltimateBar;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PersonalMainPagerActivity extends Activity {
 
-    //沉浸栏
-    @ViewInject(R.id.head)
-    RelativeLayout head;
-
     //指示器
     @ViewInject(R.id.magic_indicator_personal_page)
-    MagicIndicator magic_indicator_personal_page;
+    MagicIndicator magicIndicator;
 
     //ViewPager
     @ViewInject(R.id.personal_vp)
@@ -61,8 +54,6 @@ public class PersonalMainPagerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-//        StatusBarUtil.setImgTransparent(this);
         setContentView(R.layout.activity_personal_main_pager);
         ViewUtils.inject(this);
 
@@ -84,7 +75,6 @@ public class PersonalMainPagerActivity extends Activity {
 
     //初始化标签栏
     private void initIndicator() {
-        MagicIndicator magicIndicator = (MagicIndicator) findViewById(R.id.magic_indicator_personal_page);
         //背景
         magicIndicator.setBackgroundColor(Color.parseColor("#fafafa"));
         CommonNavigator commonNavigator7 = new CommonNavigator(this);
@@ -129,23 +119,8 @@ public class PersonalMainPagerActivity extends Activity {
 
     //初始化头部 沉浸栏
     private void initHead() {
-        Window window = getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(this,73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
     }
 
     //返回

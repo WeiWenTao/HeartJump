@@ -48,6 +48,7 @@ public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGes
     public static final int COLOR_BG_THIS_DAY = Color.parseColor("#ffffff"); // 当天日历背景颜色
     public static final int COLOR_BG_CALENDAR = Color.parseColor("#FFFFFF"); // 日历背景色
 
+    private boolean isHorEvent; //横向滑动事件
     private GestureDetector gd; // 手势监听器
     private Animation push_left_in; // 动画-左进
     private Animation push_left_out; // 动画-左出
@@ -792,7 +793,8 @@ public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGes
                 MyLogger.jLog().i("ACTION_MOVE");
                 endX = (int) event.getX();
                 endY = (int) event.getY();
-                if (Math.abs(endX - starY) > Math.abs(endY - starY)) {
+                if (Math.abs(endX - starX) > Math.abs(endY - starY)) {
+                    isHorEvent = true;
                     if (endX - starX > 0) {
                         MyLogger.jLog().i("ACTION_> 0");
                         isNext = true;
@@ -800,6 +802,9 @@ public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGes
                         MyLogger.jLog().i("ACTION_< 0");
                         isNext = false;
                     }
+                } else {
+                    isHorEvent = false;
+                    return true;
                 }
                 starX = endX;
                 starY = endY;
@@ -809,10 +814,12 @@ public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGes
                 break;
             case MotionEvent.ACTION_CANCEL:
                 MyLogger.jLog().i("ACTION_CANCEL");
-                if (isNext){
-                    nextMonth();
-                }else {
-                    lastMonth();
+                if (isHorEvent) {
+                    if (isNext) {
+                        lastMonth();
+                    } else {
+                        nextMonth();
+                    }
                 }
                 break;
 

@@ -469,6 +469,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 if (msg.isSuccess()) {
                     ToastUtils.showToast("保存成功!");
                     EventBus.getDefault().post(new EventQueryPersonalInfo());
+                    finish();
                 } else {
                     ToastUtils.showToast(msg.getMsg());
                 }

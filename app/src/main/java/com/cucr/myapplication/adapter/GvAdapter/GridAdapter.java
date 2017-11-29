@@ -29,11 +29,13 @@ public class GridAdapter extends BaseAdapter {
 
     private List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList;
     private final WindowManager mWm;
+    private int mValue;
 
     public GridAdapter(Context mContext, List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList) {
         this.mContext = mContext;
         this.attrFileList = attrFileList;
         mWm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        mValue = mWm.getDefaultDisplay().getWidth() - CommonUtils.dip2px(mContext, 26.0f);
 
     }
 
@@ -58,9 +60,8 @@ public class GridAdapter extends BaseAdapter {
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_ft_pics, null);
         ImageView iv = cvh.getIv(R.id.iv_image);
         ViewGroup.LayoutParams layoutParams = iv.getLayoutParams();
-        int value = mWm.getDefaultDisplay().getWidth() - CommonUtils.dip2px(mContext, 26.0f);
-        layoutParams.width = value / 3;
-        layoutParams.height = value / 3;
+        layoutParams.width = mValue / 3;
+        layoutParams.height = mValue / 3;
         iv.setLayoutParams(layoutParams);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)

@@ -11,9 +11,11 @@ import java.io.File;
 public class Constans {
 
     //用户身份
-    public static final int STATUS_STAR = 0;
-    public static final int STATUS_QIYE = 1;
-    public static final int TYPE_EVERYONE = -1;
+    public static final int TYPE_EVERYONE = 0;  //无角色
+    public static final int TYPE_ADMIN = 1;     //管理员
+    public static final int STATUS_STAR = 2;    //明星
+    public static final int STATUS_QIYE = 3;    //企业
+    public static final int TYPE_COMMON_USER = 4;//普通用户
 
     public static final int TYPE_ZERO = 0;
     public static final int TYPE_ONE = 1;

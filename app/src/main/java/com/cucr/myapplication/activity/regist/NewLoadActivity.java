@@ -3,12 +3,13 @@ package com.cucr.myapplication.activity.regist;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.MainActivity;
+import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
@@ -45,6 +46,7 @@ public class NewLoadActivity extends Activity {
     private LoginCore mLoginCore;
 
     private Set<String> tags;
+    private Gson mGson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class NewLoadActivity extends Activity {
         //回显账号和密码  如果没有就设置为空串  账号密码由注册时保存到sp中
         mEt_accunt.setText(((String) SpUtil.getParam(SpConstant.USER_NAEM, "")));
         mEt_psw.setText(((String) SpUtil.getParam(SpConstant.PASSWORD, "")));
+        tags = new HashSet<>();
+        mGson = new Gson();
     }
 
     //注册
@@ -104,13 +108,10 @@ public class NewLoadActivity extends Activity {
         mLoginCore.login(mEt_accunt.getText().toString(), mEt_psw.getText().toString(), new OnLoginListener() {
             @Override
             public void onSuccess(Response<String> response) {
-                String s = response.get();
-                tags = new HashSet<>();
-                Gson gson = new Gson();
-                LoadUserInfo loadUserInfo = gson.fromJson(s, LoadUserInfo.class);
+                LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
 //                登录成功 保存密钥
                 if (loadUserInfo.isSuccess()) {
-                    LoadSuccess loadSuccess = gson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+                    LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
                     //设置极光推送的tag
                     tags.add(loadSuccess.getRoleId() + "");
                     MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
@@ -118,12 +119,16 @@ public class NewLoadActivity extends Activity {
                     SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
 //                    保存用户id
                     SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
-//                    保存认证信息
-                    SpUtil.getParam(SpConstant.ROLEID, loadSuccess.getRoleId());
+//                    保存身份信息
+                    SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
 //                    存储账号和密码等信息
                     SpUtil.setParam( SpConstant.USER_NAEM, mEt_accunt.getText().toString());
                     SpUtil.setParam(SpConstant.PASSWORD, mEt_psw.getText().toString());
-
+//                    存储企业用户信息  信息不为空时 存储信息
+                    if (!TextUtils.isEmpty(loadSuccess.getCompanyName())){
+                        SpUtil.setParam(SpConstant.SP_QIYE_NAME,loadSuccess.getCompanyName());
+                        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT,loadSuccess.getCompanyConcat());
+                    }
                     MyLogger.jLog().i("PSWuseid:" + loadSuccess.getUserId());
 //                    显示吐司
                     ToastUtils.showToast("登录成功");
@@ -135,8 +140,18 @@ public class NewLoadActivity extends Activity {
                         }
                     });
 
-//                    跳转到主界面
-                    startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
+//                    if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)){
+//                        跳转关注界面
+                        Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
+                        intent.putExtra("formLoad",true);
+                        startActivity(intent);
+//                    }else {
+////                        跳转到主界面
+//                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+//                    }
+
+                    SpUtil.setParam(SpConstant.IS_FIRST_RUN,true);  //登录之后保存登录数据  下次登录判断是否第一次登录
                     finish();
 
                 } else {

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_rlvitem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="244dp"
+    android:orientation="horizontal"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/rl_item"
+        android:layout_width="match_parent"
+        android:layout_height="244dp"
+        android:background="@drawable/shadow_162616"
+        >
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="match_parent"
+            android:layout_height="244dp"
+            android:paddingLeft="3dp"
+            android:scaleType="centerCrop"
+            app:sriv_left_top_corner_radius="49dp"
+            app:sriv_right_bottom_corner_radius="49dp"
+
+            />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="244dp"
+            android:paddingLeft="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/black_bg_"
+            app:sriv_left_top_corner_radius="49dp"
+            app:sriv_right_bottom_corner_radius="49dp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/tv_focus"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_alignRight="@id/iv_bg"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@drawable/btn_bg_sel"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="加关注"
+            android:textColor="@color/pink"
+            android:textSize="@dimen/sp_12"
+            />
+
+        <ImageView
+            android:id="@+id/iv_fans"
+            android:layout_width="14dp"
+            android:layout_height="@dimen/dp_13"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:src="@drawable/icon_fans_new"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_star_fans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_fans"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_toRightOf="@id/iv_fans"
+            android:text="45893"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_star_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/iv_fans"
+            android:layout_alignLeft="@id/iv_fans"
+            android:layout_marginBottom="@dimen/dp_3"
+            android:text="明星姓名"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            />
+    </RelativeLayout>
+</LinearLayout>

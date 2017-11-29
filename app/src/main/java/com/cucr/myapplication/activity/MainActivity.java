@@ -113,53 +113,53 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     }
 
     private void initView() {
-//        mFragments.add(new HomeFragment());              //首页
-        mFragments.add(new FragmentHotAndFocusNews());     //首页
+
+//        mFragments.add(new HomeFragment());            //首页
+        mFragments.add(new FragmentHotAndFocusNews());   //首页
         mFragments.add(new FragmentHuoDongAndFuLi());
 
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的
 
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {//如果是企业用户
             mFragments.add(new ApointmentFragmentA());
         } else {
-            mFragments.add(new FragmentFans());              //其他
+            mFragments.add(new FragmentFans());          //其他
         }
-            mRg_mian_fragments = (RadioGroup) findViewById(R.id.rg_mian_fragments);
-
-        }
-
-        //切换RadioGroup的监听
-        @Override
-        public void onCheckedChanged (RadioGroup group,int checkedId){
-            switch (checkedId) {
-                //首页
-                case R.id.rb_1:
-                    initFragment(0);
-                    break;
-
-                //福利
-                case R.id.rb_2:
-                    initFragment(1);
-                    break;
-
-                //打榜
-                case R.id.rb_3:
-                    initFragment(2);
-                    break;
-
-                //我的
-                case R.id.rb_4:
-                    initFragment(3);
-                    break;
-
-
-                //中间的other
-                case R.id.rb_mid:
-                    initFragment(4);
-                    break;
-
-            }
-        }
+        mRg_mian_fragments = (RadioGroup) findViewById(R.id.rg_mian_fragments);
 
     }
+
+    //切换RadioGroup的监听
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            //首页
+            case R.id.rb_1:
+                initFragment(0);
+                break;
+
+            //福利
+            case R.id.rb_2:
+                initFragment(1);
+                break;
+
+            //打榜
+            case R.id.rb_3:
+                initFragment(2);
+                break;
+
+            //我的
+            case R.id.rb_4:
+                initFragment(3);
+                break;
+
+            //中间的other
+            case R.id.rb_mid:
+                initFragment(4);
+                break;
+
+        }
+    }
+
+}

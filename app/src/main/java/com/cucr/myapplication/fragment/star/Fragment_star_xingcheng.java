@@ -91,6 +91,9 @@ public class Fragment_star_xingcheng extends Fragment {
         starId = event.getStarId();
         page = 1;
         rows = 10;
+        if (mCore == null){
+            mCore = new QueryJourneyList();
+        }
         queryJourney();
         queryJourneyByTime(0);
     }

@@ -1,18 +1,21 @@
 package com.cucr.myapplication.activity.setting;
 
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.StarRequireCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
+import com.cucr.myapplication.model.starList.StarRequires;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.signcalendar.SignCalendar;
 import com.google.gson.Gson;
@@ -79,6 +82,7 @@ public class MyRequiresActivity extends BaseActivity {
     private List<String> markDates;
     private StarRequireCore mCore;
     private Gson mGson;
+    private int saveOrChange;
 
     @Override
     protected void initChild() {
@@ -91,6 +95,7 @@ public class MyRequiresActivity extends BaseActivity {
         calendar = (SignCalendar) findViewById(R.id.sc_date);
         tv_year.setText(calendar.getCalendarYear() + "年");
         tv_month.setText(calendar.getCalendarMonth() + "月");
+        backShow(); //回显数据
 
         //日历改变时
         calendar.setOnCalendarDateChangedListener(new SignCalendar.OnCalendarDateChangedListener() {
@@ -108,32 +113,64 @@ public class MyRequiresActivity extends BaseActivity {
                 if (calendar.hasMarked(dateFormat)) {
                     calendar.removeMark(dateFormat);
                     markDates.remove(dateFormat);
+                    MyLogger.jLog().i("date_" + dateFormat);
                 } else {
                     calendar.addMark(dateFormat, 0);
                     markDates.add(dateFormat);
                 }
             }
         });
+    }
 
-        calendar.setOnTouchListener(new View.OnTouchListener() {
+    //回显数据
+    private void backShow() {
+        mCore.queryStarRequire(((int) SpUtil.getParam(SpConstant.USER_ID, -1)), new OnCommonListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        MyLogger.jLog().i("ACTION_DOWN");
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        MyLogger.jLog().i("ACTION_MOVE");
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        MyLogger.jLog().i("ACTION_UP");
-                        break;
+            public void onRequestSuccess(Response<String> response) {
+                MyLogger.jLog().i("reback:" + response.get());
+                StarRequires starRequires = mGson.fromJson(response.get(), StarRequires.class);
+                if (starRequires.isSuccess()) {
+                    StarRequires.MsgBean obj = starRequires.getObj();
+                    MyLogger.jLog().i("backshow:" + obj);
+                    initViews(obj);
+                } else {
+                    //这里obj和msg写反了
+                    ToastUtils.showToast(starRequires.getMsg());
                 }
-                return true;
             }
         });
+    }
+
+    private void initViews(StarRequires.MsgBean msg) {
+        if (msg == null) {
+            //表示没有保存过数据 是第一次保存
+            saveOrChange = -1;
+            return;
+        }
+        saveOrChange = msg.getId();
+        //随行人数
+        et_peoples.setText(msg.getAssistantNum() + "");
+        //活动场地
+        ((RadioButton) rg_place.getChildAt(msg.getActiveScene())).setChecked(true);
+        //头等舱数量
+        et_fly.setText(msg.getFirstClass() + "");
+        //经济舱数量
+        et_fly1.setText(msg.getEconomyClass() + "");
+        //用车数量
+        et_car.setText(msg.getCarNum() + "");
+        //住宿
+        ((RadioButton) rg_live.getChildAt(msg.getBed())).setChecked(true);
+        //化妆师
+        ((RadioButton) rg_dresser.getChildAt(msg.getHzs())).setChecked(true);
+        //粉丝接机
+        ((RadioButton) rg_welcome.getChildAt(msg.getFsjj())).setChecked(true);
+        //其他要求
+        et_other_require.setText(msg.getQtyq().isEmpty() ? "暂无" : msg.getQtyq());
+
+        for (StarRequires.MsgBean.StartTimeListBean startTimeListBean : msg.getStartTimeList()) {
+            calendar.addMark(startTimeListBean.getTime().substring(0, 10), 0);
+            markDates.add(startTimeListBean.getTime().substring(0, 10));
+        }
     }
 
     @Override
@@ -163,15 +200,17 @@ public class MyRequiresActivity extends BaseActivity {
         //其他要求
         String qtyq = et_other_require.getText().toString();
 
-        //id < 0 表示不用传
-        mCore.addRequires(-1, assistantNum, activeScene, firstClass, economyClass, carNum, bed,
+        //id < 0 表示不用传 saveOrChange
+        MyLogger.jLog().i("saveOrChange:" + saveOrChange);
+        mCore.addRequires(saveOrChange, assistantNum, activeScene, firstClass, economyClass, carNum, bed,
                 hzs, fsjj, qtyq, markDates, new OnCommonListener() {
                     @Override
                     public void onRequestSuccess(Response<String> response) {
                         CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                        if (msg.isSuccess()){
+                        if (msg.isSuccess()) {
                             ToastUtils.showToast("保存成功");
-                        }else {
+                            finish();
+                        } else {
                             ToastUtils.showToast(msg.getMsg());
                         }
                     }

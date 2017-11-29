@@ -198,6 +198,7 @@ public class FragmentFans extends BaseFragment {
         mCore.queryMyFocuses(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
+                MyLogger.jLog().i("focusInfo:" + response.get());
                 MyFocusStarInfo Info = mGson.fromJson(response.get(), MyFocusStarInfo.class);
                 if (Info.isSuccess()) {
                     mRows = Info.getRows();
@@ -206,8 +207,8 @@ public class FragmentFans extends BaseFragment {
                         return;
                     }
                     //默认查询第一个明星数据
-                    EventBus.getDefault().postSticky(new EventFIrstStarId(mRows.get(0).getStartId()));
-                    initDatas(mRows.get(0).getStartId());
+                    EventBus.getDefault().postSticky(new EventFIrstStarId(mRows.get(0).getStart().getId()));
+                    initDatas(mRows.get(0).getStart().getId());
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
                 }
@@ -223,10 +224,10 @@ public class FragmentFans extends BaseFragment {
             @Override
             public void onClickPosition(View view, int position) {
                 mAdapter.setPosition(position);
-                initDatas(mRows.get(position).getStartId());
+                initDatas(mRows.get(position).getStart().getId());
                 initDrawer(false);
                 //eventBus传递数据
-                EventBus.getDefault().post(new EventStarId(mRows.get(position).getStartId()));
+                EventBus.getDefault().post(new EventStarId(mRows.get(position).getStart().getId()));
             }
 
             @Override

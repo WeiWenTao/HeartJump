@@ -328,6 +328,8 @@
         </activity>
         <activity android:name=".activity.fenTuan.DsDuiHuanActivity">
         </activity>
+        <activity android:name=".activity.star.StarRequiresActivity">
+        </activity>
     </application>
 
 </manifest>
