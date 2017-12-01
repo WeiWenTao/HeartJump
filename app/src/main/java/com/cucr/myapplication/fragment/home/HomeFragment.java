@@ -79,7 +79,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     }
 
     private void queryFtInfo() {
-        mDataCore.queryFtInfo(-1, 0, false, 1, 20, new OnCommonListener() {
+        mDataCore.queryFtInfo(-1, 0,-1, false, 1, 20, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtAllCommentAadapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -43,7 +44,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods {
+public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener {
 
     //root_view
     @ViewInject(R.id.root_view)
@@ -136,7 +137,8 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         //评论内容
         TextView tv_content = (TextView) lvHead.findViewById(R.id.tv_comment_content);
 
-
+        iv_pic.setOnClickListener(this);
+        tv_neckname.setOnClickListener(this);
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUser().getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
         tv_neckname.setText(mRowsBean.getUser().getName());
@@ -315,6 +317,13 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     }
 
     @Override
+    public void clickUser(int userId) {
+        Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onStop() {
         if (emojiPopup != null) {
             emojiPopup.dismiss();
@@ -337,11 +346,19 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         Intent intent = getIntent();
         intent.putExtra("rowsBean", mRowsBean);
         setResult(Constans.RESULT_CODE, intent);
+        MyLogger.jLog().i("rowsBean:"+ mRowsBean);
     }
 
     @Override
     public void onBackPressed() {
         setData();
         finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        intent.putExtra("userId", mRowsBean.getUser().getId());
+        startActivity(intent);
     }
 }

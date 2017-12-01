@@ -9,14 +9,22 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventNotifyStarInfo;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonViewHolder;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogCanaleFocusStyle;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -32,7 +40,7 @@ public class StarRecommendAdapter extends BaseAdapter {
     private FocusCore mCore;
     private int newPosition;
 
-    public void setData(List<StarListInfos.RowsBean> rows){
+    public void setData(List<StarListInfos.RowsBean> rows) {
         this.rows = rows;
         notifyDataSetChanged();
     }
@@ -57,11 +65,22 @@ public class StarRecommendAdapter extends BaseAdapter {
             @Override
             public void clickConfirm() {
 //                mFl.setVisibility(View.GONE);
-                StarListInfos.RowsBean rowsBean = rows.get(newPosition);
-                mCore.cancaleFocus(rowsBean.getId());
-                rowsBean.setIsfollow(0);
-                notifyDataSetChanged();
-                mDialogCanaleFocusStyle.dismiss();
+                final StarListInfos.RowsBean rowsBean = rows.get(newPosition);
+                mCore.cancaleFocus(rowsBean.getId(), new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        ReBackMsg reBackMsg = MyApplication.getGson().fromJson(response.get(), ReBackMsg.class);
+                        if (reBackMsg.isSuccess()) {
+                            ToastUtils.showToast("已取消关注！");
+                            EventBus.getDefault().post(new EventNotifyStarInfo());
+                            rowsBean.setIsfollow(0);
+                            notifyDataSetChanged();
+                        } else {
+                            ToastUtils.showToast(reBackMsg.getMsg());
+                        }
+                        mDialogCanaleFocusStyle.dismiss();
+                    }
+                });
             }
 
             @Override
@@ -117,7 +136,7 @@ public class StarRecommendAdapter extends BaseAdapter {
         //是否关注  0：未关注      1：已关注
         final int isfollow = rowsBean.getIsfollow();
 
-        MyLogger.jLog().i("position:"+position+",isfollow"+isfollow);
+        MyLogger.jLog().i("position:" + position + ",isfollow" + isfollow);
         if (isfollow == 0) {
             tv_focus.setText("加关注");
             tv_focus.setTextColor(resources.getColor(R.color.white));

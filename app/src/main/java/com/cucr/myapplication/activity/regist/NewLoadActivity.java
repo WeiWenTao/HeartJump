@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -141,15 +142,17 @@ public class NewLoadActivity extends Activity {
                     });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-//                    if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)){
+                    if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)){
+                        MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                         Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
                         intent.putExtra("formLoad",true);
                         startActivity(intent);
-//                    }else {
-////                        跳转到主界面
-//                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
-//                    }
+                    }else {
+                        MyLogger.jLog().i("isFirst_不是第一次登录");
+//                        跳转到主界面
+                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+                    }
 
                     SpUtil.setParam(SpConstant.IS_FIRST_RUN,true);  //登录之后保存登录数据  下次登录判断是否第一次登录
                     finish();

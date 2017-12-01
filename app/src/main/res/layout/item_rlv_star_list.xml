@@ -13,7 +13,7 @@
         android:id="@+id/rl_item"
         android:layout_width="match_parent"
         android:layout_height="244dp"
-        android:background="@drawable/shadow_162616"
+        android:background="@drawable/shadow_143945"
         >
 
         <com.joooonho.SelectableRoundedImageView

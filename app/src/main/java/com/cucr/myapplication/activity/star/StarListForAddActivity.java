@@ -18,6 +18,7 @@ import com.cucr.myapplication.adapter.PagerAdapter.StarListPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
+import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
 import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
@@ -74,7 +75,7 @@ public class StarListForAddActivity extends Activity {
         mAdapter = new StarListForQiYeAdapter(this);
         mFocusCore = new QueryMyFocusStars();
         initView();
-        queryData();
+//        queryData();
     }
 
 
@@ -88,7 +89,7 @@ public class StarListForAddActivity extends Activity {
 //        mRows = new ArrayList<>();
 //        mGvAdapter = new StarRecommendAdapter(this, mRows);
         mFragmentslist.add(new RecommendStarListFragemnt());
-        mFragmentslist.add(new RecommendStarListFragemnt());
+        mFragmentslist.add(new AllStarListFragemnt());
         tablayout.addTab(tablayout.newTab().setText("推荐"));
         tablayout.addTab(tablayout.newTab().setText("全部"));
         tytles.add("推荐");
@@ -127,7 +128,7 @@ public class StarListForAddActivity extends Activity {
     //跳转主界面
     @OnClick(R.id.tv_enter)
     public void enterApp(View view) {
-        mFocusCore.queryMyFocuses(new OnCommonListener() {
+        mFocusCore.queryMyFocuses(-1,new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 MyFocusStarInfo Info = mGson.fromJson(response.get(), MyFocusStarInfo.class);

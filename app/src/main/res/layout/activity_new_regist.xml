@@ -200,6 +200,8 @@
             />
 
         <TextView
+            android:id="@+id/tv_yhxy"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="心跳用户条款"

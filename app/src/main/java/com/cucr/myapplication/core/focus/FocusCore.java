@@ -56,8 +56,8 @@ public class FocusCore implements Focus {
     }
 
     @Override
-    public void cancaleFocus(int id) {
-
+    public void cancaleFocus(int id, OnCommonListener listener) {
+        this.cancaleFocusListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_CANCLE_FOCUS, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
@@ -66,7 +66,7 @@ public class FocusCore implements Focus {
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
-    public void stopRequest(){
+    public void stopRequest() {
         mQueue.cancelAll();
         mQueue.stop();
     }
@@ -84,22 +84,22 @@ public class FocusCore implements Focus {
             if (what == Constans.TYPE_ONE) {
                 if (reBackMsg.isSuccess()) {
                     ToastUtils.showToast(mContext, "关注成功！");
-                    MyLogger.jLog().i("关注成功");
                     EventBus.getDefault().post(new EventNotifyStarInfo());
-                    MyLogger.jLog().i("EventNotifyStarInfo() 已发送");
                 } else {
                     ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }
 
-            } else {
-                if (reBackMsg.isSuccess()) {
-                    ToastUtils.showToast(mContext, "已取消关注！");
-                    MyLogger.jLog().i("已取消关注");
-                    EventBus.getDefault().post(new EventNotifyStarInfo());
-                    MyLogger.jLog().i("EventNotifyStarInfo() 已发送");
-                } else {
-                    ToastUtils.showToast(mContext, reBackMsg.getMsg());
+            } else if (what == Constans.TYPE_TWO) {
+                if (cancaleFocusListener!=null){
+                    cancaleFocusListener.onRequestSuccess(response);
                 }
+
+//                if (reBackMsg.isSuccess()) {
+//                    ToastUtils.showToast("已取消关注！");
+//                    EventBus.getDefault().post(new EventNotifyStarInfo());
+//                } else {
+//                    ToastUtils.showToast(reBackMsg.getMsg());
+//                }
             }
         }
 

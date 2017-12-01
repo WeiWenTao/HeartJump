@@ -25,15 +25,20 @@ import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
 import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventRewardGifts;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.model.others.FragmentInfos;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -96,6 +101,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
 
     private StarListInfos.RowsBean mData;
     private FocusCore mCore;
+    private Gson mGson;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +110,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         EventBus.getDefault().register(this);
         ViewUtils.inject(this);
         mCore = new FocusCore();
+        mGson = new Gson();
         getDatas();
         initView();
     }
@@ -188,8 +195,18 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     public void focus(View view) {
         //是否已经关注该明星
         if (mData.getIsfollow() == 1) {
-            mCore.cancaleFocus(mData.getId());
-            mData.setIsfollow(0);
+            mCore.cancaleFocus(mData.getId(), new OnCommonListener() {
+                @Override
+                public void onRequestSuccess(Response<String> response) {
+                    ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                    if (reBackMsg.isSuccess()) {
+                        ToastUtils.showToast("已取消关注！");
+                        mData.setIsfollow(0);
+                    } else {
+                        ToastUtils.showToast(reBackMsg.getMsg());
+                    }
+                }
+            });
         } else {
             mCore.toFocus(mData.getId());
             mData.setIsfollow(1);

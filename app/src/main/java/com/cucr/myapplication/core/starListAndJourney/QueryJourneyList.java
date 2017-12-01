@@ -9,6 +9,7 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.starList.QueryJourney;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.EncodingUtils;
+import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -110,7 +111,7 @@ public class QueryJourneyList implements QueryJourney {
 
         @Override
         public void onFailed(int what, Response<String> response) {
-            MyLogger.jLog().i("onFailed");
+            HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
         }
 
         @Override

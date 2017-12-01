@@ -8,6 +8,7 @@ import android.support.multidex.MultiDex;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -33,6 +34,8 @@ public class MyApplication extends Application {
     private static DisplayImageOptions options;
 
     private static RequestOptions glideOptions;
+
+    private static Gson mGson;
 
     @Override
     public void onCreate() {
@@ -121,6 +124,13 @@ public class MyApplication extends Application {
 
     public static RequestOptions getGlideOptions() {
         return glideOptions;
+    }
+
+    public static Gson getGson(){
+        if (mGson == null) {
+            mGson = new Gson();
+        }
+        return mGson;
     }
 
 }

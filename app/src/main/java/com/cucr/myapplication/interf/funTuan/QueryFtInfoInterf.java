@@ -8,7 +8,7 @@ import com.cucr.myapplication.listener.OnCommonListener;
 
 public interface QueryFtInfoInterf {
     //查询粉团文章
-    void queryFtInfo(int strId,int dataType, boolean queryMine, int page, int rows, OnCommonListener listener);
+    void queryFtInfo(int strId,int dataType,int queryUserId, boolean queryMine, int page, int rows, OnCommonListener listener);
 
     void ftGoods(int contentId, OnCommonListener listener);
 

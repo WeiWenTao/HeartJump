@@ -25,5 +25,6 @@
     <color name="white1">#fafafa</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="shadow_color">#ff4f49</color>
+    <color name="name_color">#322424</color>
 
 </resources>

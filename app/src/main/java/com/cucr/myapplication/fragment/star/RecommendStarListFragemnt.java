@@ -18,8 +18,8 @@ import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.model.eventBus.EventOnClickFocus;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.model.starList.StarListInfos;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.recyclerView.EndlessRecyclerOnScrollListener;
 import com.cucr.myapplication.widget.recyclerView.LoadMoreWrapper;
@@ -54,13 +54,12 @@ public class RecommendStarListFragemnt extends Fragment {
     private Gson mGson;
     private int page;
     private int rows;
-    private List<StarListInfos.RowsBean> mRows;
     private LoadMoreWrapper wapper;
     private Context mContext;
 
     public RecommendStarListFragemnt() {
         mCore = new QueryStarListCore();
-        mGson = new Gson();
+        mGson = MyApplication.getGson();
         mContext = MyApplication.getInstance();
     }
 
@@ -77,7 +76,6 @@ public class RecommendStarListFragemnt extends Fragment {
     }
 
     private void initView() {
-        page = 1;
         rows = 10;
         mAdapter = new StarListForQiYeAdapter(getActivity());
         rlv_starlist.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -93,28 +91,52 @@ public class RecommendStarListFragemnt extends Fragment {
         swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MyLogger.jLog().i("onRefresh");
+                queryStar();
             }
         });
 
         rlv_starlist.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
-                MyLogger.jLog().i("loadmore");
+                wapper.setLoadState(wapper.LOADING);
+                page++;
+                mCore.queryStar(1, page, rows, -1, null, null, new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
+                        if (starListInfos.isSuccess()) {
+                            List<StarListInfos.RowsBean> rowsBeanLists = starListInfos.getRows();
+                            if (rowsBeanLists.size() < rows) {
+                                wapper.setLoadState(wapper.LOADING_END);
+                            } else {
+                                wapper.setLoadState(wapper.LOADING_COMPLETE);
+                            }
+                            if (!response.isFromCache()) {
+                                mAdapter.addData(rowsBeanLists);
+                            }
+                            wapper.notifyDataSetChanged();
+                        } else {
+                            ToastUtils.showToast(starListInfos.getErrorMsg());
+                        }
+                    }
+                });
             }
         });
-
     }
 
     //查询明星列表品
     private void queryStar() {
+        if (!swipe_refresh_layout.isRefreshing()) {
+            swipe_refresh_layout.setRefreshing(true);
+        }
+        page = 1;
         mCore.queryStar(1, page, rows, -1, null, null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
-                    mRows = starListInfos.getRows();
-                    mAdapter.setData(mRows);
+                    List<StarListInfos.RowsBean> rows = starListInfos.getRows();
+                    mAdapter.setData(rows);
                     wapper.notifyDataSetChanged();
                 } else {
                     ToastUtils.showToast(starListInfos.getErrorMsg());
@@ -125,13 +147,13 @@ public class RecommendStarListFragemnt extends Fragment {
 
     //点击关注时 刷新页面
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickfocus(EventOnClickFocus event){
+    public void onClickfocus(EventOnClickFocus event) {
         wapper.notifyDataSetChanged();
     }
 
     //点击取消关注时 刷新页面
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickCanclefocus(EventOnClickCancleFocus event){
+    public void onClickCanclefocus(EventOnClickCancleFocus event) {
         wapper.notifyDataSetChanged();
     }
 
@@ -139,5 +161,18 @@ public class RecommendStarListFragemnt extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+    }
+
+    //请求完成  如果还在加载  就停止加载(无网络情况)
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onFinish(EventRequestFinish event) {
+        if (swipe_refresh_layout.isRefreshing()) {
+            swipe_refresh_layout.setRefreshing(false);
+        }
+
+        if (wapper.getLoadState() == wapper.LOADING) {
+            wapper.setLoadState(wapper.LOADING_COMPLETE);
+        }
+
     }
 }

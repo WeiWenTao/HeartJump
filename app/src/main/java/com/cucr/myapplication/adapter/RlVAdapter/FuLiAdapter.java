@@ -38,8 +38,6 @@ public class FuLiAdapter extends RecyclerView.Adapter<FuLiAdapter.FiLiHolder> {
     @Override
     public FiLiHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rl_fuli, parent, false);
-
-
         FiLiHolder holder = new FiLiHolder(view);
         return holder;
     }

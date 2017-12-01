@@ -251,7 +251,7 @@
         </activity>
         <activity android:name=".activity.dongtai.DongTaiCatgoryActivity">
         </activity>
-        <activity android:name=".activity.dongtai.PersonalMainPagerActivity">
+        <activity android:name=".activity.user.PersonalMainPagerActivity">
         </activity>
         <activity android:name=".activity.BaseActivity">
         </activity>

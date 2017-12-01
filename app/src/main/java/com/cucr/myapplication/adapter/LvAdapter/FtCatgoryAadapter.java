@@ -1,7 +1,6 @@
 package com.cucr.myapplication.adapter.LvAdapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -32,7 +30,7 @@ import java.util.List;
 /**
  * Created by 911 on 2017/6/27.
  */
-public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListener {
+public class FtCatgoryAadapter extends BaseAdapter {
 
     private Context mContext;
 
@@ -79,13 +77,27 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
         LinearLayout ll_good = cvh.getView(R.id.rl_good, LinearLayout.class);
 
         //设置点击监听
-        userHead.setOnClickListener(this);
-        tv_username.setOnClickListener(this);
-        tv_comment_time.setOnClickListener(this);
+        userHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickUser(mRowsBean.getUser().getId());
+                }
+            }
+        });
+        tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickUser(mRowsBean.getUser().getId());
+                }
+            }
+        });
+
         ll_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (clickGoodsListener!= null){
+                if (clickGoodsListener != null) {
                     clickGoodsListener.clickItem(mRowsBean);
                 }
             }
@@ -93,7 +105,7 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
         ll_good.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (clickGoodsListener!= null){
+                if (clickGoodsListener != null) {
                     clickGoodsListener.clickGoods(mRowsBean);
                 }
             }
@@ -107,13 +119,13 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
 
         if (hasSecondCom) {
             //获取二级评论的第一个用户
-//            String commentName = mRowsBean.getChildList().get(0).getUser().getName();
-            String commentName = "aaa";
+            FtCommentInfo.RowsBean.UserBean user = mRowsBean.getChildList().get(0).getUser();
+            String commentName = user.getName();
 
             SpannableString sp = new SpannableString(commentName + "等人");
 
             //高亮点击监听
-            sp.setSpan(new MyClickGoHomePager("123", mContext), 0, commentName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            sp.setSpan(new MyClickGoHomePager(user.getId(), mContext), 0, commentName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
             //设置高亮样式二
             sp.setSpan(new ForegroundColorSpan(Color.parseColor("#A02F2D")), 0, commentName.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -134,21 +146,9 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
         iv_good.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(mRowsBean.getGiveUpCount() + "");
         tv_username.setText(mRowsBean.getUser().getName());
-        MyLogger.jLog().i("getComment:"+mRowsBean.getComment());
+        MyLogger.jLog().i("getComment:" + mRowsBean.getComment());
         tv_comment_content.setText(CommonUtils.unicode2String(mRowsBean.getComment()));
         return cvh.convertView;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            //点击这三个都跳转用户主页
-            case R.id.tv_comment_time:
-            case R.id.tv_username:
-            case R.id.iv_userhead:
-                mContext.startActivity(new Intent(mContext, PersonalMainPagerActivity.class));
-                break;
-        }
     }
 
 
@@ -158,8 +158,11 @@ public class FtCatgoryAadapter extends BaseAdapter implements View.OnClickListen
 
     private OnClickCommentGoods clickGoodsListener;
 
-    public interface OnClickCommentGoods{
+    public interface OnClickCommentGoods {
         void clickGoods(FtCommentInfo.RowsBean mRowsBean);
+
         void clickItem(FtCommentInfo.RowsBean mRowsBean);
+
+        void clickUser(int userId);
     }
 }

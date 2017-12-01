@@ -7,135 +7,202 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity"
+    tools:context="com.cucr.myapplication.activity.user.PersonalMainPagerActivity"
     >
 
-
-    <RelativeLayout
-        android:id="@+id/rl_personal_info"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="224dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <ImageView
-            android:id="@+id/iv_fuzzy_bg"
+        <RelativeLayout
+            android:id="@+id/rl_personal_info"
             android:layout_width="match_parent"
             android:layout_height="224dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/star3_new"
-            />
-
-        <RelativeLayout
-            android:id="@+id/head"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="24dp"
             >
 
             <ImageView
-                android:id="@+id/iv_pager_back"
-                style="@style/IconBackStyle"
+                android:id="@+id/iv_fuzzy_bg"
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/personal_bg"
+                />
+
+            <RelativeLayout
+                android:id="@+id/head"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_pager_back"
+                    style="@style/IconBackStyle"
+                    />
+
+            </RelativeLayout>
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_star_head"
+                android:layout_width="81dp"
+                android:layout_height="81dp"
+                android:layout_below="@id/head"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-15dp"
+                android:src="@drawable/pic2_live"
+                app:civ_border_color="#5fff"
+                app:civ_border_width="1dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_star_head"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="用户昵称"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <LinearLayout
+                android:id="@+id/focuses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_nick_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_8"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/tv_focuses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关注 750"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@color/white"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_fenes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="粉丝 750"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_general"
+                android:layout_width="@dimen/dp_13"
+                android:layout_height="@dimen/dp_13"
+                android:layout_alignTop="@id/tv_nick_name"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/tv_nick_name"
+                android:src="@drawable/icon_girl_"
+                />
+
+            <TextView
+                android:id="@+id/tv_user_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/focuses"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_8"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:hint="这个人很懒,什么都没有留下"
+                android:maxLines="1"
+                android:maxWidth="200dp"
+                android:textColor="#d4d4d4"
+                android:textColorHint="#d4d4d4"
+                android:textSize="@dimen/sp_12"
                 />
 
         </RelativeLayout>
 
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_star_head"
-            android:layout_width="81dp"
-            android:layout_height="81dp"
-            android:layout_below="@id/head"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-15dp"
-            android:src="@drawable/pic2_live"
-            app:civ_border_color="#5fff"
-            app:civ_border_width="1dp"
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/magic_indicator_personal_page"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/rl_personal_info"
             />
 
-        <TextView
-            android:id="@+id/tv_nick_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_star_head"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="用户昵称"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_15"
-            />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/personal_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/magic_indicator_personal_page"
+            android:layout_weight="1"
+            ></android.support.v4.view.ViewPager>
 
         <LinearLayout
-            android:id="@+id/focuses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_nick_name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="关注 750"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
-                />
+            <LinearLayout
+                android:id="@+id/ll_liao"
+                android:layout_width="@dimen/layout_bothdistance10_worlduc_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#fbf6f6"
+                android:gravity="center"
+                >
 
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginRight="@dimen/dp_10"
-                android:background="@color/white"
-                />
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="18dp"
+                    android:src="@drawable/liao"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="撩TA"
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_18"
+                    />
+
+            </LinearLayout>
+
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="粉丝 750"
+                android:id="@+id/tv_foucs"
+                android:layout_width="@dimen/layout_bothdistance10_worlduc_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/xtred"
+                android:gravity="center"
+                android:text="加关注"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
+                android:textSize="@dimen/sp_18"
                 />
         </LinearLayout>
+    </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/dp_13"
-            android:layout_height="@dimen/dp_13"
-            android:layout_alignTop="@id/tv_nick_name"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_marginTop="2dp"
-            android:layout_toRightOf="@id/tv_nick_name"
-            android:src="@drawable/icon_girl_"
-            />
-
-        <TextView
-            android:id="@+id/tv_user_sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/focuses"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="用户签名用户签名"
-            android:textColor="#d4d4d4"
-            android:textSize="@dimen/sp_12"
-            />
-
-    </RelativeLayout>
-
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/magic_indicator_personal_page"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/rl_personal_info"
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
         />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/personal_vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/magic_indicator_personal_page"
-        ></android.support.v4.view.ViewPager>
-
-
 </RelativeLayout>

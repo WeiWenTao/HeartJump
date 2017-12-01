@@ -1,7 +1,6 @@
 package com.cucr.myapplication.adapter.LvAdapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -25,7 +23,7 @@ import java.util.List;
 /**
  * Created by 911 on 2017/6/27.
  */
-public class FtAllCommentAadapter extends BaseAdapter implements View.OnClickListener {
+public class FtAllCommentAadapter extends BaseAdapter {
 
     private Context mContext;
     private List<FtCommentInfo.RowsBean> childList;
@@ -56,7 +54,7 @@ public class FtAllCommentAadapter extends BaseAdapter implements View.OnClickLis
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final FtCommentInfo.RowsBean childListBean = childList.get(position);
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_ft_catgory, null);
         ImageView userHead = cvh.getIv(R.id.iv_userhead);
@@ -70,9 +68,22 @@ public class FtAllCommentAadapter extends BaseAdapter implements View.OnClickLis
 
 
         //设置点击监听
-        userHead.setOnClickListener(this);
-        tv_username.setOnClickListener(this);
-        tv_comment_time.setOnClickListener(this);
+        userHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickUser(childListBean.getUser().getId());
+                }
+            }
+        });
+        tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickUser(childListBean.getUser().getId());
+                }
+            }
+        });
 
         iv_good.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,18 +109,6 @@ public class FtAllCommentAadapter extends BaseAdapter implements View.OnClickLis
         return cvh.convertView;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            //点击这三个都跳转用户主页
-            case R.id.tv_comment_time:
-            case R.id.tv_username:
-            case R.id.iv_userhead:
-                mContext.startActivity(new Intent(mContext, PersonalMainPagerActivity.class));
-                break;
-        }
-    }
-
 
     public void setClickGoodsListener(OnClickCommentGoods clickGoodsListener) {
         this.clickGoodsListener = clickGoodsListener;
@@ -119,5 +118,6 @@ public class FtAllCommentAadapter extends BaseAdapter implements View.OnClickLis
 
     public interface OnClickCommentGoods {
         void clickGoods(FtCommentInfo.RowsBean childListBean);
+        void clickUser(int userId);
     }
 }

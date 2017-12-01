@@ -162,6 +162,18 @@ public class MyFocusStarInfo {
             public void setUserHeadPortrait(String userHeadPortrait) {
                 this.userHeadPortrait = userHeadPortrait;
             }
+
+            @Override
+            public String toString() {
+                return "StartBean{" +
+                        "id=" + id +
+                        ", msgRegId='" + msgRegId + '\'' +
+                        ", name='" + name + '\'' +
+                        ", realName='" + realName + '\'' +
+                        ", signName='" + signName + '\'' +
+                        ", userHeadPortrait='" + userHeadPortrait + '\'' +
+                        '}';
+            }
         }
 
         public static class UserBean {
@@ -228,6 +240,38 @@ public class MyFocusStarInfo {
             public void setUserHeadPortrait(String userHeadPortrait) {
                 this.userHeadPortrait = userHeadPortrait;
             }
+
+            @Override
+            public String toString() {
+                return "UserBean{" +
+                        "id=" + id +
+                        ", msgRegId='" + msgRegId + '\'' +
+                        ", name='" + name + '\'' +
+                        ", realName='" + realName + '\'' +
+                        ", signName='" + signName + '\'' +
+                        ", userHeadPortrait='" + userHeadPortrait + '\'' +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "RowsBean{" +
+                    "followTime='" + followTime + '\'' +
+                    ", id=" + id +
+                    ", start=" + start +
+                    ", user=" + user +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "MyFocusStarInfo{" +
+                "errorMsg='" + errorMsg + '\'' +
+                ", success=" + success +
+                ", total=" + total +
+                ", rows=" + rows +
+                '}';
     }
 }

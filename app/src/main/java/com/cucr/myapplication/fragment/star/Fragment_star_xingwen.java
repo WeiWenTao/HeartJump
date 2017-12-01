@@ -80,7 +80,7 @@ public class Fragment_star_xingwen extends Fragment {
 
     private void queryXwInfo() {
         MyLogger.jLog().i("xwid:" + starId);
-        mCore.queryFtInfo(starId, dataType, false, page, rows, new OnCommonListener() {
+        mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);

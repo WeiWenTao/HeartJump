@@ -16,7 +16,6 @@ public class PersonalMainPagerAdapter extends FragmentPagerAdapter {
     public PersonalMainPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList) {
         super(fragmentManager);
         this.fragmentList = fragmentList;
-
     }
 
     @Override

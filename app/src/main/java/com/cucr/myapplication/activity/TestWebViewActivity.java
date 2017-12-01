@@ -36,11 +36,12 @@ public class TestWebViewActivity extends BaseActivity {
         settings.setJavaScriptEnabled(true);//支持js
         settings.setPluginState(WebSettings.PluginState.ON);// 支持插件
         settings.setLoadsImagesAutomatically(true);  //支持自动加载图片
-
-
+        if (getIntent().getBooleanExtra("from",false)) {
+            //如果是用户协议 就把字体设置大号
+            settings.setTextSize(WebSettings.TextSize.LARGEST);
+        }
         settings.setUseWideViewPort(true);  //将图片调整到适合webview的大小  无效
         settings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
-
 //        wv.setWebChromeClient(new WebChromeClient() );
         wv.setWebViewClient(new WebViewClient() {
             @Override

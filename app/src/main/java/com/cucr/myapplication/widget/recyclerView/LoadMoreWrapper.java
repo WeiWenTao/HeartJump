@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.utils.MyLogger;
 
 /**
  * 上拉加载更多
@@ -64,6 +65,7 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof FootViewHolder) {
             FootViewHolder footViewHolder = (FootViewHolder) holder;
+
             switch (loadState) {
                 case LOADING: // 正在加载
                     footViewHolder.pbLoading.setVisibility(View.VISIBLE);

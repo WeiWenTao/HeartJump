@@ -5,6 +5,7 @@
               android:layout_height="wrap_content"
               android:background="@color/white"
               android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <LinearLayout
@@ -30,7 +31,7 @@
 
             <TextView
                 android:id="@+id/tv_neckname"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="胡歌"
@@ -86,7 +87,7 @@
 
     </LinearLayout>
 
-    <TextView
+    <com.vanniktech.emoji.EmojiTextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,6 +98,7 @@
         android:maxLines="3"
         android:textColor="@color/color_333"
         android:textSize="@dimen/sp_15"
+        app:emojiSize="@dimen/sp_15"
         />
 
     <RelativeLayout

@@ -51,6 +51,6 @@ public class DongtaiFragment extends Fragment {
     }
 
     private void initView() {
-        rlv_dongtai.setAdapter(new FtAdapter(mContext));
+        rlv_dongtai.setAdapter(new FtAdapter());
     }
 }

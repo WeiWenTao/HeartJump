@@ -16,15 +16,21 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.model.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.model.eventBus.EventOnClickFocus;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogCanaleFocusStyle;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -44,10 +50,12 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
     private int newPosition;
     private WindowManager mWm;
     private int mValue; //屏幕宽度
+    private Gson mGson;
 
     public StarListForQiYeAdapter(Context activity) {
         this.activity = activity;
         mContext = MyApplication.getInstance();
+        mGson = new Gson();
         mCore = new FocusCore();
         mWm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mValue = mWm.getDefaultDisplay().getWidth() - CommonUtils.dip2px(mContext, 6.0f);
@@ -59,14 +67,24 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
         mDialogCanaleFocusStyle.setOnClickBtListener(new DialogCanaleFocusStyle.OnClickBtListener() {
             @Override
             public void clickConfirm() {
-                EventBus.getDefault().post(new EventOnClickCancleFocus());
 //                mFl.setVisibility(View.GONE);
-                StarListInfos.RowsBean rowsBean = rows.get(newPosition);
-                mCore.cancaleFocus(rowsBean.getId());
-                rowsBean.setIsfollow(0);
-                notifyDataSetChanged();
-                mDialogCanaleFocusStyle.dismiss();
-
+                final StarListInfos.RowsBean rowsBean = rows.get(newPosition);
+                mCore.cancaleFocus(rowsBean.getId(), new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                        if (reBackMsg.isSuccess()) {
+                            ToastUtils.showToast(mContext, "已取消关注！");
+                            rowsBean.setIsfollow(0);
+                            EventBus.getDefault().post(new EventNotifyStarInfo());
+                            EventBus.getDefault().post(new EventOnClickCancleFocus());
+                            notifyDataSetChanged();
+                        } else {
+                            ToastUtils.showToast(mContext, reBackMsg.getMsg());
+                        }
+                        mDialogCanaleFocusStyle.dismiss();
+                    }
+                });
             }
 
             @Override

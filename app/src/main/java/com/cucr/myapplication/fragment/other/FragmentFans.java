@@ -181,7 +181,6 @@ public class FragmentFans extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN) //点击关注或取消关注时再查一遍
     public void notifyDatas(EventNotifyStarInfo event) {
-        MyLogger.jLog().i("EventNotifyStarInfo() 收到消息了");
         queryMsg();
         mAdapter.setPosition(0);//设置第一个被勾选
     }
@@ -195,7 +194,7 @@ public class FragmentFans extends BaseFragment {
     }
 
     private void queryMsg() {
-        mCore.queryMyFocuses(new OnCommonListener() {
+        mCore.queryMyFocuses(-1,new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 MyLogger.jLog().i("focusInfo:" + response.get());

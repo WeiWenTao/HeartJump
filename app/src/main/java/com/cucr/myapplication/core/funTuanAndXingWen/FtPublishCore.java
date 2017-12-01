@@ -64,7 +64,6 @@ public class FtPublishCore implements FenTuanInterf {
         dialog = new WaitDialog(activity, "正在上传...");
         dialog_progress = new DialogProgress(activity, R.style.BirthdayStyleTheme);
         //点击屏幕外部和返回键不响应
-
         files = new ArrayList<>();
         mQueue = NoHttp.newRequestQueue();
         // 设置连接超时

@@ -9,6 +9,9 @@ public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
 
+    //服务器
+    public static final String HTTP_YHXY = "http://www.cucrxt.com/fwxy.html";
+
 //    public static final String HTTP_HOST = "http://192.168.1.122:8080";
 
     //注册
@@ -142,4 +145,7 @@ public class HttpContans {
 
     //明星查询字段
     public static final String ADDRESS_STAR_KEY = "/interface/mobileSysCodeAction/getList";
+
+    //用户中心
+    public static final String ADDRESS_USER_CENTER = "/interface/user/userCenter";
 }

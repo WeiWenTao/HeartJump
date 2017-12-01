@@ -28,6 +28,7 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
@@ -81,7 +82,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private FloatingActionButton action_a, action_b;
     private QueryFtInfoCore queryCore;
     private Gson mGson;
-    // TODO: 2017/9/22 eventBus 获取
     private int starId;
     private int qYStarId; //企业用户可以直接传递id   企业用户直接点击明星列表进来的  所以只查看点击明星的信息
     private int page = 1;
@@ -110,10 +110,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);//订阅
         mContext = MyApplication.getInstance();
-        layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = inflater;
         queryCore = new QueryFtInfoCore();
         mPayCenterCore = new PayCenterCore();
-        mGson = new Gson();
+        mGson = MyApplication.getGson();
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
@@ -201,7 +201,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             starId = qYStarId;
         }
         MyLogger.jLog().i("粉团参数 starId=" + starId + ",page=" + page + ",rows=" + rows);
-        queryCore.queryFtInfo(starId, dataType, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(starId, dataType,-1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -249,7 +249,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         MyLogger.jLog().i("initRlV");
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
-        mAdapter = new FtAdapter(mContext);
+        mAdapter = new FtAdapter();
         rlv_fentuan.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
 
@@ -370,7 +370,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onLoadMore() {
         page++;
-        queryCore.queryFtInfo(starId, dataType, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(starId, dataType ,-1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -378,15 +378,12 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
-                    MyLogger.jLog().i("addAll(mQueryFtInfoss.getRows())");
                     mAdapter.addData(mQueryFtInfoss.getRows());
                     //判断是否还有数据
                     if (mQueryFtInfoss.getTotal() <= page * rows) {
                         rlv_fentuan.onNoMore("没有更多了");
-                        MyLogger.jLog().i("test_onNoMore()");
                     } else {
                         rlv_fentuan.complete();
-                        MyLogger.jLog().i("test_complete()");
                     }
                 } else {
                     ToastUtils.showToast(mQueryFtInfoss.getErrorMsg());
@@ -459,8 +456,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                 }
             }
         });
-
-
     }
 
     //评论
@@ -496,6 +491,14 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public void onClickDsRecored(int contentId) {
         Intent intent = new Intent(mContext, DaShangCatgoryActivity.class);
         intent.putExtra("contentId", contentId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickUser(int userId) {
+        Intent intent = new Intent(mContext, PersonalMainPagerActivity.class);
+        intent.putExtra("userId", userId);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

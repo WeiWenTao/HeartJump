@@ -42,8 +42,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private QueryFtInfos mQueryFtInfos;
     private List<QueryFtInfos.RowsBean> rows;
 
-    public FtAdapter(Context context) {
-        this.context = context;
+    public FtAdapter() {
+        this.context = MyApplication.getInstance();
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -187,6 +187,25 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+
+            //点击头像
+            ((Tp1_Holder) holder).iv_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId());
+                    }
+                }
+            });
+            //点击昵称
+            ((Tp1_Holder) holder).tv_neckname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId());
+                    }
+                }
+            });
 // -------------------------------------------------------------------------------------------------
         } else if (holder instanceof Tp2_Holder) {
             //图片
@@ -283,6 +302,24 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
+            //点击头像
+            ((Tp2_Holder) holder).iv_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId());
+                    }
+                }
+            });
+            //点击昵称
+            ((Tp2_Holder) holder).tv_neckname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId());
+                    }
+                }
+            });
 // -------------------------------------------------------------------------------------------------
         } else { //文字
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());     //头像
@@ -354,6 +391,24 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
+            //点击头像
+            ((Tp3_Holder) holder).iv_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId());
+                    }
+                }
+            });
+            //点击昵称
+            ((Tp3_Holder) holder).tv_neckname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId());
+                    }
+                }
+            });
         }
     }
 
@@ -593,6 +648,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onClickDaShang(int contentId,int position);
 
         void onClickDsRecored(int contentId);
+
+        void onClickUser(int userId);
 
     }
 }

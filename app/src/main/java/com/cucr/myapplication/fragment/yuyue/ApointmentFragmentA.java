@@ -176,13 +176,13 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
     //点击关注时
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickfocus(EventOnClickFocus event){
+    public void onClickfocus(EventOnClickFocus event) {
         wapper.notifyDataSetChanged();
     }
 
     //点击取消关注时 刷新页面
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickCanclefocus(EventOnClickCancleFocus event){
+    public void onClickCanclefocus(EventOnClickCancleFocus event) {
         wapper.notifyDataSetChanged();
     }
 
@@ -198,7 +198,6 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         sp1.setAdapter(mSpAdapter1);
         sp2.setAdapter(mSpAdapter2);
         sp3.setAdapter(mSpAdapter3);
-
         sp1.setOnItemSelectedListener(this);
         sp2.setOnItemSelectedListener(this);
         sp3.setOnItemSelectedListener(this);
@@ -352,7 +351,6 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         }
     }
 
-
     //请求完成  如果还在加载  就停止加载(无网络情况)
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onFinish(EventRequestFinish event) {
@@ -405,6 +403,4 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
             }
         });
     }
-
-
 }

@@ -6,7 +6,7 @@ import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import com.cucr.myapplication.activity.dongtai.PersonalMainPagerActivity;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.utils.ToastUtils;
 
 /**
@@ -14,11 +14,11 @@ import com.cucr.myapplication.utils.ToastUtils;
  */
 
 public class MyClickGoHomePager extends ClickableSpan {
-    private String content;
+    private int userId;
     private Context context;
 
-    public MyClickGoHomePager(String content, Context context) {
-        this.content = content;
+    public MyClickGoHomePager(int userId, Context context) {
+        this.userId = userId;
         this.context = context;
     }
 
@@ -35,7 +35,9 @@ public class MyClickGoHomePager extends ClickableSpan {
 //        bundle.putString("content", content);
 //        intent.putExtra("bundle", bundle);
 //        startActivity(intent);
-        ToastUtils.showToast(widget.getContext(), "跳转到用户主页");
-        context.startActivity(new Intent(context, PersonalMainPagerActivity.class));
+        Intent intent = new Intent(context, PersonalMainPagerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("userId",userId);
+        context.startActivity(intent);
     }
 }

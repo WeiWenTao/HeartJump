@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="81dp"
+              android:background="@color/white"
+              android:orientation="horizontal"
+              android:id="@+id/ll_item_star"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_star_head"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:src="@drawable/pic1_focus"
+        />
+
+    <TextView
+        android:id="@+id/tv_star_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:text="时尚达人soso"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/sp_16"
+        android:layout_gravity="center"
+        />
+
+</LinearLayout>

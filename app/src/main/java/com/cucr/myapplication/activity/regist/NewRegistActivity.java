@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.core.login.RegistCore;
@@ -279,6 +281,16 @@ public class NewRegistActivity extends Activity {
     public void clickBack(View view){
         finish();
     }
+
+    //用户协议
+    @OnClick(R.id.tv_yhxy)
+    public void goYhxy(View view){
+        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
+        intent.putExtra("url", HttpContans.HTTP_YHXY);
+        intent.putExtra("from", true); //把字体设置成大号
+        startActivity(intent);
+    }
+
 
 
 }
