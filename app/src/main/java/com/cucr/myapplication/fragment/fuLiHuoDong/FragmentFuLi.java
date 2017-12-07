@@ -219,7 +219,6 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
             public void run() {
                 try {
                     Thread.sleep(3000);
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

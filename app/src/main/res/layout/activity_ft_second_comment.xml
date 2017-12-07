@@ -11,15 +11,25 @@
 
     <include layout="@layout/activity_base_title"/>
 
-    <ListView
-        android:id="@+id/lv_all_comment"
+
+    <com.cucr.myapplication.widget.refresh.RefreshLayout
+        android:id="@+id/ref"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/lvbg"
-        android:divider="#ccc"
-        android:dividerHeight="1px"
-        ></ListView>
+        >
+
+        <ListView
+            android:id="@+id/lv_all_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lvbg"
+            android:divider="#ccc"
+            android:dividerHeight="1px"
+            ></ListView>
+
+    </com.cucr.myapplication.widget.refresh.RefreshLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,7 +94,7 @@
             <LinearLayout
                 android:id="@+id/ll_goods"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:paddingLeft="@dimen/dp_10"

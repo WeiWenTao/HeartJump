@@ -50,6 +50,9 @@ public class HttpContans {
     //福利商品查询
     public static final String ADDRESS_FULI_GOODS = "/interface/shopAction/shopList";
 
+    //企业活动发布
+    public static final String ADDRESS_ACTIVE_PUBLISH = "/interface/mobileStartAppointment/applyActive";
+
     //福利活动查询
     public static final String ADDRESS_FULI_ACTIVE = "/interface/mobileWelfareActiveAction/list";
 

@@ -46,6 +46,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.zackratos.ultimatebar.UltimateBar;
 
 /**
  * Created by 911 on 2017/4/10.
@@ -90,7 +91,9 @@ public class MineFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         ViewUtils.inject(this, childView);
         showAndHide();  //分配权限
-        initHead();
+//        initHead();
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         queryInfos();
 
 

@@ -41,6 +41,11 @@ public class FtCatgoryAadapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void addData(List<FtCommentInfo.RowsBean> rows) {
+        this.rows.addAll(rows);
+        notifyDataSetChanged();
+    }
+
     public FtCatgoryAadapter(Context context) {
         mContext = context;
     }
@@ -61,7 +66,7 @@ public class FtCatgoryAadapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final FtCommentInfo.RowsBean mRowsBean = rows.get(position);
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_ft_catgory, null);
         ImageView userHead = cvh.getIv(R.id.iv_userhead);
@@ -98,7 +103,7 @@ public class FtCatgoryAadapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (clickGoodsListener != null) {
-                    clickGoodsListener.clickItem(mRowsBean);
+                    clickGoodsListener.clickItem(mRowsBean,position);
                 }
             }
         });
@@ -161,7 +166,7 @@ public class FtCatgoryAadapter extends BaseAdapter {
     public interface OnClickCommentGoods {
         void clickGoods(FtCommentInfo.RowsBean mRowsBean);
 
-        void clickItem(FtCommentInfo.RowsBean mRowsBean);
+        void clickItem(FtCommentInfo.RowsBean mRowsBean,int position);
 
         void clickUser(int userId);
     }

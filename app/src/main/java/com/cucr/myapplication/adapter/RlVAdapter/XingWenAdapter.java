@@ -80,6 +80,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final QueryFtInfos.RowsBean rowsBean = rows.get(position);
+        MyLogger.jLog().i("position:" + position + ",rowsBean:" + rowsBean);
         mIntent = new Intent(context, TestWebViewActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -141,12 +142,13 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        if (mQueryFtInfos == null || rows == null || rows.size() == 0) {
+        if (mQueryFtInfos == null || rows == null) {
+            MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos + ",rows:" + rows);
             return 0;
         }
+        MyLogger.jLog().i("size:" + rows.size());
         return rows.size();
     }
-
 
     //Video
     class Tp1_Holder extends RecyclerView.ViewHolder {
@@ -244,6 +246,5 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ViewUtils.inject(this, itemView);
         }
     }
-
 
 }

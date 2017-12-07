@@ -30,6 +30,7 @@ import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
@@ -48,6 +49,7 @@ import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -68,6 +70,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +140,7 @@ public class FragmentFans extends BaseFragment {
     private int page = 1;
     private int rows = 100;
     private int type = 2;
+    private float percent;//占屏比
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,8 +154,11 @@ public class FragmentFans extends BaseFragment {
         ViewUtils.inject(this, childView);
         mStarCore = new QueryStarListCore();
         mCore = new QueryMyFocusStars();
+        percent = 3.0f;
         initRlv();
-        initHead();
+//        initHead();
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         initIndicator();
         initVp();
         queryMsg();
@@ -194,7 +201,8 @@ public class FragmentFans extends BaseFragment {
     }
 
     private void queryMsg() {
-        mCore.queryMyFocuses(-1,new OnCommonListener() {
+        //TODO: 2017/12/4   刷新和加载
+        mCore.queryMyFocuses(-1, 1, 100, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 MyLogger.jLog().i("focusInfo:" + response.get());
@@ -255,10 +263,11 @@ public class FragmentFans extends BaseFragment {
 
         mDataList = new ArrayList<>();
         //TODO
-        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(), "星闻"));
-        //        if (明星用户) {
-        mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
-//        }
+        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(false), "星闻"));
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR) {
+            percent = 4.0f;
+            mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
+        }
         //这里随便传个数 粉团的有参构造 StarPagerForQiYeActivity_111界面用
         mDataList.add(new FragmentInfos(new Fragment_star_fentuan(-1), "粉团"));
         mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
@@ -276,7 +285,7 @@ public class FragmentFans extends BaseFragment {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 4.0f);
+                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, percent);
                 simplePagerTitleView.setText(mDataList.get(index).getTitle());
                 simplePagerTitleView.setNormalColor(Color.parseColor("#bfbfbf"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#ff4f49"));

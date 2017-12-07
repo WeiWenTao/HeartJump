@@ -13,12 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.huodong.HuoDongCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.HuoDongTaiAdapter;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 
 /**
  * Created by cucr on 2017/9/8.
@@ -57,8 +55,8 @@ public class FragmentHuoDong extends Fragment {
     }
 
     //跳转发布活动界面
-    @OnClick(R.id.iv_huodong_add)
-    public void faBuHuoDong(View view){
-        startActivity(new Intent(mContext,FaBuHuoDongActivity.class));
-    }
+//    @OnClick(R.id.iv_huodong_add)
+//    public void faBuHuoDong(View view){
+//        startActivity(new Intent(mContext,FaBuHuoDongActivity.class));
+//    }
 }

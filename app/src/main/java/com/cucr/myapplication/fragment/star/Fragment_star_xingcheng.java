@@ -17,7 +17,6 @@ import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.model.eventBus.EventStarId;
-import com.cucr.myapplication.model.eventBus.EventXwStarId;
 import com.cucr.myapplication.model.starJourney.StarJourneyList;
 import com.cucr.myapplication.model.starJourney.StarScheduleLIst;
 import com.cucr.myapplication.utils.MyLogger;
@@ -62,11 +61,14 @@ public class Fragment_star_xingcheng extends Fragment {
         mContext = MyApplication.getInstance();
         mCore = new QueryJourneyList();
         mGson = new Gson();
+        page = 1;
+        rows = 10;
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_personal_pager_journey, container, false);
-            queryJourney();
             initView();
+            queryJourney();
+            queryJourneyByTime(0);
         }
 
         return view;
@@ -75,37 +77,16 @@ public class Fragment_star_xingcheng extends Fragment {
     //第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
+        MyLogger.jLog().i("行程_EventFIrstStarId");
         starId = event.getFirstId();
-        page = 1;
-        rows = 10;
-        if (event != null) {
-            EventBus.getDefault().removeStickyEvent(event);
-        }
-        queryJourney();
-        queryJourneyByTime(0);
     }
 
     //明星id
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
+        MyLogger.jLog().i("行程_EventStarId");
         starId = event.getStarId();
-        page = 1;
-        rows = 10;
-        if (mCore == null){
-            mCore = new QueryJourneyList();
-        }
-        queryJourney();
-        queryJourneyByTime(0);
-    }
-
-    //查询行程 点击明星列表的时候发送 starid
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
-    public void onEvents(EventXwStarId event) {
-        starId = event.getStarId();
-        MyLogger.jLog().i("EventStarId：" + starId);
-        page = 1;
-        rows = 10;
-        if (mCore == null){
+        if (mCore == null) {
             mCore = new QueryJourneyList();
         }
         queryJourney();
@@ -174,6 +155,9 @@ public class Fragment_star_xingcheng extends Fragment {
     }
 
     public void queryJourneyByTime(int position) {
+        if (mWheelview.getItems() == null || mWheelview.getItems().size() == 0) {
+            return;
+        }
         String s = mWheelview.getItems().get(position);
         MyLogger.jLog().i("journeyStarid = " + starId);
         mCore.QueyrStarJourney(rows, page, starId, s, new OnCommonListener() {

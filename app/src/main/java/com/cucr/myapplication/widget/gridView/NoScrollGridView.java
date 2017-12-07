@@ -30,6 +30,6 @@ public class NoScrollGridView extends GridView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // TODO Auto-generated method stub
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, expandSpec);
     }
 }

@@ -265,4 +265,22 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+
+
+    <!--动态权限主题-->
+    <style name="PermissionBlueStyle">
+        <!--标题文字颜色-->
+        <item name="PermissionTitleColor">@color/xtred</item>
+        <!--描述文字颜色-->
+        <item name="PermissionMsgColor">@color/xtred</item>
+        <!--权限文字颜色-->
+        <item name="PermissionItemTextColor">@color/xtred</item>
+        <!--按钮背景-->
+        <item name="PermissionButtonBackground">@drawable/shape_load_psw_sel</item>
+        <!--对话框背景-->
+        <item name="PermissionBackround">@drawable/shape_publish_dialog_bg</item>
+        <!--按钮文字颜色-->
+        <item name="PermissionButtonTextColor">@color/white</item>
+    </style>
 </resources>

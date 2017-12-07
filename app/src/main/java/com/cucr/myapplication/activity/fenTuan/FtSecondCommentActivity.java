@@ -3,6 +3,7 @@ package com.cucr.myapplication.activity.fenTuan;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Px;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,10 +22,12 @@ import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -40,11 +43,15 @@ import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener {
+public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
 
     //root_view
     @ViewInject(R.id.root_view)
@@ -87,6 +94,11 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     ImageView iv_emoji;
 
 
+    //表情按钮
+    @ViewInject(R.id.ref)
+    RefreshLayout ref;
+
+
     private FtCommentInfo.RowsBean mRowsBean;
     private QueryFtInfoCore queryCore;
     private Integer giveNum;
@@ -100,10 +112,13 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
 
     @Override
     protected void initChild() {
+        EventBus.getDefault().register(this);
         initTitle("全部评论");
+        page = 1;
+        rows = 10;
         initDatas();
         initViews();
-        getDatas();
+        onRefresh();
 
     }
 
@@ -111,7 +126,8 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         mCommentCore = new FtCommentCore();
         queryCore = new QueryFtInfoCore();
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
-
+        ref.setOnRefreshListener(this);
+        ref.setOnLoadListener(this);
         upDataInfo();
         setUpEmojiPopup();
     }
@@ -255,7 +271,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
                 if (commonRebackMsg.isSuccess()) {
                     ToastUtils.showToast("评论成功!");
                     //查询一遍
-                    getDatas();
+                    onRefresh();
                     et_comment.setText("");
                     emojiPopup.dismiss();
                     CommonUtils.hideKeyBorad(FtSecondCommentActivity.this, root_view, true);
@@ -269,27 +285,27 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         });
     }
 
-    //获取数据
-    private void getDatas() {
-        page = 1;
-        rows = 100;
-        mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("info:" + response.get());
-                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
-                if (ftCommentInfo.isSuccess()) {
-                    MyLogger.jLog().i("ftCommentInfo:" + ftCommentInfo);
-                    List<FtCommentInfo.RowsBean> rows = ftCommentInfo.getRows();
-                    mAdapter.setData(rows);
-
-                    tv_comment_count.setText(rows.size() + "");
-                } else {
-                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
-                }
-            }
-        });
-    }
+//    //获取数据
+//    private void getDatas() {
+//        page = 1;
+//        rows = 100;
+//        mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
+//            @Override
+//            public void onRequestSuccess(Response<String> response) {
+//                MyLogger.jLog().i("info:" + response.get());
+//                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+//                if (ftCommentInfo.isSuccess()) {
+//                    MyLogger.jLog().i("ftCommentInfo:" + ftCommentInfo);
+//                    List<FtCommentInfo.RowsBean> rows = ftCommentInfo.getRows();
+//                    mAdapter.setData(rows);
+//
+//                    tv_comment_count.setText(rows.size() + "");
+//                } else {
+//                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+//                }
+//            }
+//        });
+//    }
 
     //点赞
     @Override
@@ -360,5 +376,58 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
         intent.putExtra("userId", mRowsBean.getUser().getId());
         startActivity(intent);
+    }
+
+    //刷新
+    @Override
+    public void onRefresh() {
+        if (!ref.isRefreshing()) {
+            ref.setRefreshing(true);
+        }
+        page = 1;
+        mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                if (ftCommentInfo.isSuccess()) {
+                    List<FtCommentInfo.RowsBean> rows = ftCommentInfo.getRows();
+                    mAdapter.setData(rows);
+                    tv_comment_count.setText(ftCommentInfo.getTotal() + "");
+                } else {
+                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                }
+            }
+        });
+    }
+
+    //加载
+    @Override
+    public void onLoad() {
+        page ++;
+        mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                if (ftCommentInfo.isSuccess()) {
+                    List<FtCommentInfo.RowsBean> rows = ftCommentInfo.getRows();
+                    mAdapter.addData(rows);
+                } else {
+                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                }
+            }
+        });
+    }
+
+    //请求完成  如果还在加载  就停止加载(包括无网络情况)
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onFinish(EventRequestFinish event) {
+        ref.setRefreshing(false);
+        ref.setLoading(false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

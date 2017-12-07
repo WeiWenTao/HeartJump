@@ -34,13 +34,15 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     private ImageView mIv_header_msg;
     private RelativeLayout mHead;
     protected Gson mGson;
+    public LayoutInflater inflater;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+            this.inflater = inflater;
 //        ViewUtils.inject(getActivity());
         mContext = MyApplication.getInstance();
         mGson = new Gson();
+
 
         // 五星级重要，复用View
         if (mRootView == null) {

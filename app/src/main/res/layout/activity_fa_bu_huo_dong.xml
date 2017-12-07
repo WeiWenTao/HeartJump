@@ -19,7 +19,27 @@
         tools:context="com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity"
         >
 
-        <include layout="@layout/activity_base_title"/>
+        <RelativeLayout
+            android:id="@+id/comment_head"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titleBarHight"
+            android:background="@color/blue_black"
+
+            >
+
+            <ImageView
+                android:id="@+id/iv_base_back"
+                style="@style/IconBackStyle"
+                />
+
+            <TextView
+                android:id="@+id/tv_base_title"
+                style="@style/TitleStyle"
+                android:text="活动发布"
+                />
+
+        </RelativeLayout>
 
         <ScrollView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -58,11 +78,11 @@
                         />
 
                     <EditText
+                        android:id="@+id/et_active_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
                         android:background="@null"
-                        android:text="具体活动名称"
                         android:textColor="@color/color_333"
                         android:textSize="@dimen/sp_14"
                         />
@@ -121,10 +141,12 @@
                         />
 
                     <LinearLayout
+                        android:id="@+id/ll_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
+                        android:clickable="true"
                         android:orientation="horizontal"
+                        android:paddingTop="@dimen/dp_10"
                         >
 
                         <TextView
@@ -153,22 +175,29 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
                         android:orientation="horizontal"
+                        android:gravity="bottom"
                         >
 
                         <LinearLayout
-                            android:id="@+id/ll_shinei"
+                            android:paddingTop="@dimen/dp_10"
+                            android:id="@+id/ll_price"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingLeft="@dimen/dp_5"
                             >
 
-                            <TextView
+                            <EditText
+                                android:id="@+id/et_money"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="235"
+                                android:background="@null"
+                                android:gravity="right"
+                                android:inputType="number"
+                                android:lineSpacingExtra="@dimen/dp_4"
+                                android:minWidth="1dp"
+                                android:paddingRight="@dimen/dp_5"
                                 android:textColor="@color/color_333"
                                 android:textSize="@dimen/sp_14"
                                 />
@@ -176,7 +205,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text=" 万"
+                                android:text="万"
                                 android:textColor="@color/color_666"
                                 android:textSize="@dimen/sp_14"
                                 />
@@ -228,6 +257,7 @@
                         />
 
                     <EditText
+                        android:id="@+id/et_active_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
@@ -250,27 +280,33 @@
                         />
 
                     <LinearLayout
-                        android:layout_marginTop="@dimen/dp_8"
+                        android:id="@+id/ll_peoples"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/dp_8"
                         android:orientation="horizontal"
                         >
 
                         <EditText
+                            android:paddingLeft="@dimen/dp_5"
+                            android:id="@+id/et_peoples"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@null"
+                            android:gravity="right"
+                            android:inputType="number"
                             android:lineSpacingExtra="@dimen/dp_4"
+                            android:minWidth="1dp"
+                            android:paddingRight="@dimen/dp_5"
                             android:textColor="@color/color_333"
                             android:textSize="@dimen/sp_14"
-                            android:text="2345"
                             />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" 人"
                             android:layout_gravity="center_vertical"
+                            android:text="人"
                             android:textColor="@color/color_666"
                             android:textSize="@dimen/sp_14"
                             />
@@ -328,6 +364,7 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tv_commit"
                         android:layout_width="230dp"
                         android:layout_height="@dimen/dp_40"
                         android:layout_gravity="center_horizontal"

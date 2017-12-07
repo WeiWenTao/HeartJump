@@ -8,6 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.funTuan.FenTuanComment;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
@@ -18,6 +19,8 @@ import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by cucr on 2017/10/18.
@@ -109,7 +112,7 @@ public class FtCommentCore implements FenTuanComment {
 
         @Override
         public void onFinish(int what) {
-
+            EventBus.getDefault().post(new EventRequestFinish());
         }
     };
 

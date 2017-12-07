@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.renzheng;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,7 +10,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,35 +52,21 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissonItem;
+
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by 911 on 2017/6/16.
  */
 
 public class StarRZ extends Fragment {
-    private PopupWindow popWindow;
-    private LayoutInflater layoutInflater;
-    private TextView photograph, albums;
-    private LinearLayout cancel;
-    public static final int REQUEST_CODE = 123;
-
-    public static final int PHOTOZOOM = 0; // 相册/拍照
-    public static final int PHOTOTAKE = 1; // 相册/拍照
-    public static final int IMAGE_COMPLETE = 2; // 结果
-    public static final int CROPREQCODE = 3; // 截取
-    private String photoSavePath;//保存路径
-    private String photoSaveName;//图pian名
-    private String path;//图片全路径
-    private CommitStarRzCore mCore;
-    private QueryRzResult mQueryCore;
-
-    private Gson mGson;
-    private ImageConfig imageConfig;
-    private ImageLoader instance;
-    private Integer dataId;
 
     //身份证正面路径
     private String img_postive_path;
@@ -132,10 +121,32 @@ public class StarRZ extends Fragment {
     @ViewInject(R.id.rl_star_shenfenzheng_positive)
     RelativeLayout rl_star_shenfenzheng_positive;
 
+    private PopupWindow popWindow;
+    private LayoutInflater layoutInflater;
+    private TextView photograph, albums;
+    private LinearLayout cancel;
+    public static final int REQUEST_CODE = 123;
+
+    public static final int PHOTOZOOM = 0; // 相册/拍照
+    public static final int PHOTOTAKE = 1; // 相册/拍照
+    public static final int IMAGE_COMPLETE = 2; // 结果
+    public static final int CROPREQCODE = 3; // 截取
+    private String photoSavePath;//保存路径
+    private String photoSaveName;//图pian名
+    private String path;//图片全路径
+    private CommitStarRzCore mCore;
+    private QueryRzResult mQueryCore;
+    private List<PermissonItem> permissonItems;
+    private Gson mGson;
+    private ImageConfig imageConfig;
+    private ImageLoader instance;
+    private Integer dataId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        permissonItems = new ArrayList<>();
+        permissonItems.add(new PermissonItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
 
         mGson = new Gson();
         mCore = new CommitStarRzCore(getActivity());
@@ -152,7 +163,7 @@ public class StarRZ extends Fragment {
         mQueryCore.queryRz(Constans.RZ_STAR, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("来自缓存："+response.isFromCache()+"，明星认证："+response.get());
+                MyLogger.jLog().i("来自缓存：" + response.isFromCache() + "，明星认证：" + response.get());
                 RzResult rzResult = mGson.fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     RzResult.ObjBean obj = rzResult.getObj();
@@ -210,7 +221,7 @@ public class StarRZ extends Fragment {
                 tv_commit_check.setText("审核通过，重新登录账号才有效哦");
                 int status = (int) SpUtil.getParam(SpConstant.SP_STATUS, -1);
                 //如果是明星
-                if (status == Constans.STATUS_STAR){
+                if (status == Constans.STATUS_STAR) {
                     tv_commit_check.setText("已完成认证");
                 }
 
@@ -231,6 +242,7 @@ public class StarRZ extends Fragment {
         photoSaveName = System.currentTimeMillis() + ".png";
     }
 
+
     public void initPop(View view) {
         photograph = (TextView) view.findViewById(R.id.photograph);//拍照
         albums = (TextView) view.findViewById(R.id.albums);//相册
@@ -244,18 +256,50 @@ public class StarRZ extends Fragment {
 
         //点击拍照
         photograph.setOnClickListener(new View.OnClickListener() {
+
+            private Intent mOpenCameraIntent;
+
             @Override
             public void onClick(View arg0) {
                 popWindow.dismiss();
                 photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
-                Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                mOpenCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
-                openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(openCameraIntent, PHOTOTAKE);
+                mOpenCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+                mOpenCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+                HiPermission.create(getActivity())
+                        .title("小主")
+                        .permissions(permissonItems)
+                        .filterColor(ResourcesCompat.getColor(getResources(), R.color.xtred, getActivity().getTheme()))//图标的颜色
+                        .msg("这要用到相机哦")
+                        .style(R.style.PermissionBlueStyle)
+                        .permissions(permissonItems)
+                        .checkMutiPermission(new PermissionCallback() {
+                            @Override
+                            public void onClose() {
+                                Log.i(TAG, "用户关闭权限申请");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                startActivityForResult(mOpenCameraIntent, PHOTOTAKE);
+                            }
+
+                            @Override
+                            public void onDeny(String permisson, int position) {
+                                Log.i(TAG, "onDeny");
+                            }
+
+                            @Override
+                            public void onGuarantee(String permisson, int position) {
+                                Log.i(TAG, "onGuarantee");
+                            }
+                        });
             }
         });
+
 
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,7 +478,7 @@ public class StarRZ extends Fragment {
                     public void onRequestSuccess(Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                         if (reBackMsg.isSuccess()) {
-                            ToastUtils.showToast( "明星认证上传成功！");
+                            ToastUtils.showToast("明星认证上传成功！");
                             setView(false, "审核中");
                         } else {
                             ToastUtils.showToast(reBackMsg.getMsg());

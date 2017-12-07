@@ -121,7 +121,7 @@ public class NewLoadActivity extends Activity {
 //                    保存用户id
                     SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存身份信息
-                    SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
+                    SpUtil.setParam(SpConstant.SP_STATUS,  loadSuccess.getRoleId());
 //                    存储账号和密码等信息
                     SpUtil.setParam( SpConstant.USER_NAEM, mEt_accunt.getText().toString());
                     SpUtil.setParam(SpConstant.PASSWORD, mEt_psw.getText().toString());

@@ -111,6 +111,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //gif
     compile 'com.github.Cutta:GifView:1.1'
-    //阴影
+    //动态权限
+    compile 'me.weyye.hipermission:library:1.0.3'
 
 }

@@ -7,6 +7,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.dabang.BangDan;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
@@ -17,6 +18,8 @@ import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by cucr on 2017/10/28.
@@ -37,10 +40,12 @@ public class BangDanCore implements BangDan {
 
     //查询榜单信息
     @Override
-    public void queryBangDanInfo(OnCommonListener listener) {
+    public void queryBangDanInfo(int page, int rows, OnCommonListener listener) {
         bangDanListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_BANG_DAN_INFO, RequestMethod.POST);
         // 添加普通参数。
+        request.add("page",page);
+        request.add("rows",rows);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_ONE, request, callback);
@@ -63,12 +68,12 @@ public class BangDanCore implements BangDan {
     OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-        
+
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            switch (what){
+            switch (what) {
                 case Constans.TYPE_ONE:
                     bangDanListener.onRequestSuccess(response);
                     break;
@@ -88,7 +93,7 @@ public class BangDanCore implements BangDan {
 
         @Override
         public void onFinish(int what) {
-
+            EventBus.getDefault().post(new EventRequestFinish());
         }
     };
 

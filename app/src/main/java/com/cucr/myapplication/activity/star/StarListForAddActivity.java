@@ -128,15 +128,15 @@ public class StarListForAddActivity extends Activity {
     //跳转主界面
     @OnClick(R.id.tv_enter)
     public void enterApp(View view) {
-        mFocusCore.queryMyFocuses(-1,new OnCommonListener() {
+        mFocusCore.queryMyFocuses(-1, 1, 10, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 MyFocusStarInfo Info = mGson.fromJson(response.get(), MyFocusStarInfo.class);
                 if (Info.isSuccess()) {
-                    if (Info.getRows().size() > 0){     //有关注明星
+                    if (Info.getRows().size() > 0) {     //有关注明星
                         startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
                         finish();
-                    }else {
+                    } else {
                         ToastUtils.showToast("至少要关注一位明星哦");
                     }
                 } else {

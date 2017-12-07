@@ -7,7 +7,7 @@ import com.cucr.myapplication.listener.OnCommonListener;
  */
 
 public interface BangDan {
-    void queryBangDanInfo(OnCommonListener listener);
+    void queryBangDanInfo(int page,int rows,OnCommonListener listener);
 
     void daBang(int money,int starId,OnCommonListener listener);
 }

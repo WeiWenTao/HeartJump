@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Px;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
 import com.cucr.myapplication.model.eventBus.EventDsSuccess;
 import com.cucr.myapplication.model.eventBus.EventDuiHuanSuccess;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.model.eventBus.EventRewardGifts;
 import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
@@ -49,6 +51,7 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaShangStyle;
 import com.cucr.myapplication.widget.gridView.NoScrollGridView;
+import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -71,12 +74,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.cucr.myapplication.utils.MyLogger.jLog;
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener {
+public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
 
     //根布局
     @ViewInject(R.id.rootview)
@@ -130,6 +134,10 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @ViewInject(R.id.tv_backpack)
     private TextView backpack;
 
+    //刷新
+    @ViewInject(R.id.ref)
+    private RefreshLayout mRefreshLayout;
+
     private DialogDaShangStyle daShangStyle;
     private boolean mHasPicture;
     private boolean mIsFormConmmomd;
@@ -145,6 +153,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private EmojiPopup emojiPopup;
     private TextView mTv_all_comment;
     private List<FtCommentInfo.RowsBean> mRows;
+    private List<FtCommentInfo.RowsBean> allRows;
     private int position;
     private TextView tv_dashang;
     //打赏框
@@ -156,13 +165,16 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     protected void initChild() {
         EventBus.getDefault().register(this);
         initTitle("详情");
+        rows = 25;
+        allRows = new ArrayList<>();
         initData();
         initGiftAndBackPack();
         setUpEmojiPopup();
         initLV();
-        getDatas();
+        onRefresh();
     }
 
+    //查询道具信息
     private void initGiftAndBackPack() {
         mPayCenterCore = new PayCenterCore();
         //查询用户余额
@@ -194,6 +206,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         queryBackpack();
     }
 
+    //查询背包信息
     private void queryBackpack() {
         //查询背包信息
         queryCore.queryBackpackInfo(new OnCommonListener() {
@@ -214,39 +227,21 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private void initData() {
         mIntent = getIntent();
         mHasPicture = mIntent.getBooleanExtra("hasPicture", false);
-        mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);
+        mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);//是否是点击评论跳转过来的
         mRowsBean = (QueryFtInfos.RowsBean) mIntent.getSerializableExtra("rowsBean");
         jLog().i("mRowsBean:" + mRowsBean);
         mCommentCore = new FtCommentCore();
         upDataInfo();
         queryCore = new QueryFtInfoCore();
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setOnLoadListener(this);
     }
 
+    //更新数据
     private void upDataInfo() {
         tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
         iv_zan.setImageResource(mRowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_comment_count.setText(mRowsBean.getCommentCount() + "");
-    }
-
-    private void getDatas() {
-        page = 1;
-        rows = 100;
-        mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
-                if (ftCommentInfo.isSuccess()) {
-                    mRows = ftCommentInfo.getRows();
-                    mAdapter.setData(mRows);
-                    if (mIsFormConmmomd) {
-                        lv_ft_catgory.setSelection(1);
-                        mIsFormConmmomd = false;
-                    }
-                } else {
-                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
-                }
-            }
-        });
     }
 
     @Override
@@ -304,7 +299,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             @Override
             public void onClick(View v) {
                 popWindow.showAtLocation(lvHead, Gravity.BOTTOM, 0, 0);
-                EventBus.getDefault().postSticky(new EventContentId(mRowsBean.getId(), position));
+                EventBus.getDefault().postSticky(new EventContentId(mRowsBean.getId(), 0));
             }
         });
 
@@ -347,7 +342,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //点击评论时
     @OnClick(R.id.ll_comment)
     public void comment(View view) {
-        lv_ft_catgory.smoothScrollToPositionFromTop(1, 0);
+        lv_ft_catgory.smoothScrollToPositionFromTop(1, 75, 300);
     }
 
     //点赞时
@@ -398,7 +393,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 if (commonRebackMsg.isSuccess()) {
                     ToastUtils.showToast("评论成功!");
                     //查询一遍
-                    getDatas();
+                    onRefresh();
                     et_comment.setText("");
                     emojiPopup.dismiss();
                     CommonUtils.hideKeyBorad(FenTuanCatgoryActiviry.this, rootview, true);
@@ -406,6 +401,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                     mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
                     upDataInfo();
                     mTv_all_comment.setText(mRowsBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
+                    //评论成功后滚动到最顶部
+//                    lv_ft_catgory.smoothScrollToPositionFromTop(0, 0, 300);
+                    lv_ft_catgory.setSelection(0);
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
@@ -513,7 +511,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     //listView条目点击监听
     @Override
-    public void clickItem(FtCommentInfo.RowsBean mRowsBean) {
+    public void clickItem(FtCommentInfo.RowsBean mRowsBean, int position) {
+        this.position = position;
         Intent intent = new Intent(this, FtSecondCommentActivity.class);
         intent.putExtra("mRows", mRowsBean);
         startActivityForResult(intent, Constans.REQUEST_CODE);
@@ -551,13 +550,19 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             final FtCommentInfo.RowsBean mRowsBean = (FtCommentInfo.RowsBean) data.getSerializableExtra("rowsBean");
-            final FtCommentInfo.RowsBean rowsBean = mRows.get(position);
+            final FtCommentInfo.RowsBean rowsBean = allRows.get(position);
             rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
             rowsBean.setIsGiveUp(mRowsBean.getIsGiveUp());
-            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+//            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+            //=============================================================================
+            //如果在secondComment页面评论了  就再查一遍
+            if (rowsBean.getCommentCount() != mRowsBean.getCommentCount()) {
+                onRefresh();
+            }
+            //=============================================================================
+
             mAdapter.notifyDataSetChanged();
 //            getDatas();
         }
@@ -574,7 +579,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshDsRecord(EventDsSuccess event) {
         mRowsBean.setDssl(mRowsBean.getDssl() + 1);
-        tv_dashang.setText(mRowsBean.getDssl()  + "人打赏了道具");
+        tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
     }
 
     @Override
@@ -684,6 +689,61 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 animSet_r.start();
                 break;
         }
+    }
+
+
+    //刷新
+    @Override
+    public void onRefresh() {
+        if (!mRefreshLayout.isRefreshing()) {
+            mRefreshLayout.setRefreshing(true);
+        }
+
+        //查询评论
+        page = 1;
+        mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                if (ftCommentInfo.isSuccess()) {
+                    mRows = ftCommentInfo.getRows();
+                    allRows.addAll(mRows);
+                    mAdapter.setData(mRows);
+                    if (mIsFormConmmomd) {
+                        lv_ft_catgory.smoothScrollToPositionFromTop(1, 75, 500);
+                        mIsFormConmmomd = false;
+                    }
+                } else {
+                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                }
+            }
+        });
+    }
+
+    //加载
+    @Override
+    public void onLoad() {
+        page ++;
+        mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                if (ftCommentInfo.isSuccess()) {
+                    mRows = ftCommentInfo.getRows();
+                    allRows.addAll(mRows);
+                    mAdapter.addData(mRows);
+                } else {
+                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                }
+            }
+        });
+    }
+
+    //请求完成  如果还在加载  就停止加载(包括无网络情况)
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onFinish(EventRequestFinish event) {
+        mRefreshLayout.setRefreshing(false);
+        mRefreshLayout.setLoading(false);
     }
 
 }

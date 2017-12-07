@@ -22,6 +22,8 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ZipUtil;
 
+import org.zackratos.ultimatebar.UltimateBar;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -40,7 +42,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         //share sdk 初始化
         ShareSDK.initSDK(this);
 

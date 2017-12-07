@@ -65,7 +65,7 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-        mListViewFooter = LayoutInflater.from(context).inflate(R.layout.layout_refresh_footer, null,
+        mListViewFooter = LayoutInflater.from(context).inflate(R.layout.layout_footer_view, null,
                 false);
     }
 
@@ -174,9 +174,10 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
     public void setLoading(boolean loading) {
         isLoading = loading;
         if (isLoading) {
-            mListView.addFooterView(mListViewFooter);
+            // TODO: 2017/12/5  不用底部
+//            mListView.addFooterView(mListViewFooter);
         } else {
-            mListView.removeFooterView(mListViewFooter);
+//            mListView.removeFooterView(mListViewFooter);
             mYDown = 0;
             mLastY = 0;
         }

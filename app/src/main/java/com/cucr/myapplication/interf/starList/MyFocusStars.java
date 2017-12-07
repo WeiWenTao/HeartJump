@@ -7,5 +7,5 @@ import com.cucr.myapplication.listener.OnCommonListener;
  */
 
 public interface MyFocusStars {
-    void queryMyFocuses(int queryUserId,OnCommonListener onCommonListener);
+    void queryMyFocuses(int queryUserId, int page, int rows, OnCommonListener onCommonListener);
 }

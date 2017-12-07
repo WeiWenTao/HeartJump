@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/rl_popWindow_bg"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_up_pop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cancel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/setting_one_selector"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_man"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="发布活动"
+            android:textColor="#999"
+            android:textSize="18sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+
+        >
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_50"
+            android:background="@drawable/setting_one_selector"
+            android:gravity="center"
+            android:text="取 消"
+            android:textColor="#999"
+            android:textSize="18sp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -39,6 +39,11 @@ public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarList
         notifyDataSetChanged();
     }
 
+    public void addData(List<MyFocusStarInfo.RowsBean> list) {
+        this.list.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(StarListHolder holder, final int position) {
         final MyFocusStarInfo.RowsBean rowsBean = list.get(position);
@@ -49,7 +54,7 @@ public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarList
             @Override
             public void onClick(View v) {
                 if (mOnItemClick != null) {
-                    mOnItemClick.onItemClick(position);
+                    mOnItemClick.onItemClick(rowsBean.getStart().getId());
                 }
             }
         });
@@ -85,6 +90,6 @@ public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarList
     }
 
     public interface OnItemClick {
-        void onItemClick(int position);
+        void onItemClick(int starId);
     }
 }

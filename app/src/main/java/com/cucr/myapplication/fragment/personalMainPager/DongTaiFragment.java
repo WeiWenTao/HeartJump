@@ -168,7 +168,6 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         mPayCenterCore = new PayCenterCore();
         mGson = MyApplication.getGson();
         rlv_dongtai.setOnLoadListener(this);
-        rlv_dongtai.setOnLoadListener(this);
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_dongtai.getRecyclerView().setLayoutManager(layout);
         mAdapter = new FtAdapter();

@@ -1,12 +1,11 @@
-package com.cucr.myapplication.activity.user;
+package com.cucr.myapplication.activity.star;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -16,20 +15,22 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.adapter.PagerAdapter.PersonalMainPagerAdapter;
+import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
-import com.cucr.myapplication.core.user.UserCore;
-import com.cucr.myapplication.fragment.personalMainPager.DongTaiFragment;
-import com.cucr.myapplication.fragment.personalMainPager.StarFragment;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
+import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
+import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
+import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventRewardGifts;
-import com.cucr.myapplication.model.login.ReBackMsg;
-import com.cucr.myapplication.model.user.UserCenterInfo;
+import com.cucr.myapplication.model.others.FragmentInfos;
+import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -54,127 +55,88 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalMainPagerActivity extends Activity {
+/**
+ * Created by cucr on 2017/11/3.
+ * 企业用户看的明星主页
+ */
 
-    //指示器
-    @ViewInject(R.id.magic_indicator_personal_page)
-    MagicIndicator magicIndicator;
+public class StarPagerForFans extends FragmentActivity {
+
+    private List<FragmentInfos> mDataList;
 
     //ViewPager
-    @ViewInject(R.id.personal_vp)
-    ViewPager mViewPager;
+    @ViewInject(R.id.viewpager)
+    private ViewPager mViewPager;
 
-    //底部关注
-    @ViewInject(R.id.tv_foucs)
-    TextView tv_foucs;
+    //指示器
+    @ViewInject(R.id.magic_star_forqiye)
+    private MagicIndicator magicIndicator;
 
-    //头像
-    @ViewInject(R.id.iv_star_head)
-    ImageView iv_star_head;
+    //粉丝数量
+    @ViewInject(R.id.tv_fans)
+    private TextView tv_fans;
 
-    //昵称
-    @ViewInject(R.id.tv_nick_name)
-    TextView tv_nick_name;
+    //明星姓名
+    @ViewInject(R.id.tv_starname)
+    private TextView tv_starname;
 
-    //关注人数
-    @ViewInject(R.id.tv_focuses)
-    TextView tv_focuses;
+    //标题姓名
+    @ViewInject(R.id.tv_base_title)
+    private TextView tv_base_title;
 
-    //粉丝人数
-    @ViewInject(R.id.tv_fenes)
-    TextView tv_fenes;
+    //明星封面
+    @ViewInject(R.id.backdrop)
+    private ImageView backdrop;
 
-    //用户签名
-    @ViewInject(R.id.tv_user_sign)
-    TextView tv_user_sign;
-
-    //用户性别
-    @ViewInject(R.id.iv_general)
-    ImageView iv_general;
-
-    //背景封面 (静态数据)
-    @ViewInject(R.id.iv_fuzzy_bg)
-    ImageView iv_fuzzy_bg;
+//    //关注
+//    @ViewInject(R.id.tv_focus_forqiye)
+//    private TextView tv_focus_forqiye;
 
     //礼物动画
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
 
-
-    private List<String> mDataList;
-    private UserCore mUserCore;
-    private List<Fragment> fragmentList;
-    private boolean isFoucs;
-    private FocusCore mFocusCore;
-    private int mUserId;
-    private int mFssl;
+    private FocusCore mCore;
+    private Gson mGson;
+    private int mStarId;
+    private QueryStarListCore mStarCore;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_main_pager);
-        //注册
+        setContentView(R.layout.activity_star_pager_forfans);
         EventBus.getDefault().register(this);
         ViewUtils.inject(this);
-        mUserId = getIntent().getIntExtra("userId", -1);
-
-        initData();     //查个人信息
-        initViews();
-
-
-    }
-
-    //查个人信息
-    private void initData() {
-        mDataList = new ArrayList<>();
-        mUserCore = new UserCore();
-        mFocusCore = new FocusCore();
-        mUserCore.queryUserCenterInfo(mUserId, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("111:" + response.get());
-                UserCenterInfo userInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
-                if (userInfo.isSuccess()) {
-                    setData(userInfo.getObj());
-                } else {
-                    ToastUtils.showToast(userInfo.getMsg());
-                }
-            }
-        });
-    }
-
-
-    //将获取到的信息设置到控件上
-    private void setData(UserCenterInfo.ObjBean obj) {
-        mDataList.add("动态 " + obj.getDtsl());
-        mDataList.add("明星 " + obj.getGzmxsl());
-        initIndicator();
-        isFoucs = obj.getIsgz() == 1;
-        tv_foucs.setText(isFoucs ? "已关注" : "加关注");
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getYhtx(), iv_star_head, MyApplication.getImageLoaderOptions());
-        tv_nick_name.setText(obj.getYhnc());
-        tv_focuses.setText("关注 " + obj.getGzsl());
-        mFssl = obj.getFssl();
-        tv_fenes.setText("粉丝 " + mFssl);
-        tv_user_sign.setText(obj.getQm() + "123");
-        iv_general.setImageResource(obj.getSex() == 0 ? R.drawable.icon_boy_ : R.drawable.icon_girl_);
-    }
-
-    private void initViews() {
-        //初始化头部 沉浸栏
+        mCore = new FocusCore();
+        mGson = MyApplication.getGson();
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
-        fragmentList = new ArrayList<>();
-        fragmentList.add(new DongTaiFragment(mUserId));
-        fragmentList.add(new StarFragment(mUserId));
-        mViewPager.setAdapter(new PersonalMainPagerAdapter(getFragmentManager(), fragmentList));
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+
+        initDatas();
+        initIndicator();
+        initVp();
+    }
+
+    private void initVp() {
+        mViewPager.setAdapter(new StarPagerAdapter(getSupportFragmentManager(), mDataList));
+        mViewPager.setOffscreenPageLimit(2);
     }
 
     //初始化标签栏
     private void initIndicator() {
+
+        mDataList = new ArrayList<>();
+
+        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(true), "星闻"));
+//        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR) {
+//            mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
+//        }
+        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(mStarId), "粉团"));
+        mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
+
         //背景
         magicIndicator.setBackgroundColor(Color.parseColor("#fafafa"));
-        CommonNavigator commonNavigator7 = new CommonNavigator(this);
+        CommonNavigator commonNavigator7 = new CommonNavigator(MyApplication.getInstance());
         commonNavigator7.setScrollPivotX(0.5f);
         commonNavigator7.setAdapter(new CommonNavigatorAdapter() {
             @Override
@@ -184,8 +146,8 @@ public class PersonalMainPagerActivity extends Activity {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 2.0f);
-                simplePagerTitleView.setText(mDataList.get(index));
+                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 3.0f);
+                simplePagerTitleView.setText(mDataList.get(index).getTitle());
                 simplePagerTitleView.setNormalColor(Color.parseColor("#bfbfbf"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#ff4f49"));
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
@@ -212,51 +174,62 @@ public class PersonalMainPagerActivity extends Activity {
         });
         magicIndicator.setNavigator(commonNavigator7);
         ViewPagerHelper.bind(magicIndicator, mViewPager);
-
     }
 
-    //返回
-    @OnClick(R.id.iv_pager_back)
-    public void back(View view) {
-        finish();
-    }
-
-    //点击关注
-    @OnClick(R.id.tv_foucs)
-    public void foucs(View view) {
-        MyLogger.jLog().i("foucs");
-        if (isFoucs) {
-            mFocusCore.cancaleFocus(mUserId, new OnCommonListener() {
+    // TODO: 2017/12/4 关注按钮
+  /*  //关注
+    @OnClick(R.id.tv_focus_forqiye)
+    public void focus(View view) {
+        //是否已经关注该明星
+        if (mData.getIsfollow() == 1) {
+            mCore.cancaleFocus(mData.getId(), new OnCommonListener() {
                 @Override
                 public void onRequestSuccess(Response<String> response) {
-                    ReBackMsg reBackMsg = MyApplication.getGson().fromJson(response.get(), ReBackMsg.class);
+                    ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                     if (reBackMsg.isSuccess()) {
                         ToastUtils.showToast("已取消关注！");
-                        mFssl = mFssl - 1;
-                        tv_fenes.setText("粉丝 " + (mFssl));
+                        mData.setIsfollow(0);
+                    } else {
+                        ToastUtils.showToast(reBackMsg.getMsg());
                     }
                 }
             });
-            tv_foucs.setText("加关注");
-            isFoucs = false;
-
         } else {
-            mFocusCore.toFocus(mUserId);
-            tv_foucs.setText("已关注");
-            isFoucs = true;
-            mFssl = mFssl + 1;
-            tv_fenes.setText("粉丝 " + (mFssl));
+            mCore.toFocus(mData.getId());
+            mData.setIsfollow(1);
         }
+        tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
+    }*/
 
+    //预约
+    @OnClick(R.id.tv_yuyue)
+    public void goYuYue(View view) {
+       ToastUtils.showToast("企业用户才能预约明星哦");
     }
 
-    //点击liao
-    @OnClick(R.id.ll_liao)
-    public void liao(View view) {
-
+    public void initDatas() {
+        //获取数据
+        mStarId = getIntent().getIntExtra("starId", -1);
+        mStarCore = new QueryStarListCore();
+        mStarCore.queryStar(2, 1, 1, mStarId, null, null, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
+                if (starInfos.isSuccess()) {
+                    StarListInfos.RowsBean rowsBean = starInfos.getRows().get(0);
+                    //并初始化
+                    tv_fans.setText("粉丝 " + rowsBean.getFansCount());
+                    tv_starname.setText(rowsBean.getRealName());
+                    tv_base_title.setText(rowsBean.getRealName());
+//                    tv_focus_forqiye.setText(rowsBean.getIsfollow() == 1 ? "已关注" : "关注");
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                } else {
+                    ToastUtils.showToast(starInfos.getErrorMsg());
+                }
+            }
+        });
     }
 
-    //打赏动画
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventRewardGifts event) {
         MyLogger.jLog().i("打赏动画");
@@ -353,10 +326,10 @@ public class PersonalMainPagerActivity extends Activity {
         }
     }
 
-    //注销
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 }

@@ -292,7 +292,8 @@ public class SwipeRecyclerView extends FrameLayout
 
             //reset footer view status loading
             if(mFootView != null){
-                mFootView.onLoadingMore();
+                // TODO: 2017/12/4 这里改过
+//                mFootView.onLoadingMore();
             }
             mListener.onRefresh();
         }

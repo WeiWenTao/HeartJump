@@ -37,15 +37,17 @@ public class QueryMyFocusStars implements MyFocusStars {
     }
 
     @Override
-    public void queryMyFocuses(int queryUserId, final OnCommonListener onCommonListener) {
+    public void queryMyFocuses(int queryUserId, int page, int rows, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FOCUS, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
-        if (queryUserId != -1){
-            request.add("queryUserId",queryUserId);
+        if (queryUserId != -1) {
+            request.add("queryUserId", queryUserId);
         }
+        request.add("page", page);
+        request.add("rows", rows);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
 //        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖

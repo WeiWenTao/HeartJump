@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.renzheng;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,7 +11,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,9 +52,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissonItem;
+
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 import static com.cucr.myapplication.fragment.renzheng.StarRZ.REQUEST_CODE;
 
 /**
@@ -79,6 +88,7 @@ public class QiYeRZ extends Fragment {
     private ImageConfig imageConfig;
     //修改的时候要上传dataId
     private Integer dataId;
+    private List<PermissonItem> permissonItems;
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg_qiye)
@@ -162,6 +172,8 @@ public class QiYeRZ extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mCore = new CommitQiYeRzCore(getActivity());
+        permissonItems = new ArrayList<>();
+        permissonItems.add(new PermissonItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
         mQueryCore = new QueryRzResult();
         mContext = container.getContext();
         mGson = new Gson();
@@ -299,16 +311,47 @@ public class QiYeRZ extends Fragment {
 
         //拍照
         photograph.setOnClickListener(new View.OnClickListener() {
+            private Intent mOpenCameraIntent;
+
             @Override
             public void onClick(View arg0) {
                 popWindow.dismiss();
                 photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
-                Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                mOpenCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
-                openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(openCameraIntent, PHOTOTAKE);
+                mOpenCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+                mOpenCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+
+                HiPermission.create(getActivity())
+                        .title("小主")
+                        .permissions(permissonItems)
+                        .filterColor(ResourcesCompat.getColor(getResources(), R.color.xtred, getActivity().getTheme()))//图标的颜色
+                        .msg("这要用到相机哦")
+                        .style(R.style.PermissionBlueStyle)
+                        .permissions(permissonItems)
+                        .checkMutiPermission(new PermissionCallback() {
+                            @Override
+                            public void onClose() {
+                                Log.i(TAG, "用户关闭权限申请");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                startActivityForResult(mOpenCameraIntent, PHOTOTAKE);
+                            }
+
+                            @Override
+                            public void onDeny(String permisson, int position) {
+                                Log.i(TAG, "onDeny");
+                            }
+
+                            @Override
+                            public void onGuarantee(String permisson, int position) {
+                                Log.i(TAG, "onGuarantee");
+                            }
+                        });
             }
         });
 

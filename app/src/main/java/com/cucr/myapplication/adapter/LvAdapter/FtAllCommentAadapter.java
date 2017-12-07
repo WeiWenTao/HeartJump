@@ -33,6 +33,11 @@ public class FtAllCommentAadapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void addData(List<FtCommentInfo.RowsBean> childList) {
+        this.childList.addAll(childList);
+        notifyDataSetChanged();
+    }
+
     public FtAllCommentAadapter(Context context, List<FtCommentInfo.RowsBean> childList) {
         mContext = context;
         this.childList = childList;

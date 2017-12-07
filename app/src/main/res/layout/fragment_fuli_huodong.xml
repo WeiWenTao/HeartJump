@@ -1,71 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     >
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/zise"
-        >
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="@dimen/dp_55"
-            android:layout_marginRight="@dimen/dp_55"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/pink"
-            app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/zongse"
-            ></android.support.design.widget.TabLayout>
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="41dp"
-            android:layout_height="35dp"
-            android:paddingRight="@dimen/dp_20"
-            android:layout_alignParentBottom="true"
-            android:paddingBottom="14dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:src="@drawable/icon_search"
-            />
-
-        <ImageView
-            android:id="@+id/iv_header_msg"
-            android:layout_width="40dp"
-            android:layout_height="44dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="13dp"
-            android:layout_marginRight="@dimen/dp_10"
-            android:paddingLeft="18dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/icon_msg"
-            />
-    </RelativeLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_fuli_huodong"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        >
+
+        <RelativeLayout
+            android:fitsSystemWindows="true"
+            android:id="@+id/head"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/zise"
+            >
+
+            <LinearLayout
+                android:id="@+id/ll_title"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/tv_title1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:text="福利"
+                    android:textColor="@color/xtred"
+                    android:textSize="@dimen/sp_18"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_title2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text="活动"
+                    android:textColor="@color/zongse"
+                    android:textSize="@dimen/sp_18"
+                    />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_sjx"
+                android:layout_width="13dp"
+                android:layout_height="7dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:layout_toRightOf="@+id/ll_title"
+                android:src="@drawable/sjx"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="41dp"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:paddingBottom="14dp"
+                android:paddingRight="@dimen/dp_20"
+                android:src="@drawable/icon_search"
+                />
+
+            <ImageView
+                android:id="@+id/iv_header_msg"
+                android:layout_width="40dp"
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:paddingBottom="13dp"
+                android:paddingLeft="18dp"
+                android:paddingTop="10dp"
+                android:src="@drawable/icon_msg"
+                />
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_fuli_huodong"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_pop_bg"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/popWindowBg"
+        android:visibility="gone"
         />
 
     <!--android:id="@+id/ll_star_recommend"-->
     <!--android:id="@+id/ll_star_classify"-->
 
 
-</LinearLayout>
+</RelativeLayout>
 

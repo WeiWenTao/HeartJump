@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +22,29 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
+import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.ToastUtils;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
+import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.zcw.togglebutton.ToggleButton;
+
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class FaBuHuoDongActivity extends BaseActivity {
+public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButton.OnToggleChanged {
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg_fb_huodong)
@@ -44,15 +58,40 @@ public class FaBuHuoDongActivity extends BaseActivity {
     @ViewInject(R.id.tv_active_local)
     TextView tv_active_local;
 
-    //活动地区
+    //详细地区
     @ViewInject(R.id.et_local_catgory)
     EditText et_local_catgory;
 
+    //活动名称
+    @ViewInject(R.id.et_active_name)
+    EditText et_active_name;
 
+    //活动内容
+    @ViewInject(R.id.et_active_content)
+    EditText et_active_content;
+
+    //活动时间
+    @ViewInject(R.id.tv_time_star)
+    TextView tv_time_star;
+
+    //活动价格
+    @ViewInject(R.id.et_money)
+    TextView et_money;
+
+    //活动人数
+    @ViewInject(R.id.et_peoples)
+    TextView et_peoples;
+
+    //费用公开
+    @ViewInject(R.id.toggle_show_price_tip)
+    ToggleButton toggle;
+
+    private boolean isOpen;
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
     private TextView photograph, albums;
     private LinearLayout cancel;
+    private String picUrl;
 
     public static final int PHOTOZOOM = 0; // 相册/拍照
     public static final int PHOTOTAKE = 1; // 相册/拍照
@@ -61,18 +100,23 @@ public class FaBuHuoDongActivity extends BaseActivity {
     private String photoSavePath;//保存路径
     private String photoSaveName;//图pian名
     private String path;//图片全路径
-
-
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    private HuoDongCore mHuoDongCore;
 
     @Override
-    protected void initChild() {
-        initTitle("活动发布");
-        initHead();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fa_bu_huo_dong);
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        mHuoDongCore = new HuoDongCore();
+        ViewUtils.inject(this);
+        initChild();
     }
 
-    @Override
-    protected int getChildRes() {
-        return R.layout.activity_fa_bu_huo_dong;
+    protected void initChild() {
+        initHead();
+        toggle.setOnToggleChanged(this);
     }
 
     //活动地区
@@ -80,7 +124,7 @@ public class FaBuHuoDongActivity extends BaseActivity {
     public void selLocal(View view) {
         Intent intent = new Intent(this, LocalityProvienceActivity.class);
         intent.putExtra("needShow", true);
-        intent.putExtra("className","FaBuHuoDongActivity");
+        intent.putExtra("className", "FaBuHuoDongActivity");
         startActivity(intent);
     }
 
@@ -235,6 +279,89 @@ public class FaBuHuoDongActivity extends BaseActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //点击活动时间
+    @OnClick(R.id.ll_time)
+    public void clickTime(View view) {
+        MyLogger.jLog().i("点击了");
+        new SlideDateTimePicker.Builder(getSupportFragmentManager())
+                .setListener(listener)
+                .setInitialDate(new Date())
+                .setMinDate(new Date(System.currentTimeMillis()))
+                //.setMaxDate(maxDate)
+                .setIs24HourTime(true)
+                //.setTheme(SlideDateTimePicker.HOLO_LIGHT)
+                .setIndicatorColor(getResources().getColor(R.color.xtred))
+                .build()
+                .show();
+    }
+
+    private SlideDateTimeListener listener = new SlideDateTimeListener() {
+
+        @Override
+        public void onDateTimeSet(Date date) {
+            String timeDate = mFormatter.format(date);
+            tv_time_star.setText(timeDate);
+        }
+
+        // Optional cancel listener
+        @Override
+        public void onDateTimeCancel() {
+//            Toast.makeText(YuYueCatgoryActivity.this,
+//                    "Canceled", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    //返回
+    @OnClick(R.id.iv_base_back)
+    public void clickBack(View view) {
+        finish();
+    }
+
+
+    //点击活动价格
+    @OnClick(R.id.ll_price)
+    public void clickMoney(View view) {
+        et_money.setFocusable(true);
+        et_money.setFocusableInTouchMode(true);
+        et_money.requestFocus();
+        CommonUtils.hideKeyBorad(MyApplication.getInstance(), et_money, false);
+    }
+
+    //点击活动人数
+    @OnClick(R.id.ll_peoples)
+    public void clickPeoples(View view) {
+        et_peoples.setFocusable(true);
+        et_peoples.setFocusableInTouchMode(true);
+        et_peoples.requestFocus();
+        CommonUtils.hideKeyBorad(MyApplication.getInstance(), et_peoples, false);
+    }
+
+    @Override
+    public void onToggle(boolean on) {
+        isOpen = on;
+    }
+
+    //点击提交
+    @OnClick(R.id.tv_commit)
+    public void clickCommit(View view) {
+        String active_name = et_active_name.getText().toString();
+        String active_local = tv_active_local.getText().toString();
+        String local_catgory = et_local_catgory.getText().toString();
+        String time = tv_time_star.getText().toString();
+        String money = et_money.getText().toString();
+        String active_content = et_active_content.getText().toString();
+        String active_peoples = et_peoples.getText().toString();
+
+        boolean empty = CommonUtils.isEmpty(active_name, active_local, local_catgory, time, money, active_content
+                , active_peoples, picUrl
+        );
+        if (empty){
+            ToastUtils.showToast("请完善信息");
+            return;
+        }
+//        mHuoDongCore.publishActive();
     }
 
 }

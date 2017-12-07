@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.setting.PersonalInfoActivity"
     >
 
@@ -228,6 +229,7 @@
 
     <FrameLayout
         android:id="@+id/fl_pop_bg"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/popWindowBg"

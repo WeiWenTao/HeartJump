@@ -133,7 +133,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
 
         mDataList = new ArrayList<>();
 
-        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(), "星闻"));
+        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(true), "星闻"));
         //        if (明星用户) {
         mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
 //        }

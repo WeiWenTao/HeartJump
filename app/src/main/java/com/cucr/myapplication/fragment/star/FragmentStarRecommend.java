@@ -17,11 +17,8 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
-import com.cucr.myapplication.model.eventBus.EventXwStarId;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -82,8 +79,8 @@ public class FragmentStarRecommend extends Fragment implements SwipeRecyclerView
                 finalPosition = position;
                 startActivityForResult(intent, 222);
 
-                //发送明星id到明星主页
-                EventBus.getDefault().postSticky(new EventXwStarId(rowsBean.getId()));
+//                //发送明星id到明星主页
+//                EventBus.getDefault().postSticky(new EventXwStarId(rowsBean.getId()));
             }
         });
     }

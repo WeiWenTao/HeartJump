@@ -46,6 +46,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,11 +115,13 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
     @Override
     protected void initView(View childView) {
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         ViewUtils.inject(this, childView);
         mCore = new QueryStarListCore();
         mAdapter = new StarListForQiYeAdapter(mContext);
         allRows = new ArrayList<>();
-        rows = 10;
+        rows = 16;
         page = 1;
 
         initRlv();
@@ -127,7 +130,8 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
         queryKey();
 
-        initHead();
+//        initHead();
+
 
     }
 

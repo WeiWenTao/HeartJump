@@ -31,6 +31,8 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import org.zackratos.ultimatebar.UltimateBar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +75,9 @@ public class FragmentHotAndFocusNews extends BaseFragment {
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this,childView);
-        initHead();
-
+//        initHead();
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         initTableLayout();
         initView();
     }

@@ -1,5 +1,7 @@
 package com.cucr.myapplication.fragment.DaBang;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +17,7 @@ import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.dabang.BangDanInfo;
-import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.model.eventBus.EventRequestFinish;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
@@ -23,6 +25,11 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.List;
 
@@ -40,22 +47,34 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     private BangDanInfo.RowsBean mRowsBean1;
     private BangDanInfo.RowsBean mRowsBean2;
     private BangDanInfo.RowsBean mRowsBean3;
+    private int page;
+    private int rows;
+    private RefreshLayout mMyRefreshListView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     protected void initView(View childView) {
-        RefreshLayout myRefreshListView = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
-        ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);
-        myRefreshListView.setOnLoadListener(this);
-        myRefreshListView.setOnRefreshListener(this);
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
 
+        mMyRefreshListView = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
+        ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);
+        mMyRefreshListView.setOnLoadListener(this);
+        mMyRefreshListView.setOnRefreshListener(this);
+        page = 1;
+        rows = 15;
         headView = View.inflate(mContext, R.layout.head_dabang, null);
         ViewUtils.inject(this, headView);
         mDialog = new DialogDaBangStyle(childView.getContext(), R.style.BirthdayStyleTheme);
         mDialog.setConfirmListener(this);
+        mCore = new BangDanCore(mContext);
 
-        queryBdInfo();
         lv_dabang.addHeaderView(headView);
-
         mAdapter = new DaBangAdapter(mContext);
         lv_dabang.setAdapter(mAdapter);
         mAdapter.setOnDaBang(new DaBangAdapter.OnDaBang() {
@@ -65,6 +84,8 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
                 starId = rowsBean.getId();
             }
         });
+
+        onRefresh();
     }
 
     private void initHead(List<BangDanInfo.RowsBean> rows) {
@@ -94,23 +115,6 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         tv_num1.setText(mRowsBean1.getUserMoney() + "");
         tv_num2.setText(mRowsBean2.getUserMoney() + "");
         tv_num3.setText(mRowsBean3.getUserMoney() + "");
-    }
-
-    private void queryBdInfo() {
-        mCore = new BangDanCore(mContext);
-        mCore.queryBangDanInfo(new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("queryBangDanInfo:" + response.get());
-                BangDanInfo bangDanInfo = mGson.fromJson(response.get(), BangDanInfo.class);
-                if (bangDanInfo.isSuccess()) {
-                    mAdapter.setData(bangDanInfo.getRows());
-                    initHead(bangDanInfo.getRows());
-                } else {
-                    ToastUtils.showToast(bangDanInfo.getErrorMsg());
-                }
-            }
-        });
     }
 
     @OnClick(R.id.iv_dabang_first)
@@ -147,11 +151,11 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         mCore.daBang(howMuch, starId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-
                 CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (msg.isSuccess()) {
                     ToastUtils.showToast("打榜成功!");
-                    queryBdInfo();
+                    //刷新一遍
+//                    queryBdInfo();
                 } else {
                     ToastUtils.showToast(msg.getMsg());
                 }
@@ -160,12 +164,61 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     }
 
     @Override
-    public void onLoad() {
-        MyLogger.jLog().i("onLoad");
+    protected boolean needHeader() {
+        return false;
     }
 
     @Override
     public void onRefresh() {
-        MyLogger.jLog().i("onRefresh");
+        if (!mMyRefreshListView.isRefreshing()) {
+            mMyRefreshListView.setRefreshing(true);
+        }
+        page = 1;
+        mCore.queryBangDanInfo(page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                BangDanInfo bangDanInfo = mGson.fromJson(response.get(), BangDanInfo.class);
+                if (bangDanInfo.isSuccess()) {
+                    mAdapter.setData(bangDanInfo.getRows());
+                    initHead(bangDanInfo.getRows());
+                } else {
+                    ToastUtils.showToast(bangDanInfo.getErrorMsg());
+                }
+            }
+        });
+    }
+
+
+    //请求完成  如果还在加载  就停止加载(无网络情况)
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onFinish(EventRequestFinish event) {
+        mMyRefreshListView.setRefreshing(false);
+        mMyRefreshListView.setLoading(false);
+    }
+
+
+    @Override
+    public void onLoad() {
+        page++;
+        mCore.queryBangDanInfo(page, rows, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                BangDanInfo bangDanInfo = mGson.fromJson(response.get(), BangDanInfo.class);
+                if (bangDanInfo.isSuccess()) {
+                    mAdapter.addData(bangDanInfo.getRows());
+                    if (rows > bangDanInfo.getRows().size()){
+                        ToastUtils.showEnd();
+                    }
+                } else {
+                    ToastUtils.showToast(bangDanInfo.getErrorMsg());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
