@@ -114,7 +114,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     private Gson mGson;
 
     //日期格式
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private YuYueCore mCore;
 
     @Override

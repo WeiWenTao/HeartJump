@@ -169,27 +169,28 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
             @Override
             public void onDismiss() {
                 CommonUtils.initPopBg(false, fl_pop_bg);
+
             }
         });
     }
 
-    private void initGenderPop(View genderView) {
+    private void initGenderPop(View popView) {
 
-        genderView.findViewById(R.id.rl_popWindow_bg).setOnClickListener(new View.OnClickListener() {
+        popView.findViewById(R.id.rl_popWindow_bg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 genderPopWindow.dismiss();
             }
         });
 
-        genderView.findViewById(R.id.ll_up_pop).setOnClickListener(new View.OnClickListener() {
+        popView.findViewById(R.id.ll_up_pop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext, FaBuHuoDongActivity.class));
                 genderPopWindow.dismiss();
             }
         });
-        genderView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+        popView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 genderPopWindow.dismiss();

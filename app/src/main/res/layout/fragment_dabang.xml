@@ -17,6 +17,17 @@
         android:background="@color/blue_black"
         >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_13"
+            android:text="心跳榜"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"
+            />
+
         <ImageView
             android:id="@+id/iv_search"
             android:layout_width="41dp"

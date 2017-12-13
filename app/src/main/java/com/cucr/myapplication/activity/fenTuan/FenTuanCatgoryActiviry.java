@@ -165,7 +165,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     protected void initChild() {
         EventBus.getDefault().register(this);
         initTitle("详情");
-        rows = 25;
+        rows = 3;
         allRows = new ArrayList<>();
         initData();
         initGiftAndBackPack();
@@ -503,7 +503,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                     }
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(FenTuanCatgoryActiviry.this, commonRebackMsg.getMsg());
+                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });
@@ -551,20 +551,27 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
+
             final FtCommentInfo.RowsBean mRowsBean = (FtCommentInfo.RowsBean) data.getSerializableExtra("rowsBean");
             final FtCommentInfo.RowsBean rowsBean = allRows.get(position);
+
+            MyLogger.jLog().i("mRowsBean_CommentCount:" + mRowsBean.getCommentCount());
+            MyLogger.jLog().i("rowsBean_CommentCount:" + rowsBean.getCommentCount());
+
             rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
             rowsBean.setIsGiveUp(mRowsBean.getIsGiveUp());
-//            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+
             //=============================================================================
-            //如果在secondComment页面评论了  就再查一遍
-            if (rowsBean.getCommentCount() != mRowsBean.getCommentCount()) {
+//            如果在secondComment页面评论了  就再查一遍(如果评论从无到有)
+            if (mRowsBean.getCommentCount() == 1) { //如果只有一条评论就再查一遍 评论了之后不退出页面在进行二级评论时bug
+                // TODO: 2017/12/12  有问题 待解决 在适配器中会报空指针 原因是 评论数量改变了 却没有评论数据
                 onRefresh();
+            } else {
+                rowsBean.setCommentCount(mRowsBean.getCommentCount());
             }
             //=============================================================================
 
             mAdapter.notifyDataSetChanged();
-//            getDatas();
         }
     }
 
@@ -588,6 +595,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         EventBus.getDefault().unregister(this);
     }
 
+    //点击lv头部的用户时  直接跳转个人主页
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
@@ -723,7 +731,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //加载
     @Override
     public void onLoad() {
-        page ++;
+        page++;
         mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -742,8 +750,10 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //请求完成  如果还在加载  就停止加载(包括无网络情况)
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onFinish(EventRequestFinish event) {
-        mRefreshLayout.setRefreshing(false);
-        mRefreshLayout.setLoading(false);
+        if (event.getWhat().equals(HttpContans.ADDRESS_FT_COMMENT_QUERY)) {
+            mRefreshLayout.setRefreshing(false);
+            mRefreshLayout.setLoading(false);
+        }
     }
 
 }

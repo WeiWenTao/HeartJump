@@ -46,15 +46,15 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     //查询粉团信息
     @Override
-    public void queryFtInfo(int starId, int dataType,int queryUserId, boolean queryMine, int page, int rows, OnCommonListener listener) {
+    public void queryFtInfo(int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, OnCommonListener listener) {
         ftQuerylistener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
-        if (starId != -1){
+        if (starId != -1) {
             request.add("startId", starId);
         }
 
-        if (queryUserId != -1){
+        if (queryUserId != -1) {
             request.add("queryUserId", queryUserId);
         }
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -74,9 +74,8 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     //点赞
     @Override
     public void ftGoods(int contentId, OnCommonListener listener) {
+        MyLogger.jLog().i("粉团点赞:contentId:" + contentId);
         ftGoodlistener = listener;
-        MyLogger.jLog().i("contentId=" + contentId);
-        MyLogger.jLog().i("userId=" + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_GOOD, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))

@@ -9,10 +9,10 @@ public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
 
-    //服务器
-    public static final String HTTP_YHXY = "http://www.cucrxt.com/fwxy.html";
-
 //    public static final String HTTP_HOST = "http://192.168.1.122:8080";
+
+    //服务协议
+    public static final String HTTP_YHXY = "http://www.cucrxt.com/fwxy.html";
 
     //注册
     public static final String ADDRESS_REGIST = "/interface/user/regist";
@@ -151,4 +151,20 @@ public class HttpContans {
 
     //用户中心
     public static final String ADDRESS_USER_CENTER = "/interface/user/userCenter";
+
+    //活动查询(企业)
+    public static final String ADDRESS_QUERY_ACTIVE = "/interface/mobileStartAppointment/queryActive";
+
+    //活动点赞
+    public static final String ADDRESS_ACTIVE_GOOD = "/interface/mobileStartAppointment/activeGiveUp";
+
+    //活动评论
+    public static final String ADDRESS_ACTIVE_COMMENT = "/interface/mobileStartAppointment/applyActiveComment";
+
+    //活动评论查询
+    public static final String ADDRESS_ACTIVE_COMMENT_QUERY = "/interface/mobileStartAppointment/activeCommentQuery";
+
+    //活动评论查询
+    public static final String ADDRESS_ACTIVE_COMMENT_GOOD = "/interface/mobileStartAppointment/activeCommentGiveUp";
+
 }

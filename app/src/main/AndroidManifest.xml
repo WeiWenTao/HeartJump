@@ -242,7 +242,7 @@
             android:launchMode="singleTask"
             >
         </activity>
-        <activity android:name=".activity.huodong.HuoDongCatgoryActivity">
+        <activity android:name=".activity.huodong.HuoDongCatgoryActivity" android:launchMode="standard">
         </activity>
         <activity android:name=".activity.fuli.DuiHuanCatgoryActivity">
         </activity>
@@ -330,6 +330,8 @@
         <activity android:name=".activity.star.StarRequiresActivity">
         </activity>
         <activity android:name=".activity.star.StarPagerForFans">
+        </activity>
+        <activity android:name=".activity.huodong.HdSecondCommentActivity">
         </activity>
     </application>
 

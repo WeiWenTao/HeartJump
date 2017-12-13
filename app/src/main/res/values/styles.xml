@@ -277,7 +277,7 @@
         <!--权限文字颜色-->
         <item name="PermissionItemTextColor">@color/xtred</item>
         <!--按钮背景-->
-        <item name="PermissionButtonBackground">@drawable/shape_load_psw_sel</item>
+        <item name="PermissionButtonBackground">@drawable/shape_immediately_pay_bg</item>
         <!--对话框背景-->
         <item name="PermissionBackround">@drawable/shape_publish_dialog_bg</item>
         <!--按钮文字颜色-->

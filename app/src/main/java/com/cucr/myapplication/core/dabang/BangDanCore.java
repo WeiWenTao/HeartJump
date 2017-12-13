@@ -93,7 +93,7 @@ public class BangDanCore implements BangDan {
 
         @Override
         public void onFinish(int what) {
-            EventBus.getDefault().post(new EventRequestFinish());
+            EventBus.getDefault().post(new EventRequestFinish(what));
         }
     };
 

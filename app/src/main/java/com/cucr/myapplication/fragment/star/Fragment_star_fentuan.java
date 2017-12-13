@@ -201,7 +201,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             starId = qYStarId;
         }
         MyLogger.jLog().i("粉团参数 starId=" + starId + ",page=" + page + ",rows=" + rows);
-        queryCore.queryFtInfo(starId, dataType,-1, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -333,6 +333,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 3 && resultCode == 10) {
+            //发布成功  再次查询
             onRefresh();
             rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
@@ -358,7 +359,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //刷新的时候查询最新数据 page = 1
     @Override
     public void onRefresh() {
-        if (!rlv_fentuan.getSwipeRefreshLayout().isRefreshing()){
+        if (!rlv_fentuan.getSwipeRefreshLayout().isRefreshing()) {
             rlv_fentuan.getSwipeRefreshLayout().setRefreshing(true);
         }
         page = 1;
@@ -370,7 +371,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onLoadMore() {
         page++;
-        queryCore.queryFtInfo(starId, dataType ,-1, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -410,8 +411,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
 
-
-        //礼物
+    //礼物
     @OnClick(R.id.tv_gift)
     public void gift(View view) {
         vp_dahsnag.setCurrentItem(0);

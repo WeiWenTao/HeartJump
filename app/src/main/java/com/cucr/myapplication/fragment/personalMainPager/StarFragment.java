@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.personalMainPager;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
  * Created by 911 on 2017/7/19.
  */
 
+@SuppressLint("ValidFragment")
 public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadListener {
 
     private View mView;

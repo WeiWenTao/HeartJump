@@ -1,4 +1,4 @@
-package com.cucr.myapplication.activity.fenTuan;
+package com.cucr.myapplication.activity.huodong;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -18,8 +18,7 @@ import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtAllCommentAadapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventRequestFinish;
@@ -51,7 +50,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+public class HdSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
 
     //root_view
     @ViewInject(R.id.root_view)
@@ -60,6 +59,10 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     //ListView
     @ViewInject(R.id.lv_all_comment)
     ListView lv_all_comment;
+
+    //点赞
+    @ViewInject(R.id.ll_goods)
+    LinearLayout ll_goods;
 
     //点赞数量
     @ViewInject(R.id.tv_givecount)
@@ -90,19 +93,18 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     ImageView iv_emoji;
 
 
-    //刷新控件
+    //表情按钮
     @ViewInject(R.id.ref)
     RefreshLayout ref;
 
 
     private FtCommentInfo.RowsBean mRowsBean;
-    private QueryFtInfoCore queryCore;
+    private HuoDongCore hdCore;
     private Integer giveNum;
     //emoji表情
     private EmojiPopup emojiPopup;
     private int page;
     private int rows;
-    private FtCommentCore mCommentCore;
     private FtAllCommentAadapter mAdapter;
 
 
@@ -119,8 +121,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     }
 
     private void initDatas() {
-        mCommentCore = new FtCommentCore();
-        queryCore = new QueryFtInfoCore();
+        hdCore = new HuoDongCore();
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
         ref.setOnRefreshListener(this);
         ref.setOnLoadListener(this);
@@ -168,9 +169,10 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         tv_comment_count.setText(mRowsBean.getChildList().size() + "");
     }
 
+    //底部导航栏点赞
     @OnClick(R.id.ll_goods)
     public void clickGoods(View view) {
-        mCommentCore.ftCommentGoods(mRowsBean.getContentId(),mRowsBean.getId(), new OnCommonListener() {
+        hdCore.activeCommentGood(mRowsBean.getContentId(), mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
@@ -259,7 +261,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(mRowsBean.getContentId(), mRowsBean.getId(), CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
+        hdCore.activeComment(mRowsBean.getContentId(), CommonUtils.string2Unicode(et_comment.getText().toString().trim()), mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
@@ -269,7 +271,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
                     onRefresh();
                     et_comment.setText("");
                     emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(FtSecondCommentActivity.this, root_view, true);
+                    CommonUtils.hideKeyBorad(HdSecondCommentActivity.this, root_view, true);
                     et_comment.clearFocus();
                     upDataInfo();
                     mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
@@ -280,10 +282,11 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         });
     }
 
+
     //点赞
     @Override
     public void clickGoods(final FtCommentInfo.RowsBean childListBean) {
-        mCommentCore.ftCommentGoods(childListBean.getContentId(), childListBean.getId(), new OnCommonListener() {
+        hdCore.activeCommentGood(childListBean.getContentId(), childListBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
@@ -299,7 +302,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
                     }
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(FtSecondCommentActivity.this, commonRebackMsg.getMsg());
+                    ToastUtils.showToast(HdSecondCommentActivity.this, commonRebackMsg.getMsg());
                 }
             }
         });
@@ -335,7 +338,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         Intent intent = getIntent();
         intent.putExtra("rowsBean", mRowsBean);
         setResult(Constans.RESULT_CODE, intent);
-        MyLogger.jLog().i("rowsBean:"+ mRowsBean);
+        MyLogger.jLog().i("rowsBean:" + mRowsBean);
     }
 
     @Override
@@ -358,7 +361,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
             ref.setRefreshing(true);
         }
         page = 1;
-        mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
+        hdCore.activeCommentQuery(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
@@ -369,7 +372,6 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
                 } else {
                     ToastUtils.showToast(ftCommentInfo.getErrorMsg());
                 }
-                lv_all_comment.setSelection(0);
             }
         });
     }
@@ -377,8 +379,8 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     //加载
     @Override
     public void onLoad() {
-        page ++;
-        mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
+        page++;
+        hdCore.activeCommentQuery(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
@@ -395,10 +397,8 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     //请求完成  如果还在加载  就停止加载(包括无网络情况)
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onFinish(EventRequestFinish event) {
-        if (event.getWhat().equals(HttpContans.ADDRESS_FT_COMMENT_QUERY)){
-            ref.setRefreshing(false);
-            ref.setLoading(false);
-        }
+        ref.setRefreshing(false);
+        ref.setLoading(false);
     }
 
     @Override

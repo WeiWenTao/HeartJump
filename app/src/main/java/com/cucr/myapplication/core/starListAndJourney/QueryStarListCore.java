@@ -119,7 +119,7 @@ public class QueryStarListCore implements StarListInfo {
 
         @Override
         public void onFinish(int what) {
-            EventBus.getDefault().post(new EventRequestFinish());
+            EventBus.getDefault().post(new EventRequestFinish(HttpContans.ADDRESS_QUERY_STAR));
         }
     };
 

@@ -356,7 +356,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         });
         photograph.setOnClickListener(new View.OnClickListener() {
             private Intent mOpenCameraIntent;
-
             @Override
             public void onClick(View arg0) {
                 popWindow.dismiss();
@@ -430,7 +429,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     return;
                 }
                 uri = data.getData();
-                String[] proj = {MediaStore.Images.Media.DATA};
+//                String[] proj = {MediaStore.Images.Media.DATA};
 //                Cursor cursor = managedQuery(uri, proj, null, null, null);
 //                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 //                cursor.moveToFirst();

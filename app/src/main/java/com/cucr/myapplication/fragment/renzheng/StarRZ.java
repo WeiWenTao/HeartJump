@@ -490,7 +490,7 @@ public class StarRZ extends Fragment {
 
     }
 
-    //提交认证后 各个控件的初始化话
+    //提交认证后 各个控件的初始化
     private void setView(boolean enable, String text) {
         et_name.setEnabled(enable);
         et_contact.setEnabled(enable);

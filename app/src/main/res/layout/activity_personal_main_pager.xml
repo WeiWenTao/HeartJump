@@ -52,7 +52,7 @@
                 android:layout_below="@id/head"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-15dp"
-                android:src="@drawable/pic2_live"
+                android:src="@drawable/pic_bg"
                 app:civ_border_color="#5fff"
                 app:civ_border_width="1dp"
                 />
@@ -64,7 +64,6 @@
                 android:layout_below="@id/iv_star_head"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_8"
-                android:text="用户昵称"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15"
                 />
@@ -83,7 +82,6 @@
                     android:id="@+id/tv_focuses"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="关注 750"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12"
                     />
@@ -100,7 +98,6 @@
                     android:id="@+id/tv_fenes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="粉丝 750"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12"
                     />
@@ -114,7 +111,6 @@
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@id/tv_nick_name"
-                android:src="@drawable/icon_girl_"
                 />
 
             <TextView

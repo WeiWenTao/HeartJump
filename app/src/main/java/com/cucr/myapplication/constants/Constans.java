@@ -23,6 +23,7 @@ public class Constans {
     public static final int TYPE_THREE = 3;
     public static final int TYPE_FORE = 4;
     public static final int TYPE_FIVE = 5;
+    public static final int TYPE_SIX = 6;
 
     public static final int TYPE_TEXT = 0;
 

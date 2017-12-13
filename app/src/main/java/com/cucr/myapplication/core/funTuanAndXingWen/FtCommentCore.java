@@ -39,10 +39,10 @@ public class FtCommentCore implements FenTuanComment {
     }
 
     @Override
-    public void queryFtComment(Integer dataId,Integer parentId, Integer page, Integer rows, OnCommonListener listener) {
+    public void queryFtComment(Integer dataId, Integer parentId, Integer page, Integer rows, OnCommonListener listener) {
         queryCommentListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT_QUERY, RequestMethod.POST);
-        if (parentId != -1){
+        if (parentId != -1) {
             request.add("parentId", parentId);
         }
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -60,6 +60,7 @@ public class FtCommentCore implements FenTuanComment {
 
     @Override
     public void ftCommentGoods(Integer contentId, Integer commentId, OnCommonListener listener) {
+        MyLogger.jLog().i("粉团评论点赞:contentId:" + contentId + ",commentId:" + commentId);
         commentGoodsListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT_GOODS, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -112,7 +113,7 @@ public class FtCommentCore implements FenTuanComment {
 
         @Override
         public void onFinish(int what) {
-            EventBus.getDefault().post(new EventRequestFinish());
+            EventBus.getDefault().post(new EventRequestFinish(HttpContans.ADDRESS_FT_COMMENT_QUERY));
         }
     };
 

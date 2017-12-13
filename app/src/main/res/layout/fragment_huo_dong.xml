@@ -9,12 +9,10 @@
     tools:context="com.cucr.myapplication.activity.huodong.HuoDongActivity"
     >
 
-    <ListView
-        android:id="@+id/lv_active"
+    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+        android:id="@+id/rlv_actives"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/lvbg"
-        android:dividerHeight="@dimen/dp_10"
         />
 
 </LinearLayout>

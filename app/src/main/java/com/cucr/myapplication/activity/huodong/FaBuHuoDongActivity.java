@@ -1,8 +1,8 @@
 package com.cucr.myapplication.activity.huodong;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,22 +29,35 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.login.ReBackMsg;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.GetPathFromUri4kitkat;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.zcw.togglebutton.ToggleButton;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissonItem;
+
+import static android.content.ContentValues.TAG;
 
 public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButton.OnToggleChanged {
 
@@ -86,13 +101,12 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     @ViewInject(R.id.toggle_show_price_tip)
     ToggleButton toggle;
 
-    private boolean isOpen;
+    private int isOpen;
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;
     private TextView photograph, albums;
     private LinearLayout cancel;
-    private String picUrl;
-
+    private Gson mGson;
     public static final int PHOTOZOOM = 0; // 相册/拍照
     public static final int PHOTOTAKE = 1; // 相册/拍照
     public static final int IMAGE_COMPLETE = 2; // 结果
@@ -100,8 +114,10 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     private String photoSavePath;//保存路径
     private String photoSaveName;//图pian名
     private String path;//图片全路径
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private HuoDongCore mHuoDongCore;
+    private Intent openCameraIntent;
+    private List<PermissonItem> permissonItems;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,12 +125,15 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
         setContentView(R.layout.activity_fa_bu_huo_dong);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-        mHuoDongCore = new HuoDongCore();
         ViewUtils.inject(this);
         initChild();
     }
 
     protected void initChild() {
+        permissonItems = new ArrayList<>();
+        permissonItems.add(new PermissonItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
+        mHuoDongCore = new HuoDongCore();
+        mGson = MyApplication.getGson();
         initHead();
         toggle.setOnToggleChanged(this);
     }
@@ -186,11 +205,40 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
                 popWindow.dismiss();
                 photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
-                Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
                 openCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(openCameraIntent, PHOTOTAKE);
+
+                HiPermission.create(FaBuHuoDongActivity.this)
+                        .title("小主")
+                        .permissions(permissonItems)
+                        .filterColor(ResourcesCompat.getColor(getResources(), R.color.xtred, getTheme()))//图标的颜色
+                        .msg("这要用到相机哦")
+                        .style(R.style.PermissionBlueStyle)
+                        .permissions(permissonItems)
+                        .checkMutiPermission(new PermissionCallback() {
+                            @Override
+                            public void onClose() {
+                                Log.i(TAG, "用户关闭权限申请");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                startActivityForResult(openCameraIntent, PHOTOTAKE);
+                            }
+
+                            @Override
+                            public void onDeny(String permisson, int position) {
+                                Log.i(TAG, "onDeny");
+                            }
+
+                            @Override
+                            public void onGuarantee(String permisson, int position) {
+                                Log.i(TAG, "onGuarantee");
+                            }
+                        });
+
             }
         });
         albums.setOnClickListener(new View.OnClickListener() {
@@ -252,11 +300,12 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
                     return;
                 }
                 uri = data.getData();
-                String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = managedQuery(uri, proj, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(column_index);// 图片在的路径
+//                String[] proj = {MediaStore.Images.Media.DATA};
+//                Cursor cursor = managedQuery(uri, proj, null, null, null);
+//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                cursor.moveToFirst();
+//                path = cursor.getString(column_index);// 图片在的路径
+                path = GetPathFromUri4kitkat.getPath(MyApplication.getInstance(), uri);
                 //当不可见时在显示
                 if (img_fabu_huodong_pic.getVisibility() == View.GONE) {
                     img_fabu_huodong_pic.setVisibility(View.VISIBLE);
@@ -340,7 +389,7 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
 
     @Override
     public void onToggle(boolean on) {
-        isOpen = on;
+        isOpen = on ? 0 : 1;
     }
 
     //点击提交
@@ -355,13 +404,31 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
         String active_peoples = et_peoples.getText().toString();
 
         boolean empty = CommonUtils.isEmpty(active_name, active_local, local_catgory, time, money, active_content
-                , active_peoples, picUrl
+                , active_peoples, path
         );
-        if (empty){
+        if (empty) {
             ToastUtils.showToast("请完善信息");
             return;
         }
-//        mHuoDongCore.publishActive();
+        mHuoDongCore.publishActive(active_name, active_local, local_catgory, time + ":00",
+                Integer.parseInt(money), active_content, isOpen, Integer.parseInt(active_peoples),
+                path, new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                        if (reBackMsg.isSuccess()) {
+                            ToastUtils.showToast("发布成功");
+                            finish();
+                        } else {
+                            ToastUtils.showToast(reBackMsg.getMsg());
+                        }
+                    }
+                });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHuoDongCore.stop();
+    }
 }

@@ -38,9 +38,9 @@ public class FtAllCommentAadapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public FtAllCommentAadapter(Context context, List<FtCommentInfo.RowsBean> childList) {
+    public FtAllCommentAadapter(Context context) {
         mContext = context;
-        this.childList = childList;
+
     }
 
     @Override

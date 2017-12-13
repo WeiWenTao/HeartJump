@@ -56,10 +56,12 @@ public class DaBangAdapter extends BaseAdapter {
         ImageView userHead = cvh.getView(R.id.iv_user_icon_dabang, ImageView.class); //用户头像
         TextView tv_name = cvh.getView(R.id.tv_name, TextView.class);   //用户名
         TextView tv_xingbi = cvh.getView(R.id.tv_xingbi, TextView.class);     //心跳值
+        TextView tv_ranking = cvh.getTv(R.id.tv_ranking);     //排名
 
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_name.setText(rowsBean.getRealName());
         tv_xingbi.setText(rowsBean.getUserMoney() + "");
+        tv_ranking.setText(position + 4 + "");
 
         ll_dabang.setOnClickListener(new View.OnClickListener() {
             @Override
