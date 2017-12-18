@@ -79,6 +79,8 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
                             EventBus.getDefault().post(new EventNotifyStarInfo());
                             EventBus.getDefault().post(new EventOnClickCancleFocus());
                             notifyDataSetChanged();
+
+                            
                         } else {
                             ToastUtils.showToast(mContext, reBackMsg.getMsg());
                         }
