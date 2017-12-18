@@ -27,6 +27,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -151,7 +152,6 @@ public class QiYeRZ extends Fragment {
     RelativeLayout rl_yinyezhizhao;
 
 
-
     //营业执照
     private String licenseBitmap;
 
@@ -165,7 +165,6 @@ public class QiYeRZ extends Fragment {
     private String mCompanyName;
 
     private String mCompanyContact;
-
 
 
     @Nullable
@@ -233,9 +232,9 @@ public class QiYeRZ extends Fragment {
         img_qiye_positive.setVisibility(View.VISIBLE);
         img_qiye_nagetive.setVisibility(View.VISIBLE);
         img_qieye_zhizhao.setVisibility(View.VISIBLE);
-        instance.displayImage(HttpContans.HTTP_HOST + pic1, img_qiye_positive);
-        instance.displayImage(HttpContans.HTTP_HOST + pic2, img_qiye_nagetive);
-        instance.displayImage(HttpContans.HTTP_HOST + pic3, img_qieye_zhizhao);
+        instance.displayImage(HttpContans.HTTP_HOST + pic1, img_qiye_positive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.HTTP_HOST + pic2, img_qiye_nagetive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.HTTP_HOST + pic3, img_qieye_zhizhao, MyApplication.getImageLoaderOptions());
 
         switch (result) {
             case 1:
@@ -258,14 +257,27 @@ public class QiYeRZ extends Fragment {
                 SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, mCompanyContact);
                 int status = (int) SpUtil.getParam(SpConstant.SP_STATUS, -1);
                 //如果是企业
-                if (status == Constans.STATUS_QIYE){
+                if (status == Constans.STATUS_QIYE) {
                     tv_commit_check.setText("已完成认证");
-                    rl_sfz_positive.setEnabled(false);
-                    rl_sfz_nagetive.setEnabled(false);
-                    rl_yinyezhizhao.setEnabled(false);
+                    setViewEnable(false);
                 }
                 break;
         }
+    }
+
+
+    //设置控件不可编辑
+    public void setViewEnable(boolean isEnable) {
+        //图片
+        rl_sfz_positive.setEnabled(isEnable);
+        rl_sfz_nagetive.setEnabled(isEnable);
+        rl_yinyezhizhao.setEnabled(isEnable);
+        //文字
+        et_position.setEnabled(isEnable);
+        et_person_name.setEnabled(isEnable);
+        et_person_phone.setEnabled(isEnable);
+        et_qiye_contact.setEnabled(isEnable);
+        et_qiye_name.setEnabled(isEnable);
     }
 
     private void setView(boolean b, String s) {
@@ -517,12 +529,12 @@ public class QiYeRZ extends Fragment {
     @OnClick(R.id.tv_commit_check)
     public void commitCheck(View view) {
         if (TextUtils.isEmpty(et_qiye_name.getText())) {
-            ToastUtils.showToast( "请输入企业名称哦");
+            ToastUtils.showToast("请输入企业名称哦");
             return;
         }
 
         if (TextUtils.isEmpty(et_qiye_contact.getText())) {
-            ToastUtils.showToast( "请输入企业联系方式哦");
+            ToastUtils.showToast("请输入企业联系方式哦");
             return;
         }
 

@@ -202,6 +202,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
                     if (reBackMsg.isSuccess()) {
                         ToastUtils.showToast("已取消关注！");
                         mData.setIsfollow(0);
+                        tv_focus_forqiye.setText("关注");
                     } else {
                         ToastUtils.showToast(reBackMsg.getMsg());
                     }
@@ -210,8 +211,9 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         } else {
             mCore.toFocus(mData.getId());
             mData.setIsfollow(1);
+            tv_focus_forqiye.setText("已关注");
         }
-        tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
+
     }
 
     //跳转预约界面

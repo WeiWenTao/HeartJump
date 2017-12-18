@@ -198,8 +198,8 @@ public class StarRZ extends Fragment {
         et_star_price.setText("" + startCost);
         iv_add_pic_positive.setVisibility(View.VISIBLE);
         iv_add_pic_nagetive.setVisibility(View.VISIBLE);
-        instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive);
-        instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive);
+        instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive,MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive,MyApplication.getImageLoaderOptions());
         //控件不可用
         setView(false, "审核中");
 
@@ -223,12 +223,24 @@ public class StarRZ extends Fragment {
                 //如果是明星
                 if (status == Constans.STATUS_STAR) {
                     tv_commit_check.setText("已完成认证");
+                    setViewEnable(false);
                 }
 
-//                登录的时候保存身份信息
-//                SpUtil.setParam(SpConstant.SP_STATUS,0);
                 break;
         }
+    }
+
+    //设置控件不可编辑
+    private void setViewEnable(boolean isEnable) {
+        //图片
+        rl_star_shenfenzheng_negative.setEnabled(isEnable);
+        rl_star_shenfenzheng_positive.setEnabled(isEnable);
+
+        //文字
+        et_name.setEnabled(isEnable);
+        et_contact.setEnabled(isEnable);
+        et_belone.setEnabled(isEnable);
+        et_star_price.setEnabled(isEnable);
     }
 
 

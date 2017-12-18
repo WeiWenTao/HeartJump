@@ -16,6 +16,7 @@ import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 import com.cucr.myapplication.adapter.PagerAdapter.StarListPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
@@ -23,6 +24,7 @@ import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
 import com.cucr.myapplication.model.starList.StarListInfos;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -135,6 +137,8 @@ public class StarListForAddActivity extends Activity {
                 if (Info.isSuccess()) {
                     if (Info.getRows().size() > 0) {     //有关注明星
                         startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+                        //登录之后保存登录数据  下次登录判断是否第一次登录
+                        SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);
                         finish();
                     } else {
                         ToastUtils.showToast("至少要关注一位明星哦");

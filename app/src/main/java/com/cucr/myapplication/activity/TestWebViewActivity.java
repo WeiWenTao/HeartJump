@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,6 +27,7 @@ public class TestWebViewActivity extends BaseActivity {
     protected void initChild() {
         initTitle("详情");
         String url = getIntent().getStringExtra("url");
+        MyLogger.jLog().i("url:" + url);
         WebSettings settings = wv.getSettings();
 
 
@@ -36,13 +38,34 @@ public class TestWebViewActivity extends BaseActivity {
         settings.setJavaScriptEnabled(true);//支持js
         settings.setPluginState(WebSettings.PluginState.ON);// 支持插件
         settings.setLoadsImagesAutomatically(true);  //支持自动加载图片
-        if (getIntent().getBooleanExtra("from",false)) {
+        if (getIntent().getBooleanExtra("from", false)) {
             //如果是用户协议 就把字体设置大号
             settings.setTextSize(WebSettings.TextSize.LARGEST);
         }
         settings.setUseWideViewPort(true);  //将图片调整到适合webview的大小  无效
         settings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
-//        wv.setWebChromeClient(new WebChromeClient() );
+        wv.setWebChromeClient(new WebChromeClient()/*{
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message,
+                                     final JsResult result) {
+// 弹窗处理
+                AlertDialog.Builder b2 = new AlertDialog.Builder(TestWebViewActivity.this)
+                        .setTitle(R.string.app_name).setMessage(message)
+                        .setPositiveButton("ok", new AlertDialog.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                result.confirm();
+                            }
+                        });
+
+                b2.setCancelable(false);
+                b2.create();
+                b2.show();
+
+
+                return true;
+            }
+        }*/); //设置支持弹窗
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {

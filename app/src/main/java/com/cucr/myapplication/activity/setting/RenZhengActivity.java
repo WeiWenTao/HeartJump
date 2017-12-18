@@ -11,8 +11,12 @@ import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.RenZhengPagrAdapter;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.fragment.renzheng.QiYeRZ;
 import com.cucr.myapplication.fragment.renzheng.StarRZ;
+import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -52,11 +56,30 @@ public class RenZhengActivity extends FragmentActivity {
 
         mFragmentList = new ArrayList<>();
         mTitles = new ArrayList<>();
-        mTitles.add("明星");
-        mTitles.add("企业");
 
-        mFragmentList.add(new StarRZ());
-        mFragmentList.add(new QiYeRZ());
+        MyLogger.jLog().i("rz_roleId:" + (int)SpUtil.getParam(SpConstant.SP_STATUS,-1));
+        //区分身份
+        switch ((int)SpUtil.getParam(SpConstant.SP_STATUS,-1)){
+
+            case Constans.STATUS_STAR:
+                mTitles.add("明星");
+                mFragmentList.add(new StarRZ());
+                break;
+
+            case Constans.STATUS_QIYE:
+                mTitles.add("企业");
+                mFragmentList.add(new QiYeRZ());
+                break;
+
+            default:
+                mTitles.add("明星");
+                mTitles.add("企业");
+                mFragmentList.add(new StarRZ());
+                mFragmentList.add(new QiYeRZ());
+        }
+
+
+
 
         vp_ren_zheng.setAdapter(new RenZhengPagrAdapter(getSupportFragmentManager(),mFragmentList,mTitles));
 

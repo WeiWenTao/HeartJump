@@ -44,14 +44,14 @@ public class FuLiAdapter extends RecyclerView.Adapter<FuLiAdapter.FiLiHolder> {
 
     @Override
     public void onBindViewHolder(FiLiHolder holder, final int position) {
-
+        final ActiveInfo.RowsBean bean = activeInfos.get(position);
 
         //点击事件
         holder.rl_fuli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemListener != null) {
-                    onItemListener.OnItemClick(v, position);
+                    onItemListener.OnItemClick(v, bean.getId());
                 }
             }
         });
@@ -69,7 +69,7 @@ public class FuLiAdapter extends RecyclerView.Adapter<FuLiAdapter.FiLiHolder> {
             holder.tv_isopen.setText(CommonUtils.IsGone(endTime) ? "进行中" : "已结束");
 
             //跳转链接
-            String locationUrl = rowsBean.getLocationUrl();
+//            String locationUrl = rowsBean.getLocationUrl();
         }
     }
 
@@ -95,7 +95,7 @@ public class FuLiAdapter extends RecyclerView.Adapter<FuLiAdapter.FiLiHolder> {
 
 
     public interface OnItemListener {
-        void OnItemClick(View view, int position);
+        void OnItemClick(View view, int activeId);
     }
 
     public void setOnItemListener(OnItemListener onItemListener) {

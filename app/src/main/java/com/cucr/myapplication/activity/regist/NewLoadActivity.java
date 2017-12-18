@@ -55,7 +55,7 @@ public class NewLoadActivity extends Activity {
         setContentView(R.layout.activity_new_load);
 
         ViewUtils.inject(this);
-        mIntent = new Intent(MyApplication.getInstance(),NewRegistActivity.class);
+        mIntent = new Intent(MyApplication.getInstance(), NewRegistActivity.class);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setImmersionBar();
 
@@ -74,20 +74,20 @@ public class NewLoadActivity extends Activity {
 
     //注册
     @OnClick(R.id.tv_regist)
-    public void regist(View view){
-        mIntent.putExtra("isRegist",true);
+    public void regist(View view) {
+        mIntent.putExtra("isRegist", true);
         startActivity(mIntent);
     }
 
     //忘记密码
     @OnClick(R.id.tv_forget_psw)
-    public void forgetPsw(View view){
-        mIntent.putExtra("isRegist",false);
+    public void forgetPsw(View view) {
+        mIntent.putExtra("isRegist", false);
         startActivity(mIntent);
     }
 
     @OnClick(R.id.tv_load)
-    public void load(View view){
+    public void load(View view) {
 
         //账号密码
         String accunt = mEt_accunt.getText().toString();
@@ -121,14 +121,15 @@ public class NewLoadActivity extends Activity {
 //                    保存用户id
                     SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存身份信息
-                    SpUtil.setParam(SpConstant.SP_STATUS,  loadSuccess.getRoleId());
+                    MyLogger.jLog().i("load_roleId:" + loadSuccess.getRoleId());
+                    SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
 //                    存储账号和密码等信息
-                    SpUtil.setParam( SpConstant.USER_NAEM, mEt_accunt.getText().toString());
+                    SpUtil.setParam(SpConstant.USER_NAEM, mEt_accunt.getText().toString());
                     SpUtil.setParam(SpConstant.PASSWORD, mEt_psw.getText().toString());
 //                    存储企业用户信息  信息不为空时 存储信息
-                    if (!TextUtils.isEmpty(loadSuccess.getCompanyName())){
-                        SpUtil.setParam(SpConstant.SP_QIYE_NAME,loadSuccess.getCompanyName());
-                        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT,loadSuccess.getCompanyConcat());
+                    if (!TextUtils.isEmpty(loadSuccess.getCompanyName())) {
+                        SpUtil.setParam(SpConstant.SP_QIYE_NAME, loadSuccess.getCompanyName());
+                        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, loadSuccess.getCompanyConcat());
                     }
                     MyLogger.jLog().i("PSWuseid:" + loadSuccess.getUserId());
 //                    显示吐司
@@ -142,19 +143,17 @@ public class NewLoadActivity extends Activity {
                     });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-                    if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)){
+                    if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)) {
                         MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                         Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
-                        intent.putExtra("formLoad",true);
+                        intent.putExtra("formLoad", true);
                         startActivity(intent);
-                    }else {
+                    } else {
                         MyLogger.jLog().i("isFirst_不是第一次登录");
 //                        跳转到主界面
                         startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
                     }
-
-                    SpUtil.setParam(SpConstant.IS_FIRST_RUN,true);  //登录之后保存登录数据  下次登录判断是否第一次登录
                     finish();
 
                 } else {
@@ -172,7 +171,7 @@ public class NewLoadActivity extends Activity {
     }
 
     @OnClick(R.id.iv_cancle)
-    public void click(View view){
+    public void click(View view) {
         finish();
     }
 }

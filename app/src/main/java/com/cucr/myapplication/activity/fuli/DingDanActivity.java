@@ -50,6 +50,14 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     @ViewInject(R.id.tv_show_goods_num)
     private TextView tv_show_goods_num;
 
+    //增加按钮
+    @ViewInject(R.id.iv_goods_add)
+    private ImageView iv_goods_add;
+
+    //删减按钮
+    @ViewInject(R.id.iv_goods_del)
+    private ImageView iv_goods_del;
+
     //收件人
     @ViewInject(R.id.et_receive_person_name)
     private EditText et_receive_person_name;
@@ -81,14 +89,17 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void initChild() {
+        goodsNum = 1;
         mDialogDingDanStyle = new DialogDingDanStyle(this, R.style.BirthdayStyleTheme);
         mCore = new DingDanCore();
         //获取数据
         mData = (DuiHuanGoosInfo.RowsBean) getIntent().getSerializableExtra("data");
         //初始化商品数据
+        iv_goods_add.setEnabled(mData.getStock() > 1);
+        iv_goods_del.setEnabled(false);
         tv_goods_name.setText(mData.getShopName());
-        tv_goods_price.setText(mData.getShopPrice()+"星币");
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST+ mData.getShopPicUrl(),iv_goods_pic, MyApplication.getImageLoaderOptions());
+        tv_goods_price.setText(mData.getShopPrice() + "星币");
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getShopPicUrl(), iv_goods_pic, MyApplication.getImageLoaderOptions());
         //设置监听
         et_receive_person_name.addTextChangedListener(this);
         et_receive_person_local_catgory.addTextChangedListener(this);
@@ -156,16 +167,24 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
     @OnClick(R.id.iv_goods_add)
     public void addGoods(View view) {
         goodsNum++;
+        if (mData.getStock() == goodsNum) {
+            iv_goods_add.setEnabled(false);
+        }
         tv_show_goods_num.setText(goodsNum + "");
+        iv_goods_del.setEnabled(true);
     }
 
     //删减商品数量
-    @OnClick(R.id.iv_goods_subtract)
+    @OnClick(R.id.iv_goods_del)
     public void addSubtract(View view) {
-        if (goodsNum > 1) {
-            goodsNum--;
+        goodsNum--;
+        if (goodsNum <= 1) {
+            iv_goods_del.setEnabled(false);
         }
         tv_show_goods_num.setText(goodsNum + "");
+        if (mData.getStock() > goodsNum) {
+            iv_goods_add.setEnabled(true);
+        }
     }
 
     @Override

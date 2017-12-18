@@ -167,4 +167,7 @@ public class HttpContans {
     //活动评论查询
     public static final String ADDRESS_ACTIVE_COMMENT_GOOD = "/interface/mobileStartAppointment/activeCommentGiveUp";
 
+    //福利活动跳转
+    public static final String ADDRESS_FULI_ACTIVE_DETIAL = "/interface/mobileWelfareActiveAction/activeDetails";
+
 }

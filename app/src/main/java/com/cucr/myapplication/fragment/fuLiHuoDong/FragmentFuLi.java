@@ -17,14 +17,17 @@ import android.widget.LinearLayout;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.fuli.DuiHuanCatgoryActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.FuLiAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FuLiDuiHuanAdapter;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.fuLi.FuLiCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.fuli.ActiveInfo;
 import com.cucr.myapplication.model.fuli.DuiHuanGoosInfo;
-import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.recyclerView.FullyLinearLayoutManager;
@@ -65,7 +68,7 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private Gson mGson;
     private FuLiCore mCore;
-    private FuLiDuiHuanAdapter mDuihuan;
+    private FuLiDuiHuanAdapter duihuanAdapter;
     private int page;
     private Context mContext;
     //兑换查询结果
@@ -74,13 +77,16 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
 
     //活动查询结果
     private List<ActiveInfo.RowsBean> activeInfos;
-    private FuLiAdapter mAdapter;
+    private FuLiAdapter activeAdapter;
+    private Intent mIntent;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        page = 1;
         mGson = new Gson();
         mContext = MyApplication.getInstance();
+        mIntent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         mCore = new FuLiCore();
         //view的复用
         if (view == null) {
@@ -115,8 +121,8 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
 
     }
 
+    //查询福利活动
     private void queryActiveInfo() {
-        MyLogger.jLog().i(Thread.currentThread() + "  queryActiveInfo");
         //活动
         mCore.QueryHuoDong(page, 15, new OnCommonListener() { //每次请求15条数据
             @Override
@@ -124,7 +130,7 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
                 ActiveInfo activeInfo = mGson.fromJson(response.get(), ActiveInfo.class);
                 if (activeInfo.isSuccess()) {
                     activeInfos = activeInfo.getRows();
-                    mAdapter.setDate(activeInfos);
+                    activeAdapter.setDate(activeInfos);
                 } else {
                     ToastUtils.showToast(mContext, activeInfo.getErrorMsg());
                 }
@@ -133,8 +139,6 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void queryDduiHuanInfo() {
-
-        MyLogger.jLog().i(Thread.currentThread() + "  queryDduiHuanInfo");
         //兑换
         mCore.QueryDuiHuan(1, 1000, new OnCommonListener() {
             @Override
@@ -143,7 +147,7 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (duiHuanGoosInfo.isSuccess()) {
                     goodInfos = duiHuanGoosInfo.getRows();
                     //更新数据
-                    mDuihuan.setDate(goodInfos);
+                    duihuanAdapter.setDate(goodInfos);
 
                 } else {
                     ToastUtils.showToast(mContext, duiHuanGoosInfo.getErrorMsg());
@@ -160,9 +164,9 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
         //设置为横向滑动
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rlv_fuli_duihuan.setLayoutManager(layoutManager);
-        mDuihuan = new FuLiDuiHuanAdapter(mContext, goodInfos);
-        rlv_fuli_duihuan.setAdapter(mDuihuan);
-        mDuihuan.setOnItemListener(new FuLiDuiHuanAdapter.OnItemListener() {
+        duihuanAdapter = new FuLiDuiHuanAdapter(mContext, goodInfos);
+        rlv_fuli_duihuan.setAdapter(duihuanAdapter);
+        duihuanAdapter.setOnItemListener(new FuLiDuiHuanAdapter.OnItemListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 Intent intent = new Intent(view.getContext(), DuiHuanCatgoryActivity.class);
@@ -175,13 +179,16 @@ public class FragmentFuLi extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mFullyLinearLayoutManager = new FullyLinearLayoutManager(mContext);
         rlv_fuli.setLayoutManager(mFullyLinearLayoutManager);
-        mAdapter = new FuLiAdapter(mContext, activeInfos);
+        activeAdapter = new FuLiAdapter(mContext, activeInfos);
 
-        rlv_fuli.setAdapter(mAdapter);
-        mAdapter.setOnItemListener(new FuLiAdapter.OnItemListener() {
+        rlv_fuli.setAdapter(activeAdapter);
+        activeAdapter.setOnItemListener(new FuLiAdapter.OnItemListener() {
             @Override
-            public void OnItemClick(View view, int position) {
-//                startActivity(new Intent(FuLiActiviry.this,FuLiCatgoryActivity.class));
+            public void OnItemClick(View view, int activeId) {
+                //跳转到福利活动详情
+                mIntent.putExtra("url", HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_ACTIVE_DETIAL
+                        + "?activeId=" + activeId + "&userId=" + SpUtil.getParam(SpConstant.USER_ID, -1));
+                startActivity(mIntent);
             }
         });
     }
