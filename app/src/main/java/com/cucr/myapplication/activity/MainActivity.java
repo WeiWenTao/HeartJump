@@ -119,7 +119,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
 //        mFragments.add(new HomeFragment());            //首页
         mFragments.add(new FragmentHotAndFocusNews());   //首页
-        mFragments.add(new FragmentHuoDongAndFuLi());
+        mFragments.add(new FragmentHuoDongAndFuLi());    //福利
 
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的

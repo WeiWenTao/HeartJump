@@ -14,16 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.ViderRecommendAdapter;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.MyLogger;
+import com.danikula.videocache.CacheListener;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import tcking.github.com.giraffeplayer.GiraffePlayer;
@@ -44,6 +48,7 @@ public class VideoActivity extends Activity {
 
     private String url;
     private QueryFtInfos.RowsBean rowsBean;
+    private HttpProxyCacheServer mProxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +64,31 @@ public class VideoActivity extends Activity {
         rowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("rowsBean");
         url = HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getFileUrl();
 //        url = HttpContans.HTTP_HOST + getIntent().getStringExtra("path");
-
         player.setDefaultRetryTime(5 * 1000);
-        player.play(url);
+        MyLogger.jLog().i("videoUrl:" + url);
+
+        //视频缓存
+        mProxy = MyApplication.getProxy(this);
+
+        mProxy.registerCacheListener(cacheListener, url);
+        //如果缓存过了就设置缓存100%
+        if (mProxy.isCached(url)) {
+            player.setSecondPro(100);
+        }
+        String proxyUrl = mProxy.getProxyUrl(url);
+        player.play(proxyUrl);
         player.setShowNavIcon(true);
     }
 
+    //缓存监听
+    CacheListener cacheListener = new CacheListener() {
+        @Override
+        public void onCacheAvailable(File cacheFile, String url, int percentsAvailable) {
+            MyLogger.jLog().i("percentsAvailable:" + percentsAvailable);
+            //设置缓存进度
+            player.setSecondPro(percentsAvailable);
+        }
+    };
 
     private void initVideo() {
         player = new GiraffePlayer(this);
@@ -122,7 +146,7 @@ public class VideoActivity extends Activity {
         //设置导航栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && checkDeviceHasNavigationBar(this)) {
             boolean b = checkDeviceHasNavigationBar(this);
-            MyLogger.jLog().i("hasNB?"+b);
+            MyLogger.jLog().i("hasNB?" + b);
             getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_commend_bar.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(this));
@@ -184,6 +208,8 @@ public class VideoActivity extends Activity {
         if (player != null) {
             player.onDestroy();
         }
+        //取消监听
+        mProxy.unregisterCacheListener(cacheListener);
     }
 
     @Override

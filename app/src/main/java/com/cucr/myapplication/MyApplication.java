@@ -8,6 +8,7 @@ import android.support.multidex.MultiDex;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,6 +23,7 @@ import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * Created by 911 on 2017/8/11.
@@ -78,6 +80,8 @@ public class MyApplication extends Application {
                 .build()
         );
 
+
+
         // 如果你需要用OkHttp，请依赖下面的项目，version表示版本号：
         // compile 'com.yanzhenjie.nohttp:okhttp:1.1.1'
 
@@ -105,7 +109,22 @@ public class MyApplication extends Application {
                 .priority(Priority.LOW)
                 //.skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+
     }
+
+
+    //视频缓存
+    private HttpProxyCacheServer proxy;
+
+    public static HttpProxyCacheServer getProxy(Context context) {
+        MyApplication app = (MyApplication) context.getApplicationContext();
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
+
+    private HttpProxyCacheServer newProxy() {
+        return new HttpProxyCacheServer(this);
+    }
+
 
     //解决重复依赖bug
     @Override

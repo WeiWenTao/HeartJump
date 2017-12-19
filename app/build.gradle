@@ -115,5 +115,7 @@ dependencies {
     compile 'com.github.Cutta:GifView:1.1'
     //动态权限
     compile 'me.weyye.hipermission:library:1.0.3'
+    //视频缓存
+    compile 'com.danikula:videocache:2.6.4'
 
 }

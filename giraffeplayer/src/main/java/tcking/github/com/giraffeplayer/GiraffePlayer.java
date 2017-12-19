@@ -34,27 +34,27 @@ public class GiraffePlayer {
     /**
      * fitParent:scale the video uniformly (maintain the video's aspect ratio) so that both dimensions (width and height) of the video will be equal to or **less** than the corresponding dimension of the view. like ImageView's `CENTER_INSIDE`.等比缩放,画面填满view。
      */
-    public static final String SCALETYPE_FITPARENT="fitParent";
+    public static final String SCALETYPE_FITPARENT = "fitParent";
     /**
      * fillParent:scale the video uniformly (maintain the video's aspect ratio) so that both dimensions (width and height) of the video will be equal to or **larger** than the corresponding dimension of the view .like ImageView's `CENTER_CROP`.等比缩放,直到画面宽高都等于或小于view的宽高。
      */
-    public static final String SCALETYPE_FILLPARENT="fillParent";
+    public static final String SCALETYPE_FILLPARENT = "fillParent";
     /**
      * wrapContent:center the video in the view,if the video is less than view perform no scaling,if video is larger than view then scale the video uniformly so that both dimensions (width and height) of the video will be equal to or **less** than the corresponding dimension of the view. 将视频的内容完整居中显示，如果视频大于view,则按比例缩视频直到完全显示在view中。
      */
-    public static final String SCALETYPE_WRAPCONTENT="wrapContent";
+    public static final String SCALETYPE_WRAPCONTENT = "wrapContent";
     /**
      * fitXY:scale in X and Y independently, so that video matches view exactly.不剪裁,非等比例拉伸画面填满整个View
      */
-    public static final String SCALETYPE_FITXY="fitXY";
+    public static final String SCALETYPE_FITXY = "fitXY";
     /**
      * 16:9:scale x and y with aspect ratio 16:9 until both dimensions (width and height) of the video will be equal to or **less** than the corresponding dimension of the view.不剪裁,非等比例拉伸画面到16:9,并完全显示在View中。
      */
-    public static final String SCALETYPE_16_9="16:9";
+    public static final String SCALETYPE_16_9 = "16:9";
     /**
      * 4:3:scale x and y with aspect ratio 4:3 until both dimensions (width and height) of the video will be equal to or **less** than the corresponding dimension of the view.不剪裁,非等比例拉伸画面到4:3,并完全显示在View中。
      */
-    public static final String SCALETYPE_4_3="4:3";
+    public static final String SCALETYPE_4_3 = "4:3";
 
     private static final int MESSAGE_SHOW_PROGRESS = 1;
     private static final int MESSAGE_FADE_OUT = 2;
@@ -69,23 +69,22 @@ public class GiraffePlayer {
     private boolean playerSupport;
     private String url;
     private Query $;
-    private int STATUS_ERROR=-1;
-    private int STATUS_IDLE=0;
-    private int STATUS_LOADING=1;
-    private int STATUS_PLAYING=2;
-    private int STATUS_PAUSE=3;
-    private int STATUS_COMPLETED=4;
+    private int STATUS_ERROR = -1;
+    private int STATUS_IDLE = 0;
+    private int STATUS_LOADING = 1;
+    private int STATUS_PLAYING = 2;
+    private int STATUS_PAUSE = 3;
+    private int STATUS_COMPLETED = 4;
     private long pauseTime;
-    private int status=STATUS_IDLE;
+    private int status = STATUS_IDLE;
     private boolean isLive = false;//是否为直播
     private OrientationEventListener orientationEventListener;
     final private int initHeight;
-    private int defaultTimeout=5000;//控制栏显示时长
+    private int defaultTimeout = 5000;//控制栏显示时长
     private int screenWidthPixels;
 
 
-
-    private final View.OnClickListener onClickListener=new View.OnClickListener() {
+    private final View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.app_video_fullscreen) {
@@ -93,7 +92,7 @@ public class GiraffePlayer {
             } else if (v.getId() == R.id.app_video_play) {
                 doPauseResume();
                 show(defaultTimeout);
-            }else if (v.getId() == R.id.app_video_replay_icon) {
+            } else if (v.getId() == R.id.app_video_replay_icon) {
                 videoView.seekTo(0);
                 videoView.start();
                 doPauseResume();
@@ -108,28 +107,28 @@ public class GiraffePlayer {
     };
     private boolean isShowing;
     private boolean portrait;
-    private float brightness=-1;
-    private int volume=-1;
+    private float brightness = -1;
+    private int volume = -1;
     private long newPosition = -1;
-    private long defaultRetryTime=5000;
-    private OnErrorListener onErrorListener=new OnErrorListener() {
+    private long defaultRetryTime = 5000;
+    private OnErrorListener onErrorListener = new OnErrorListener() {
         @Override
         public void onError(int what, int extra) {
         }
     };
-    private Runnable oncomplete =new Runnable() {
+    private Runnable oncomplete = new Runnable() {
         @Override
         public void run() {
 
         }
     };
-    private OnInfoListener onInfoListener=new OnInfoListener(){
+    private OnInfoListener onInfoListener = new OnInfoListener() {
         @Override
         public void onInfo(int what, int extra) {
 
         }
     };
-    private OnControlPanelVisibilityChangeListener onControlPanelVisibilityChangeListener=new OnControlPanelVisibilityChangeListener() {
+    private OnControlPanelVisibilityChangeListener onControlPanelVisibilityChangeListener = new OnControlPanelVisibilityChangeListener() {
         @Override
         public void change(boolean isShowing) {
 
@@ -138,6 +137,7 @@ public class GiraffePlayer {
 
     /**
      * try to play when error(only for live video)
+     *
      * @param defaultRetryTime millisecond,0 will stop retry,default is 5000 millisecond
      */
     public void setDefaultRetryTime(long defaultRetryTime) {
@@ -153,7 +153,7 @@ public class GiraffePlayer {
 
 
     private void doPauseResume() {
-        if (status==STATUS_COMPLETED) {
+        if (status == STATUS_COMPLETED) {
             $.id(R.id.app_video_replay).gone();
             videoView.seekTo(0);
             videoView.start();
@@ -208,7 +208,6 @@ public class GiraffePlayer {
     }
 
 
-
     private long duration;
     private boolean instantSeeking;
     private boolean isDragging;
@@ -218,9 +217,9 @@ public class GiraffePlayer {
             if (!fromUser)
                 return;
             $.id(R.id.app_video_status).gone();//移动时隐藏掉状态image
-            int newPosition = (int) ((duration * progress*1.0) / 1000);
+            int newPosition = (int) ((duration * progress * 1.0) / 1000);
             String time = generateTime(newPosition);
-            if (instantSeeking){
+            if (instantSeeking) {
                 videoView.seekTo(newPosition);
             }
             $.id(R.id.app_video_currentTime).text(time);
@@ -231,15 +230,15 @@ public class GiraffePlayer {
             isDragging = true;
             show(3600000);
             handler.removeMessages(MESSAGE_SHOW_PROGRESS);
-            if (instantSeeking){
+            if (instantSeeking) {
                 audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
             }
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            if (!instantSeeking){
-                videoView.seekTo((int) ((duration * seekBar.getProgress()*1.0) / 1000));
+            if (!instantSeeking) {
+                videoView.seekTo((int) ((duration * seekBar.getProgress() * 1.0) / 1000));
             }
             show(defaultTimeout);
             handler.removeMessages(MESSAGE_SHOW_PROGRESS);
@@ -249,8 +248,13 @@ public class GiraffePlayer {
         }
     };
 
+    //设置缓存进度
+    public void setSecondPro(int progress) {
+        seekBar.setSecondaryProgress(progress * 10);
+    }
+
     @SuppressWarnings("HandlerLeak")
-    private Handler handler=new Handler(Looper.getMainLooper()){
+    private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -287,13 +291,13 @@ public class GiraffePlayer {
         try {
             IjkMediaPlayer.loadLibrariesOnce(null);
             IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-            playerSupport=true;
+            playerSupport = true;
         } catch (Throwable e) {
             Log.e("GiraffePlayer", "loadLibraries error", e);
         }
-        this.activity=activity;
+        this.activity = activity;
         screenWidthPixels = activity.getResources().getDisplayMetrics().widthPixels;
-        $=new Query(activity);
+        $ = new Query(activity);
         videoView = (IjkVideoView) activity.findViewById(R.id.video_view);
         videoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
             @Override
@@ -306,7 +310,7 @@ public class GiraffePlayer {
             @Override
             public boolean onError(IMediaPlayer mp, int what, int extra) {
                 statusChange(STATUS_ERROR);
-                onErrorListener.onError(what,extra);
+                onErrorListener.onError(what, extra);
                 return true;
             }
         });
@@ -328,7 +332,7 @@ public class GiraffePlayer {
                         statusChange(STATUS_PLAYING);
                         break;
                 }
-                onInfoListener.onInfo(what,extra);
+                onInfoListener.onInfo(what, extra);
                 return false;
             }
         });
@@ -345,7 +349,6 @@ public class GiraffePlayer {
         audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         final GestureDetector gestureDetector = new GestureDetector(activity, new PlayerGestureListener());
-
 
 
         View liveBox = activity.findViewById(R.id.app_video_box);
@@ -388,8 +391,8 @@ public class GiraffePlayer {
         if (fullScreenOnly) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        portrait=getScreenOrientation()==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-        initHeight=activity.findViewById(R.id.app_video_box).getLayoutParams().height;
+        portrait = getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        initHeight = activity.findViewById(R.id.app_video_box).getLayoutParams().height;
         hideAll();
         if (!playerSupport) {
             showStatus(activity.getResources().getString(R.string.not_support));
@@ -412,23 +415,23 @@ public class GiraffePlayer {
     }
 
     private void statusChange(int newStatus) {
-        status=newStatus;
-        if (!isLive && newStatus==STATUS_COMPLETED) {
+        status = newStatus;
+        if (!isLive && newStatus == STATUS_COMPLETED) {
             handler.removeMessages(MESSAGE_SHOW_PROGRESS);
             hideAll();
             $.id(R.id.app_video_replay).visible();
-        }else if (newStatus == STATUS_ERROR) {
+        } else if (newStatus == STATUS_ERROR) {
             handler.removeMessages(MESSAGE_SHOW_PROGRESS);
             hideAll();
             if (isLive) {
                 showStatus(activity.getResources().getString(R.string.small_problem));
-                if (defaultRetryTime>0) {
+                if (defaultRetryTime > 0) {
                     handler.sendEmptyMessageDelayed(MESSAGE_RESTART_PLAY, defaultRetryTime);
                 }
             } else {
                 showStatus(activity.getResources().getString(R.string.small_problem));
             }
-        } else if(newStatus==STATUS_LOADING){
+        } else if (newStatus == STATUS_LOADING) {
             hideAll();
             $.id(R.id.app_video_loading).visible();
         } else if (newStatus == STATUS_PLAYING) {
@@ -448,9 +451,9 @@ public class GiraffePlayer {
     }
 
     public void onPause() {
-        pauseTime=System.currentTimeMillis();
+        pauseTime = System.currentTimeMillis();
         show(0);//把系统状态栏显示出来
-        if (status==STATUS_PLAYING) {
+        if (status == STATUS_PLAYING) {
             videoView.pause();
             if (!isLive) {
                 currentPosition = videoView.getCurrentPosition();
@@ -459,12 +462,12 @@ public class GiraffePlayer {
     }
 
     public void onResume() {
-        pauseTime=0;
-        if (status==STATUS_PLAYING) {
+        pauseTime = 0;
+        if (status == STATUS_PLAYING) {
             if (isLive) {
                 videoView.seekTo(0);
             } else {
-                if (currentPosition>0) {
+                if (currentPosition > 0) {
                     videoView.seekTo(currentPosition);
                 }
             }
@@ -488,7 +491,7 @@ public class GiraffePlayer {
                     } else {
                         int heightPixels = activity.getResources().getDisplayMetrics().heightPixels;
                         int widthPixels = activity.getResources().getDisplayMetrics().widthPixels;
-                        $.id(R.id.app_video_box).height(Math.min(heightPixels,widthPixels), false);
+                        $.id(R.id.app_video_box).height(Math.min(heightPixels, widthPixels), false);
                     }
                     updateFullScreenButton();
                 }
@@ -644,7 +647,7 @@ public class GiraffePlayer {
             s = "off";
         }
         // 显示
-        $.id(R.id.app_video_volume_icon).image(i==0?R.drawable.ic_volume_off_white_36dp:R.drawable.ic_volume_up_white_36dp);
+        $.id(R.id.app_video_volume_icon).image(i == 0 ? R.drawable.ic_volume_off_white_36dp : R.drawable.ic_volume_up_white_36dp);
         $.id(R.id.app_video_brightness_box).gone();
         $.id(R.id.app_video_volume_box).visible();
         $.id(R.id.app_video_volume_box).visible();
@@ -662,15 +665,15 @@ public class GiraffePlayer {
         if (newPosition > duration) {
             newPosition = duration;
         } else if (newPosition <= 0) {
-            newPosition=0;
-            delta=-position;
+            newPosition = 0;
+            delta = -position;
         }
         int showDelta = (int) delta / 1000;
         if (showDelta != 0) {
             $.id(R.id.app_video_fastForward_box).visible();
             String text = showDelta > 0 ? ("+" + showDelta) : "" + showDelta;
             $.id(R.id.app_video_fastForward).text(text + "s");
-            $.id(R.id.app_video_fastForward_target).text(generateTime(newPosition)+"/");
+            $.id(R.id.app_video_fastForward_target).text(generateTime(newPosition) + "/");
             $.id(R.id.app_video_fastForward_all).text(generateTime(duration));
         }
     }
@@ -683,28 +686,28 @@ public class GiraffePlayer {
     private void onBrightnessSlide(float percent) {
         if (brightness < 0) {
             brightness = activity.getWindow().getAttributes().screenBrightness;
-            if (brightness <= 0.00f){
+            if (brightness <= 0.00f) {
                 brightness = 0.50f;
-            }else if (brightness < 0.01f){
+            } else if (brightness < 0.01f) {
                 brightness = 0.01f;
             }
         }
-        Log.d(this.getClass().getSimpleName(),"brightness:"+brightness+",percent:"+ percent);
+        Log.d(this.getClass().getSimpleName(), "brightness:" + brightness + ",percent:" + percent);
         $.id(R.id.app_video_brightness_box).visible();
         WindowManager.LayoutParams lpa = activity.getWindow().getAttributes();
         lpa.screenBrightness = brightness + percent;
-        if (lpa.screenBrightness > 1.0f){
+        if (lpa.screenBrightness > 1.0f) {
             lpa.screenBrightness = 1.0f;
-        }else if (lpa.screenBrightness < 0.01f){
+        } else if (lpa.screenBrightness < 0.01f) {
             lpa.screenBrightness = 0.01f;
         }
-        $.id(R.id.app_video_brightness).text(((int) (lpa.screenBrightness * 100))+"%");
+        $.id(R.id.app_video_brightness).text(((int) (lpa.screenBrightness * 100)) + "%");
         activity.getWindow().setAttributes(lpa);
 
     }
 
     private long setProgress() {
-        if (isDragging){
+        if (isDragging) {
             return 0;
         }
 
@@ -716,7 +719,7 @@ public class GiraffePlayer {
                 seekBar.setProgress((int) pos);
             }
             int percent = videoView.getBufferPercentage();
-            seekBar.setSecondaryProgress(percent * 10);
+//            seekBar.setSecondaryProgress(percent * 10);
         }
 
         this.duration = duration;
@@ -756,26 +759,28 @@ public class GiraffePlayer {
 
     /**
      * using constants in GiraffePlayer,eg: GiraffePlayer.SCALETYPE_FITPARENT
+     *
      * @param scaleType
      */
     public void setScaleType(String scaleType) {
         if (SCALETYPE_FITPARENT.equals(scaleType)) {
             videoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
-        }else if (SCALETYPE_FILLPARENT.equals(scaleType)) {
+        } else if (SCALETYPE_FILLPARENT.equals(scaleType)) {
             videoView.setAspectRatio(IRenderView.AR_ASPECT_FILL_PARENT);
-        }else if (SCALETYPE_WRAPCONTENT.equals(scaleType)) {
+        } else if (SCALETYPE_WRAPCONTENT.equals(scaleType)) {
             videoView.setAspectRatio(IRenderView.AR_ASPECT_WRAP_CONTENT);
-        }else if (SCALETYPE_FITXY.equals(scaleType)) {
+        } else if (SCALETYPE_FITXY.equals(scaleType)) {
             videoView.setAspectRatio(IRenderView.AR_MATCH_PARENT);
-        }else if (SCALETYPE_16_9.equals(scaleType)) {
+        } else if (SCALETYPE_16_9.equals(scaleType)) {
             videoView.setAspectRatio(IRenderView.AR_16_9_FIT_PARENT);
-        }else if (SCALETYPE_4_3.equals(scaleType)) {
+        } else if (SCALETYPE_4_3.equals(scaleType)) {
             videoView.setAspectRatio(IRenderView.AR_4_3_FIT_PARENT);
         }
     }
 
     /**
      * 是否显示左上导航图标(一般有actionbar or appToolbar时需要隐藏)
+     *
      * @param show
      */
     public void setShowNavIcon(boolean show) {
@@ -799,14 +804,12 @@ public class GiraffePlayer {
     }
 
 
-
-
     class Query {
         private final Activity activity;
         private View view;
 
         public Query(Activity activity) {
-            this.activity=activity;
+            this.activity = activity;
         }
 
         public Query id(int id) {
@@ -850,7 +853,7 @@ public class GiraffePlayer {
         }
 
         public Query text(CharSequence text) {
-            if (view!=null && view instanceof TextView) {
+            if (view != null && view instanceof TextView) {
                 ((TextView) view).setText(text);
             }
             return this;
@@ -863,20 +866,20 @@ public class GiraffePlayer {
             return this;
         }
 
-        private void size(boolean width, int n, boolean dip){
+        private void size(boolean width, int n, boolean dip) {
 
-            if(view != null){
+            if (view != null) {
 
                 ViewGroup.LayoutParams lp = view.getLayoutParams();
 
 
-                if(n > 0 && dip){
+                if (n > 0 && dip) {
                     n = dip2pixel(activity, n);
                 }
 
-                if(width){
+                if (width) {
                     lp.width = n;
-                }else{
+                } else {
                     lp.height = n;
                 }
 
@@ -887,15 +890,15 @@ public class GiraffePlayer {
         }
 
         public void height(int height, boolean dip) {
-            size(false,height,dip);
+            size(false, height, dip);
         }
 
-        public int dip2pixel(Context context, float n){
+        public int dip2pixel(Context context, float n) {
             int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, n, context.getResources().getDisplayMetrics());
             return value;
         }
 
-        public float pixel2dip(Context context, float n){
+        public float pixel2dip(Context context, float n) {
             Resources resources = context.getResources();
             DisplayMetrics metrics = resources.getDisplayMetrics();
             float dp = n / (metrics.densityDpi / 160f);
@@ -935,7 +938,7 @@ public class GiraffePlayer {
             float deltaX = mOldX - e2.getX();
             if (firstTouch) {
                 toSeek = Math.abs(distanceX) >= Math.abs(distanceY);
-                volumeControl=mOldX > screenWidthPixels * 0.5f;
+                volumeControl = mOldX > screenWidthPixels * 0.5f;
                 firstTouch = false;
             }
 
@@ -970,6 +973,7 @@ public class GiraffePlayer {
 
     /**
      * is player support this device
+     *
      * @return
      */
     public boolean isPlayerSupport() {
@@ -978,21 +982,23 @@ public class GiraffePlayer {
 
     /**
      * 是否正在播放
+     *
      * @return
      */
     public boolean isPlaying() {
-        return videoView!=null?videoView.isPlaying():false;
+        return videoView != null ? videoView.isPlaying() : false;
     }
 
-    public void stop(){
+    public void stop() {
         videoView.stopPlayback();
     }
 
     /**
      * seekTo position
-     * @param msec  millisecond
+     *
+     * @param msec millisecond
      */
-    public GiraffePlayer seekTo(int msec, boolean showControlPanle){
+    public GiraffePlayer seekTo(int msec, boolean showControlPanle) {
         videoView.seekTo(msec);
         if (showControlPanle) {
             show(defaultTimeout);
@@ -1001,7 +1007,7 @@ public class GiraffePlayer {
     }
 
     public GiraffePlayer forward(float percent) {
-        if (isLive || percent>1 || percent<-1) {
+        if (isLive || percent > 1 || percent < -1) {
             return this;
         }
         onProgressSlide(percent);
@@ -1011,19 +1017,20 @@ public class GiraffePlayer {
         return this;
     }
 
-    public int getCurrentPosition(){
+    public int getCurrentPosition() {
         return videoView.getCurrentPosition();
     }
 
     /**
      * get video duration
+     *
      * @return
      */
-    public int getDuration(){
+    public int getDuration() {
         return videoView.getDuration();
     }
 
-    public GiraffePlayer playInFullScreen(boolean fullScreen){
+    public GiraffePlayer playInFullScreen(boolean fullScreen) {
         if (fullScreen) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             updateFullScreenButton();
@@ -1031,7 +1038,7 @@ public class GiraffePlayer {
         return this;
     }
 
-    public void toggleFullScreen(){
+    public void toggleFullScreen() {
         if (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
@@ -1040,15 +1047,15 @@ public class GiraffePlayer {
         updateFullScreenButton();
     }
 
-    public interface OnErrorListener{
+    public interface OnErrorListener {
         void onError(int what, int extra);
     }
 
-    public interface OnControlPanelVisibilityChangeListener{
+    public interface OnControlPanelVisibilityChangeListener {
         void change(boolean isShowing);
     }
 
-    public interface OnInfoListener{
+    public interface OnInfoListener {
         void onInfo(int what, int extra);
     }
 
@@ -1067,13 +1074,14 @@ public class GiraffePlayer {
         return this;
     }
 
-    public GiraffePlayer onControlPanelVisibilityChang(OnControlPanelVisibilityChangeListener listener){
+    public GiraffePlayer onControlPanelVisibilityChang(OnControlPanelVisibilityChangeListener listener) {
         this.onControlPanelVisibilityChangeListener = listener;
         return this;
     }
 
     /**
      * set is live (can't seek forward)
+     *
      * @param isLive
      * @return
      */
@@ -1082,14 +1090,14 @@ public class GiraffePlayer {
         return this;
     }
 
-    public GiraffePlayer toggleAspectRatio(){
+    public GiraffePlayer toggleAspectRatio() {
         if (videoView != null) {
             videoView.toggleAspectRatio();
         }
         return this;
     }
 
-    public GiraffePlayer onControlPanelVisibilityChange(OnControlPanelVisibilityChangeListener listener){
+    public GiraffePlayer onControlPanelVisibilityChange(OnControlPanelVisibilityChangeListener listener) {
         this.onControlPanelVisibilityChangeListener = listener;
         return this;
     }

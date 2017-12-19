@@ -19,7 +19,7 @@
             android:drawable="@color/white" />
     <item android:id="@android:id/secondaryProgress">
         <scale android:scaleWidth="100%"
-                android:drawable="@color/white"
+                android:drawable="@color/alpha_red"
              />
     </item>
     <item android:id="@android:id/progress">

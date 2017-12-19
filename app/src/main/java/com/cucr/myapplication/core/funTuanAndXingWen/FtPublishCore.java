@@ -100,6 +100,11 @@ public class FtPublishCore implements FenTuanInterf {
         } else if (type == 2) {
             LocalMedia localMedia = mData.get(0);
             String videoPath = localMedia.getPath();
+            //------------------------------------------------------------
+//            MyLogger.jLog().i("Compress_开始压缩");
+//            MyLogger.jLog().i("Compress_压缩成功：" + videoPath);
+            //------------------------------------------------------------
+
             //文件上传地址
             String uploadHost = HttpContans.HTTP_HOST + HttpContans.ADDRESS_PUBLISH_FT_INFO;
             RequestParams params = new RequestParams();
@@ -141,7 +146,8 @@ public class FtPublishCore implements FenTuanInterf {
 
                         @Override
                         public void onFailure(HttpException arg0, String arg1) {
-                            MyLogger.jLog().i(arg1);
+
+                            MyLogger.jLog().i(arg0.getExceptionCode() + "fail:" + arg0);
                             dialog_progress.dismiss();
                         }
                     });
