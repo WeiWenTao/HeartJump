@@ -30,8 +30,7 @@ public class FuLiDuiHuanAdapter extends RecyclerView.Adapter<FuLiDuiHuanAdapter.
         notifyDataSetChanged();
     }
 
-    public FuLiDuiHuanAdapter(Context context, List<DuiHuanGoosInfo.RowsBean> list) {
-        this.list = list;
+    public FuLiDuiHuanAdapter(Context context) {
         this.mContext = context;
     }
 

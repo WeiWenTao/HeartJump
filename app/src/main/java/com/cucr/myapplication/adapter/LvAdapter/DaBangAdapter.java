@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
@@ -52,7 +53,8 @@ public class DaBangAdapter extends BaseAdapter {
         final BangDanInfo.RowsBean rowsBean = rows.get(position + 3);
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, parent.getContext(), R.layout.item_lv_dabang, null);
 
-        LinearLayout ll_dabang = cvh.getView(R.id.ll_dabang, LinearLayout.class);
+        LinearLayout ll_dabang = cvh.getView(R.id.ll_dabang, LinearLayout.class);//打榜
+        RelativeLayout rl_dabang = cvh.getView(R.id.rl_dabang, RelativeLayout.class);//跳转
         ImageView userHead = cvh.getView(R.id.iv_user_icon_dabang, ImageView.class); //用户头像
         TextView tv_name = cvh.getView(R.id.tv_name, TextView.class);   //用户名
         TextView tv_xingbi = cvh.getView(R.id.tv_xingbi, TextView.class);     //心跳值
@@ -66,11 +68,22 @@ public class DaBangAdapter extends BaseAdapter {
         ll_dabang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnDaBang != null) {
-                    mOnDaBang.daBang(rowsBean);
+                if (mOnClick != null) {
+                    mOnClick.daBang(rowsBean);
                 }
             }
         });
+
+        rl_dabang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClick != null) {
+                    mOnClick.clickStar(rowsBean.getId());
+                }
+            }
+        });
+
+
         return cvh.convertView;
     }
 
@@ -84,13 +97,14 @@ public class DaBangAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public interface OnDaBang {
+    public interface OnClick {
         void daBang(BangDanInfo.RowsBean rowsBean);
+        void clickStar(int starId);
     }
 
-    private OnDaBang mOnDaBang;
+    private OnClick mOnClick;
 
-    public void setOnDaBang(OnDaBang onDaBang) {
-        mOnDaBang = onDaBang;
+    public void setOnClick(OnClick onClick) {
+        mOnClick = onClick;
     }
 }

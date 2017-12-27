@@ -64,12 +64,6 @@ public class QueryStarListCore implements StarListInfo {
         }
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
-
-//        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
-//        request.setCacheKey(HttpContans.ADDRESS_QUERY_STAR + type + userCost + userType);
-//        //没网的时候请求缓存
-//        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
-
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 

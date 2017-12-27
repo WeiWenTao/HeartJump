@@ -106,23 +106,6 @@
         <include layout="@layout/horizontal_line_for10dp"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        >
-
-        <TextView
-            style="@style/Setting_tv"
-            android:text="退出"
-            />
-        <ImageView
-            style="@style/My_Arrow"
-            android:src="@drawable/icon_more"
-            />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

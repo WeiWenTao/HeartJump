@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.cucr.myapplication.BuildConfig;
 import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -19,14 +20,27 @@ public class SpUtil {
 
     //sp实例
     private static SharedPreferences sp;
+    //账号管理专用sp
+    private static SharedPreferences accountSp;
 
-    public static void setParam(String key, Object object) {
-        String type = object.getClass().getSimpleName();
+    public static SharedPreferences getSp(){
         if (sp == null) {
             sp = MyApplication.getInstance().getSharedPreferences(SpConstant.SP_NAME, Context.MODE_PRIVATE);
         }
-        SharedPreferences.Editor editor = sp.edit();
+        return sp;
+    }
 
+    public static SharedPreferences getAccountSp(){
+        if (accountSp == null) {
+            accountSp = MyApplication.getInstance().getSharedPreferences(Constans.ACCOUNTS, Context.MODE_PRIVATE);
+        }
+        return accountSp;
+    }
+
+
+    public static void setParam(String key, Object object) {
+        String type = object.getClass().getSimpleName();
+        SharedPreferences.Editor editor = sp.edit();
         if ("String".equals(type)) {
             editor.putString(key, (String) object);
         } else if ("Integer".equals(type)) {
@@ -41,6 +55,8 @@ public class SpUtil {
 
         editor.commit();
     }
+
+
 
     public static Object getParam(String key, Object defaultObject) {
         String type = defaultObject.getClass().getSimpleName();

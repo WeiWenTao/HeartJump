@@ -7,10 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.fuli.DingDanActivity"
     >
 
     <RelativeLayout
+        android:fitsSystemWindows="true"
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"

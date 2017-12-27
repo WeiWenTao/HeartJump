@@ -98,11 +98,13 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
 
     public void setData(List<StarListInfos.RowsBean> rows) {
         this.rows = rows;
+        MyLogger.jLog().i("starlist——setData");
         notifyDataSetChanged();
     }
 
     public void addData(List<StarListInfos.RowsBean> rows) {
         this.rows.addAll(rows);
+        MyLogger.jLog().i("starlist——addData");
         notifyDataSetChanged();
     }
 
@@ -123,6 +125,7 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
         final StarListInfos.RowsBean rowsBean = rows.get(position);
         Resources resources = mContext.getResources();
         //显示明星列表图片
+        MyLogger.jLog().i("设置了明星图片 position：" + position);
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getStartShowPic(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         //粉丝数量
         holder.tv_star_fans.setText(rowsBean.getFansCount());
@@ -178,7 +181,7 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
 
     @Override
     public int getItemCount() {
-        MyLogger.jLog().i("getItemCount:" + (rows == null ? 0 : rows.size()));
+        MyLogger.jLog().i("starlist——size:" + (rows == null ? 0 : rows.size()));
         return rows == null ? 0 : rows.size();
     }
 

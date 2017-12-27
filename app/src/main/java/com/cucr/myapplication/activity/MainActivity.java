@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
@@ -51,7 +52,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         findView();
         initView();
 
-
         initFragment(0);
         initRadioGroup();
 
@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 //        if (!file.exists()){
         //解压文件
         initZip();
+
 //        }
     }
 
@@ -165,4 +166,18 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         }
     }
 
+    private long firstTime;
+    private long secondTime;
+
+    //双击退出程序
+    @Override
+    public void onBackPressed() {
+        secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次就要退出啦", Toast.LENGTH_SHORT).show();
+            firstTime = secondTime;
+        } else {
+            System.exit(0);
+        }
+    }
 }

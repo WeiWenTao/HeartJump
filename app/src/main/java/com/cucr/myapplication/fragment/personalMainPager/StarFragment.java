@@ -14,11 +14,15 @@ import android.view.ViewGroup;
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.star.StarPagerForFans;
+import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
 import com.cucr.myapplication.adapter.RlVAdapter.RLVStarAdapter;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.model.starList.MyFocusStarInfo;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -39,6 +43,7 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
     private int page;
     private int rows;
     private SwipeRecyclerView mRlv_starlist;
+    private Intent mIntent;
 
     public StarFragment(int userId) {
         this.userId = userId;
@@ -68,13 +73,21 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
         mRlv_starlist.getRecyclerView().addItemDecoration(decor);
         mRlv_starlist.setAdapter(mAdapter);
         mRlv_starlist.onLoadingMore();
+        //如果是企业用户
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE){
+            //跳转企业用户看的明星主页
+            mIntent = new Intent(MyApplication.getInstance(), StarPagerForQiYeActivity_111.class);
+        }else {
+            //其他用户跳转粉丝看的主页
+            mIntent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
+        }
+
         mAdapter.setOnItemClick(new RLVStarAdapter.OnItemClick() {
             @Override
             public void onItemClick(int starId) {
-                Intent intent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("starId", starId);
-                startActivity(intent);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mIntent.putExtra("starId", starId);
+                startActivity(mIntent);
                 //发送明星id到明星主页
                 EventBus.getDefault().postSticky(new EventFIrstStarId(starId));
             }

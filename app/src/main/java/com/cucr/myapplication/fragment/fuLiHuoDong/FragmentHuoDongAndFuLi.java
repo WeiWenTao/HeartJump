@@ -20,7 +20,6 @@ import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
-import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -149,7 +148,10 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     }
 
     private void showPopwindow(View parent) {
-        CommonUtils.initPopBg(true, fl_pop_bg);
+        WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
+        attributes.alpha = 0.3f;
+        getActivity().getWindow().setAttributes(attributes);
+
 
         if (genderPopWindow == null) {
             View genderView = inflater.inflate(R.layout.pop_active_publish, null);
@@ -168,7 +170,10 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
         genderPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                CommonUtils.initPopBg(false, fl_pop_bg);
+                WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
+                attributes.alpha = 1.0f;
+                attributes.windowAnimations = 1;
+                getActivity().getWindow().setAttributes(attributes);
 
             }
         });

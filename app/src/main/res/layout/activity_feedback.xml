@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.setting.FeedbackActivity"
+    >
+
+    <RelativeLayout
+        android:id="@+id/comment_head"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBarHight"
+        android:background="@color/blue_black"
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            android:id="@+id/tv_base_title"
+            style="@style/TitleStyle"
+            android:text="意见反馈"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4"
+            android:paddingTop="@dimen/dp_3"
+            android:paddingBottom="@dimen/dp_3"
+            android:text="发 送"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_send_bg"
+            />
+        
+    </RelativeLayout>
+
+    <EditText
+        android:layout_margin="@dimen/dp_10"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="给点什么建议呢"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/sp_13"
+        />
+
+</LinearLayout>

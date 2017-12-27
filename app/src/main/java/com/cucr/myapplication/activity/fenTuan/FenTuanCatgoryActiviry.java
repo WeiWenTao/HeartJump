@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,7 +25,6 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
-import com.cucr.myapplication.adapter.GvAdapter.GridAdapter;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.constants.Constans;
@@ -50,7 +48,7 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaShangStyle;
-import com.cucr.myapplication.widget.gridView.NoScrollGridView;
+import com.cucr.myapplication.widget.picture.FlowImageLayout;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.lidroid.xutils.ViewUtils;
@@ -77,7 +75,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cucr.myapplication.utils.MyLogger.jLog;
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
 public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
@@ -165,8 +162,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     protected void initChild() {
         EventBus.getDefault().register(this);
         initTitle("详情");
-        rows = 3;
+        rows = 20;
         allRows = new ArrayList<>();
+        mRows = new ArrayList<>();
         initData();
         initGiftAndBackPack();
         setUpEmojiPopup();
@@ -229,7 +227,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         mHasPicture = mIntent.getBooleanExtra("hasPicture", false);
         mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);//是否是点击评论跳转过来的
         mRowsBean = (QueryFtInfos.RowsBean) mIntent.getSerializableExtra("rowsBean");
-        jLog().i("mRowsBean:" + mRowsBean);
         mCommentCore = new FtCommentCore();
         upDataInfo();
         queryCore = new QueryFtInfoCore();
@@ -322,12 +319,24 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         });
         iv_pic.setOnClickListener(this);
         tv_neckname.setOnClickListener(this);
-        NoScrollGridView gridview = (NoScrollGridView) lvHead.findViewById(R.id.gridview);
-        gridview.setVisibility(mHasPicture ? View.VISIBLE : View.GONE);
-        gridview.setAdapter(new GridAdapter(this, mRowsBean.getAttrFileList()));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        FlowImageLayout image_layout = (FlowImageLayout) lvHead.findViewById(R.id.image_layout);
+        image_layout.setVisibility(mHasPicture ? View.VISIBLE : View.GONE);
+        image_layout.setHorizontalSpacing(2);
+        image_layout.setVerticalSpacing(2);
+        image_layout.setSingleImageSize(640, 400);
+        image_layout.loadImage(mRowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void layoutFinish(List<ImageView> images) {
+                for (int i = 0; i < mRowsBean.getAttrFileList().size(); i++) {
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
+                }
+            }
+        });
+        image_layout.setOnItemClick(new FlowImageLayout.OnItemClick() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                Log.i("position", position + "");
                 Intent intent = new Intent(FenTuanCatgoryActiviry.this, ImagePagerActivity.class);
                 List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList = mRowsBean.getAttrFileList();
                 Bundle bundle = new Bundle();
@@ -553,25 +562,27 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
 
             final FtCommentInfo.RowsBean mRowsBean = (FtCommentInfo.RowsBean) data.getSerializableExtra("rowsBean");
-            final FtCommentInfo.RowsBean rowsBean = allRows.get(position);
 
-            MyLogger.jLog().i("mRowsBean_CommentCount:" + mRowsBean.getCommentCount());
-            MyLogger.jLog().i("rowsBean_CommentCount:" + rowsBean.getCommentCount());
+//            final FtCommentInfo.RowsBean rowsBean = allRows.get(position);
 
-            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
-            rowsBean.setIsGiveUp(mRowsBean.getIsGiveUp());
+//            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
+//            rowsBean.setIsGiveUp(mRowsBean.getIsGiveUp());
 
             //=============================================================================
 //            如果在secondComment页面评论了  就再查一遍(如果评论从无到有)
             if (mRowsBean.getCommentCount() == 1) { //如果只有一条评论就再查一遍 评论了之后不退出页面在进行二级评论时bug
                 // TODO: 2017/12/12  有问题 待解决 在适配器中会报空指针 原因是 评论数量改变了 却没有评论数据
                 onRefresh();
+                mAdapter.notifyDataSetChanged();
             } else {
-                rowsBean.setCommentCount(mRowsBean.getCommentCount());
+                allRows.remove(position);
+                allRows.add(position,mRowsBean);
+                mAdapter.setData(allRows);
+//                rowsBean.setCommentCount(mRowsBean.getCommentCount());
             }
             //=============================================================================
 
-            mAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -731,6 +742,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //加载
     @Override
     public void onLoad() {
+        if (mRefreshLayout.isRefreshing()){
+            return;
+        }
         page++;
         mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
             @Override

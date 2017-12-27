@@ -146,7 +146,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
             public void onClickItems(int position) {
                 final StarListInfos.RowsBean rowsBean = allRows.get(position);
                 Intent intent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
-                intent.putExtra("data", rowsBean);
+                intent.putExtra("starId", rowsBean.getId());
                 finalPosition = position;
                 startActivityForResult(intent, 222);
                 //发送明星id到明星主页
@@ -209,7 +209,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
     //刷新的时候调用
     private void queryStar(int type, String userCost, String userType) {
-        allRows.clear();
+
         page = 1;
         if (!swipe_refresh_layout.isRefreshing()) {
             swipe_refresh_layout.setRefreshing(true);
@@ -221,6 +221,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
                     mRows = starListInfos.getRows();
+                    allRows.clear();
                     allRows.addAll(mRows);
                     mAdapter.setData(allRows);
                     MyLogger.jLog().i("starList:" + mRows + ",isCache:" + response.isFromCache());

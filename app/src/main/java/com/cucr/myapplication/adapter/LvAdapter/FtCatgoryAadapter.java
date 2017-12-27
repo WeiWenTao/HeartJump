@@ -20,7 +20,6 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.CommonViewHolder;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.text.MyClickGoHomePager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.vanniktech.emoji.EmojiTextView;
@@ -103,7 +102,7 @@ public class FtCatgoryAadapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (clickGoodsListener != null) {
-                    clickGoodsListener.clickItem(mRowsBean,position);
+                    clickGoodsListener.clickItem(mRowsBean, position);
                 }
             }
         });
@@ -151,7 +150,6 @@ public class FtCatgoryAadapter extends BaseAdapter {
         iv_good.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(mRowsBean.getGiveUpCount() + "");
         tv_username.setText(mRowsBean.getUser().getName());
-        MyLogger.jLog().i("getComment:" + mRowsBean.getComment());
         tv_comment_content.setText(CommonUtils.unicode2String(mRowsBean.getComment()));
         return cvh.convertView;
     }
@@ -166,7 +164,7 @@ public class FtCatgoryAadapter extends BaseAdapter {
     public interface OnClickCommentGoods {
         void clickGoods(FtCommentInfo.RowsBean mRowsBean);
 
-        void clickItem(FtCommentInfo.RowsBean mRowsBean,int position);
+        void clickItem(FtCommentInfo.RowsBean mRowsBean, int position);
 
         void clickUser(int userId);
     }

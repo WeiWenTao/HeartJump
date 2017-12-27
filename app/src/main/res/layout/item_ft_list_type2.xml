@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/ll_type2"
               xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/white"
               android:orientation="vertical"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <LinearLayout
@@ -102,7 +102,7 @@
         app:emojiSize="@dimen/sp_15"
         />
 
-    <com.cucr.myapplication.widget.gridView.NoScrollGridView
+    <!--<com.cucr.myapplication.widget.gridView.NoScrollGridView
         android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -114,7 +114,17 @@
         android:numColumns="3"
         android:stretchMode="columnWidth"
         android:verticalSpacing="3dp"
+        />-->
+
+    <com.cucr.myapplication.widget.picture.FlowImageLayout
+        android:id="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
         />
+
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -89,6 +89,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void initChild() {
+        
         goodsNum = 1;
         mDialogDingDanStyle = new DialogDingDanStyle(this, R.style.BirthdayStyleTheme);
         mCore = new DingDanCore();

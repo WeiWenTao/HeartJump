@@ -21,6 +21,7 @@ import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
 import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
@@ -102,6 +103,8 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     private StarListInfos.RowsBean mData;
     private FocusCore mCore;
     private Gson mGson;
+    private int mStarId;
+    private QueryStarListCore mStarCore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         ViewUtils.inject(this);
         mCore = new FocusCore();
         mGson = new Gson();
+        mStarCore = new QueryStarListCore();
         getDatas();
         initView();
     }
@@ -137,7 +141,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         //        if (明星用户) {
         mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
 //        }
-        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(mData.getId()), "粉团"));
+        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(mStarId), "粉团"));
         mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
 
         //背景
@@ -186,7 +190,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     @OnClick(R.id.tv_request)
     public void request(View view) {
         Intent intent = new Intent(MyApplication.getInstance(), StarRequiresActivity.class);
-        intent.putExtra("starId", mData.getId());
+        intent.putExtra("starId", mStarId);
         startActivity(intent);
     }
 
@@ -195,7 +199,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     public void focus(View view) {
         //是否已经关注该明星
         if (mData.getIsfollow() == 1) {
-            mCore.cancaleFocus(mData.getId(), new OnCommonListener() {
+            mCore.cancaleFocus(mStarId, new OnCommonListener() {
                 @Override
                 public void onRequestSuccess(Response<String> response) {
                     ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
@@ -209,7 +213,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
                 }
             });
         } else {
-            mCore.toFocus(mData.getId());
+            mCore.toFocus(mStarId);
             mData.setIsfollow(1);
             tv_focus_forqiye.setText("已关注");
         }
@@ -227,14 +231,25 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     public void getDatas() {
 
         //获取数据
-        mData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
+        mStarId = getIntent().getIntExtra("starId", -1);
         //并初始化
-        tv_fans.setText("粉丝 " + mData.getFansCount());
-        tv_starname.setText(mData.getRealName());
-        tv_base_title.setText(mData.getRealName());
-        tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
-
+        mStarCore.queryStar(2, 1, 1, mStarId, null, null, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
+                if (starInfos.isSuccess()) {
+                    mData = starInfos.getRows().get(0);
+                    //并初始化
+                    tv_fans.setText("粉丝 " + mData.getFansCount());
+                    tv_starname.setText(mData.getRealName());
+                    tv_base_title.setText(mData.getRealName());
+                    tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                } else {
+                    ToastUtils.showToast(starInfos.getErrorMsg());
+                }
+            }
+        });
     }
 
     @OnClick(R.id.iv_base_back)

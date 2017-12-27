@@ -39,6 +39,7 @@ public class MyApplication extends Application {
 
     private static Gson mGson;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -151,5 +152,4 @@ public class MyApplication extends Application {
         }
         return mGson;
     }
-
 }

@@ -16,6 +16,24 @@ public class LoadSuccess {
     private int roleId;
     private String companyName;
     private String companyConcat;
+    private String userHeadPortrait;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserHeadPortrait() {
+        return userHeadPortrait;
+    }
+
+    public void setUserHeadPortrait(String userHeadPortrait) {
+        this.userHeadPortrait = userHeadPortrait;
+    }
 
     public String getCompanyName() {
         return companyName;

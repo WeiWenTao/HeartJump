@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,13 +17,12 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.activity.video.VideoActivity;
-import com.cucr.myapplication.adapter.GvAdapter.GridAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
-import com.cucr.myapplication.widget.gridView.NoScrollGridView;
+import com.cucr.myapplication.widget.picture.FlowImageLayout;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,6 +39,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater mLayoutInflater;
     private QueryFtInfos mQueryFtInfos;
     private List<QueryFtInfos.RowsBean> rows;
+    private Intent mIntent;
 
     public FtAdapter() {
         this.context = MyApplication.getInstance();
@@ -213,7 +212,20 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp2_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
-            ((Tp2_Holder) holder).gridview.setAdapter(new GridAdapter(context, rowsBean.getAttrFileList()));  //图片列表
+
+            ((Tp2_Holder) holder).image_layout.loadImage(rowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
+                @Override
+                public void layoutFinish(List<ImageView> images) {
+                    for (int i = 0; i < rowsBean.getAttrFileList().size(); i++) {
+                        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
+                    }
+                }
+            });
+
+            ((Tp2_Holder) holder).image_layout.setHorizontalSpacing(3);
+            ((Tp2_Holder) holder).image_layout.setVerticalSpacing(3);
+            ((Tp2_Holder) holder).image_layout.setSingleImageSize(640, 400);
+
             ((Tp2_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             ((Tp2_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
             ((Tp2_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
@@ -226,20 +238,18 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).tv_session.setText(rowsBean.getCommentCount() + "");    //评论数量
             ((Tp2_Holder) holder).tv_favorite.setText(rowsBean.getGiveUpCount() + "");    //点赞数量
 
-
-            ((Tp2_Holder) holder).gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            ((Tp2_Holder) holder).image_layout.setOnItemClick(new FlowImageLayout.OnItemClick() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(context, ImagePagerActivity.class);
+                public void onItemClickListener(View view, int position) {
+                    mIntent = new Intent(context, ImagePagerActivity.class);
                     // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
                     List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList = rowsBean.getAttrFileList();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("imgs", (Serializable) attrFileList);//序列化,要注意转化(Serializable)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtras(bundle);//发送数据
-                    intent.putExtra("position", position);
-                    context.startActivity(intent);
-
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mIntent.putExtras(bundle);//发送数据
+                    mIntent.putExtra("position", position);
+                    context.startActivity(mIntent);
                 }
             });
             //点击分享
@@ -506,8 +516,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private ImageView iv_pic;
 
         //图片列表
-        @ViewInject(R.id.gridview)
-        private NoScrollGridView gridview;
+        @ViewInject(R.id.image_layout)
+        private FlowImageLayout image_layout;
 
         //用户昵称
         @ViewInject(R.id.tv_neckname)

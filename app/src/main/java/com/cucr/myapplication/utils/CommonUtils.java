@@ -220,9 +220,7 @@ public class CommonUtils {
         fl_pop_bg.setVisibility(isIn ? View.VISIBLE : View.GONE);
 
 
-       /* WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
-        attributes.alpha = 0.3f;
-        getActivity().getWindow().setAttributes(attributes);*/
+
 
     }
 

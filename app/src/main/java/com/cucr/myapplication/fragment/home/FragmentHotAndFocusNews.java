@@ -59,6 +59,7 @@ public class FragmentHotAndFocusNews extends BaseFragment {
 
 
     private List<Fragment> mFragments;
+    private Gson mGson;
 
 //    @Nullable
 //    @Override
@@ -74,10 +75,12 @@ public class FragmentHotAndFocusNews extends BaseFragment {
 
     @Override
     protected void initView(View childView) {
-        ViewUtils.inject(this,childView);
+        ViewUtils.inject(this, childView);
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        mGson = MyApplication.getGson();
+
         initTableLayout();
         initView();
     }
@@ -153,13 +156,13 @@ public class FragmentHotAndFocusNews extends BaseFragment {
     }*/
 
     @OnClick(R.id.iv_search)
-    public void toSearch(View view){
+    public void toSearch(View view) {
         startActivity(new Intent(MyApplication.getInstance(), HomeSearchActivity.class));
     }
 
 
     @OnClick(R.id.iv_header_msg)
-    public void toMsg(View view){
+    public void toMsg(View view) {
         startActivity(new Intent(MyApplication.getInstance(), MessageActivity.class));
     }
 
@@ -173,8 +176,8 @@ public class FragmentHotAndFocusNews extends BaseFragment {
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            Gson gson = new Gson();
-            ReBackMsg1 reBackMsg1 = gson.fromJson(response.get(), ReBackMsg1.class);
+
+            ReBackMsg1 reBackMsg1 = mGson.fromJson(response.get(), ReBackMsg1.class);
             wv.loadDataWithBaseURL(null, reBackMsg1.getMsg(), "text/html", "utf-8", null);
             wv.getSettings().setJavaScriptEnabled(true);
             wv.setWebChromeClient(new WebChromeClient());

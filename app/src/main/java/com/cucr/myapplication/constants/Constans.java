@@ -32,7 +32,10 @@ public class Constans {
     public static final int TYPE_VIDEO = 2;
 
 
+
     public static final int TYPE_OTHER = -1;
+
+    public static final String ACCOUNTS = "accounts";
 
     public static final String POSITION = "position";
 

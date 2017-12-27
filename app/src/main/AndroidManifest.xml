@@ -2,6 +2,7 @@
 <manifest package="com.cucr.myapplication"
           xmlns:android="http://schemas.android.com/apk/res/android"
     >
+
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
@@ -36,7 +37,7 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+        android:theme="@style/AppTheme"
         >
 
         <!-- PictureSelector 6.0以上 拍照bug -->
@@ -44,10 +45,12 @@
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/file_paths"
+                />
         </provider>
 
         <!-- 支付宝 -->
@@ -206,8 +209,6 @@
         </activity>
         <activity android:name=".activity.huodong.HuoDongActivity">
         </activity>
-        <activity android:name=".activity.fuli.FuLiActiviry">
-        </activity>
         <activity android:name=".activity.news.NewsActivity">
         </activity>
         <activity
@@ -241,7 +242,10 @@
             android:launchMode="singleTask"
             >
         </activity>
-        <activity android:name=".activity.huodong.HuoDongCatgoryActivity" android:launchMode="standard">
+        <activity
+            android:name=".activity.huodong.HuoDongCatgoryActivity"
+            android:launchMode="standard"
+            >
         </activity>
         <activity android:name=".activity.fuli.DuiHuanCatgoryActivity">
         </activity>
@@ -331,6 +335,8 @@
         <activity android:name=".activity.star.StarPagerForFans">
         </activity>
         <activity android:name=".activity.huodong.HdSecondCommentActivity">
+        </activity>
+        <activity android:name=".activity.setting.FeedbackActivity">
         </activity>
     </application>
 

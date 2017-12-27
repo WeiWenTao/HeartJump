@@ -377,6 +377,9 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     //加载
     @Override
     public void onLoad() {
+        if (ref.isRefreshing()) {
+           return;
+        }
         page ++;
         mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
             @Override

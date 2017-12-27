@@ -29,6 +29,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_phone"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"

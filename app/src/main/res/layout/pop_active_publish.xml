@@ -22,7 +22,7 @@
             android:layout_height="45dp"
             android:gravity="center"
             android:text="发布活动"
-            android:textColor="#999"
+            android:textColor="@color/xtred"
             android:textSize="18sp"
             />
 
@@ -31,7 +31,7 @@
     <LinearLayout
         android:id="@+id/cancel"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
 
@@ -40,8 +40,7 @@
         <TextView
             android:id="@+id/tv_cancle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_50"
+            android:layout_height="45dp"
             android:background="@drawable/setting_one_selector"
             android:gravity="center"
             android:text="取 消"

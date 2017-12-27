@@ -11,85 +11,17 @@
     >
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <com.cucr.myapplication.widget.recyclerView.MyScrollview
-            android:id="@+id/scroll_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rlv_fuli"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="13dp"
-                        android:layout_height="15dp"
-                        android:src="@drawable/icon_shop"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:text="星币兑换专区"
-                        android:textColor="@color/color_333"
-                        android:textSize="@dimen/sp_15"
-                        />
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rlv_fuli_duihuan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    ></android.support.v7.widget.RecyclerView>
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rlv_fuli"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/dp_10"
-                    ></android.support.v7.widget.RecyclerView>
-
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/ll_load"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    >
-                    <ProgressBar
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        />
-                    <TextView
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="正在拼命加载中..."
-                        />
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </com.cucr.myapplication.widget.recyclerView.MyScrollview>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            ></android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 </LinearLayout>

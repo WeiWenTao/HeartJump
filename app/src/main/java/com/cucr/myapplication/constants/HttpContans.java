@@ -170,4 +170,7 @@ public class HttpContans {
     //福利活动跳转
     public static final String ADDRESS_FULI_ACTIVE_DETIAL = "/interface/mobileWelfareActiveAction/activeDetails";
 
+    //应用更新
+    public static final String ADDRESS_APP_UPDATA = "/interface/MobileVersionCheck/versionCheck";
+
 }

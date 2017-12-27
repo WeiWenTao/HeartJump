@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.cucr.myapplication"
-        useLibrary'org.apache.http.legacy'
+        useLibrary 'org.apache.http.legacy'
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
@@ -19,7 +19,6 @@ android {
 //        这两句 解决重复依赖bug
         multiDexEnabled true
         dependencies { compile 'com.android.support:multidex:1.0.1' }
-
 
 //        ndk {
 //            //选择要添加的对应cpu类型的.so库。
@@ -49,6 +48,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.android.support:support-v4:25.2.0'

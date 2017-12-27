@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.DaBang;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,14 +11,20 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.star.StarPagerForFans;
+import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
 import com.cucr.myapplication.adapter.LvAdapter.DaBangAdapter;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.dabang.BangDanCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.dabang.BangDanInfo;
+import com.cucr.myapplication.model.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.model.eventBus.EventRequestFinish;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
@@ -50,6 +57,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     private int page;
     private int rows;
     private RefreshLayout mMyRefreshListView;
+    private Intent mIntent;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +69,15 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     protected void initView(View childView) {
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-
+        //如果是企业用户
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE){
+            //跳转企业用户看的明星主页
+            mIntent = new Intent(MyApplication.getInstance(), StarPagerForQiYeActivity_111.class);
+        }else {
+            //其他用户跳转粉丝看的主页
+            mIntent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
+        }
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mMyRefreshListView = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
         ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);
         mMyRefreshListView.setOnLoadListener(this);
@@ -77,11 +93,20 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         lv_dabang.addHeaderView(headView);
         mAdapter = new DaBangAdapter(mContext);
         lv_dabang.setAdapter(mAdapter);
-        mAdapter.setOnDaBang(new DaBangAdapter.OnDaBang() {
+        mAdapter.setOnClick(new DaBangAdapter.OnClick() {
             @Override
             public void daBang(BangDanInfo.RowsBean rowsBean) {
                 mDialog.show();
                 starId = rowsBean.getId();
+            }
+
+            @Override
+            public void clickStar(int starid) {
+                starId = starid;
+                mIntent.putExtra("starId", starId);
+                startActivity(mIntent);
+                //发送明星id到明星主页
+                EventBus.getDefault().postSticky(new EventFIrstStarId(starId));
             }
         });
 
@@ -115,6 +140,33 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         tv_num1.setText(mRowsBean1.getUserMoney() + "");
         tv_num2.setText(mRowsBean2.getUserMoney() + "");
         tv_num3.setText(mRowsBean3.getUserMoney() + "");
+    }
+
+    @OnClick(R.id.iv_head3)
+    public void iv_head3(View view) {
+       starId = mRowsBean3.getId();
+        mIntent.putExtra("starId", starId);
+        startActivity(mIntent);
+        //发送明星id到明星主页
+        EventBus.getDefault().postSticky(new EventFIrstStarId(starId));
+    }
+
+    @OnClick(R.id.iv_head2)
+    public void iv_head2(View view) {
+        starId = mRowsBean2.getId();
+        mIntent.putExtra("starId", starId);
+        startActivity(mIntent);
+        //发送明星id到明星主页
+        EventBus.getDefault().postSticky(new EventFIrstStarId(starId));
+    }
+
+    @OnClick(R.id.iv_head1)
+    public void iv_head1(View view) {
+        starId = mRowsBean1.getId();
+        mIntent.putExtra("starId", starId);
+        startActivity(mIntent);
+        //发送明星id到明星主页
+        EventBus.getDefault().postSticky(new EventFIrstStarId(starId));
     }
 
     @OnClick(R.id.iv_dabang_first)

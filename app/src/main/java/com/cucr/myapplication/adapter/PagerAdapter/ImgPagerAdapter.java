@@ -11,6 +11,7 @@ import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.widget.photoView.PhotoView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class ImgPagerAdapter extends PagerAdapter {
 //                .build();//
 //        ImageLoader.getInstance().displayImage(url, view, options);
 
+        ImageLoader.getInstance().displayImage(url, view, MyApplication.getImageLoaderOptions());
         Glide.with(context).load(url)
                 .apply(MyApplication.getGlideOptions())
                 .into(view);
