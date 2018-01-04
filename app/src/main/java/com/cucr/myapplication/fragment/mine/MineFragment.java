@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
@@ -26,14 +25,17 @@ import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
+import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.model.eventBus.EventQueryPersonalInfo;
+import com.cucr.myapplication.model.user.UserCenterInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -66,6 +68,22 @@ public class MineFragment extends BaseFragment {
     @ViewInject(R.id.textView3)
     private TextView nickName;
 
+    //关注数量
+    @ViewInject(R.id.tv_focus)
+    private TextView tv_focus;
+
+    //fans数量
+    @ViewInject(R.id.tv_fans)
+    private TextView tv_fans;
+
+    //星币数量
+    @ViewInject(R.id.tv_xb)
+    private TextView tv_xb;
+
+    //动态数量
+    @ViewInject(R.id.tv_dt)
+    private TextView tv_dt;
+
     //用户签名
     @ViewInject(R.id.tv_sign)
     private TextView userSign;
@@ -83,7 +101,7 @@ public class MineFragment extends BaseFragment {
     private RelativeLayout rl_my_journey;
 
     private Intent mIntent;
-    private QueryPersonalMsgCore mQucryCore;
+
     private PersonMessage.ObjBean mObj;
 
     @Override
@@ -96,18 +114,9 @@ public class MineFragment extends BaseFragment {
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         queryInfos();
 
-
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-//        如果是企业用户
-//        if (){
-//            rl_my_yuyue.setVisibility(View.VISIBLE);
-//        如果是明星用户
-//        }else if(){
-//        普通用户
-//         }else{
-// }
     }
 
     //分配权限  先隐藏再根据身份显示
@@ -140,8 +149,23 @@ public class MineFragment extends BaseFragment {
 
     //查询用户信息
     private void queryInfos() {
-        mQucryCore = new QueryPersonalMsgCore();
-        mQucryCore.queryPersonalInfo(new OnCommonListener() {
+        UserCore userCore = new UserCore();
+        QueryPersonalMsgCore qucryCore = new QueryPersonalMsgCore();
+
+        userCore.queryUserCenterInfo((int) SpUtil.getParam(SpConstant.USER_ID, -1), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                UserCenterInfo userInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
+                if (userInfo.isSuccess()) {
+                    setData(userInfo.getObj());
+                } else {
+                    ToastUtils.showToast(userInfo.getMsg());
+                }
+            }
+        });
+
+
+        qucryCore.queryPersonalInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
@@ -153,6 +177,13 @@ public class MineFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private void setData(UserCenterInfo.ObjBean obj) {
+        tv_focus.setText(obj.getGzsl()+"");
+        tv_fans.setText(obj.getFssl()+"");
+        tv_xb.setText(obj.getXbsl()+"");
+        tv_dt.setText(obj.getDtsl()+"");
     }
 
     private void initViews() {

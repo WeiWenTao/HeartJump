@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.model.starList.StarListKey;
 import com.cucr.myapplication.utils.CommonViewHolder;

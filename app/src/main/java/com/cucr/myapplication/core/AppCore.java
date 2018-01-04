@@ -1,6 +1,6 @@
 package com.cucr.myapplication.core;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.listener.OnCommonListener;

@@ -27,7 +27,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -253,8 +253,8 @@ public class QiYeRZ extends Fragment {
                 //审核通过 保存身份
 //                身份信息登录的时候保存
 //                SpUtil.setParam(SpConstant.SP_STATUS, 1);
-                SpUtil.setParam(SpConstant.SP_QIYE_NAME, mCompanyName);
-                SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, mCompanyContact);
+//                SpUtil.setParam(SpConstant.SP_QIYE_NAME, mCompanyName);
+//                SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, mCompanyContact);
                 int status = (int) SpUtil.getParam(SpConstant.SP_STATUS, -1);
                 //如果是企业
                 if (status == Constans.STATUS_QIYE) {

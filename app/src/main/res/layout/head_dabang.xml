@@ -51,20 +51,7 @@
                 android:textStyle="bold"
                 />
 
-            <ImageView
-                android:id="@+id/iv_dabang_first"
-                android:layout_width="45dp"
-                android:layout_height="24.5dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="56dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginTop="49dp"
-                android:gravity="center"
-                android:paddingTop="@dimen/dp_8"
-                android:src="@drawable/icon_award"
-                />
+
 
         </RelativeLayout>
 
@@ -218,6 +205,15 @@
                     android:textSize="@dimen/sp_13"
                     />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_dabang_first"
+                android:layout_width="45dp"
+                android:layout_height="24.5dp"
+                android:gravity="center"
+                android:paddingTop="@dimen/dp_8"
+                android:src="@drawable/icon_award"
+                />
 
         </LinearLayout>
 

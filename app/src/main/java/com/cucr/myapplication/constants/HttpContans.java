@@ -173,4 +173,13 @@ public class HttpContans {
     //应用更新
     public static final String ADDRESS_APP_UPDATA = "/interface/MobileVersionCheck/versionCheck";
 
+    //图集上传
+    public static final String ADDRESS_PIC_UPLOAD = "/interface/mobileStartAtlasAction/upAtlas";
+
+    //图集查询
+    public static final String ADDRESS_PIC_QUERY = "/interface/mobileStartAtlasAction/upAtlasQuery";
+
+    //图集点赞
+    public static final String ADDRESS_PIC_GOODS= "/interface/mobileStartAtlasAction/giveUp";
+
 }

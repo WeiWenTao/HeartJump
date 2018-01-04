@@ -1,6 +1,5 @@
 package com.cucr.myapplication.listener;
 
-import com.lidroid.xutils.http.ResponseInfo;
 import com.yanzhenjie.nohttp.rest.Response;
 
 /**
@@ -10,7 +9,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 public interface OnUpLoadListener {
     void OnUpLoadPicListener(Response<String> response);
 
-    void OnUpLoadVideoListener(ResponseInfo<String> arg0);
+    void OnUpLoadVideoListener(Response<String> response);
 
     void OnUpLoadTextListener(Response<String> response);
 }

@@ -100,6 +100,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     private StarListForQiYeAdapter mAdapter;
     private Context mContext;
     private LoadMoreWrapper wapper;
+    private Intent mIntent;
 
     @Override
     public void onAttach(Context context) {
@@ -121,6 +122,9 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         mCore = new QueryStarListCore();
         mAdapter = new StarListForQiYeAdapter(mContext);
         allRows = new ArrayList<>();
+        if (mIntent == null){
+            mIntent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
+        }
         rows = 16;
         page = 1;
 
@@ -145,10 +149,9 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
             @Override
             public void onClickItems(int position) {
                 final StarListInfos.RowsBean rowsBean = allRows.get(position);
-                Intent intent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
-                intent.putExtra("starId", rowsBean.getId());
+                mIntent.putExtra("starId", rowsBean.getId());
                 finalPosition = position;
-                startActivityForResult(intent, 222);
+                startActivityForResult(mIntent, 222);
                 //发送明星id到明星主页
                 EventBus.getDefault().postSticky(new EventFIrstStarId(rowsBean.getId()));
             }

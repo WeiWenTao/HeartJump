@@ -1,5 +1,6 @@
 package com.cucr.myapplication.widget.photoView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -24,6 +25,7 @@ import android.widget.Scroller;
  * <p></p>
  * 如有任何意见和建议可邮件  bmme@vip.qq.com
  */
+@SuppressLint("AppCompatCustomView")
 public class PhotoView extends ImageView {
 
     private final static int MIN_ROTATE = 35;
@@ -55,7 +57,7 @@ public class PhotoView extends ImageView {
     private boolean hasDrawable;
     private boolean isKnowSize;
     private boolean hasOverTranslate;
-    private boolean isEnable = false;
+    private boolean isEnable = true;
     private boolean isRotateEnable = false;
     private boolean isInit;
     private boolean mAdjustViewBounds;

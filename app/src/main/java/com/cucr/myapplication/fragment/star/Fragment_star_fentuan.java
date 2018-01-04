@@ -17,18 +17,18 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
-import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.eventBus.EventContentId;
@@ -273,7 +273,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         rlv_fentuan = (SwipeRecyclerView) view.findViewById(R.id.rlv_fentuan);
 //        rlv_fentuan.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
         rlv_fentuan.setOnLoadListener(this);
-        rlv_fentuan.setOnLoadListener(this);
 
         mFam = (FloatingActionsMenu) view.findViewById(R.id.multiple_actions);
         action_a = (FloatingActionButton) view.findViewById(R.id.action_a);
@@ -375,7 +374,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
-                MyLogger.jLog().i("mQueryFtInfoss.getRows:" + mQueryFtInfoss.getRows().size() + ":" + mQueryFtInfos.getRows());
 
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
@@ -461,9 +459,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //评论
     @Override
     public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean isFormConmmomd) {
-        MyLogger.jLog().i("onClickCommends");
         this.position = position;
-        MyLogger.jLog().i("Commendposition:" + position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
         intent.putExtra("rowsBean", rowsBean);

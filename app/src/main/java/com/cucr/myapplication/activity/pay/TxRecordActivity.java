@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ListView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.LvAdapter.TxRecordAdapter;

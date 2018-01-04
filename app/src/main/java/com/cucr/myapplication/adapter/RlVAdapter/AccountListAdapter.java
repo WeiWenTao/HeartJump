@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.model.login.UserAccountInfo;
 import com.cucr.myapplication.utils.SpUtil;
@@ -27,19 +27,27 @@ import java.util.List;
 public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.AccountHolder> {
 
     private List<String> keys;
-    private final SharedPreferences sp;
-    private final Gson mGson;
-    private int select;
+    private SharedPreferences sp;
+    private Gson mGson;
 
     public void setSelect(int position) {
-        this.select = position;
-        notifyDataSetChanged();
+        String s = keys.get(position);
+        keys.remove(position);
+        keys.add(0, s);
+        SpUtil.setParam("keys", MyApplication.getGson().toJson(keys).toString());
+//        notifyDataSetChanged();
     }
 
-    public AccountListAdapter(List<String> keys) {
-        this.keys = keys;
+    public AccountListAdapter() {
+        String getKey = (String) SpUtil.getParam("keys", "");
+        keys = MyApplication.getGson().fromJson(getKey, List.class);
         sp = SpUtil.getAccountSp();
         mGson = MyApplication.getGson();
+    }
+
+    public void setKeys(List<String> keys){
+        this.keys = keys;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -50,7 +58,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
     @Override
     public void onBindViewHolder(AccountHolder holder, final int position) {
-        holder.mark.setVisibility(position == select ? View.VISIBLE : View.GONE);
+        holder.mark.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
         String string = sp.getString(keys.get(position), "");
         UserAccountInfo accountInfo = mGson.fromJson(string, UserAccountInfo.class);
         holder.name.setText(accountInfo.getNickName());
@@ -59,7 +67,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             @Override
             public void onClick(View v) {
                 if (mOnClickItem != null) {
-                    mOnClickItem.onClickItem(v, position);
+                    mOnClickItem.onClickItem(v, keys.get(position),position);
                 }
             }
         });
@@ -97,6 +105,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     }
 
     public interface OnClickItem {
-        void onClickItem(View view, int position);
+        void onClickItem(View view, String keys,int position);
     }
 }

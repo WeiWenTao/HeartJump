@@ -6,25 +6,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.SplishActivity;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
-import com.cucr.myapplication.listener.OnLoginListener;
-import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.model.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class NewLoadActivity extends Activity {
 
@@ -37,30 +35,26 @@ public class NewLoadActivity extends Activity {
     private LoginCore mLoginCore;
 
     private Intent mIntent;
-    private Set<String> tags;
-    private Gson mGson;
+    private boolean mIsAdd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_load);
-
         ViewUtils.inject(this);
-
-
         initViews();
     }
 
     private void initViews() {
-        tags = new HashSet<>();
-        mGson = MyApplication.getGson();
         mIntent = new Intent(MyApplication.getInstance(), NewRegistActivity.class);
         //控制层
         mLoginCore = new LoginCore(this);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setImmersionBar();
         //如果是添加账号就不用回显
-        if (getIntent().getBooleanExtra("isAdd", false)) {
+        mIsAdd = getIntent().getBooleanExtra("isAdd", false);
+        if (mIsAdd) {
             return;
         }
         //回显账号和密码  如果没有就设置为空串  账号密码由注册时保存到sp中
@@ -85,7 +79,6 @@ public class NewLoadActivity extends Activity {
 
     @OnClick(R.id.tv_load)
     public void load(View view) {
-
         //账号密码
         final String accunt = mEt_accunt.getText().toString();
         String psw = mEt_psw.getText().toString();
@@ -104,21 +97,41 @@ public class NewLoadActivity extends Activity {
         final String userName = mEt_accunt.getText().toString();
         final String passWord = mEt_psw.getText().toString();
         //TODO 输入判断
-        mLoginCore.login(userName, passWord, new OnLoginListener() {
+        mLoginCore.login(userName, passWord, new OnCommonListener() {
             @Override
-            public void onSuccess(Response<String> response) {
-
-            }
-
-            @Override
-            public void onFailed() {
-                MyLogger.jLog().i("登录失败");
+            public void onRequestSuccess(Response<String> response) {
+//                finish();
             }
         });
     }
 
+
     @OnClick(R.id.iv_cancle)
     public void click(View view) {
-        finish();
+//        finish();
+        onBackPressed();
     }
+
+    private long firstTime;
+    private long secondTime;
+
+    //双击退出程序
+    @Override
+    public void onBackPressed() {
+        if (mIsAdd){
+            super.onBackPressed();
+            return;
+        }
+        secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) {
+            ToastUtils.showToast("再按一次就要退出啦");
+            firstTime = secondTime;
+        } else {
+            Intent intent = new Intent(MyApplication.getInstance(), SplishActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            EventBus.getDefault().postSticky(new EventChageAccount());
+        }
+    }
+
 }

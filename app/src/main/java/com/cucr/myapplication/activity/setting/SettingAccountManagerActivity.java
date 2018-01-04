@@ -5,26 +5,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.AccountListAdapter;
-import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.core.login.LoginCore;
-import com.cucr.myapplication.listener.OnLoginListener;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.login.UserAccountInfo;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.widget.dialog.DialogQuitAccountStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class SettingAccountManagerActivity extends BaseActivity {
+public class SettingAccountManagerActivity extends BaseActivity implements DialogQuitAccountStyle.OnClickConfirmQuit {
 
     //账号列表
     @ViewInject(R.id.rlv_account)
@@ -38,9 +37,7 @@ public class SettingAccountManagerActivity extends BaseActivity {
     @Override
     protected void initChild() {
         mLoginCore = new LoginCore(this);
-        //包含所有账户信息的key
-        mKeys = new ArrayList<>(SpUtil.getAccountSp().getAll().keySet());
-        adapter = new AccountListAdapter(mKeys);
+        adapter = new AccountListAdapter();
         initTitle("账号管理");
         initViews();
     }
@@ -55,55 +52,51 @@ public class SettingAccountManagerActivity extends BaseActivity {
         * dialog
         * */
         mQuitDialog = new DialogQuitAccountStyle(this, R.style.ShowAddressStyleTheme);
-        mQuitDialog.setOnClickConfirmQuit(new DialogQuitAccountStyle.OnClickConfirmQuit() {
-            @Override
-            //确认
-            public void clickConfirmQuit() {
-                finish();
-            }
-        });
+        mQuitDialog.setOnClickConfirmQuit(this);
 
         /*
         * recyclerView
         * */
         rlv_account.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
 
-
+        String keys = (String) SpUtil.getParam("keys", "");
+        mKeys = MyApplication.getGson().fromJson(keys, List.class);
         /**
          * 回显对勾  找到当前账号设置上对勾
          */
-        String str = (String) SpUtil.getParam(SpConstant.USER_NAEM, "");
-        adapter.setSelect(mKeys.indexOf(str));
+//        String str = (String) SpUtil.getParam(SpConstant.USER_NAEM, "");
+//        adapter.setSelect(mKeys.indexOf(str));
         //获取账号信息
 
         rlv_account.setAdapter(adapter);
         rlv_account.setNestedScrollingEnabled(false);
         adapter.setOnClickItem(new AccountListAdapter.OnClickItem() {
             @Override
-            public void onClickItem(View view, int position) {
+            public void onClickItem(View view, String getKey, int position) {
                 //切换账号
-                changeAccount(position);
+                changeAccount(getKey, position);
             }
         });
     }
 
     //切换账号
-    private void changeAccount(final int position) {
-        String string = SpUtil.getAccountSp().getString(mKeys.get(position), "");
+    private void changeAccount(String getKey, int position) {
+
+        String string = SpUtil.getAccountSp().getString(getKey, "");
         UserAccountInfo accountInfo = mGson.fromJson(string, UserAccountInfo.class);
-        mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new OnLoginListener() {
+        mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new OnCommonListener() {
             @Override
-            public void onSuccess(Response<String> response) {
-                adapter.setSelect(position);
-                finish();
+            public void onRequestSuccess(Response<String> response) {
                 startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
-            }
-
-            @Override
-            public void onFailed() {
-
+                finish();
             }
         });
+
+        //如果没有网
+        if (!CommonUtils.isNetworkConnected(MyApplication.getInstance()) || position == -1) {
+            return;
+        }
+        adapter.setSelect(position);
 
     }
 
@@ -121,4 +114,20 @@ public class SettingAccountManagerActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    //退出对话框确认按钮
+    @Override
+    public void clickConfirmQuit() {
+
+        if (mKeys.size() > 1) {
+            mKeys.remove(0);
+            SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
+//            adapter.setKeys(mKeys);
+            changeAccount(mKeys.get(0), -1);
+        }else {
+            mKeys.remove(0);
+            SpUtil.getSp().edit().clear().commit();
+            startActivity(new Intent(this,MainActivity.class));
+        }
+
+    }
 }

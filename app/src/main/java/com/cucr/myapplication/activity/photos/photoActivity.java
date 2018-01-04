@@ -16,11 +16,12 @@ public class PhotoActivity extends BaseActivity {
     @ViewInject(R.id.vp_photo)
     ViewPager vp_photo;
 
-    private List<String> photos = new ArrayList<>();
+    private List<String> photos;
 
 
     @Override
     protected void initChild() {
+        photos = new ArrayList<>();
         initView();
     }
 
@@ -33,7 +34,7 @@ public class PhotoActivity extends BaseActivity {
         photos.add("1");
         photos.add("2");
         photos.add("3");
-        vp_photo.setAdapter(new HomePhotoPagerAdapter(photos,this));
+        vp_photo.setAdapter(new HomePhotoPagerAdapter(photos, this));
     }
 
 }

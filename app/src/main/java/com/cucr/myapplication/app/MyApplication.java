@@ -1,4 +1,4 @@
-package com.cucr.myapplication;
+package com.cucr.myapplication.app;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,17 +8,20 @@ import android.support.multidex.MultiDex;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cucr.myapplication.BuildConfig;
+import com.cucr.myapplication.R;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.squareup.leakcanary.LeakCanary;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
+import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
@@ -45,7 +48,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         //内存泄漏框架
-//        LeakCanary.install(this);
+        LeakCanary.install(this);
 
         //极光推送初始化
         JPushInterface.setDebugMode(true);
@@ -77,7 +80,7 @@ public class MyApplication extends Application {
                         new DBCookieStore(this).setEnable(true) // 如果不维护cookie，设置false禁用。
                 )
                 // 配置网络层，URLConnectionNetworkExecutor，如果想用OkHttp：OkHttpNetworkExecutor。
-                .networkExecutor(new OkHttpNetworkExecutor())
+                .networkExecutor(new URLConnectionNetworkExecutor())
                 .build()
         );
 

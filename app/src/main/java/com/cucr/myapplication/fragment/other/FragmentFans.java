@@ -22,12 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
+import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -141,6 +142,8 @@ public class FragmentFans extends BaseFragment {
     private int rows = 100;
     private int type = 2;
     private float percent;//占屏比
+    private Intent mIntent;
+    private int mStarId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,6 +158,9 @@ public class FragmentFans extends BaseFragment {
         mStarCore = new QueryStarListCore();
         mCore = new QueryMyFocusStars();
         percent = 3.0f;
+        if (mIntent == null) {
+            mIntent = new Intent(MyApplication.getInstance(), PhotosAlbumActivity.class);
+        }
         initRlv();
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
@@ -215,7 +221,8 @@ public class FragmentFans extends BaseFragment {
                     }
                     //默认查询第一个明星数据
                     EventBus.getDefault().postSticky(new EventFIrstStarId(mRows.get(0).getStart().getId()));
-                    initDatas(mRows.get(0).getStart().getId());
+                    mStarId = mRows.get(0).getStart().getId();
+                    initDatas(mStarId);
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
                 }
@@ -231,7 +238,8 @@ public class FragmentFans extends BaseFragment {
             @Override
             public void onClickPosition(View view, int position) {
                 mAdapter.setPosition(position);
-                initDatas(mRows.get(position).getStart().getId());
+                mStarId = mRows.get(position).getStart().getId();
+                initDatas(mStarId);
                 initDrawer(false);
                 //eventBus传递数据
                 EventBus.getDefault().post(new EventStarId(mRows.get(position).getStart().getId()));
@@ -504,5 +512,12 @@ public class FragmentFans extends BaseFragment {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         MyLogger.jLog().i("EventNotifyStarInfo() 注销");
+    }
+
+    @OnClick(R.id.ll_photos)
+    public void goPhotos(View view) {
+        mIntent.putExtra("starId",mStarId);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
     }
 }

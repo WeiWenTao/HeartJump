@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.star;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
@@ -32,6 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by 911 on 2017/6/24.
  */
+@SuppressLint("ValidFragment")
 public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView.OnLoadListener {
 
 
@@ -119,6 +121,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
         if (!rlv_xingwen.getSwipeRefreshLayout().isRefreshing()) {
             rlv_xingwen.getSwipeRefreshLayout().setRefreshing(true);
         }
+
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -141,6 +144,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
 
     @Override
     public void onLoadMore() {
+
         page++;
         MyLogger.jLog().i("page = " + page);
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {

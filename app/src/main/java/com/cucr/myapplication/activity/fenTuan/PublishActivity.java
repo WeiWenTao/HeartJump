@@ -27,7 +27,6 @@ import com.cucr.myapplication.widget.dialog.DialogPublishStyle;
 import com.cucr.myapplication.widget.recyclerView.FullyGridLayoutManager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.luck.picture.lib.PictureSelector;
@@ -345,7 +344,6 @@ public class PublishActivity extends Activity {
         core.publishFtInfo(starId, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
             @Override
             public void OnUpLoadPicListener(Response<String> response) {
-                MyLogger.jLog().i("response:"+response.get());
                 RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");
@@ -361,9 +359,8 @@ public class PublishActivity extends Activity {
             }
 
             @Override
-            public void OnUpLoadVideoListener(ResponseInfo<String> arg0) {
-                MyLogger.jLog().i("response:"+arg0.result);
-                RzResult rzResult = new Gson().fromJson(arg0.result, RzResult.class);
+            public void OnUpLoadVideoListener(Response<String> response) {
+                RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布视频成功");
                     MyLogger.jLog().i("发布video成功");
@@ -379,8 +376,6 @@ public class PublishActivity extends Activity {
 
             @Override
             public void OnUpLoadTextListener(Response<String> response) {
-
-                MyLogger.jLog().i("response:"+response.get());
                 RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");

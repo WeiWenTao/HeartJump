@@ -1,16 +1,16 @@
 package com.cucr.myapplication.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
@@ -19,15 +19,14 @@ import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
+import com.cucr.myapplication.model.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
-import com.cucr.myapplication.utils.ZipUtil;
+import com.cucr.myapplication.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +34,8 @@ import cn.sharesdk.framework.ShareSDK;
 
 public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
 
-    private List<Fragment> mFragments = new ArrayList<>();
+    private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,37 +45,12 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         //share sdk 初始化
         ShareSDK.initSDK(this);
-
         //获取从 我的-明星-右上角加关注 界面跳转过来的数据
         findView();
         initView();
-
         initFragment(0);
         initRadioGroup();
-
         //TODO: 2017/4/28 Splash界面完成
-        //实例化文件对象 判断文件是否存在
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
-        file.mkdir();
-
-
-//        if (!file.exists()){
-        //解压文件
-        initZip();
-
-//        }
-    }
-
-
-    private void initZip() {
-
-        try {
-            InputStream is = getAssets().open("citys.zip");
-            FileOutputStream os = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase", "city.db"));
-            ZipUtil.unzip(is, os);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -117,7 +90,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     }
 
     private void initView() {
-
+        mFragments = new ArrayList<>();
 //        mFragments.add(new HomeFragment());            //首页
         mFragments.add(new FragmentHotAndFocusNews());   //首页
         mFragments.add(new FragmentHuoDongAndFuLi());    //福利
@@ -174,10 +147,14 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     public void onBackPressed() {
         secondTime = System.currentTimeMillis();
         if (secondTime - firstTime > 2000) {
-            Toast.makeText(MainActivity.this, "再按一次就要退出啦", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast("再按一次就要退出啦");
             firstTime = secondTime;
         } else {
-            System.exit(0);
+            Intent intent = new Intent(MyApplication.getInstance(), SplishActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            EventBus.getDefault().postSticky(new EventChageAccount());
         }
     }
+
 }

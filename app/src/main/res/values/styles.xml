@@ -110,6 +110,14 @@
     <style name="BirthdayStyleTheme" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/shape_publish_dialog_bg</item>
+
+    </style>
+
+  <!--底部dialog样式-->
+    <style name="MyDialogStyle" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
     </style>
 
 
@@ -285,5 +293,10 @@
         <item name="PermissionBackround">@drawable/shape_publish_dialog_bg</item>
         <!--按钮文字颜色-->
         <item name="PermissionButtonTextColor">@color/white</item>
+    </style>
+
+    <style name="BottomDialog.Animation" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/translate_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/translate_dialog_out</item>
     </style>
 </resources>

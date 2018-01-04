@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.widget.dialog.DialogCleanCacheStyle;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
@@ -30,13 +31,13 @@ public class SettingActivity extends BaseActivity {
     //消息设置
     @OnClick(R.id.rl_message_setting)
     public void msgSetting(View view) {
-        startActivity(new Intent(this, SettingMessageActivity.class));
+        startActivity(new Intent(MyApplication.getInstance(), SettingMessageActivity.class));
     }
 
     //关于我们
     @OnClick(R.id.rl_above_us)
     public void aboveUs(View view) {
-        startActivity(new Intent(this, SettingAboveUsActivity.class));
+        startActivity(new Intent(MyApplication.getInstance(), SettingAboveUsActivity.class));
     }
 
     //清除缓存
@@ -48,13 +49,15 @@ public class SettingActivity extends BaseActivity {
     //账号安全
     @OnClick(R.id.rl_account_safe)
     public void accountSafe(View view) {
-        startActivity(new Intent(this, SettingAccountSafeActivity.class));
+        startActivity(new Intent(MyApplication.getInstance(), SettingAccountSafeActivity.class));
+
     }
 
     //账号管理
     @OnClick(R.id.rl_account_manager)
     public void accountManager(View view) {
-        startActivity(new Intent(this, SettingAccountManagerActivity.class));
+        startActivity(new Intent(MyApplication.getInstance(), SettingAccountManagerActivity.class));
+
     }
 
 

@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
@@ -247,12 +247,12 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     }
 
     private void initLV() {
-        View lvHead = View.inflate(this, R.layout.item_ft_catgory_header, null);
+        View lvHead = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
         initPopWindow();
         initLvHeader(lvHead);
         lv_ft_catgory.addHeaderView(lvHead, null, true);
         lv_ft_catgory.setHeaderDividersEnabled(false);
-        mAdapter = new FtCatgoryAadapter(this);
+        mAdapter = new FtCatgoryAadapter(MyApplication.getInstance());
         mAdapter.setClickGoodsListener(this);
         lv_ft_catgory.setAdapter(mAdapter);
         et_comment.setOnFocusChangeListener(this);
@@ -337,7 +337,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             @Override
             public void onItemClickListener(View view, int position) {
                 Log.i("position", position + "");
-                Intent intent = new Intent(FenTuanCatgoryActiviry.this, ImagePagerActivity.class);
+                Intent intent = new Intent(MyApplication.getInstance(), ImagePagerActivity.class);
                 List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList = mRowsBean.getAttrFileList();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("imgs", (Serializable) attrFileList);//序列化,要注意转化(Serializable)
@@ -405,7 +405,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                     onRefresh();
                     et_comment.setText("");
                     emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(FenTuanCatgoryActiviry.this, rootview, true);
+                    CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
                     et_comment.clearFocus();
                     mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
                     upDataInfo();
@@ -522,7 +522,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @Override
     public void clickItem(FtCommentInfo.RowsBean mRowsBean, int position) {
         this.position = position;
-        Intent intent = new Intent(this, FtSecondCommentActivity.class);
+        Intent intent = new Intent(MyApplication.getInstance(), FtSecondCommentActivity.class);
         intent.putExtra("mRows", mRowsBean);
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }

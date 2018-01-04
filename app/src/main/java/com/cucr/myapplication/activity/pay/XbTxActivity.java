@@ -3,7 +3,7 @@ package com.cucr.myapplication.activity.pay;
 import android.view.View;
 import android.widget.EditText;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.core.xinbi.XinBiCore;

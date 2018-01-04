@@ -50,7 +50,7 @@ android {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+//    compile 'com.squareup.okhttp3:okhttp:3.6.0' 和nohttp里面的okhttp冲突
     compile 'com.android.support:support-v4:25.2.0'
     //MagicIndicator
     compile project(':lib_svpi')
@@ -79,8 +79,8 @@ dependencies {
     //透明导航栏
     compile 'org.zackratos:ultimatebar:1.0.3'
     //nohttp联网
-    compile 'com.yanzhenjie.nohttp:nohttp:1.1.3'
-    compile 'com.yanzhenjie.nohttp:okhttp:1.1.3'
+    compile 'com.yanzhenjie.nohttp:nohttp:1.1.5'
+    compile 'com.yanzhenjie.nohttp:okhttp:1.1.5'
     //相册选择图片  这个加载太慢
     //    compile 'com.yanzhenjie:album:2.0.0-alpha'
     //    compile rootProject.ext.dependencies.album
@@ -117,5 +117,7 @@ dependencies {
     compile 'me.weyye.hipermission:library:1.0.3'
     //视频缓存
     compile 'com.danikula:videocache:2.6.4'
+    //图片缩放
+    compile 'xyz.zpayh:hdimageview:1.0.2'
 
 }

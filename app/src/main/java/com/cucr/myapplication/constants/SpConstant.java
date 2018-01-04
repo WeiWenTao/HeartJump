@@ -31,4 +31,7 @@ public class SpConstant {
 
     //身份id
     public static final String ROLEID = "roleId";
+
+    //屏幕宽度
+    public static final String GETWITH = "displayWith";
 }

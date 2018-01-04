@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
@@ -20,8 +20,8 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.core.login.RegistCore;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.OnGetYzmListener;
-import com.cucr.myapplication.listener.OnLoginListener;
 import com.cucr.myapplication.listener.load.OnRegistListener;
 import com.cucr.myapplication.model.login.LoadSuccess;
 import com.cucr.myapplication.model.login.LoadUserInfo;
@@ -210,9 +210,9 @@ public class NewRegistActivity extends Activity {
     //登录请求
     private void logRequest() {
         //TODO 输入判断
-        new LoginCore(this).login(mPhoneNum, mSetPsw, new OnLoginListener() {
+        new LoginCore(this).login(mPhoneNum, mSetPsw, new OnCommonListener() {
             @Override
-            public void onSuccess(Response<String> response) {
+            public void onRequestSuccess(Response<String> response) {
 
                 String s = response.get();
                 LoadUserInfo loadUserInfo = mGson.fromJson(s, LoadUserInfo.class);
@@ -262,11 +262,6 @@ public class NewRegistActivity extends Activity {
                     ToastUtils.showToast(NewRegistActivity.this, loadUserInfo.getMsg());
 
                 }
-            }
-
-            @Override
-            public void onFailed() {
-                MyLogger.jLog().i("登录失败");
             }
         });
     }

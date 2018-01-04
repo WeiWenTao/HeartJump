@@ -37,7 +37,7 @@ public class EncodingUtils {
 
                     //第六步:将请求参数的value添加到Map中
                     keyValueMap.put(key, (String) value);
-                    MyLogger.jLog().i("key:"+key+",Value"+ (String) value);
+                    MyLogger.jLog().i("key:"+key+",Value:"+ (String) value);
                 }
             }
         }

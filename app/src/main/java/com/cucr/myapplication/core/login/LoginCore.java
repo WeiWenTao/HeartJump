@@ -6,14 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.load.LoadByPsw;
-import com.cucr.myapplication.listener.OnLoginListener;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.login.LoadSuccess;
 import com.cucr.myapplication.model.login.LoadUserInfo;
 import com.cucr.myapplication.model.login.UserAccountInfo;
@@ -31,7 +31,9 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -49,9 +51,10 @@ public class LoginCore implements LoadByPsw {
     private static final int NOHTTP_WHAT_1 = 1;
 
 
-    private OnLoginListener loginListener;
+    private OnCommonListener loginListener;
     private Context context;
     private Activity activity;
+    private List<String> mKeys;//这是存放账户信息的另一个容器  账号管理界面要用
 
     /**
      * 请求的时候等待框。
@@ -61,7 +64,7 @@ public class LoginCore implements LoadByPsw {
     /**
      * 请求队列。
      */
-    private RequestQueue mQueue = NoHttp.newRequestQueue();
+    private RequestQueue mQueue;
 
     //标记
     private Object flag = new Object();
@@ -70,22 +73,25 @@ public class LoginCore implements LoadByPsw {
     private Set<String> tags;
     private String userName;
     private String passWord;
+    private Context mContext;
 
 
     public LoginCore(Activity activity) {
         mGson = MyApplication.getGson();
         tags = new HashSet<>();
         this.activity = activity;
+        mKeys = new ArrayList<>();
+        mQueue = NoHttp.newRequestQueue();
+        mContext = MyApplication.getInstance();
         mDailogPayStyle = new DialogLoad(activity, R.style.ShowAddressStyleTheme);
     }
 
     @Override
-    public void login(String userName, String psw, final OnLoginListener loginListener) {
+    public void login(String userName, String psw, final OnCommonListener loginListener) {
         this.userName = userName;
         this.passWord = psw;
         this.loginListener = loginListener;
         this.context = MyApplication.getInstance();
-        String sign = (String) SpUtil.getParam(SpConstant.SIGN, "");
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PSW_LOAD, RequestMethod.POST);
 
@@ -135,13 +141,25 @@ public class LoginCore implements LoadByPsw {
             LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
 //                登录成功 保存密钥
             if (loadUserInfo.isSuccess()) {
-                final LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+                LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+
                 //这里保存的信息账号管理界面用-------------------------------------------------------
                 UserAccountInfo accountInfo = new UserAccountInfo(userName, passWord,
                         HttpContans.HTTP_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
                 SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
                 edit.putString(userName, mGson.toJson(accountInfo).toString()).commit();
+                //两个容器 类似于联表查询效果
+                String keys = (String) SpUtil.getParam("keys", "");
+                if (!TextUtils.isEmpty(keys)) {
+                    mKeys = MyApplication.getGson().fromJson(keys, List.class);
+                }
+
+                if (!mKeys.contains(userName)){
+                    mKeys.add(0,userName);
+                }
+                SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
                 //---------------------------------------------------------------------------------
+
                 //设置极光推送的tag
                 tags.add(loadSuccess.getRoleId() + "");
 //                    保存密钥
@@ -174,36 +192,32 @@ public class LoginCore implements LoadByPsw {
 //                        跳转关注界面
                     Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
                     intent.putExtra("formLoad", true);
-                    activity.startActivity(intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
                 } else {
                     MyLogger.jLog().i("isFirst_不是第一次登录");
 //                        跳转到主界面
-                    activity.startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+                    Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
                 }
-                activity.finish();
+                if (loginListener != null) {
+                    loginListener.onRequestSuccess(response);
+                }
             } else {
                 //success = false 密码错误
                 // 显示服务器返回的错误信息
                 ToastUtils.showToast(loadUserInfo.getMsg());
             }
-
-            //--------------------------------
-//            if (loginListener != null) {
-//                loginListener.onSuccess(response);
-//            }
         }
 
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, context);
-            if (loginListener != null) {
-                loginListener.onFailed();
-            }
         }
 
         @Override
         public void onFinish(int what) {
-            MyLogger.jLog().i("密码登录结束");
             mDailogPayStyle.dismiss();
         }
     };

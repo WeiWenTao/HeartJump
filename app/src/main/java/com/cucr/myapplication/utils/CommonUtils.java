@@ -8,6 +8,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,6 +38,21 @@ import java.util.regex.PatternSyntaxException;
  */
 
 public class CommonUtils {
+    /**
+     * 判断手机网络
+     */
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+//mNetworkInfo.isAvailable();
+                return true;//有网
+            }
+        }
+        return false;//没有网
+    }
+
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
@@ -218,8 +235,6 @@ public class CommonUtils {
         animation2.setDuration(200);
         fl_pop_bg.setAnimation(isIn ? animation1 : animation2);
         fl_pop_bg.setVisibility(isIn ? View.VISIBLE : View.GONE);
-
-
 
 
     }
@@ -527,6 +542,7 @@ public class CommonUtils {
 
     /**
      * 判断传过来的字符串是否有空
+     *
      * @param arg
      * @return 有空则返回true
      */

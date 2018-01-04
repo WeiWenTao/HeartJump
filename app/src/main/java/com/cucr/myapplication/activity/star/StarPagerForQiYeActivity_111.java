@@ -14,10 +14,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
@@ -66,8 +67,6 @@ import java.util.List;
 
 public class StarPagerForQiYeActivity_111 extends FragmentActivity {
 
-    private List<FragmentInfos> mDataList;
-
     //ViewPager
     @ViewInject(R.id.viewpager)
     private ViewPager mViewPager;
@@ -105,6 +104,8 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     private Gson mGson;
     private int mStarId;
     private QueryStarListCore mStarCore;
+    private List<FragmentInfos> mDataList;
+    private Intent mIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,9 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         mCore = new FocusCore();
         mGson = new Gson();
         mStarCore = new QueryStarListCore();
+        if (mIntent == null) {
+            mIntent = new Intent(MyApplication.getInstance(), PhotosAlbumActivity.class);
+        }
         getDatas();
         initView();
     }
@@ -223,7 +227,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     //跳转预约界面
     @OnClick(R.id.tv_yuyue)
     public void goYuYue(View view) {
-        Intent intent = new Intent(this, YuYueCatgoryActivity.class);
+        Intent intent = new Intent(MyApplication.getInstance(), YuYueCatgoryActivity.class);
         intent.putExtra("data", mData);
         startActivity(intent);
     }
@@ -366,4 +370,10 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @OnClick(R.id.ll_photos)
+    public void goPhotos(View view) {
+        mIntent.putExtra("starId",mStarId);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
+    }
 }

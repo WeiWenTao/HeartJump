@@ -50,8 +50,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/dp_25"
-                    android:layout_marginLeft="@dimen/dp_40"
+                    android:layout_marginBottom="@dimen/dp_5"
+                    android:layout_marginLeft="@dimen/dp_25"
                     >
 
                     <TextView
@@ -59,7 +59,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="赵丽颖"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_18"
                         />
@@ -83,10 +82,36 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_starname"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:text="粉丝 26465"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_14"
+                        android:layout_marginBottom="@dimen/dp_10"
                         />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:id="@+id/ll_photos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_fans"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@drawable/icon_photoalbum"
+                            />
+
+                        <TextView
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="图片墙"
+                            android:textColor="#f3f3f3"
+                            android:textSize="@dimen/sp_14"
+                            />
+
+                    </LinearLayout>
+
 
                 </RelativeLayout>
 

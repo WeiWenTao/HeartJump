@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.personalMainPager;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
@@ -79,6 +80,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     private int position;
     private Integer giveNum;
 
+    @SuppressLint("ValidFragment")
     public DongTaiFragment(int userId) {
         this.userId = userId;
         mContext = MyApplication.getInstance();

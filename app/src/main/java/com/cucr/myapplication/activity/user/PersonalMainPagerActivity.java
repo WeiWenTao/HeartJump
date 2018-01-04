@@ -14,7 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.PersonalMainPagerAdapter;
 import com.cucr.myapplication.constants.Constans;
@@ -132,7 +132,6 @@ public class PersonalMainPagerActivity extends Activity {
         mUserCore.queryUserCenterInfo(mUserId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyLogger.jLog().i("111:" + response.get());
                 UserCenterInfo userInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
                 if (userInfo.isSuccess()) {
                     setData(userInfo.getObj());

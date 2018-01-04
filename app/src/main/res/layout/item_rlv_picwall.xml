@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    android:id="@+id/item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dp_5"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/star1"
+            />
+        <!--app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+        app:sriv_left_top_corner_radius="@dimen/dp_5"
+        app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+        app:sriv_right_top_corner_radius="@dimen/dp_5"-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:layout_alignParentBottom="true"
+            android:background="#5000"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            >
+
+            <LinearLayout
+                android:id="@+id/ll_personal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user_head"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:src="@drawable/star1"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/iv_user_head"
+                    android:text="用户名称"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_goods_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="123"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10"
+                />
+
+            <ImageView
+                android:id="@+id/iv_good"
+                android:layout_width="13dp"
+                android:layout_height="11dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_5"
+                android:layout_toLeftOf="@id/tv_goods_num"
+                android:src="@drawable/picwall_good"
+                />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

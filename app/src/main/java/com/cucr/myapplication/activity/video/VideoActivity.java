@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.ViderRecommendAdapter;
 import com.cucr.myapplication.constants.HttpContans;
@@ -68,7 +68,7 @@ public class VideoActivity extends Activity {
         MyLogger.jLog().i("videoUrl:" + url);
 
         //视频缓存
-        mProxy = MyApplication.getProxy(this);
+        mProxy = MyApplication.getProxy(MyApplication.getInstance());
 
         mProxy.registerCacheListener(cacheListener, url);
         //如果缓存过了就设置缓存100%
@@ -144,17 +144,17 @@ public class VideoActivity extends Activity {
         ultimateBar.setImmersionBar();
 
         //设置导航栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && checkDeviceHasNavigationBar(this)) {
-            boolean b = checkDeviceHasNavigationBar(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && checkDeviceHasNavigationBar(MyApplication.getInstance())) {
+            boolean b = checkDeviceHasNavigationBar(MyApplication.getInstance());
             MyLogger.jLog().i("hasNB?" + b);
             getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_commend_bar.getLayoutParams();
-            layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(this));
+            layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(MyApplication.getInstance()));
 
             rl_commend_bar.setLayoutParams(layoutParams);
         }
 
-        View headerView = View.inflate(this, R.layout.header_video_lv, null);
+        View headerView = View.inflate(MyApplication.getInstance(), R.layout.header_video_lv, null);
         ((TextView) headerView.findViewById(R.id.tv_new_title)).getPaint().setFakeBoldText(true);
         lv_video_recommend.addHeaderView(headerView, null, true);
         lv_video_recommend.setHeaderDividersEnabled(false);

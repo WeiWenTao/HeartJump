@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.cucr.myapplication.BuildConfig;
-import com.cucr.myapplication.MyApplication;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 
@@ -39,6 +39,9 @@ public class SpUtil {
 
 
     public static void setParam(String key, Object object) {
+        if (sp == null) {
+            sp = MyApplication.getInstance().getSharedPreferences(SpConstant.SP_NAME, Context.MODE_PRIVATE);
+        }
         String type = object.getClass().getSimpleName();
         SharedPreferences.Editor editor = sp.edit();
         if ("String".equals(type)) {
