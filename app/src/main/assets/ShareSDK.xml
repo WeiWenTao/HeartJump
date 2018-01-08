@@ -59,10 +59,10 @@
         Enable="true" />
 
     <TencentWeibo
-        Id="2" 
+        Id="2"
         SortId="2"
-        AppKey="801307650"
-        AppSecret="ae36f4ee3946e1cbb98d6965b0b2ff5c"
+        AppKey="3008130677"
+        AppSecret="c3d7b94e018e217fddbb2f57fc97d650"
         RedirectUri="http://sharesdk.cn"
         Enable="true" />
     

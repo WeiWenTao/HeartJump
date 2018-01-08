@@ -70,9 +70,6 @@
             >
         </activity>
 
-        <!-- 测试类 -->
-        <uses-library android:name="android.test.runner"/>
-
         <!--
          <provider
              android:name="android.support.v4.content.FileProvider"

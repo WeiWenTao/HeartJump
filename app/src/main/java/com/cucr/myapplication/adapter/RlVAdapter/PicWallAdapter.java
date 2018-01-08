@@ -14,6 +14,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.model.PicWall.PicWallInfo;
+import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,12 +35,11 @@ public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallH
     }
 
     public void addData(List<PicWallInfo.RowsBean> rows) {
-        if (this.rows == null || rows==null || rows.size() == 0 ) {
+        if (this.rows == null || rows == null || rows.size() == 0) {
             return;
         }
-//        this.rows.addAll(rows);
         notifyDataSetChanged();
-        notifyItemRangeChanged(this.rows.size() - rows.size()- 1, this.rows.size() -1 );
+//        notifyItemRangeChanged(this.rows.size() - rows.size() - 1, this.rows.size());
     }
 
     @Override
@@ -55,6 +55,7 @@ public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallH
             holder.iv_pic.setTransitionName("aaa");
         }
         final PicWallInfo.RowsBean rowsBean = rows.get(position);
+        MyLogger.jLog().i("position:" + position + ",count:" + rowsBean.getGiveUpCount());
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_user_head, MyApplication.getImageLoaderOptions());
         holder.tv_goods_num.setText(rowsBean.getGiveUpCount() + "");

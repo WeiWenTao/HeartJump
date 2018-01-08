@@ -43,8 +43,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         setContentView(R.layout.activity_main);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-        //share sdk 初始化
-        ShareSDK.initSDK(this);
+
         //获取从 我的-明星-右上角加关注 界面跳转过来的数据
         findView();
         initView();

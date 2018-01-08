@@ -15,5 +15,5 @@ public interface PicturesWall {
 
     void upLoadPic(int strid , List<LocalMedia> mData, OnCommonListener commonListener);
 
-    void picGoods(int dataId,OnCommonListener onCommonListener);
+    void picGoods(int dataId,int goodCount,OnCommonListener onCommonListener);
 }

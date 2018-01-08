@@ -36,6 +36,7 @@ public class PicWallCore implements PicturesWall {
 
     private OnCommonListener upLoadListener;
     private OnCommonListener queryListener;
+    private OnCommonListener goodListener;
     /**
      * 请求队列。
      */
@@ -50,7 +51,7 @@ public class PicWallCore implements PicturesWall {
     }
 
     @Override
-    public void queryPic(int page,int rows,int orderType, boolean queryMine, int startId, OnCommonListener onCommonListener) {
+    public void queryPic(int page, int rows, int orderType, boolean queryMine, int startId, OnCommonListener onCommonListener) {
         this.queryListener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_QUERY, RequestMethod.POST);
         if (startId != -1) {
@@ -59,8 +60,8 @@ public class PicWallCore implements PicturesWall {
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("orderType", orderType)
                 .add("queryMine", queryMine)
-                .add("page",page)
-                .add("rows",rows)
+                .add("page", page)
+                .add("rows", rows)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
@@ -84,8 +85,15 @@ public class PicWallCore implements PicturesWall {
     }
 
     @Override
-    public void picGoods(int dataId, OnCommonListener onCommonListener) {
-
+    public void picGoods(int dataId, int giveUpCount, OnCommonListener onCommonListener) {
+        this.goodListener = onCommonListener;
+        MyLogger.jLog().i("dataId:" + dataId + ",giveUpCount:" + giveUpCount);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_GOODS, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("dataId", dataId)
+                .add("giveUpCount", giveUpCount)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_THREE, request, callback);
     }
 
 
@@ -107,6 +115,9 @@ public class PicWallCore implements PicturesWall {
                     upLoadListener.onRequestSuccess(response);
                     break;
 
+                case Constans.TYPE_THREE:
+                    goodListener.onRequestSuccess(response);
+                    break;
 
             }
 
@@ -119,7 +130,6 @@ public class PicWallCore implements PicturesWall {
 
         @Override
         public void onFinish(int what) {
-            MyLogger.jLog().i("onFinish");
         }
     };
 

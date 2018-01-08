@@ -56,7 +56,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     private PicWallInfo mInfo;
     private int page;
     private int rows;
-    private boolean isLoading;
+    private int orderType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +70,20 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 
     }
 
-    //默认按时间排序
+
     private void loadData() {
-        mCore.queryPic(page, rows, 1, false, mStarId, new OnCommonListener() {
+        rlv_picwall.getRecyclerView().smoothScrollToPosition(0);
+        page = 1;
+        mCore.queryPic(page, rows, orderType, false, mStarId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mInfo = mGson.fromJson(response.get(), PicWallInfo.class);
                 if (mInfo.isSuccess()) {
                     mAdapter.setData(mInfo.getRows());
+                    rlv_picwall.complete();
+                    if (mInfo.getRows().size() < rows) {
+                        rlv_picwall.onNoMore("");
+                    }
                 } else {
                     ToastUtils.showToast(mInfo.getErrorMsg());
                 }
@@ -88,6 +94,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     private void init() {
         rows = 9;
         page = 1;
+        orderType = 1;   //默认按时间排序
         mIntent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
         mCore = new PicWallCore();
         mGson = MyApplication.getGson();
@@ -112,6 +119,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
                 .imageSpanCount(4)
                 .selectionMode(PictureConfig.MULTIPLE)
                 .previewImage(false)
+                .isGif(false)   //不显示gif
 //                            .selectionMedia(mData)
                 .compressGrade(Luban.THIRD_GEAR)
                 .isCamera(true)// 是否显示拍照按钮 true or false
@@ -119,7 +127,6 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
                 .compress(true)
                 .cropCompressQuality(90)
                 .compressMode(LUBAN_COMPRESS_MODE)
-                .isGif(true)
                 .previewEggs(true);
 
     }
@@ -139,13 +146,15 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     //按时间排序
     @Override
     public void clickSortByTime() {
-        ToastUtils.showToast("按时间排序");
+        orderType = 1;
+        loadData();
     }
 
     //按点赞量排序
     @Override
     public void clickSortByGoods() {
-        ToastUtils.showToast("按点赞量排序");
+        orderType = 0;
+        loadData();
     }
 
     //选择图片上传
@@ -174,9 +183,18 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
                         }
                     });
                     break;
+
+                case 2:
+                    PicWallInfo Info = (PicWallInfo) data.getSerializableExtra("data");
+                    MyLogger.jLog().i("testInfo2:" + mInfo.getRows().get(3).getGiveUpCount());
+                    mInfo.getRows().clear();
+                    mInfo.getRows().addAll(Info.getRows());
+                    mAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     }
+
 
     @Override
     public void clickUser(int userId) {
@@ -198,37 +216,18 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 //                    ActivityOptions.makeSceneTransitionAnimation(this, imageView, "aaa").toBundle());
 //        } else {
 
-        startActivity(intent);
+        startActivityForResult(intent, 2);
 //        }
     }
 
     @Override
     public void onRefresh() {
-        page = 1;
-        mCore.queryPic(page, rows, 1, false, mStarId, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                mInfo = mGson.fromJson(response.get(), PicWallInfo.class);
-                if (mInfo.isSuccess()) {
-                    mAdapter.setData(mInfo.getRows());
-                    rlv_picwall.complete();
-                    if (mInfo.getRows().size() < rows) {
-                        rlv_picwall.onNoMore("");
-                    }
-                } else {
-                    ToastUtils.showToast(mInfo.getErrorMsg());
-                }
-            }
-        });
+        loadData();
     }
 
     @Override
     public void onLoadMore() {
 
-        if (isLoading){
-            return;
-        }
-        isLoading = true;
         page++;
         rlv_picwall.onLoadingMore();
         mCore.queryPic(page, rows, 1, false, mStarId, new OnCommonListener() {
@@ -243,12 +242,11 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
                     if (picWallInfo.getTotal() < rows * page) {
                         rlv_picwall.onNoMore("");
                     }
-                    isLoading = false;
                 } else {
-                    isLoading = false;
                     ToastUtils.showToast(picWallInfo.getErrorMsg());
                 }
             }
         });
     }
+
 }

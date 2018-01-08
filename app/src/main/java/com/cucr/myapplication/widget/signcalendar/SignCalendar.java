@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -32,7 +33,7 @@ import java.util.Map;
  * Created by 911 on 2017/5/4.
  */
 
-public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGestureListener*/ {
+public class SignCalendar extends ViewFlipper implements GestureDetector.OnGestureListener {
     public static final int COLOR_BG_WEEK_TITLE = Color.parseColor("#ffffff"); // 星期标题背景颜色
     public static final int COLOR_TX_WEEK_TITLE = Color.parseColor("#666666"); // 星期标题文字颜色
     public static final int BEFORE_TODAY_BACKGROUND = Color.parseColor("#666666"); // 星期标题文字颜色
@@ -93,7 +94,7 @@ public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGes
     private void init() {
         setBackgroundColor(COLOR_BG_CALENDAR);
         // 实例化收拾监听器
-//        gd = new GestureDetector(this.getContext(), this);
+        gd = new GestureDetector(MyApplication.getInstance(), this);
         // 初始化日历翻动动画
         push_left_in = AnimationUtils.loadAnimation(getContext(), R.anim.push_left_in);
         push_left_out = AnimationUtils.loadAnimation(getContext(), R.anim.push_left_out);
@@ -758,6 +759,11 @@ public class SignCalendar extends ViewFlipper /*implements GestureDetector.OnGes
     }
 
     public void onLongPress(MotionEvent e) {
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
     }
 
 //    @Override

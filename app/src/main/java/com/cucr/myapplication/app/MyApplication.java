@@ -26,6 +26,7 @@ import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.sharesdk.framework.ShareSDK;
 
 
 /**
@@ -49,7 +50,8 @@ public class MyApplication extends Application {
 
         //内存泄漏框架
         LeakCanary.install(this);
-
+        //share sdk 初始化
+        ShareSDK.initSDK(this);
         //极光推送初始化
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);

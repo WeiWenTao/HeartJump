@@ -10,6 +10,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.SplishActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.OnCommonListener;
@@ -23,6 +24,13 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
+
+import java.util.HashMap;
+
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 
 public class NewLoadActivity extends Activity {
 
@@ -73,8 +81,35 @@ public class NewLoadActivity extends Activity {
     //忘记密码
     @OnClick(R.id.tv_forget_psw)
     public void forgetPsw(View view) {
-        mIntent.putExtra("isRegist", false);
-        startActivity(mIntent);
+
+        Platform.ShareParams sp = new Platform.ShareParams();
+        sp.setText("分享文本 http://mob.com");
+        sp.setImageUrl(HttpContans.HTTP_HOST + "/static/ys_image/2a6a51e7-9536-4fc7-83b1-cd4d0a5531e8.jpg");
+
+        Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+        weibo.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                ToastUtils.showToast("分享完成");
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                ToastUtils.showToast("分享错误");
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                ToastUtils.showToast("分享取消");
+            }
+        }); // 设置分享事件回调
+    // 执行图文分享
+        weibo.share(sp);
+
+
+
+       /* mIntent.putExtra("isRegist", false);
+        startActivity(mIntent);*/
     }
 
     @OnClick(R.id.tv_load)
@@ -118,7 +153,7 @@ public class NewLoadActivity extends Activity {
     //双击退出程序
     @Override
     public void onBackPressed() {
-        if (mIsAdd){
+        if (mIsAdd) {
             super.onBackPressed();
             return;
         }

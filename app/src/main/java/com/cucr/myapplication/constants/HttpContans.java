@@ -9,7 +9,7 @@ public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
 
-//    public static final String HTTP_HOST = "http://192.168.1.122:8080";
+//    public static final String HTTP_HOST = "http://192.168.1.123:8080";
 
     //服务协议
     public static final String HTTP_YHXY = "http://www.cucrxt.com/fwxy.html";
