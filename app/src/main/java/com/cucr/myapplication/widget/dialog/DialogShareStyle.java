@@ -16,18 +16,6 @@ import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 
-import java.util.HashMap;
-
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.sina.weibo.SinaWeibo;
-import cn.sharesdk.tencent.qq.QQ;
-import cn.sharesdk.tencent.qzone.QZone;
-import cn.sharesdk.wechat.friends.Wechat;
-import cn.sharesdk.wechat.moments.WechatMoments;
-
 /**
  * Created by 911 on 2017/4/14.
  */
@@ -132,158 +120,31 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
 
     //分享到新浪微博
     private void sharToSina() {
-        SinaWeibo.ShareParams sp = new SinaWeibo.ShareParams();
-        sp.setText("新浪微博"+"https://www.baidu.com/s?wd=%E5%BE%AE%E5%8D%9A%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0&ie=utf8&tn=93063693_hao_pg");
-        sp.setImagePath("");
 
-
-        Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-        weibo.setPlatformActionListener(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-
-            }
-        }); // 设置分享事件回调
-// 执行图文分享
-        weibo.share(sp);
     }
 
     //分享到qq空间
     private void sharToQzone() {
-        QZone.ShareParams sp = new QZone.ShareParams();
-        sp.setTitle("测试分享的标题");
-        sp.setTitleUrl("http://sharesdk.cn"); // 标题的超链接
-        sp.setText("测试分享的文本");
-        sp.setImageUrl("http://www.someserver.com/测试图片网络地址.jpg");
-        sp.setSite("发布分享的网站名称");
-        sp.setSiteUrl("发布分享网站的地址");
 
-        Platform qzone = ShareSDK.getPlatform(QZone.NAME);
-// 设置分享事件回调（注：回调放在不能保证在主线程调用，不可以在里面直接处理UI操作）
-        qzone.setPlatformActionListener(new PlatformActionListener() {
-            public void onError(Platform arg0, int arg1, Throwable arg2) {
-                //失败的回调，arg:平台对象，arg1:表示当前的动作，arg2:异常信息
-            }
-
-            public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-                //分享成功的回调
-            }
-
-            public void onCancel(Platform arg0, int arg1) {
-                //取消分享的回调
-            }
-        });
-// 执行图文分享
-        qzone.share(sp);
     }
 
     //分享到qq好友
     private void sharToQqhy() {
-        QQ.ShareParams sp = new QQ.ShareParams();
-        sp.setText("qq好友");
-        sp.setImagePath("");
 
-        Platform qq = ShareSDK.getPlatform(QQ.NAME);
-
-        qq.setPlatformActionListener(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-
-            }
-        });
-
-        qq.share(sp);
     }
 
     //分享到朋友圈
     private void sharToPyq() {
-        WechatMoments.ShareParams sp = new WechatMoments.ShareParams();
-//        sp.setText("朋友圈");
-        sp.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
 
-        Platform pyq = ShareSDK.getPlatform(WechatMoments.NAME);
-
-        pyq.share(sp);
     }
 
     //分享到微信好友
     private void sharToWxhy() {
-        Wechat.ShareParams sp = new Wechat.ShareParams();
-        sp.setText("微信好友");
-        sp.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
 
-
-
-        Platform wxhy = ShareSDK.getPlatform(Wechat.NAME);
-        wxhy.setPlatformActionListener(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-
-            }
-        });
-
-        wxhy.share(sp);
     }
 
 
     private void showShare(String platform) {
-        final OnekeyShare oks = new OnekeyShare();
-        //指定分享的平台，如果为空，还是会调用九宫格的平台列表界面
-        if (platform != null) {
-            oks.setPlatform(platform);
-        }
-        //关闭sso授权
-        oks.disableSSOWhenAuthorize();
-        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle("标题");
-        // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
-        oks.setTitleUrl("http://sharesdk.cn");
-        // text是分享文本，所有平台都需要这个字段
-        oks.setText("我是分享文本");
-        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
-        oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
-        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-        // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://sharesdk.cn");
-        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-        oks.setComment("我是测试评论文本");
-        // site是分享此内容的网站名称，仅在QQ空间使用
-        oks.setSite("ShareSDK");
-        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl("http://sharesdk.cn");
 
-        //启动分享
-        oks.show(context);
     }
 }

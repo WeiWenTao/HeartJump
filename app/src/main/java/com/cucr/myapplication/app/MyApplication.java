@@ -16,6 +16,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.leakcanary.LeakCanary;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -26,7 +29,6 @@ import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.sharesdk.framework.ShareSDK;
 
 
 /**
@@ -47,11 +49,11 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //友盟
+        Config.DEBUG = true;
+        UMShareAPI.get(this);
         //内存泄漏框架
         LeakCanary.install(this);
-        //share sdk 初始化
-        ShareSDK.initSDK(this);
         //极光推送初始化
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
@@ -85,7 +87,6 @@ public class MyApplication extends Application {
                 .networkExecutor(new URLConnectionNetworkExecutor())
                 .build()
         );
-
 
 
         // 如果你需要用OkHttp，请依赖下面的项目，version表示版本号：
@@ -151,10 +152,16 @@ public class MyApplication extends Application {
         return glideOptions;
     }
 
-    public static Gson getGson(){
+    public static Gson getGson() {
         if (mGson == null) {
             mGson = new Gson();
         }
         return mGson;
+    }
+
+    {
+        PlatformConfig.setWeixin("wx0b4ef89e40566d47", "594069fb14251435cc1a9c167c222656");
+        PlatformConfig.setSinaWeibo("3008130677", "c3d7b94e018e217fddbb2f57fc97d650", "http://www.cucrxt.com");
+//        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
     }
 }

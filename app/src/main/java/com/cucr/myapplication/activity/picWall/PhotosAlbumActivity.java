@@ -92,7 +92,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     }
 
     private void init() {
-        rows = 9;
+        rows = 15;
         page = 1;
         orderType = 1;   //默认按时间排序
         mIntent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);

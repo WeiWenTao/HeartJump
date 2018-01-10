@@ -38,8 +38,9 @@ public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallH
         if (this.rows == null || rows == null || rows.size() == 0) {
             return;
         }
-        notifyDataSetChanged();
-//        notifyItemRangeChanged(this.rows.size() - rows.size() - 1, this.rows.size());
+//        notifyDataSetChanged();
+//        notifyItemInserted(this.rows.size());
+        notifyItemRangeChanged(this.rows.size(), this.rows.size() + rows.size());
     }
 
     @Override

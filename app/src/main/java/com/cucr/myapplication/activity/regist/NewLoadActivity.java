@@ -10,7 +10,6 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.SplishActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.OnCommonListener;
@@ -20,17 +19,19 @@ import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
 
-import java.util.HashMap;
-
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.sina.weibo.SinaWeibo;
+import java.util.Map;
 
 public class NewLoadActivity extends Activity {
 
@@ -81,35 +82,64 @@ public class NewLoadActivity extends Activity {
     //忘记密码
     @OnClick(R.id.tv_forget_psw)
     public void forgetPsw(View view) {
-
-        Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setText("分享文本 http://mob.com");
-        sp.setImageUrl(HttpContans.HTTP_HOST + "/static/ys_image/2a6a51e7-9536-4fc7-83b1-cd4d0a5531e8.jpg");
-
-        Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-        weibo.setPlatformActionListener(new PlatformActionListener() {
+//        mIntent.putExtra("isRegist", false);
+//        startActivity(mIntent);
+        UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.SINA, new UMAuthListener() {
             @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                ToastUtils.showToast("分享完成");
+            public void onStart(SHARE_MEDIA share_media) {
+
             }
 
             @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                ToastUtils.showToast("分享错误");
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+
             }
 
             @Override
-            public void onCancel(Platform platform, int i) {
-                ToastUtils.showToast("分享取消");
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+
             }
-        }); // 设置分享事件回调
-    // 执行图文分享
-        weibo.share(sp);
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+
+            }
+        });
+        ShareWeb("http://101.132.96.199/static/yuanshi_image/ed59fe93-05e7-4591-8b6f-5781b11fc4f2.jpg");
+    }
 
 
+    private void ShareWeb(String thumb_img) {
+        UMImage thumb = new UMImage(MyApplication.getInstance(), thumb_img);
+        UMWeb web = new UMWeb("www.cucrxt.com");
+        web.setThumb(thumb);
+        web.setDescription("测试描述");
+        web.setTitle("测试标题");
+        new ShareAction(this)
+                .withMedia(web).
+                setPlatform(SHARE_MEDIA.SINA).
+                setCallback(new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
 
-       /* mIntent.putExtra("isRegist", false);
-        startActivity(mIntent);*/
+                    }
+
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+
+                    }
+                }).
+                share();
     }
 
     @OnClick(R.id.tv_load)
@@ -169,4 +199,15 @@ public class NewLoadActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(this).release();
+    }
 }

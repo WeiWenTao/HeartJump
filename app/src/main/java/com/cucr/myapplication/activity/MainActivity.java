@@ -30,8 +30,6 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.sharesdk.framework.ShareSDK;
-
 public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
 
     private List<Fragment> mFragments;
