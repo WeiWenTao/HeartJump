@@ -40,6 +40,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -368,6 +369,7 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        UMShareAPI.get(this).release();
     }
 
     @OnClick(R.id.ll_photos)
@@ -375,5 +377,11 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         mIntent.putExtra("starId",mStarId);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

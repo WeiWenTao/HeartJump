@@ -37,14 +37,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
-
         debug {
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
     }
 
     signingConfigs {
@@ -66,74 +65,107 @@ android {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-//    compile 'com.squareup.okhttp3:okhttp:3.6.0' 和nohttp里面的okhttp冲突
+
+    //    compile 'com.squareup.okhttp3:okhttp:3.6.0' 和nohttp里面的okhttp冲突
     compile 'com.android.support:support-v4:25.2.0'
+
     //MagicIndicator
     compile project(':lib_svpi')
+
     //轮播图
     compile project(':lib-convenientbanner')
+
     //开关
     compile 'com.zcw:togglebutton-library:1.0.0'
+
     //fragment相关
     compile 'com.android.support:support-v13:25.2.0'
+
     //圆角imageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
+
     //横向滑动
     compile project(':lib_wheelView')
+
     //圆角imageView
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+
     //右侧快速导航条
     compile 'com.bigkoo:quicksidebar:1.0.3'
+
     //模糊
     compile 'net.qiujuer.genius:blur:2.0.0-beta4'
+
     //图片旋转木马
     compile 'com.zhy:base-rvadapter:3.0.3'
+
     //时间选择器
     compile project(':lib_slideDateTimePicker')
+
     //透明导航栏
     compile 'org.zackratos:ultimatebar:1.0.3'
+
     //nohttp联网
     compile 'com.yanzhenjie.nohttp:nohttp:1.1.5'
     compile 'com.yanzhenjie.nohttp:okhttp:1.1.5'
+
     //相册选择图片  这个加载太慢
+
     //    compile 'com.yanzhenjie:album:2.0.0-alpha'
+
     //    compile rootProject.ext.dependencies.album
     compile 'com.jaikydota.imagespickers:imagespickers:1.0.6'
+
     //Glide
+
     //    compile 'com.github.bumptech.glide:glide:3.6.1'
+
     //数据库GreenDao
     compile 'org.greenrobot:greendao:3.1.0'
     compile 'org.greenrobot:greendao-generator:3.0.0'
+
     //极光推送
     compile 'cn.jiguang.sdk:jpush:3.0.3'
+
     // 此处以JPush 3.0.3 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.1'
+
     // 此处以JCore 1.1.1 版本为例。
+
     //粉团发布按钮
+
     //    compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.github.toanvc:floatingactionmenu:0.8.9'
     compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
+
     //照片选择器
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.1'
+
     //视频播放
     compile project(':giraffeplayer')
+
     //emoji表情
     compile 'com.vanniktech:emoji-ios:0.5.1'
+
     //内存泄漏工具
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
     //eventBus
     compile 'org.greenrobot:eventbus:3.0.0'
+
     //gif
     compile 'com.github.Cutta:GifView:1.1'
+
     //动态权限
     compile 'me.weyye.hipermission:library:1.0.3'
+
     //视频缓存
     compile 'com.danikula:videocache:2.6.4'
+
     //图片缩放
     compile 'xyz.zpayh:hdimageview:1.0.2'
-
 }

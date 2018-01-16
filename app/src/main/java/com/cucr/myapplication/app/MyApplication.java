@@ -52,6 +52,8 @@ public class MyApplication extends Application {
         //友盟
         Config.DEBUG = true;
         UMShareAPI.get(this);
+
+
         //内存泄漏框架
         LeakCanary.install(this);
         //极光推送初始化
@@ -160,8 +162,10 @@ public class MyApplication extends Application {
     }
 
     {
+
+
         PlatformConfig.setWeixin("wx0b4ef89e40566d47", "594069fb14251435cc1a9c167c222656");
         PlatformConfig.setSinaWeibo("3008130677", "c3d7b94e018e217fddbb2f57fc97d650", "http://www.cucrxt.com");
-//        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setQQZone("1106501884", "aEO7SIixJOZjsmqj");
     }
 }

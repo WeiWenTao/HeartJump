@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.fuli.FuLiActiviry"
     >
 
     <android.support.v4.widget.SwipeRefreshLayout

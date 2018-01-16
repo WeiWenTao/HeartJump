@@ -109,6 +109,7 @@ public class FragmentHuoDong extends Fragment implements SwipeRecyclerView.OnLoa
         if (!rlv_actives.getSwipeRefreshLayout().isRefreshing()) {
             rlv_actives.setRefreshing(true);
         }
+
         page = 1;
         //dataId  查询单条  传-1查所有
         mCore.queryActive(false, -1, page, rows, new OnCommonListener() {

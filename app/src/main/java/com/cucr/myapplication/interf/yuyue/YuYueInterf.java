@@ -12,4 +12,5 @@ public interface YuYueInterf {
                    String activeStartTime, String activeEndTime, int activeScene, String activeInfo,
                    int peopleCount, OnCommonListener listener);
 
+    void myYuYue(int page, int rows, OnCommonListener commonListener);
 }

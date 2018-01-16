@@ -29,6 +29,7 @@ import com.cucr.myapplication.model.CommonRebackMsg;
 import com.cucr.myapplication.model.setting.LocationData;
 import com.cucr.myapplication.model.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
@@ -133,8 +134,8 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     private void initViews() {
         //回显数据
         //-----------------------------------------价格-------------------------------------
-        String price = mData.getStartCost() + "万";
-        SpannableString sp = new SpannableString("商业出演 " + price + " /场");
+        String price = mData.getStartCost() + " 万";
+        SpannableString sp = new SpannableString("参考费用 " + price + " /场");
         //设置高亮样式二
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#F68D89")), 4, 4 + price.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         sp.setSpan(new AbsoluteSizeSpan(15, true), 4, 4 + price.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -155,7 +156,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     //活动地区
     @OnClick(R.id.tv_active_local)
     public void selLocal(View view) {
-        Intent intent = new Intent(this, LocalityProvienceActivity.class);
+        Intent intent = new Intent(MyApplication.getInstance(), LocalityProvienceActivity.class);
         intent.putExtra("needShow", true);
         intent.putExtra("className", "YuYueCatgoryActivity");
         startActivity(intent);
@@ -291,7 +292,8 @@ public class YuYueCatgoryActivity extends FragmentActivity {
             return;
         }
 
-        mCore.yuYueStar(mData.getId(), activityName, activeLocal, localCatgory, starTime, endTime, scene
+        MyLogger.jLog().i(starTime);
+        mCore.yuYueStar(mData.getId(), activityName, activeLocal, localCatgory, starTime + ":00", endTime + ":00", scene
                 , activeContent, Integer.parseInt(peoples), new OnCommonListener() {
                     @Override
                     public void onRequestSuccess(Response<String> response) {
@@ -299,7 +301,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
                         if (msg.isSuccess()) {
                             ToastUtils.showToast(MyApplication.getInstance(), "已提交预约");
                             finish();
-                        }else {
+                        } else {
                             ToastUtils.showToast(msg.getMsg());
                         }
                     }

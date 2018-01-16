@@ -24,8 +24,9 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.star.StarListForAddActivity;
+import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
+import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -78,6 +79,7 @@ import java.util.List;
 
 /**
  * Created by cucr on 2017/8/31.
+ * 粉丝看的
  */
 
 public class FragmentFans extends BaseFragment {
@@ -158,9 +160,9 @@ public class FragmentFans extends BaseFragment {
         mStarCore = new QueryStarListCore();
         mCore = new QueryMyFocusStars();
         percent = 3.0f;
-        if (mIntent == null) {
-            mIntent = new Intent(MyApplication.getInstance(), PhotosAlbumActivity.class);
-        }
+        mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         initRlv();
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
@@ -514,10 +516,19 @@ public class FragmentFans extends BaseFragment {
         MyLogger.jLog().i("EventNotifyStarInfo() 注销");
     }
 
+    //图集
     @OnClick(R.id.ll_photos)
     public void goPhotos(View view) {
-        mIntent.putExtra("starId",mStarId);
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mIntent.putExtra("starId", mStarId);
+        mIntent.setClass(MyApplication.getInstance(), PhotosAlbumActivity.class);
+        startActivity(mIntent);
+    }
+
+    //后援团
+    @OnClick(R.id.ll_hyt)
+    public void goHouYuanTuan(View view) {
+        mIntent.putExtra("starId", mStarId);
+        mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
         startActivity(mIntent);
     }
 }

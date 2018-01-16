@@ -5,15 +5,16 @@ import java.util.List;
 
 /**
  * Created by cucr on 2017/12/7.
+ * 企业活动和预约我的-我的预约共用一个Bean
  */
 
-public class QiYeHuoDongInfo implements Serializable{
+public class QiYeHuoDongInfo implements Serializable {
 
     /**
      * errorMsg :
-     * rows : [{"activeAdress":"Asdasdasdasd","activeEndTime":null,"activeInfo":"","activeName":"Sadasdasd","activePlace":"北京 通州 ","activeScene":null,"activeStartTime":"2017-11-04 09:26:00","appStartId":null,"appStartName":"","applyUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"迪丽热巴","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/ys_image/d6c26a83-91ae-42c8-ba9a-b4c94de964f7.jpg"},"commentCount":0,"giveUpCount":0,"id":5,"isSignUp":0,"openys":0,"peopleCount":null,"picurl":"","result":null,"type":1,"upTime":"2017-11-03 09:26:56","ys":56},{"activeAdress":"Asdasdasdasd","activeEndTime":null,"activeInfo":"","activeName":"Sadasdasd","activePlace":"北京 通州 ","activeScene":null,"activeStartTime":"2017-11-04 09:26:00","appStartId":null,"appStartName":"","applyUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"迪丽热巴","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/ys_image/d6c26a83-91ae-42c8-ba9a-b4c94de964f7.jpg"},"commentCount":0,"giveUpCount":0,"id":6,"isSignUp":0,"openys":0,"peopleCount":null,"picurl":"","result":null,"type":1,"upTime":"2017-11-03 09:26:59","ys":56}]
+     * rows : [{"activeAdress":"点军区82号","activeEndTime":"2017-12-31 00:00:00","activeInfo":"不知道为啥就想办场活动","activeName":"心跳互娱答谢会，就是让你们感受到无上的光荣 的的传统","activePlace":"湖北 宜昌 西陵区","activeScene":0,"activeStartTime":"2017-12-31 00:00:00","appStartUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"},"applyUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"},"commentCount":1,"giveUpCount":1,"id":12,"isSignUp":1,"openys":0,"peopleCount":1,"picurl":"/static/yuanshi_image/cf83877b-7848-481d-9c40-3fbdc61e535e.png","result":1,"type":1,"upTime":"2017-12-05 15:26:11","ys":333},{"activeAdress":"大学路8号三峡大学图书馆","activeEndTime":"2017-12-05 15:26:11","activeInfo":"心跳互动娱乐发布会，需要进行发布会展示，希望大家能够一起参加吧","activeName":"心跳互娱网络科技有限公司答谢会","activePlace":"湖北 宜昌 西陵区","activeScene":1,"activeStartTime":"2017-12-20 14:53:00","appStartUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"},"applyUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"},"commentCount":1,"giveUpCount":1,"id":11,"isSignUp":1,"openys":0,"peopleCount":1,"picurl":"/static/yuanshi_image/9798a787-eb9e-4354-9d64-8be8dc0f3da6.png","result":1,"type":1,"upTime":"2017-12-05 15:04:33","ys":100},{"activeAdress":"书城路52号洪山创意中心三楼","activeEndTime":"2017-12-05 15:26:11","activeInfo":"为1感谢各大投资人对公司的大力 ，特地在年会举行之际，邀请各位同仁来参加。也希望各位粉丝进行深入交流","activeName":"创联凯尔答谢会","activePlace":"湖北 武汉 洪山区","activeScene":1,"activeStartTime":"2017-12-20 14:25:00","appStartUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"},"applyUser":{"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"},"commentCount":1,"giveUpCount":1,"id":10,"isSignUp":1,"openys":1,"peopleCount":1,"picurl":"/static/yuanshi_image/0515903a-4a3d-4092-8fd7-cd9840a174c8.png","result":1,"type":1,"upTime":"2017-12-05 14:28:54","ys":56}]
      * success : true
-     * total : 2
+     * total : 3
      */
 
     private String errorMsg;
@@ -53,52 +54,59 @@ public class QiYeHuoDongInfo implements Serializable{
         this.rows = rows;
     }
 
-    public static class RowsBean implements Serializable{
+    public static class RowsBean implements Serializable {
         /**
-         * activeAdress : Asdasdasdasd
-         * activeEndTime : null
-         * activeInfo :
-         * activeName : Sadasdasd
-         * activePlace : 北京 通州
-         * activeScene : null
-         * activeStartTime : 2017-11-04 09:26:00
-         * appStartId : null
-         * appStartName :
-         * applyUser : {"belongCompany":"","id":29,"msgRegId":"123456","name":"迪丽热巴","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/ys_image/d6c26a83-91ae-42c8-ba9a-b4c94de964f7.jpg"}
-         * commentCount : 0
-         * giveUpCount : 0
-         * id : 5
-         * isSignUp : 0
+         * activeAdress : 点军区82号
+         * activeEndTime : 2017-12-31 00:00:00
+         * activeInfo : 不知道为啥就想办场活动
+         * activeName : 心跳互娱答谢会，就是让你们感受到无上的光荣 的的传统
+         * activePlace : 湖北 宜昌 西陵区
+         * activeScene : 0
+         * activeStartTime : 2017-12-31 00:00:00
+         * appStartUser : {"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"}
+         * applyUser : {"belongCompany":"","id":29,"msgRegId":"123456","name":"笨笨的考拉","phone":"15527609321","realName":"迪丽热巴","signName":"你好","userHeadPortrait":"/static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png"}
+         * commentCount : 1
+         * giveUpCount : 1
+         * id : 12
+         * isSignUp : 1
          * openys : 0
-         * peopleCount : null
-         * picurl :
-         * result : null
+         * peopleCount : 1
+         * picurl : /static/yuanshi_image/cf83877b-7848-481d-9c40-3fbdc61e535e.png
+         * result : 1
          * type : 1
-         * upTime : 2017-11-03 09:26:56
-         * ys : 56
+         * upTime : 2017-12-05 15:26:11
+         * ys : 333
          */
 
         private String activeAdress;
-        private Object activeEndTime;
+        private String activeEndTime;
         private String activeInfo;
         private String activeName;
         private String activePlace;
-        private Object activeScene;
+        private int activeScene;
         private String activeStartTime;
-        private Object appStartId;
-        private String appStartName;
+        private AppStartUserBean appStartUser;
         private ApplyUserBean applyUser;
         private int commentCount;
         private int giveUpCount;
         private int id;
         private int isSignUp;
         private int openys;
-        private Integer peopleCount;
+        private int peopleCount;
         private String picurl;
-        private Object result;
+        private int result;
         private int type;
         private String upTime;
         private int ys;
+        private int startCost;
+
+        public int getStartCost() {
+            return startCost;
+        }
+
+        public void setStartCost(int startCost) {
+            this.startCost = startCost;
+        }
 
         public String getActiveAdress() {
             return activeAdress;
@@ -108,11 +116,11 @@ public class QiYeHuoDongInfo implements Serializable{
             this.activeAdress = activeAdress;
         }
 
-        public Object getActiveEndTime() {
+        public String getActiveEndTime() {
             return activeEndTime;
         }
 
-        public void setActiveEndTime(Object activeEndTime) {
+        public void setActiveEndTime(String activeEndTime) {
             this.activeEndTime = activeEndTime;
         }
 
@@ -140,11 +148,11 @@ public class QiYeHuoDongInfo implements Serializable{
             this.activePlace = activePlace;
         }
 
-        public Object getActiveScene() {
+        public int getActiveScene() {
             return activeScene;
         }
 
-        public void setActiveScene(Object activeScene) {
+        public void setActiveScene(int activeScene) {
             this.activeScene = activeScene;
         }
 
@@ -156,20 +164,12 @@ public class QiYeHuoDongInfo implements Serializable{
             this.activeStartTime = activeStartTime;
         }
 
-        public Object getAppStartId() {
-            return appStartId;
+        public AppStartUserBean getAppStartUser() {
+            return appStartUser;
         }
 
-        public void setAppStartId(Object appStartId) {
-            this.appStartId = appStartId;
-        }
-
-        public String getAppStartName() {
-            return appStartName;
-        }
-
-        public void setAppStartName(String appStartName) {
-            this.appStartName = appStartName;
+        public void setAppStartUser(AppStartUserBean appStartUser) {
+            this.appStartUser = appStartUser;
         }
 
         public ApplyUserBean getApplyUser() {
@@ -220,11 +220,11 @@ public class QiYeHuoDongInfo implements Serializable{
             this.openys = openys;
         }
 
-        public Integer getPeopleCount() {
+        public int getPeopleCount() {
             return peopleCount;
         }
 
-        public void setPeopleCount(Integer peopleCount) {
+        public void setPeopleCount(int peopleCount) {
             this.peopleCount = peopleCount;
         }
 
@@ -236,11 +236,11 @@ public class QiYeHuoDongInfo implements Serializable{
             this.picurl = picurl;
         }
 
-        public Object getResult() {
+        public int getResult() {
             return result;
         }
 
-        public void setResult(Object result) {
+        public void setResult(int result) {
             this.result = result;
         }
 
@@ -268,21 +268,23 @@ public class QiYeHuoDongInfo implements Serializable{
             this.ys = ys;
         }
 
-        public static class ApplyUserBean implements Serializable {
+        public static class AppStartUserBean implements Serializable {
             /**
              * belongCompany :
              * id : 29
              * msgRegId : 123456
-             * name : 迪丽热巴
+             * name : 笨笨的考拉
+             * phone : 15527609321
              * realName : 迪丽热巴
              * signName : 你好
-             * userHeadPortrait : /static/ys_image/d6c26a83-91ae-42c8-ba9a-b4c94de964f7.jpg
+             * userHeadPortrait : /static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png
              */
 
             private String belongCompany;
             private int id;
             private String msgRegId;
             private String name;
+            private String phone;
             private String realName;
             private String signName;
             private String userHeadPortrait;
@@ -319,6 +321,14 @@ public class QiYeHuoDongInfo implements Serializable{
                 this.name = name;
             }
 
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
             public String getRealName() {
                 return realName;
             }
@@ -342,56 +352,92 @@ public class QiYeHuoDongInfo implements Serializable{
             public void setUserHeadPortrait(String userHeadPortrait) {
                 this.userHeadPortrait = userHeadPortrait;
             }
+        }
 
-            @Override
-            public String toString() {
-                return "ApplyUserBean{" +
-                        "belongCompany='" + belongCompany + '\'' +
-                        ", id=" + id +
-                        ", msgRegId='" + msgRegId + '\'' +
-                        ", name='" + name + '\'' +
-                        ", realName='" + realName + '\'' +
-                        ", signName='" + signName + '\'' +
-                        ", userHeadPortrait='" + userHeadPortrait + '\'' +
-                        '}';
+        public static class ApplyUserBean implements Serializable {
+            /**
+             * belongCompany :
+             * id : 29
+             * msgRegId : 123456
+             * name : 笨笨的考拉
+             * phone : 15527609321
+             * realName : 迪丽热巴
+             * signName : 你好
+             * userHeadPortrait : /static/yuanshi_image/c6fe2069-b05b-41fd-92d4-212568df749d.png
+             */
+
+            private String belongCompany;
+            private int id;
+            private String msgRegId;
+            private String name;
+            private String phone;
+            private String realName;
+            private String signName;
+            private String userHeadPortrait;
+
+            public String getBelongCompany() {
+                return belongCompany;
+            }
+
+            public void setBelongCompany(String belongCompany) {
+                this.belongCompany = belongCompany;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getMsgRegId() {
+                return msgRegId;
+            }
+
+            public void setMsgRegId(String msgRegId) {
+                this.msgRegId = msgRegId;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public String getRealName() {
+                return realName;
+            }
+
+            public void setRealName(String realName) {
+                this.realName = realName;
+            }
+
+            public String getSignName() {
+                return signName;
+            }
+
+            public void setSignName(String signName) {
+                this.signName = signName;
+            }
+
+            public String getUserHeadPortrait() {
+                return userHeadPortrait;
+            }
+
+            public void setUserHeadPortrait(String userHeadPortrait) {
+                this.userHeadPortrait = userHeadPortrait;
             }
         }
-
-        @Override
-        public String toString() {
-            return "RowsBean{" +
-                    "activeAdress='" + activeAdress + '\'' +
-                    ", activeEndTime=" + activeEndTime +
-                    ", activeInfo='" + activeInfo + '\'' +
-                    ", activeName='" + activeName + '\'' +
-                    ", activePlace='" + activePlace + '\'' +
-                    ", activeScene=" + activeScene +
-                    ", activeStartTime='" + activeStartTime + '\'' +
-                    ", appStartId=" + appStartId +
-                    ", appStartName='" + appStartName + '\'' +
-                    ", applyUser=" + applyUser +
-                    ", commentCount=" + commentCount +
-                    ", giveUpCount=" + giveUpCount +
-                    ", id=" + id +
-                    ", isSignUp=" + isSignUp +
-                    ", openys=" + openys +
-                    ", peopleCount=" + peopleCount +
-                    ", picurl='" + picurl + '\'' +
-                    ", result=" + result +
-                    ", type=" + type +
-                    ", upTime='" + upTime + '\'' +
-                    ", ys=" + ys +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "QiYeHuoDongInfo{" +
-                "errorMsg='" + errorMsg + '\'' +
-                ", success=" + success +
-                ", total=" + total +
-                ", rows=" + rows +
-                '}';
     }
 }

@@ -10,17 +10,4 @@
     android:gravity="right"
     >
 
-    <TextView
-        android:layout_marginTop="@dimen/dp_40"
-        android:id="@+id/tv_timmer"
-        android:layout_marginRight="@dimen/dp_10"
-        android:background="@drawable/shape_timmer"
-        android:layout_width="@dimen/dp_40"
-        android:layout_height="@dimen/dp_20"
-        android:textSize="@dimen/sp_13"
-        android:textColor="@color/white"
-        android:text="3s"
-        android:gravity="center"
-        />
-
 </LinearLayout>

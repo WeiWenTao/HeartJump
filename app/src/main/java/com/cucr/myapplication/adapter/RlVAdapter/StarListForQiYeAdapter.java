@@ -1,5 +1,6 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -43,7 +44,7 @@ import java.util.List;
 public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYeAdapter.StarListForQiYeHolder> {
 
     private Context mContext;
-    private Context activity;
+    private Activity activity;
     private DialogCanaleFocusStyle mDialogCanaleFocusStyle;
     private List<StarListInfos.RowsBean> rows;
     private FocusCore mCore;
@@ -52,7 +53,7 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
     private int mValue; //屏幕宽度
     private Gson mGson;
 
-    public StarListForQiYeAdapter(Context activity) {
+    public StarListForQiYeAdapter(Activity activity) {
         this.activity = activity;
         mContext = MyApplication.getInstance();
         mGson = new Gson();

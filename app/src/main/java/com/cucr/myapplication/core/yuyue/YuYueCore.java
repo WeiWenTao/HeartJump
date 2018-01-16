@@ -25,6 +25,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 public class YuYueCore implements YuYueInterf {
 
     private OnCommonListener yuYueListener;
+    private OnCommonListener myYueListener;
     /**
      * 请求队列。
      */
@@ -55,6 +56,17 @@ public class YuYueCore implements YuYueInterf {
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 
+    @Override
+    public void myYuYue(int page, int rows, OnCommonListener commonListener) {
+        myYueListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_APOINMENT, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, (int) SpUtil.getParam(SpConstant.USER_ID, -1))
+                .add("page", page)
+                .add("rows", rows)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
+    }
+
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onStart(int what) {
@@ -66,6 +78,10 @@ public class YuYueCore implements YuYueInterf {
             switch (what) {
                 case Constans.TYPE_ONE:
                     yuYueListener.onRequestSuccess(response);
+                    break;
+
+                case Constans.TYPE_TWO:
+                    myYueListener.onRequestSuccess(response);
                     break;
             }
         }

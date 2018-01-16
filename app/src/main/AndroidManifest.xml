@@ -3,13 +3,11 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <!--友盟sdk-->
+    <!-- 友盟sdk -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
@@ -42,10 +40,12 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:testOnly="false"
         android:theme="@style/AppTheme"
         >
-        <!--======================友盟=========================-->
-        <!--友盟分享-->
+
+        <!-- ======================友盟========================= -->
+        <!-- 友盟分享 -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5a54173db27b0a6cbe000167"
@@ -72,7 +72,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             >
-
         </activity>
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
@@ -81,28 +80,24 @@
             >
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-
         </activity>
-
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
             android:noHistory="true"
             >
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="tencent100424468"/>
+                <data android:scheme="tencent1106501884"/>
             </intent-filter>
-
         </activity>
-
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -110,7 +105,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
 
-        <!--======================友盟=========================-->
+        <!-- ======================友盟========================= -->
 
 
         <!-- PictureSelector 6.0以上 拍照bug -->
@@ -166,7 +161,6 @@
             <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             <!-- </intent-filter> -->
         </activity>
-
         <activity
             android:name=".activity.HomeSearchActivity"
             android:windowSoftInputMode="adjustPan"
@@ -323,11 +317,13 @@
             android:name=".activity.regist.NewLoadActivity"
             android:screenOrientation="portrait"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activity.regist.NewRegistActivity"
@@ -368,19 +364,19 @@
             android:name=".activity.SplishActivity"
             android:launchMode="singleTop"
             >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".activity.picWall.PhotosAlbumActivity">
         </activity>
         <activity android:name=".activity.picWall.MyPicWallActivity">
         </activity>
         <activity android:name=".activity.picWall.PicWallCatgoryActivity">
+        </activity>
+        <activity android:name=".activity.hyt.HYTActivity">
         </activity>
     </application>
 

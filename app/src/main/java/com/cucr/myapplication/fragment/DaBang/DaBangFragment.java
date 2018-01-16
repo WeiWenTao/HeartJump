@@ -208,6 +208,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
                     ToastUtils.showToast("打榜成功!");
                     //刷新一遍
 //                    queryBdInfo();
+                    onRefresh();
                 } else {
                     ToastUtils.showToast(msg.getMsg());
                 }

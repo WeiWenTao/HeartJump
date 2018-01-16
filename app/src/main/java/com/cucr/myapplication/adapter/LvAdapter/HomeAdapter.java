@@ -1,5 +1,6 @@
 package com.cucr.myapplication.adapter.LvAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -40,9 +41,9 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
     }
 
 
-    public HomeAdapter() {
+    public HomeAdapter(Activity activity) {
         mContext = MyApplication.getInstance();
-        mShareDialog = new DialogShareStyle(mContext, R.style.ShowAddressStyleTheme);
+        mShareDialog = new DialogShareStyle(activity, R.style.ShowAddressStyleTheme);
     }
 
 

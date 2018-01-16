@@ -180,6 +180,12 @@ public class HttpContans {
     public static final String ADDRESS_PIC_QUERY = "/interface/mobileStartAtlasAction/upAtlasQuery";
 
     //图集点赞
-    public static final String ADDRESS_PIC_GOODS= "/interface/mobileStartAtlasAction/giveUp";
+    public static final String ADDRESS_PIC_GOODS = "/interface/mobileStartAtlasAction/giveUp";
+
+    //粉团分享
+    public static final String ADDRESS_FT_SHARE = HTTP_HOST + "/interface/newsShare/page?fansNewsContentId=";
+
+    //我的预约
+    public static final String ADDRESS_MY_APOINMENT = "/interface/mobileStartAppointment/myAppointment";
 
 }

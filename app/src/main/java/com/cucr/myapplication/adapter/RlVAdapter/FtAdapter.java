@@ -134,7 +134,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickshare(position);
+                        mOnClickBt.onClickshare(rowsBean.getId());
                     }
                 }
             });
@@ -257,7 +257,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickshare(position);
+                        mOnClickBt.onClickshare(rowsBean.getId());
                     }
                 }
             });
@@ -346,7 +346,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickshare(position);
+                        mOnClickBt.onClickshare(rowsBean.getId());
                     }
                 }
             });
@@ -653,7 +653,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
 
-        void onClickshare(int position);
+        void onClickshare(int dataId);
 
         void onClickDaShang(int contentId,int position);
 

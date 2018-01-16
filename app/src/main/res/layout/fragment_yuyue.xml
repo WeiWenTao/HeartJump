@@ -124,8 +124,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_marginRight="@dimen/dp_3"
-            android:divider="@color/color_999"
-            android:dividerHeight="1dp"
             ></android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 

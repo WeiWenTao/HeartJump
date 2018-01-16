@@ -11,15 +11,19 @@
 
     <include layout="@layout/activity_base_title"/>
 
-    <ListView
-        android:clipToPadding="false"
-        android:id="@+id/lv_my_yuyue"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/rlf"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/lvbg"
-        android:dividerHeight="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10"
-        ></ListView>
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rlv_my_yuyue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

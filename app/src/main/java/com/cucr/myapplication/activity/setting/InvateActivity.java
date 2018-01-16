@@ -23,11 +23,10 @@ public class InvateActivity extends Activity {
         //沉浸栏
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setImmersionBar();
-        mDialog = new DialogShareStyle(this, R.style.ShowAddressStyleTheme);
+        mDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
         Window window = mDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
-//        window.setWindowAnimations(R.style.mystyle);  //添加动画
-
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
     }
 
     public void invate(View view) {

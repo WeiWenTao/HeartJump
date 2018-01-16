@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
@@ -26,7 +25,7 @@ import java.io.InputStream;
 
 public class SplishActivity extends Activity {
 
-    private TextView mTimmer;
+//    private TextView mTimmer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +42,20 @@ public class SplishActivity extends Activity {
     }
 
     private void timmer() {
-        mTimmer = (TextView) findViewById(R.id.tv_timmer);
+//        mTimmer = (TextView) findViewById(R.id.tv_timmer);
         downTimer.start();
 
     }
 
     //验证码倒计时
-    private CountDownTimer downTimer = new CountDownTimer(6 * 500, 500) {
+    private CountDownTimer downTimer = new CountDownTimer(4 * 500, 500) {
         @Override
         public void onTick(long l) {
-            if (l >= 1000) {
-                    mTimmer.setText((l / 1000) +1 + "s");
-                } else {
-                    mTimmer.setText(1 + "s");
-            }
+//            if (l >= 1000) {
+//                    mTimmer.setText((l / 1000) +1 + "s");
+//                } else {
+//                    mTimmer.setText(1 + "s");
+//            }
             MyLogger.jLog().i("timmer:"+l);
         }
 

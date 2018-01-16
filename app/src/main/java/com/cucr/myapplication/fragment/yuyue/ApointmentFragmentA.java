@@ -24,6 +24,7 @@ import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.adapter.SpinnerAdapter.MySp1Adapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
@@ -105,7 +106,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mContext = context;
+
     }
 
     @Override
@@ -119,8 +120,9 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         ViewUtils.inject(this, childView);
+        this.mContext = MyApplication.getInstance();
         mCore = new QueryStarListCore();
-        mAdapter = new StarListForQiYeAdapter(mContext);
+        mAdapter = new StarListForQiYeAdapter(getActivity());
         allRows = new ArrayList<>();
         if (mIntent == null){
             mIntent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
@@ -230,7 +232,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
                     MyLogger.jLog().i("starList:" + mRows + ",isCache:" + response.isFromCache());
                     wapper.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
+                    ToastUtils.showToast(starListInfos.getErrorMsg());
                 }
             }
         });
@@ -404,7 +406,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
                             allRows.addAll(mRows);
                             wapper.notifyDataSetChanged();
                         } else {
-                            ToastUtils.showToast(mContext, starListInfos.getErrorMsg());
+                            ToastUtils.showToast(starListInfos.getErrorMsg());
                         }
                     }
                 });

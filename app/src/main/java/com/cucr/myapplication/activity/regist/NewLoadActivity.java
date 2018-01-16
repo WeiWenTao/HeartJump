@@ -1,10 +1,13 @@
 package com.cucr.myapplication.activity.regist;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.SplishActivity;
@@ -14,18 +17,16 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.model.eventBus.EventChageAccount;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,7 +53,22 @@ public class NewLoadActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_load);
         ViewUtils.inject(this);
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(this).setShareConfig(config);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_APN_SETTINGS};
+            requestPermissions(mPermissionList, 123);
+        }
         initViews();
+    }
+
+    //申请权限回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+
     }
 
     private void initViews() {
@@ -69,7 +85,6 @@ public class NewLoadActivity extends Activity {
         //回显账号和密码  如果没有就设置为空串  账号密码由注册时保存到sp中
         mEt_accunt.setText(((String) SpUtil.getParam(SpConstant.USER_NAEM, "")));
         mEt_psw.setText(((String) SpUtil.getParam(SpConstant.PASSWORD, "")));
-
     }
 
     //注册
@@ -82,64 +97,8 @@ public class NewLoadActivity extends Activity {
     //忘记密码
     @OnClick(R.id.tv_forget_psw)
     public void forgetPsw(View view) {
-//        mIntent.putExtra("isRegist", false);
-//        startActivity(mIntent);
-        UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.SINA, new UMAuthListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
-
-            }
-
-            @Override
-            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA share_media, int i) {
-
-            }
-        });
-        ShareWeb("http://101.132.96.199/static/yuanshi_image/ed59fe93-05e7-4591-8b6f-5781b11fc4f2.jpg");
-    }
-
-
-    private void ShareWeb(String thumb_img) {
-        UMImage thumb = new UMImage(MyApplication.getInstance(), thumb_img);
-        UMWeb web = new UMWeb("www.cucrxt.com");
-        web.setThumb(thumb);
-        web.setDescription("测试描述");
-        web.setTitle("测试标题");
-        new ShareAction(this)
-                .withMedia(web).
-                setPlatform(SHARE_MEDIA.SINA).
-                setCallback(new UMShareListener() {
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
-
-                    }
-
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-
-                    }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-
-                    }
-                }).
-                share();
+        mIntent.putExtra("isRegist", false);
+        startActivity(mIntent);
     }
 
     @OnClick(R.id.tv_load)
@@ -198,6 +157,55 @@ public class NewLoadActivity extends Activity {
             EventBus.getDefault().postSticky(new EventChageAccount());
         }
     }
+
+
+    @OnClick(R.id.iv_qq_load)
+    public void qqLoad(View view) {
+        thirdPlatformLoad(SHARE_MEDIA.QQ);
+    }
+
+    @OnClick(R.id.iv_sina_load)
+    public void sinaLoad(View view) {
+        thirdPlatformLoad(SHARE_MEDIA.SINA);
+    }
+
+    @OnClick(R.id.iv_wx_load)
+    public void wxLoad(View view) {
+        thirdPlatformLoad(SHARE_MEDIA.WEIXIN);
+    }
+
+    public void thirdPlatformLoad(SHARE_MEDIA share_media) {
+        UMShareAPI.get(MyApplication.getInstance())
+                .getPlatformInfo(this, share_media, authListener);
+    }
+
+    UMAuthListener authListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            Toast.makeText(getApplicationContext(), "Authorize onStart", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            String temp = "";
+            for (String key : data.keySet()) {
+                temp = temp + key + " : " + data.get(key) + "\n";
+            }
+            MyLogger.jLog().i("三方登录信息：" + temp);
+            Toast.makeText(getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText( getApplicationContext(), "Authorize fail", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText( getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

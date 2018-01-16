@@ -150,7 +150,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
 //        mLv_home.setHeaderDividersEnabled(false);
 
         //用父类的Context
-        mAdapter = new HomeAdapter();
+        mAdapter = new HomeAdapter(getActivity());
         mLv_home.setAdapter(mAdapter);
 
         /*mLv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {

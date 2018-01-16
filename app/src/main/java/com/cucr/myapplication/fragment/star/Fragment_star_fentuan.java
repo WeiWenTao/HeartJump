@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
@@ -40,9 +42,11 @@ import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.model.login.ReBackMsg;
+import com.cucr.myapplication.model.share.ShareEntity;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
@@ -96,6 +100,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private LayoutInflater layoutInflater;
     private PopupWindow popWindow;
     private DaShangPagerAdapter mDaShangPagerAdapter;
+    private DialogShareStyle mDialog;
 
     @SuppressLint("ValidFragment")
     public Fragment_star_fentuan(int id) {
@@ -246,12 +251,18 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
     private void initRlV() {
-        MyLogger.jLog().i("initRlV");
+
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
         mAdapter = new FtAdapter();
         rlv_fentuan.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
+
+
+        mDialog = new DialogShareStyle(getActivity(), R.style.MyDialogStyle);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
 
 //        TextView textView = new TextView(mContext);
 //        textView.setText("empty view");
@@ -433,7 +444,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //点赞
     @Override
     public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
-        MyLogger.jLog().i("onClickGoods");
+
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -470,8 +481,9 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
     //分享
     @Override
-    public void onClickshare(int position) {
-
+    public void onClickshare(int dataId) {
+        mDialog.setData(new ShareEntity(null, null, HttpContans.ADDRESS_FT_SHARE + dataId, ""));
+        mDialog.show();
     }
 
     //弹出打赏框

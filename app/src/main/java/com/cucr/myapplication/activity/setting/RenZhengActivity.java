@@ -32,13 +32,13 @@ public class RenZhengActivity extends FragmentActivity {
 
     //顶部的TabLayout
     @ViewInject(R.id.tl_tab)
-    TabLayout tl_tab;
+    private TabLayout tl_tab;
 
     //ViewPager
     @ViewInject(R.id.vp_ren_zheng)
-    ViewPager vp_ren_zheng;
+    private ViewPager vp_ren_zheng;
 
-    List<Fragment> mFragmentList;
+    private List<Fragment> mFragmentList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class RenZhengActivity extends FragmentActivity {
         vp_ren_zheng.setAdapter(new RenZhengPagrAdapter(getSupportFragmentManager(),mFragmentList,mTitles));
 
         //TabLayou绑定ViewPager
-        tl_tab.setupWithViewPager(vp_ren_zheng,true);
+        tl_tab.setupWithViewPager(vp_ren_zheng);
     }
 
     @OnClick(R.id.iv_base_back)

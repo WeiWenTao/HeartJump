@@ -186,12 +186,14 @@
         >
 
         <ImageView
+            android:id="@+id/iv_sina_load"
             android:layout_width="29dp"
             android:layout_height="23dp"
             android:src="@drawable/sgi_sina"
             />
 
         <ImageView
+            android:id="@+id/iv_wx_load"
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:layout_marginLeft="@dimen/dp_50"
@@ -199,6 +201,7 @@
             />
 
         <ImageView
+            android:id="@+id/iv_qq_load"
             android:layout_width="25dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/dp_50"
