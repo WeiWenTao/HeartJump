@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
@@ -117,9 +118,8 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         mCore = new FocusCore();
         mGson = new Gson();
         mStarCore = new QueryStarListCore();
-        if (mIntent == null) {
-            mIntent = new Intent(MyApplication.getInstance(), PhotosAlbumActivity.class);
-        }
+        mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getDatas();
         initView();
     }
@@ -374,8 +374,8 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
 
     @OnClick(R.id.ll_photos)
     public void goPhotos(View view) {
-        mIntent.putExtra("starId",mStarId);
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mIntent.putExtra("starId", mStarId);
+        mIntent.setClass(MyApplication.getInstance(), PhotosAlbumActivity.class);
         startActivity(mIntent);
     }
 
@@ -383,5 +383,13 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    //后援团
+    @OnClick(R.id.ll_hyt)
+    public void goHouYuanTuan(View view) {
+        mIntent.putExtra("starId", mStarId);
+        mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
+        startActivity(mIntent);
     }
 }

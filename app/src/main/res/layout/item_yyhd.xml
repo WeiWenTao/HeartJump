@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_10"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_headpic"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:src="@drawable/star1_new"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_weight="1"
+
+            android:text="后援团名称"
+            android:textColor="@color/color_333"
+            android:textSize="@dimen/sp_16"
+            />
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/corner_left_top"
+            android:gravity="center"
+            android:text="进行中"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pic1_tv"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活动名称活动名称"
+        android:textColor="@color/color_333"
+        />
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/sp_13"
+        android:progress="90"
+        android:progressDrawable="@drawable/my_progress"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="距离结束23天"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_13"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="90%"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_13"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -72,6 +72,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 
 
     private void loadData() {
+        rlv_picwall.onRefresh();
         rlv_picwall.getRecyclerView().smoothScrollToPosition(0);
         page = 1;
         mCore.queryPic(page, rows, orderType, false, mStarId, new OnCommonListener() {

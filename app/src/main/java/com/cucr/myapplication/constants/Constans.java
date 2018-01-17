@@ -17,6 +17,8 @@ public class Constans {
     public static final int STATUS_QIYE = 3;    //企业
     public static final int TYPE_COMMON_USER = 4;//普通用户
 
+    public static final int TYPE_HEADER = 1; //头部
+    public static final int TYPE_ITEM = 2;   //条目
     public static final int TYPE_ZERO = 0;
     public static final int TYPE_ONE = 1;
     public static final int TYPE_TWO = 2;
