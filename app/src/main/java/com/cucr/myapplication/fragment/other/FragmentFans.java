@@ -462,7 +462,7 @@ public class FragmentFans extends BaseFragment {
             drawer_rcv.setVisibility(View.VISIBLE);
             drawer_rcv.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.classify_menu_in));
             CommonUtils.animationAlpha(bg, true);
-            CommonUtils.animationRotate(iv_icon_unfold, true);
+            CommonUtils.animationRotate(iv_icon_unfold, true,300);
             bg.setEnabled(false);
             bg.setVisibility(View.VISIBLE);
             isShow = false;
@@ -474,7 +474,7 @@ public class FragmentFans extends BaseFragment {
             isShow = true;
             drawer_rcv.setVisibility(View.GONE);
             CommonUtils.animationAlpha(bg, false);
-            CommonUtils.animationRotate(iv_icon_unfold, false);
+            CommonUtils.animationRotate(iv_icon_unfold, false,300);
         }
 
         CommonUtils.setAnimationListener(new CommonUtils.AnimationListener() {

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.hyt.CreatHytActivity"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rl_head"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
+        >
+
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            style="@style/TitleStyle"
+            android:text="创建后援团"
+            />
+
+        <ImageView
+            android:id="@+id/iv_rule"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15"
+            android:paddingTop="@dimen/dp_10"
+            android:src="@drawable/icon_rule"
+            />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="121dp"
+                    android:text="后援团封面"
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_16"
+                    />
+
+                <!--android:scaleType="centerCrop"-->
+                <com.joooonho.SelectableRoundedImageView
+                    android:id="@+id/iv_pic_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_margin="@dimen/dp_10"
+                    android:src="@drawable/cover_pic"
+                    app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+                    app:sriv_left_top_corner_radius="@dimen/dp_5"
+                    app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+                    app:sriv_right_top_corner_radius="@dimen/dp_5"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_10"
+                android:background="@color/lvbg"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="团名称"
+                    />
+
+                <EditText
+                    android:id="@+id/et_hyt_name"
+                    style="@style/CreatHyt_ETStyle"
+                    android:hint="请输入后援团名称"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="真实姓名"
+                    />
+
+                <EditText
+                    android:id="@+id/et_creat_body"
+                    style="@style/CreatHyt_ETStyle"
+                    android:hint="请输入创建人真实姓名"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="联系手机"
+                    />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    style="@style/CreatHyt_ETStyle"
+                    android:inputType="number"
+                    android:hint="请输入联系手机"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="联系邮箱"
+                    />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    style="@style/CreatHyt_ETStyle"
+                    android:hint="请输入联系邮箱"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlv_local"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="所在城市"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_local"
+                    style="@style/CreatHyt_ETStyle"
+                    android:gravity="center|left"
+                    android:hint="请选择所在城市"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="身份证号"
+                    />
+
+                <EditText
+                    android:id="@+id/et_idcard"
+                    style="@style/CreatHyt_ETStyle"
+                    android:hint="请输入身份证号码"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_margin="@dimen/dp_10"
+                android:orientation="horizontal"
+                >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="77dp"
+                        android:text="身份证正面照"
+                        android:textColor="@color/color_666"
+                        android:textSize="@dimen/sp_16"
+                        />
+
+
+                    <com.joooonho.SelectableRoundedImageView
+                        android:id="@+id/iv_idcard_posi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:src="@drawable/idcard"
+                        app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+                        app:sriv_left_top_corner_radius="@dimen/dp_5"
+                        app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+                        app:sriv_right_top_corner_radius="@dimen/dp_5"
+                        />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="77dp"
+                        android:text="手持身份证合影"
+                        android:textColor="@color/color_666"
+                        android:textSize="@dimen/sp_16"
+                        />
+
+                    <com.joooonho.SelectableRoundedImageView
+                        android:id="@+id/iv_idcard_nega"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/idcard_img"
+                        app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+                        app:sriv_left_top_corner_radius="@dimen/dp_5"
+                        app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+                        app:sriv_right_top_corner_radius="@dimen/dp_5"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_commit"
+                android:layout_width="230dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/shape_immediately_pay_bg"
+                android:gravity="center"
+                android:text="提交审核"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

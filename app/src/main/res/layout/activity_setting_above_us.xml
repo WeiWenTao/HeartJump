@@ -54,7 +54,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
         <View
@@ -91,7 +91,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
         <View
@@ -127,7 +127,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
     </RelativeLayout>
 
@@ -179,7 +179,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/dp_50"
         android:gravity="bottom|center_horizontal"
-        android:text="武汉心跳互娱科技有限公司 版权所有"
+        android:text="武汉心跳互娱科技有限公司 ©版权所有"
         android:textColor="#848484"
         android:textSize="@dimen/sp_12"
         />

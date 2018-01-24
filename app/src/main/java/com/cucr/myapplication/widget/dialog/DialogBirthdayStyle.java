@@ -45,7 +45,7 @@ public class DialogBirthdayStyle extends Dialog {
         setContentView(R.layout.dialog_birthday);
 
         isChangeBirthday = false;
-
+        setCanceledOnTouchOutside(true);
         String s = CommonUtils.getCurrentDate();
         String y = s.substring(0, 4);
         String m = Integer.parseInt(s.substring(5, 7)) - 1 + "";
@@ -70,7 +70,7 @@ public class DialogBirthdayStyle extends Dialog {
                 mBirDate.setYear(year);
                 isChangeBirthday = true;
                 Calendar instance = Calendar.getInstance();
-                instance.set(year,monthOfYear,dayOfMonth);
+                instance.set(year, monthOfYear, dayOfMonth);
                 mBirDate.setWeek(CommonUtils.getWeek(instance));
             }
         });

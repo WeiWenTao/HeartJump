@@ -72,7 +72,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 
 
     private void loadData() {
-        rlv_picwall.onRefresh();
+        rlv_picwall.getSwipeRefreshLayout().setRefreshing(true);
         rlv_picwall.getRecyclerView().smoothScrollToPosition(0);
         page = 1;
         mCore.queryPic(page, rows, orderType, false, mStarId, new OnCommonListener() {
@@ -117,7 +117,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
         mPictureModel = PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
                 .maxSelectNum(5)
-                .imageSpanCount(4)
+                .imageSpanCount(3)
                 .selectionMode(PictureConfig.MULTIPLE)
                 .previewImage(false)
                 .isGif(false)   //不显示gif

@@ -246,7 +246,7 @@ public class PublishActivity extends Activity {
                     PictureSelector.create(PublishActivity.this)
                             .openGallery(PictureMimeType.ofImage())
                             .maxSelectNum(9)
-                            .imageSpanCount(4)
+                            .imageSpanCount(3)
                             .selectionMode(PictureConfig.MULTIPLE)
                             .previewImage(false)
 //                            .selectionMedia(mData)
@@ -264,7 +264,7 @@ public class PublishActivity extends Activity {
                 case Constans.TYPE_VIDEO:
                     PictureSelector.create(PublishActivity.this)
                             .openGallery(PictureMimeType.ofVideo())
-                            .imageSpanCount(4)
+                            .imageSpanCount(3)
 //                            .selectionMedia(mData)
                             .selectionMode(PictureConfig.SINGLE)
                             .previewVideo(true)

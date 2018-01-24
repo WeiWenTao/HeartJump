@@ -29,6 +29,7 @@ public class HYTActivity extends Activity {
     @ViewInject(R.id.tl_tab)
     private TabLayout tl_tab;
     private List<Fragment> mFragments;
+    private int starId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,10 @@ public class HYTActivity extends Activity {
     }
 
     private void init() {
-
+        starId = getIntent().getIntExtra("starId", -1);
         mFragments = new ArrayList<>();
-        mFragments.add(new Fragment_hyt());
-        mFragments.add(new Fragment_yyhd());
+        mFragments.add(new Fragment_hyt(starId));
+        mFragments.add(new Fragment_yyhd(starId));
         vp_hyt.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

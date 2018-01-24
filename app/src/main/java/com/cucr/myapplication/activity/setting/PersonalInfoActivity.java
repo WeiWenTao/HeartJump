@@ -69,35 +69,35 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     //选择生日
     @ViewInject(R.id.tv_birthday_edit)
-    TextView tv_birthday_edit;
+    private TextView tv_birthday_edit;
 
     //选择性别
     @ViewInject(R.id.tv_gender)
-    TextView tv_gender;
+    private TextView tv_gender;
 
     //选择所在地
     @ViewInject(R.id.tv_set_location)
-    TextView tv_set_location;
+    private TextView tv_set_location;
 
     //更改头像
     @ViewInject(R.id.iv_head)
-    CircleImageView iv_head;
+    private CircleImageView iv_head;
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg)
-    FrameLayout fl_pop_bg;
+    private FrameLayout fl_pop_bg;
 
     //个性签名
     @ViewInject(R.id.et_my_sign)
-    EditText et_my_sign;
+    private EditText et_my_sign;
 
     //昵称
     @ViewInject(R.id.et_nickname)
-    EditText et_nickname;
+    private EditText et_nickname;
 
     //昵称
     @ViewInject(R.id.tv_phone)
-    TextView tv_phone;
+    private TextView tv_phone;
 
 
     private DialogBirthdayStyle mBirthdayStyle;
@@ -148,7 +148,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
         initHead();
 
-        initView();
+        if (obj != null) {
+            initView();
+        }
     }
 
     @Override
@@ -310,6 +312,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     public void selectLocation(View view) {
         Intent intent = new Intent(this, LocalityProvienceActivity.class);
         intent.putExtra("needShow", false);
+        intent.putExtra("className", "PersonalInfoActivity");
         startActivity(intent);
     }
 
@@ -317,7 +320,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     @OnClick(R.id.rl_change_headpic)
     public void chnagePic(View view) {
         CommonUtils.initPopBg(true, fl_pop_bg);
-
         showPopupWindow(iv_head);
 
     }
@@ -356,12 +358,13 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         });
         photograph.setOnClickListener(new View.OnClickListener() {
             private Intent mOpenCameraIntent;
+
             @Override
             public void onClick(View arg0) {
                 popWindow.dismiss();
                 photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
-                mOpenCameraIntent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                mOpenCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
                 mOpenCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 mOpenCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);

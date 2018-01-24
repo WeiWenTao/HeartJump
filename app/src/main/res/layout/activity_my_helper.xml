@@ -61,7 +61,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
         <View
@@ -97,7 +97,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
         <View
@@ -133,7 +133,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
         <View
@@ -169,7 +169,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
         <View
@@ -205,7 +205,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
 
     </RelativeLayout>

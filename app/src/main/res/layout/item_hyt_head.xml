@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/ll_head"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,9 +8,9 @@
     >
 
     <LinearLayout
+        android:id="@+id/ll_creat_hyt"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:id="@+id/ll_creat_hyt"
         android:gravity="center"
         android:orientation="horizontal"
         >
@@ -19,7 +18,7 @@
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/icon_add_account"
+            android:src="@drawable/create"
             />
 
         <TextView
@@ -35,5 +34,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_10"
-        android:background="@color/lvbg"/>
+        android:background="@color/lvbg"
+        />
 </LinearLayout>

@@ -23,9 +23,8 @@ public class CityDao {
             prviences = new ArrayList<>();
             LocationData locationData = null;
             Cursor cursor = db.query(Constans.TABLENAME_PROVINCE, null, null, null, null, null, null);
-
-            while (cursor.moveToNext()) {
-                try {
+            try {
+                while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex("id"));
                     String code = cursor.getString(cursor.getColumnIndex("code"));
                     byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
@@ -33,12 +32,13 @@ public class CityDao {
                     locationData = new LocationData(id, code, name, null);
                     prviences.add(locationData);
                     locationData = null;
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cursor.close();
+                db.close();
             }
-            cursor.close();
-            db.close();
         }
         return prviences;
     }

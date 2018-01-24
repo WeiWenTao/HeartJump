@@ -18,22 +18,22 @@ public class HttpExceptionUtil {
     public static void showTsByException(Response response, Context context) {
         Exception exception = response.getException();
         if (exception instanceof NetworkError) {// 网络不好
-            ToastUtils.showToast(context, "请检查网络");
+            ToastUtils.showToast("请检查网络");
 
         } else if (exception instanceof TimeoutError) {// 请求超时
-            ToastUtils.showToast(context, "请求超时");
+            ToastUtils.showToast("请求超时");
 
         } else if (exception instanceof UnKnownHostError) {// 找不到服务器
-            ToastUtils.showToast(context, "找不到服务器");
+            ToastUtils.showToast("找不到服务器");
 
         } else if (exception instanceof URLError) {// URL是错的
-            ToastUtils.showToast(context, "URl错误");
+            ToastUtils.showToast("URl错误");
 
         } else if (exception instanceof NotFoundCacheError) {
             // 这个异常只会在仅仅查找缓存时没有找到缓存时返回
             // 没有缓存一般不提示用户，如果需要随你。
         } else {
-            ToastUtils.showToast(context, "未知错误:"+ response.getHeaders().getResponseCode());
+            ToastUtils.showToast("未知错误:"+ response.getHeaders().getResponseCode());
 
         }
         Logger.e("错误：" + exception.getMessage());

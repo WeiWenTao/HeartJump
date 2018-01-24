@@ -239,7 +239,7 @@ public class CommonUtils {
 
     }
 
-    public static void animationRotate(View view, boolean isShow) {
+    public static void animationRotate(View view, boolean isShow, int duration) {
         ObjectAnimator animator;
         if (isShow) {
 

@@ -9,6 +9,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.fuli.DingDanActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
+import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.activity.journey.AddJourneyActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
@@ -51,6 +52,8 @@ public class LocalityCityActivity extends BaseActivity {
 
     private void initActivitys() {
         actives = new HashMap<>();
+        //个人中心
+        actives.put("PersonalInfoActivity", PersonalInfoActivity.class);
         //发布福利
         actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
         //预约详情
@@ -59,6 +62,8 @@ public class LocalityCityActivity extends BaseActivity {
         actives.put("DingDanActivity",DingDanActivity.class);
         //添加行程
         actives.put("AddJourneyActivity", AddJourneyActivity.class);
+        //创建后援团
+        actives.put("CreatHytActivity", CreatHytActivity.class);
     }
 
 
@@ -80,7 +85,7 @@ public class LocalityCityActivity extends BaseActivity {
                 Intent intent = null;
 
                 if (position == 0) {
-                    intent = new Intent(LocalityCityActivity.this, needShowArrow ? actives.get(mWhich) : PersonalInfoActivity.class);
+                    intent = new Intent(LocalityCityActivity.this, actives.get(mWhich));
                     //点头携带定位数据，这里用字符串模拟定位
                     if (needShowArrow) {
                         intent.putExtra("finalData", new LocationData(1688, "420111", "洪山区", "420100"));
@@ -95,7 +100,7 @@ public class LocalityCityActivity extends BaseActivity {
                         intent.putExtra("className",mWhich);
                     } else {
                         //跳转回个人信息界面
-                        intent = new Intent(LocalityCityActivity.this, PersonalInfoActivity.class);
+                        intent = new Intent(LocalityCityActivity.this,actives.get(mWhich));
                         intent.putExtra("finalData", mLocationDatas.get(position - 1));
                     }
                 }

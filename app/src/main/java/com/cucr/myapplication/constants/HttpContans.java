@@ -188,4 +188,16 @@ public class HttpContans {
     //我的预约
     public static final String ADDRESS_MY_APOINMENT = "/interface/mobileStartAppointment/myAppointment";
 
+    //创建后援团
+    public static final String ADDRESS_CREATE_HYT = "/interface/mobileHelpTeamAction/createTeam";
+
+    //后援团查询
+    public static final String ADDRESS_QUERY_HYT = "/interface/mobileHelpTeamAction/teamList";
+
+    //加入后援团
+    public static final String ADDRESS_JOIN_HYT = "/interface/mobileHelpTeamAction/joinTeam";
+
+    //应援活动创建
+    public static final String ADDRESS_YYHD_CREATE = "/interface/mobileHelpTeamActiveAction/createActive";
+
 }

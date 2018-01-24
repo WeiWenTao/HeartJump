@@ -168,4 +168,7 @@ dependencies {
 
     //图片缩放
     compile 'xyz.zpayh:hdimageview:1.0.2'
+
+    //折叠布局
+    compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 }

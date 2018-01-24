@@ -68,11 +68,11 @@
             />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            >
-        </activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            />
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
@@ -377,6 +377,26 @@
         <activity android:name=".activity.picWall.PicWallCatgoryActivity">
         </activity>
         <activity android:name=".activity.hyt.HYTActivity">
+        </activity>
+        <activity
+            android:name=".activity.hyt.CreatHytActivity"
+            android:launchMode="singleTask"
+            >
+        </activity>
+        <activity android:name=".activity.hyt.CreatYyhdActivity">
+        </activity>
+        <activity android:name=".activity.hyt.YyhdCatgoryActivity">
+        </activity>
+        <activity android:name=".activity.hyt.YyhdActivity_1">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".activity.hyt.YyhdActivity_2">
+        </activity>
+        <activity android:name=".activity.hyt.YyhdActivity_3">
         </activity>
     </application>
 

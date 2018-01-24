@@ -381,6 +381,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onLoadMore() {
         page++;
+        rlv_fentuan.onLoadingMore();
         queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {

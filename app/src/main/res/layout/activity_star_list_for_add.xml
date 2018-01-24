@@ -55,7 +55,7 @@
         android:background="@color/xtred"
         android:clickable="true"
         android:gravity="center"
-        android:text="进入星跳"
+        android:text="进入心跳"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_18"
         android:visibility="gone"

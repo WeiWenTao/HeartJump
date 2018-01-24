@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.load.LoadByPsw;
@@ -22,7 +22,7 @@ import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.DialogLoad;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -68,7 +68,7 @@ public class LoginCore implements LoadByPsw {
 
     //标记
     private Object flag = new Object();
-    private final DialogLoad mDailogPayStyle;
+    private final MyWaitDialog mDailogPayStyle;
     private Gson mGson;
     private Set<String> tags;
     private String userName;
@@ -83,7 +83,7 @@ public class LoginCore implements LoadByPsw {
         mKeys = new ArrayList<>();
         mQueue = NoHttp.newRequestQueue();
         mContext = MyApplication.getInstance();
-        mDailogPayStyle = new DialogLoad(activity, R.style.ShowAddressStyleTheme);
+        mDailogPayStyle = new MyWaitDialog(activity, R.style.MyWaitDialog);
     }
 
     @Override

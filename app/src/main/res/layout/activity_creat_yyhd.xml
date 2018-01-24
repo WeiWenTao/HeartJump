@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.hyt.CreatYyhdActivity"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/rl_head"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
+        >
+
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            style="@style/TitleStyle"
+            android:text="发起应援活动"
+            android:textColor="@color/xtred"
+            />
+
+    </RelativeLayout>
+
+
+    <TextView
+        style="@style/CreatHyt_TVStyle"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="5dp"
+        android:text="选择应援方式"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_open"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        >
+
+        <ImageView
+            android:id="@+id/iv_circle1"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_r_6_nor"
+            />
+
+        <TextView
+            android:layout_toRightOf="@id/iv_circle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点亮开屏"
+            android:layout_centerVertical="true"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/iv_icon1"
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/icon_more_e"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+
+        <include layout="@layout/horizontal_line_for_ccc"/>
+    </RelativeLayout>
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="500"
+        app:el_expanded="true"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#00b300"
+            android:clipToPadding="false"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:text="Fixed height"
+            android:textColor="#fff"
+            />
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_bigpad"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        >
+
+        <ImageView
+            android:id="@+id/iv_circle2"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_r_6_sel"
+            />
+
+        <TextView
+            android:layout_toRightOf="@id/iv_circle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="武汉BIGPAD"
+            android:layout_centerVertical="true"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/iv_icon2"
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/icon_more_e"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+
+        <include layout="@layout/horizontal_line_for_ccc"/>
+    </RelativeLayout>
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="500"
+        app:el_expanded="true"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#00b300"
+            android:clipToPadding="false"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:text="Fixed height"
+            android:textColor="#fff"
+            />
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_fans"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        >
+
+        <ImageView
+            android:id="@+id/iv_circle3"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_r_6_nor"
+            />
+
+        <TextView
+            android:layout_toRightOf="@id/iv_circle3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="粉丝见面会"
+            android:layout_centerVertical="true"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/iv_icon3"
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/icon_more_e"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+
+        <include layout="@layout/horizontal_line_for_ccc"/>
+    </RelativeLayout>
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="500"
+        app:el_expanded="true"
+        >
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/xtred"
+            android:src="@drawable/ic_launcher"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/dp_10"
+            android:elevation="@dimen/dp_10"
+            />
+
+        <!--<TextView-->
+            <!--android:layout_margin="@dimen/dp_10"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="#00b300"-->
+            <!--android:clipToPadding="false"-->
+            <!--android:elevation="4dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Fixed height"-->
+            <!--android:textColor="#fff"-->
+            <!--/>-->
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+</LinearLayout>

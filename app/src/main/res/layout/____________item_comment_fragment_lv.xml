@@ -114,7 +114,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="10dp"
             android:layout_height="12dp"
-            android:src="@drawable/icon_more"
+            android:src="@drawable/icon_more_e"
             />
     </LinearLayout>
 

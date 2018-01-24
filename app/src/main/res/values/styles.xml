@@ -57,7 +57,7 @@
 
     <!--向右的小箭头-->
     <style name="My_Arrow">
-        <item name="android:src">@drawable/icon_more</item>
+        <item name="android:src">@drawable/icon_more_e</item>
         <item name="android:layout_width">8dp</item>
         <item name="android:layout_height">16dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -110,7 +110,12 @@
     <style name="BirthdayStyleTheme" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/shape_publish_dialog_bg</item>
+    </style>
 
+    <!--load对话框-->
+    <style name="MyWaitDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/shape_dialog_wait</item>
     </style>
 
   <!--底部dialog样式-->
@@ -298,5 +303,24 @@
     <style name="BottomDialog.Animation" parent="Animation.AppCompat.Dialog">
         <item name="android:windowEnterAnimation">@anim/translate_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/translate_dialog_out</item>
+    </style>
+
+    <!--创建后援团-->
+    <style name="CreatHyt_TVStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/color_666</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+
+    <style name="CreatHyt_ETStyle">
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">95dp</item>
+        <item name="android:textColor">@color/color_333</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:background">@null</item>
     </style>
 </resources>

@@ -163,8 +163,7 @@ public class MyApplication extends Application {
 
     {
 
-
-        PlatformConfig.setWeixin("wx0b4ef89e40566d47", "594069fb14251435cc1a9c167c222656");
+        PlatformConfig.setWeixin("wxbe72c16183cf70da", "c26860d780adbae2ee43fd2363daeb12");
         PlatformConfig.setSinaWeibo("3008130677", "c3d7b94e018e217fddbb2f57fc97d650", "http://www.cucrxt.com");
         PlatformConfig.setQQZone("1106501884", "aEO7SIixJOZjsmqj");
     }
