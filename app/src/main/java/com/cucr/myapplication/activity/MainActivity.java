@@ -19,7 +19,7 @@ import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
-import com.cucr.myapplication.model.eventBus.EventChageAccount;
+import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -164,6 +164,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mFragments.clear();
         UMShareAPI.get(this).release();
     }
 

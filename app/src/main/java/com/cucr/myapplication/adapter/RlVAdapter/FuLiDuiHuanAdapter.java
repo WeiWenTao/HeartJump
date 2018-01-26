@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fuli.DuiHuanGoosInfo;
+import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;

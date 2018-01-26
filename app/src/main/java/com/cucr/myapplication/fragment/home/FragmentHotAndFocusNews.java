@@ -85,4 +85,10 @@ public class FragmentHotAndFocusNews extends BaseFragment {
     protected boolean needHeader() {
         return false;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mFragments.clear();
+    }
 }

@@ -108,7 +108,7 @@
 
                 <TextView
                     style="@style/CreatHyt_TVStyle"
-                    android:text="应援活动时间"
+                    android:text="活动截止时间"
                     />
 
                 <TextView
@@ -116,7 +116,7 @@
                     style="@style/CreatHyt_ETStyle"
                     android:layout_marginLeft="130dp"
                     android:gravity="center|left"
-                    android:hint="请输选择时间"
+                    android:hint="请选择时间"
                     />
 
                 <include layout="@layout/horizontal_line_for_ccc"/>
@@ -137,7 +137,7 @@
                 android:layout_margin="@dimen/dp_10"
                 android:background="@drawable/shape_corner_8"
                 android:gravity="left"
-                android:hint="请输应援活动内容"
+                android:hint="请输入应援活动内容"
                 android:padding="@dimen/dp_10"
                 android:textColor="@color/color_333"
                 android:textSize="@dimen/sp_16"
@@ -198,7 +198,6 @@
 
             <TextView
                 android:id="@+id/tv_creat_yyhd_commit"
-                android:elevation="@dimen/dp_5"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"

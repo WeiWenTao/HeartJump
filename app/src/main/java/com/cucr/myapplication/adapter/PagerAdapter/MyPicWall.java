@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.PicWall.PicWallInfo;
+import com.cucr.myapplication.bean.PicWall.PicWallInfo;
 import com.cucr.myapplication.widget.photoView.PhotoView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

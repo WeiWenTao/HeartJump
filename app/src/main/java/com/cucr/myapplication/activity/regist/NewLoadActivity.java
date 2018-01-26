@@ -16,7 +16,7 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.eventBus.EventChageAccount;
+import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;

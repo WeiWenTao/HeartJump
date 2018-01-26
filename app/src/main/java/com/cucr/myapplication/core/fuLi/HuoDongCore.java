@@ -8,7 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.fuli.HuoDongInterf;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.eventBus.EventRequestFinish;
+import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;

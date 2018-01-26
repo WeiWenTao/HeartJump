@@ -13,7 +13,7 @@ import com.cucr.myapplication.activity.journey.AddJourneyActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
 import com.cucr.myapplication.dao.CityDao;
-import com.cucr.myapplication.model.setting.LocationData;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.view.annotation.ViewInject;
 

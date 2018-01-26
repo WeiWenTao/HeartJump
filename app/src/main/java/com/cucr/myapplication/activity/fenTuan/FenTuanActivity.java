@@ -31,7 +31,7 @@ public class FenTuanActivity extends BaseActivity {
     TabLayout tablayout;
 
     //粉团页面的所有fragment
-    private List<Fragment> mFragments = new ArrayList<>();
+    private List<Fragment> mFragments;
 
 
     @Override
@@ -46,7 +46,7 @@ public class FenTuanActivity extends BaseActivity {
 
     //初始化VP
     private void initVP() {
-
+        mFragments = new ArrayList<>();
         mFragments.add(new HotFenTuanFragment());
         mFragments.add(new HotFenTuanFragment());
 
@@ -54,12 +54,18 @@ public class FenTuanActivity extends BaseActivity {
         tablayout.addTab(tablayout.newTab().setText("全部粉团"));
         tablayout.setupWithViewPager(vp_fentuan);//将导航栏和viewpager进行关联
 
-        vp_fentuan.setAdapter(new FenTuanPagerAdapter(getFragmentManager(),mFragments));
+        vp_fentuan.setAdapter(new FenTuanPagerAdapter(getFragmentManager(), mFragments));
     }
 
     //创建ft
     @OnClick(R.id.iv_fentuan_add)
-    public void newFt(View view){
-       startActivity(new Intent(this,CreatFtActivity.class));
+    public void newFt(View view) {
+        startActivity(new Intent(this, CreatFtActivity.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFragments.clear();
     }
 }

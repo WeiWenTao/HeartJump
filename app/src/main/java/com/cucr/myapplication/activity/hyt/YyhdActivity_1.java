@@ -13,9 +13,9 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.model.CommonRebackMsg;
-import com.cucr.myapplication.model.setting.BirthdayDate;
-import com.cucr.myapplication.model.starList.StarListKey;
+import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.setting.BirthdayDate;
+import com.cucr.myapplication.bean.starList.StarListKey;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
@@ -150,11 +150,15 @@ public class YyhdActivity_1 extends BaseActivity implements DialogBirthdayStyle.
         String activeName = et_yyhd_name.getText().toString();
         String content = et_content.getText().toString();
 
+        if (CommonUtils.isEmpty(activeName,endTime,content,mPicPath)) {
+            ToastUtils.showToast("请完善信息哦");
+            return;
+        }
+
         mCore.createYyhd(activeName, endTime, content, starId, Constans.TYPE_ONE, mValueFild,
                 null, null, null, null, null, null,
                 null, mPicPath, this);
     }
-
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {

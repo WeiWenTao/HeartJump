@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.model.starJourney.StarJourneyList;
+import com.cucr.myapplication.bean.starJourney.StarJourneyList;
 
 import java.util.List;
 

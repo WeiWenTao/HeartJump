@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.share.ShareEntity;
+import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;

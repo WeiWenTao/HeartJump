@@ -20,7 +20,7 @@ import com.cucr.myapplication.adapter.RlVAdapter.GridImageAdapter;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtPublishCore;
 import com.cucr.myapplication.listener.OnUpLoadListener;
-import com.cucr.myapplication.model.RZ.RzResult;
+import com.cucr.myapplication.bean.RZ.RzResult;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogPublishStyle;

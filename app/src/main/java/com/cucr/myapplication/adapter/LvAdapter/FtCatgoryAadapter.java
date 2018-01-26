@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fenTuan.FtCommentInfo;
+import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.CommonViewHolder;
 import com.cucr.myapplication.widget.text.MyClickGoHomePager;

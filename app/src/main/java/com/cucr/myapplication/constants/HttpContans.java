@@ -191,6 +191,9 @@ public class HttpContans {
     //创建后援团
     public static final String ADDRESS_CREATE_HYT = "/interface/mobileHelpTeamAction/createTeam";
 
+    //后援活动查询
+    public static final String ADDRESS_QUERY_HYT_ACTIVE = "/interface/mobileHelpTeamActiveAction/queryActive";
+
     //后援团查询
     public static final String ADDRESS_QUERY_HYT = "/interface/mobileHelpTeamAction/teamList";
 
@@ -199,5 +202,8 @@ public class HttpContans {
 
     //应援活动创建
     public static final String ADDRESS_YYHD_CREATE = "/interface/mobileHelpTeamActiveAction/createActive";
+
+    //查询BigPad
+    public static final String ADDRESS_BIGPAD_QUERY = "/interface/mobileHelpTeamActiveAction/bigpadQuery";
 
 }

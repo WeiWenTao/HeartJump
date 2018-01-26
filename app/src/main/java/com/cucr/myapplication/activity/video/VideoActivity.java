@@ -18,7 +18,7 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.LvAdapter.ViderRecommendAdapter;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.MyLogger;
 import com.danikula.videocache.CacheListener;
 import com.danikula.videocache.HttpProxyCacheServer;

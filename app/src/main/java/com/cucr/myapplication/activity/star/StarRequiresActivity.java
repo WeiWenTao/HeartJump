@@ -6,7 +6,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.core.starListAndJourney.StarRequireCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.starList.StarRequires;
+import com.cucr.myapplication.bean.starList.StarRequires;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.signcalendar.SignCalendar;
 import com.google.gson.Gson;

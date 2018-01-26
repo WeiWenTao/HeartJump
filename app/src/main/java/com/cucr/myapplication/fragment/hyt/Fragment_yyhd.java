@@ -20,22 +20,35 @@ import com.cucr.myapplication.activity.hyt.YyhdActivity_3;
 import com.cucr.myapplication.activity.hyt.YyhdCatgoryActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.YyhdAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.Hyt.YyhdInfos;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.core.hyt.HytCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpaceItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogYyhd;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
+import com.yanzhenjie.nohttp.rest.Response;
+
+import java.util.List;
 
 /**
  * Created by cucrx on 2018/1/16.
  */
 
 @SuppressLint("ValidFragment")
-public class Fragment_yyhd extends Fragment implements YyhdAdapter.OnClickItems, DialogYyhd.OnClickBt {
+public class Fragment_yyhd extends Fragment implements YyhdAdapter.OnClickItems, DialogYyhd.OnClickBt, RequersCallBackListener {
 
     private View rootView;
     private YyhdAdapter mAdapter;
     private Intent mIntent;
     private int starId;
     private DialogYyhd mDialog;
+    private HytCore mCore;
+    private int page;
+    private int rows;
+    private MyWaitDialog mMyWaitDialog;
 
     public Fragment_yyhd(int starId) {
         this.starId = starId;
@@ -52,29 +65,34 @@ public class Fragment_yyhd extends Fragment implements YyhdAdapter.OnClickItems,
     }
 
     private void init() {
-        mDialog = new DialogYyhd(getActivity(), R.style.MyDialogStyle);
+        page = 1;
+        rows = 10;
+        mCore = new HytCore();
+        mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mIntent.putExtra("starId", starId);
+        mAdapter = new YyhdAdapter();
+        mMyWaitDialog = new MyWaitDialog(rootView.getContext(), R.style.BirthdayStyleTheme);
+        mDialog = new DialogYyhd(rootView.getContext(), R.style.MyDialogStyle);
+        loadData();
         Window dialogWindow = mDialog.getWindow();
         mDialog.setOnClickBt(this);
         dialogWindow.setGravity(Gravity.BOTTOM);
         dialogWindow.setWindowAnimations(R.style.BottomDialog_Animation);
-
-        mIntent = new Intent();
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mIntent.putExtra("starId", starId);
         RecyclerView rlv_yyhd = (RecyclerView) rootView.findViewById(R.id.rlv_yyhd);
         rlv_yyhd.addItemDecoration(new SpaceItemDecoration(CommonUtils.dip2px(MyApplication.getInstance(), 10)));
         rlv_yyhd.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
-        mAdapter = new YyhdAdapter();
         rlv_yyhd.setAdapter(mAdapter);
         mAdapter.setOnClickItems(this);
+    }
+
+    private void loadData() {
+        mCore.queryHytActive(page, rows, starId, this);
     }
 
     @Override
     public void onClickItem(int position) {
         if (position == 0) {
-//            mIntent.setClass(MyApplication.getInstance(), CreatYyhdActivity.class);
-//            startActivity(mIntent);
-
             mDialog.show();
         } else {
             mIntent.setClass(MyApplication.getInstance(), YyhdCatgoryActivity.class);
@@ -102,4 +120,29 @@ public class Fragment_yyhd extends Fragment implements YyhdAdapter.OnClickItems,
         mIntent.setClass(MyApplication.getInstance(), YyhdActivity_3.class);
         startActivity(mIntent);
     }
+
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_SEVEN) {
+            YyhdInfos activeInfo = MyApplication.getGson().fromJson(response.get(), YyhdInfos.class);
+            if (activeInfo.isSuccess()) {
+                List<YyhdInfos.RowsBean> rows = activeInfo.getRows();
+                mAdapter.setData(rows);
+            } else {
+                ToastUtils.showToast(activeInfo.getErrorMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        mMyWaitDialog.show();
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        mMyWaitDialog.dismiss();
+    }
+
 }

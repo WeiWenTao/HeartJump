@@ -3,7 +3,7 @@ package com.cucr.myapplication.interf.personalinfo;
 import android.content.Context;
 
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.EditPersonalInfo.PersonalInfo;
+import com.cucr.myapplication.bean.EditPersonalInfo.PersonalInfo;
 
 /**
  * Created by 911 on 2017/8/15.

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.ImgPagerAdapter;
-import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 
 import org.zackratos.ultimatebar.UltimateBar;
 

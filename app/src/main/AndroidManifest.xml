@@ -383,20 +383,13 @@
             android:launchMode="singleTask"
             >
         </activity>
-        <activity android:name=".activity.hyt.CreatYyhdActivity">
-        </activity>
         <activity android:name=".activity.hyt.YyhdCatgoryActivity">
         </activity>
         <activity android:name=".activity.hyt.YyhdActivity_1">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
         </activity>
         <activity android:name=".activity.hyt.YyhdActivity_2">
         </activity>
-        <activity android:name=".activity.hyt.YyhdActivity_3">
+        <activity android:name=".activity.hyt.YyhdActivity_3" android:launchMode="singleTask">
         </activity>
     </application>
 

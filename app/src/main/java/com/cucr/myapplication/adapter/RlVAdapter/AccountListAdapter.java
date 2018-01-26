@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.model.login.UserAccountInfo;
+import com.cucr.myapplication.bean.login.UserAccountInfo;
 import com.cucr.myapplication.utils.SpUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;

@@ -80,4 +80,10 @@ public class HYTActivity extends Activity {
     public void clickBack(View view) {
         finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFragments.clear();
+    }
 }

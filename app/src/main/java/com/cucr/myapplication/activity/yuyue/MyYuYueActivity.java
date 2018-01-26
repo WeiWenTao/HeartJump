@@ -10,7 +10,7 @@ import com.cucr.myapplication.adapter.RlVAdapter.MyYuYueAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.core.yuyue.YuYueCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.fuli.QiYeHuoDongInfo;
+import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpacesItemDecoration;
 import com.cucr.myapplication.widget.recyclerView.EndlessRecyclerOnScrollListener;

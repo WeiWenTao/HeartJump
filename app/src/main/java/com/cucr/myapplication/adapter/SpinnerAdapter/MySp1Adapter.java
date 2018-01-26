@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.model.starList.StarListKey;
+import com.cucr.myapplication.bean.starList.StarListKey;
 import com.cucr.myapplication.utils.CommonViewHolder;
 
 import java.util.List;

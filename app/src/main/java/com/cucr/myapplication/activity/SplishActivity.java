@@ -9,7 +9,7 @@ import android.os.Environment;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.model.eventBus.EventChageAccount;
+import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ZipUtil;

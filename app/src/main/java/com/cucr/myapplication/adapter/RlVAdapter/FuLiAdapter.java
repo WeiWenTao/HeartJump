@@ -16,8 +16,8 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fuli.DuiHuanCatgoryActivity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fuli.ActiveInfo;
-import com.cucr.myapplication.model.fuli.DuiHuanGoosInfo;
+import com.cucr.myapplication.bean.fuli.ActiveInfo;
+import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

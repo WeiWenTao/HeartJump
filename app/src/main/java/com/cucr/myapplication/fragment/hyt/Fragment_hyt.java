@@ -17,7 +17,7 @@ import com.cucr.myapplication.adapter.RlVAdapter.HytAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.model.Hyt.HytListInfos;
+import com.cucr.myapplication.bean.Hyt.HytListInfos;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.google.gson.Gson;
@@ -59,7 +59,7 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
         rows = 15;
         mGson = MyApplication.getGson();
         mCore = new HytCore();
-        mMyWaitDialog = new MyWaitDialog(getActivity(), R.style.MyWaitDialog);
+        mMyWaitDialog = new MyWaitDialog(rootView.getContext(), R.style.MyWaitDialog);
         mIntent = new Intent(MyApplication.getInstance(), CreatHytActivity.class);
         mIntent.putExtra("starId", startId);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -40,7 +40,7 @@
             android:layout_width="70dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/corner_left_top"
+            android:background="@drawable/corner_left_top_sel"
             android:gravity="center"
             android:text="进行中"
             android:textColor="@color/white"

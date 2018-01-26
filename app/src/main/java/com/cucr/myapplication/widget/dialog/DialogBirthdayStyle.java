@@ -10,7 +10,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.model.setting.BirthdayDate;
+import com.cucr.myapplication.bean.setting.BirthdayDate;
 import com.cucr.myapplication.utils.CommonUtils;
 
 import java.util.Calendar;

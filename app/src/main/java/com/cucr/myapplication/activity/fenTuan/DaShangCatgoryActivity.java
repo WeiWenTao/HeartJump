@@ -11,7 +11,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.DaShangCatgoryAdapter;
 import com.cucr.myapplication.core.daShang.DaShangCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.fenTuan.DaShangListInfo;
+import com.cucr.myapplication.bean.fenTuan.DaShangListInfo;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;

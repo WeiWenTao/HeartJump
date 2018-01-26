@@ -16,8 +16,8 @@ import com.cucr.myapplication.activity.fenTuan.DsDuiHuanActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
 import com.cucr.myapplication.adapter.RlVAdapter.DaShangBackpackAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.DaShangGiftAdapter;
-import com.cucr.myapplication.model.fenTuan.FtBackpackInfo;
-import com.cucr.myapplication.model.fenTuan.FtGiftsInfo;
+import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
+import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 
 /**
  * Created by 911 on 2017/5/19.

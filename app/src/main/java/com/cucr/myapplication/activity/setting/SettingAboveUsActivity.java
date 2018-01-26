@@ -9,7 +9,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.AppInfo;
+import com.cucr.myapplication.bean.AppInfo;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;

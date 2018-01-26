@@ -8,7 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.personalinfo.SavePersonalInfo;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.EditPersonalInfo.PersonalInfo;
+import com.cucr.myapplication.bean.EditPersonalInfo.PersonalInfo;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;

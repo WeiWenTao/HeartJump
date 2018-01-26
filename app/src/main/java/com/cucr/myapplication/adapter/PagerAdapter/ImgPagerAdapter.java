@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.widget.photoView.PhotoView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

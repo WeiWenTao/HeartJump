@@ -17,7 +17,7 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
-import com.cucr.myapplication.model.starList.StarListInfos;
+import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 
 import java.util.List;

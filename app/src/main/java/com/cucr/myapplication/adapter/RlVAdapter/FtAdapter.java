@@ -19,7 +19,7 @@ import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.activity.video.VideoActivity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.picture.FlowImageLayout;

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.starList.MyFocusStarInfo;
+import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
 import com.cucr.myapplication.utils.MyLogger;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

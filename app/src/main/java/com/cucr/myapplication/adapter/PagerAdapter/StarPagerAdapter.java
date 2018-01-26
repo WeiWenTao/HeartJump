@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.cucr.myapplication.model.others.FragmentInfos;
+import com.cucr.myapplication.bean.others.FragmentInfos;
 
 import java.util.List;
 

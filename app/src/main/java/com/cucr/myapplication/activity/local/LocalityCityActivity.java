@@ -10,12 +10,13 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.fuli.DingDanActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
+import com.cucr.myapplication.activity.hyt.YyhdActivity_3;
 import com.cucr.myapplication.activity.journey.AddJourneyActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
 import com.cucr.myapplication.dao.CityDao;
-import com.cucr.myapplication.model.setting.LocationData;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.HashMap;
@@ -64,6 +65,8 @@ public class LocalityCityActivity extends BaseActivity {
         actives.put("AddJourneyActivity", AddJourneyActivity.class);
         //创建后援团
         actives.put("CreatHytActivity", CreatHytActivity.class);
+        //后援活动3
+        actives.put("YyhdActivity_3", YyhdActivity_3.class);
     }
 
 

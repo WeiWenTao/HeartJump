@@ -46,4 +46,10 @@ public class MyPicWallActivity extends Activity {
         tablayout.addTab(tablayout.newTab().setText("我喜欢的"));
         tablayout.setupWithViewPager(vp_pics);//将导航栏和viewpager进行关联
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFragments.clear();
+    }
 }

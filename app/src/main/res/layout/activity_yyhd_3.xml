@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.hyt.YyhdActivity_1"
     >
@@ -24,21 +25,267 @@
 
         <TextView
             style="@style/TitleStyle"
-            android:text="粉丝见面会"
-            />
-
-        <ImageView
-            android:id="@+id/iv_rule"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="10dp"
-            android:paddingLeft="@dimen/dp_15"
-            android:paddingRight="@dimen/dp_15"
-            android:paddingTop="@dimen/dp_10"
-            android:src="@drawable/icon_rule"
+            android:text="粉丝见面会众筹"
+            android:textColor="@color/xtred"
             />
 
     </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="121dp"
+                    android:text="应援活动封面"
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_16"
+                    />
+
+                <com.joooonho.SelectableRoundedImageView
+                    android:id="@+id/iv_fans_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_margin="@dimen/dp_10"
+                    android:src="@drawable/cover_pic"
+                    app:sriv_left_bottom_corner_radius="@dimen/dp_5"
+                    app:sriv_left_top_corner_radius="@dimen/dp_5"
+                    app:sriv_right_bottom_corner_radius="@dimen/dp_5"
+                    app:sriv_right_top_corner_radius="@dimen/dp_5"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/lvbg"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="应援活动名称"
+                    />
+
+                <EditText
+                    android:id="@+id/et_fans_name"
+                    style="@style/CreatHyt_ETStyle"
+                    android:layout_marginLeft="130dp"
+                    android:hint="请输入应援活动名称"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlv_select_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="活动截止时间"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_yyhd_time"
+                    style="@style/CreatHyt_ETStyle"
+                    android:layout_marginLeft="130dp"
+                    android:gravity="center|left"
+                    android:hint="请选择时间"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlv_select_loacl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="应援活动城市"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_fans_local"
+                    style="@style/CreatHyt_ETStyle"
+                    android:layout_marginLeft="130dp"
+                    android:gravity="center|left"
+                    android:hint="请选择城市"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_peoples"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="应援活动规模"
+                    />
+
+                <EditText
+                    android:id="@+id/et_fans_scale"
+                    style="@style/CreatHyt_ETStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="130dp"
+                    android:inputType="number"
+                    android:minWidth="1dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/et_fans_scale"
+                    android:text="人"
+                    android:textColor="@color/color_333"
+                    android:textSize="@dimen/sp_16"
+                    />
+
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                >
+
+                <TextView
+                    style="@style/CreatHyt_TVStyle"
+                    android:text="应援众筹金额"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_tip"
+                    style="@style/CreatHyt_TVStyle"
+                    android:layout_marginLeft="130dp"
+                    android:text="¥ "
+                    />
+
+                <EditText
+                    android:id="@+id/et_fans_je"
+                    style="@style/CreatHyt_ETStyle"
+                    android:layout_marginLeft="0dp"
+                    android:layout_toRightOf="@+id/tv_tip"
+                    android:hint="请输入活动金额"
+                    android:inputType="number"
+                    />
+
+                <include layout="@layout/horizontal_line_for_ccc"/>
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CreatHyt_TVStyle"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_18"
+                android:text="应援活动内容"
+                />
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/shape_corner_8"
+                android:gravity="left"
+                android:hint="请输入应援活动内容"
+                android:padding="@dimen/dp_10"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_16"
+                />
+
+            <TextView
+                style="@style/CreatHyt_TVStyle"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:text="应援用资申明"
+                />
+
+            <EditText
+                android:id="@+id/et_yzsm"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/shape_corner_8"
+                android:gravity="left"
+                android:hint="请输入应用资申明"
+                android:padding="@dimen/dp_10"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_16"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_20"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="注意：为粉丝见面会/生日会众筹集资，众筹资金用于布置场地、准备应援物资、回馈粉丝福利等；心跳互娱将全权负责见面会后勤工作对接，只需要粉丝到场即可参与；填写好见面会地点、时间、规模、众筹金额后，心跳互娱app后台工作人员将线下联系发起人确认沟通信息；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_13"
+                />
+
+            <TextView
+                android:id="@+id/tv_creat_fans_commit"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_40"
+                android:background="@drawable/shape_immediately_pay_bg"
+                android:gravity="center"
+                android:text="提交审核"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -22,8 +22,8 @@ import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
 import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.starList.MyFocusStarInfo;
-import com.cucr.myapplication.model.starList.StarListInfos;
+import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
+import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -151,4 +151,9 @@ public class StarListForAddActivity extends Activity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFragmentslist.clear();
+    }
 }

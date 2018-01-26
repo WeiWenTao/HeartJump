@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.dabang.BangDanInfo;
+import com.cucr.myapplication.bean.dabang.BangDanInfo;
 import com.cucr.myapplication.utils.CommonViewHolder;
 import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
 import com.nostra13.universalimageloader.core.ImageLoader;

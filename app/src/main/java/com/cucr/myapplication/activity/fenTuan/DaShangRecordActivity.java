@@ -66,5 +66,9 @@ public class DaShangRecordActivity extends FragmentActivity {
         finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFragments.clear();
+    }
 }

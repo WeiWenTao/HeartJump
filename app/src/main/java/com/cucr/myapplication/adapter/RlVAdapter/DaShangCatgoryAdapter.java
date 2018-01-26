@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.fenTuan.DaShangListInfo;
+import com.cucr.myapplication.bean.fenTuan.DaShangListInfo;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;

@@ -13,7 +13,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.model.Hyt.HytListInfos;
+import com.cucr.myapplication.bean.Hyt.HytListInfos;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;

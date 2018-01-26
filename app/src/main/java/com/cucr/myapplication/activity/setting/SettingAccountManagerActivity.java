@@ -13,7 +13,7 @@ import com.cucr.myapplication.adapter.RlVAdapter.AccountListAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.model.login.UserAccountInfo;
+import com.cucr.myapplication.bean.login.UserAccountInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.widget.dialog.DialogQuitAccountStyle;

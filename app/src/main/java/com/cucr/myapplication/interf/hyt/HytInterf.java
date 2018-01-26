@@ -22,6 +22,12 @@ public interface HytInterf {
                     int activeType, String amount, String yzsm,  String yyje,  String bgInfoIds,
                     String city, String scale,String amount3,String explains,String picUrl,
                     RequersCallBackListener commonListener);
-//
+
+    void queryBigPadInfo(RequersCallBackListener commonListener);
+
+    //后援活动查询
+    void queryHytActive(int page, int rows, int starId, RequersCallBackListener commonListener);
+
+
 //    void leaveHyt();
 }

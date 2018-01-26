@@ -97,7 +97,7 @@ public class HytCore implements HytInterf {
                            int activeType, String amount, String yzsm, String yyje,
                            String bgInfoIds, String city, String scale, String amount3,
                            String explains, String picUrl, RequersCallBackListener commonListener) {
-
+        this.commonListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_YYHD_CREATE, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeName", activeName)
@@ -130,6 +130,29 @@ public class HytCore implements HytInterf {
         request.add("picUrl", new FileBinary(new File(picUrl), picUrl.substring(picUrl.lastIndexOf("/"))));
         mQueue.add(Constans.TYPE_FIVE, request, listener);
 
+    }
+
+    //查询BigPad
+    @Override
+    public void queryBigPadInfo(RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_BIGPAD_QUERY, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_SIX, request, listener);
+    }
+
+    //后援活动查询
+    @Override
+    public void queryHytActive(int page, int rows, int starId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_HYT_ACTIVE, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("page",page)
+                .add("rows",rows)
+                .add("startId",starId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_SEVEN, request, listener);
     }
 
 
