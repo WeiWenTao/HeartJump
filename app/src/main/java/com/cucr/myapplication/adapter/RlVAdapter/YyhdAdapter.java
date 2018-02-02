@@ -48,6 +48,10 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.rows = rows;
         notifyDataSetChanged();
     }
+ public void addData(List<YyhdInfos.RowsBean> rows) {
+        this.rows.addAll(rows);
+        notifyDataSetChanged();
+    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -56,12 +60,12 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
-                        mOnClickItems.onClickItem(position);
+                        mOnClickItems.OnCLickHeader();
                     }
                 }
             });
         } else if (holder instanceof YyhdItemHolder) {
-            YyhdInfos.RowsBean rowsBean = rows.get(position - 1);
+            final YyhdInfos.RowsBean rowsBean = rows.get(position - 1);
             //头像
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
                             rowsBean.getCreateUser().getUserHeadPortrait(),
@@ -128,7 +132,7 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
-                        mOnClickItems.onClickItem(position);
+                        mOnClickItems.onClickItem(rowsBean);
                     }
                 }
             });
@@ -187,6 +191,7 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface OnClickItems {
-        void onClickItem(int position);
+        void onClickItem(YyhdInfos.RowsBean rowsBean);
+        void OnCLickHeader();
     }
 }

@@ -1,28 +1,26 @@
 package com.cucr.myapplication.core.login;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.interf.load.LoadByPsw;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.login.LoadSuccess;
 import com.cucr.myapplication.bean.login.LoadUserInfo;
 import com.cucr.myapplication.bean.login.UserAccountInfo;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.interf.load.LoadByPsw;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -45,16 +43,10 @@ import cn.jpush.android.api.TagAliasCallback;
  */
 
 public class LoginCore implements LoadByPsw {
-    /**
-     * 用来标志请求的what, 类似handler的what一样，这里用来区分请求。
-     */
-    private static final int NOHTTP_WHAT_1 = 1;
 
-
-    private OnCommonListener loginListener;
+    private RequersCallBackListener loginListener;
     private Context context;
-    private Activity activity;
-    private List<String> mKeys;//这是存放账户信息的另一个容器  账号管理界面要用
+
 
     /**
      * 请求的时候等待框。
@@ -67,31 +59,25 @@ public class LoginCore implements LoadByPsw {
     private RequestQueue mQueue;
 
     //标记
-    private Object flag = new Object();
-    private final MyWaitDialog mDailogPayStyle;
+    private Object flag;
+    private String mPassWord;
     private Gson mGson;
-    private Set<String> tags;
-    private String userName;
-    private String passWord;
-    private Context mContext;
+    private List<String> mKeys;//这是存放账户信息的另一个容器  账号管理界面要用
+    private Set<String> tags;//极光标签
 
-
-    public LoginCore(Activity activity) {
-        mGson = MyApplication.getGson();
-        tags = new HashSet<>();
-        this.activity = activity;
-        mKeys = new ArrayList<>();
+    public LoginCore() {
         mQueue = NoHttp.newRequestQueue();
-        mContext = MyApplication.getInstance();
-        mDailogPayStyle = new MyWaitDialog(activity, R.style.MyWaitDialog);
+        flag = new Object();
+        mGson = MyApplication.getGson();
+        context = MyApplication.getInstance();
+        tags = new HashSet<>();
+        mKeys = new ArrayList<>();
     }
 
     @Override
-    public void login(String userName, String psw, final OnCommonListener loginListener) {
-        this.userName = userName;
-        this.passWord = psw;
+    public void login(String userName, String psw, final RequersCallBackListener loginListener) {
         this.loginListener = loginListener;
-        this.context = MyApplication.getInstance();
+        mPassWord = psw;
         // 创建请求对象。
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PSW_LOAD, RequestMethod.POST);
 
@@ -124,90 +110,21 @@ public class LoginCore implements LoadByPsw {
 		 * onResponseListener 回调对象，接受请求结果。
 		 */
 
-        mQueue.add(NOHTTP_WHAT_1, request, responseListener);
+        mQueue.add(Constans.TYPE_ONE, request, responseListener);
 
     }
 
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-            mDailogPayStyle.show();
-            MyLogger.jLog().i("密码登录开始");
+            loginListener.onRequestStar(what);
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            //--------------------------------
-            LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
-//                登录成功 保存密钥
-            if (loadUserInfo.isSuccess()) {
-                LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
-
-                //这里保存的信息账号管理界面用-------------------------------------------------------
-                UserAccountInfo accountInfo = new UserAccountInfo(userName, passWord,
-                        HttpContans.HTTP_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
-                SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
-                edit.putString(userName, mGson.toJson(accountInfo).toString()).commit();
-                //两个容器 类似于联表查询效果
-                String keys = (String) SpUtil.getParam("keys", "");
-                if (!TextUtils.isEmpty(keys)) {
-                    mKeys = MyApplication.getGson().fromJson(keys, List.class);
-                }
-
-                if (!mKeys.contains(userName)){
-                    mKeys.add(0,userName);
-                }
-                SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
-                //---------------------------------------------------------------------------------
-
-                //设置极光推送的tag
-                tags.add(loadSuccess.getRoleId() + "");
-//                    保存密钥
-                SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
-//                    保存用户id
-                SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
-//                    保存身份信息
-                SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
-//                    存储账号和密码等信息
-                SpUtil.setParam(SpConstant.USER_NAEM, userName);
-                SpUtil.setParam(SpConstant.PASSWORD, passWord);
-//                    存储企业用户信息  信息不为空时 存储信息
-                if (!TextUtils.isEmpty(loadSuccess.getCompanyName())) {
-                    SpUtil.setParam(SpConstant.SP_QIYE_NAME, loadSuccess.getCompanyName());
-                    SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, loadSuccess.getCompanyConcat());
-                }
-//                    显示吐司
-                ToastUtils.showToast("登录成功");
-
-                JPushInterface.setTags(MyApplication.getInstance(), tags, new TagAliasCallback() {
-                    @Override
-                    public void gotResult(int i, String s, Set<String> set) {
-                        MyLogger.jLog().i("设置tags成功");
-                    }
-                });
-
-//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-                if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)) {
-                    MyLogger.jLog().i("isFirst_是第一次登录");
-//                        跳转关注界面
-                    Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
-                    intent.putExtra("formLoad", true);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                } else {
-                    MyLogger.jLog().i("isFirst_不是第一次登录");
-//                        跳转到主界面
-                    Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                }
-                if (loginListener != null) {
-                    loginListener.onRequestSuccess(response);
-                }
-            } else {
-                //success = false 密码错误
-                // 显示服务器返回的错误信息
-                ToastUtils.showToast(loadUserInfo.getMsg());
+            if (what == Constans.TYPE_ONE) {
+                saveLoad(response);
+                loginListener.onRequestSuccess(what, response);
             }
         }
 
@@ -218,9 +135,82 @@ public class LoginCore implements LoadByPsw {
 
         @Override
         public void onFinish(int what) {
-            mDailogPayStyle.dismiss();
+            loginListener.onRequestFinish(what);
         }
     };
+
+    private void saveLoad(Response<String> response) {
+        LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
+//                登录成功 保存密钥
+        MyLogger.jLog().i("loadUserInfo:" + loadUserInfo);
+        if (loadUserInfo.isSuccess()) {
+            LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+
+            //这里保存的信息账号管理界面用-------------------------------------------------------
+            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), mPassWord,
+                    HttpContans.HTTP_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
+            SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
+            edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
+            //两个容器 类似于联表查询效果
+            String keys = (String) SpUtil.getParam("keys", "");
+            if (!TextUtils.isEmpty(keys)) {
+                mKeys = MyApplication.getGson().fromJson(keys, List.class);
+            }
+
+            if (!mKeys.contains(loadSuccess.getPhone())) {
+                mKeys.add(0, loadSuccess.getPhone());
+            }
+            SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
+            //---------------------------------------------------------------------------------
+
+            //设置极光推送的tag
+            tags.add(loadSuccess.getRoleId() + "");
+//                    保存密钥
+            SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
+//                    保存用户id
+            SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
+//                    保存身份信息
+            SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
+//                    存储账号和密码等信息
+            SpUtil.setParam(SpConstant.USER_NAEM, loadSuccess.getPhone());
+            SpUtil.setParam(SpConstant.PASSWORD, mPassWord);
+//                    存储企业用户信息  信息不为空时 存储信息
+            if (!TextUtils.isEmpty(loadSuccess.getCompanyName())) {
+                SpUtil.setParam(SpConstant.SP_QIYE_NAME, loadSuccess.getCompanyName());
+                SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, loadSuccess.getCompanyConcat());
+            }
+//                    显示吐司
+            ToastUtils.showToast("登录成功");
+
+            JPushInterface.setTags(MyApplication.getInstance(), tags, new TagAliasCallback() {
+                @Override
+                public void gotResult(int i, String s, Set<String> set) {
+                    MyLogger.jLog().i("设置tags成功");
+                }
+            });
+
+//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
+            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)) {
+                MyLogger.jLog().i("isFirst_是第一次登录");
+//                        跳转关注界面
+                Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
+                intent.putExtra("formLoad", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            } else {
+                MyLogger.jLog().i("isFirst_不是第一次登录");
+//                        跳转到主界面
+                Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+            SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
+        } else {
+            //success = false 密码错误
+            // 显示服务器返回的错误信息
+            ToastUtils.showToast(loadUserInfo.getMsg());
+        }
+    }
 
     //activity destory 时调用
     public void stopReques() {

@@ -57,7 +57,7 @@
 
     <!--向右的小箭头-->
     <style name="My_Arrow">
-        <item name="android:src">@drawable/icon_more_e</item>
+        <item name="android:src">@drawable/icon_more</item>
         <item name="android:layout_width">8dp</item>
         <item name="android:layout_height">16dp</item>
         <item name="android:layout_centerVertical">true</item>

@@ -11,9 +11,9 @@ import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.AccountListAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.core.login.LoginCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.login.UserAccountInfo;
+import com.cucr.myapplication.core.login.LoginCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.widget.dialog.DialogQuitAccountStyle;
@@ -36,7 +36,7 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
 
     @Override
     protected void initChild() {
-        mLoginCore = new LoginCore(this);
+        mLoginCore = new LoginCore();
         adapter = new AccountListAdapter();
         initTitle("账号管理");
         initViews();
@@ -84,12 +84,24 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
 
         String string = SpUtil.getAccountSp().getString(getKey, "");
         UserAccountInfo accountInfo = mGson.fromJson(string, UserAccountInfo.class);
-        mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new OnCommonListener() {
+        mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
                 finish();
             }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
+            }
+
+
         });
 
         //如果没有网

@@ -1,5 +1,7 @@
 package com.cucr.myapplication.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -45,5 +47,13 @@ public class DataUtils {
             System.out.println("判断day2 - day1 : " + (day2 - day1));
             return day2 - day1;
         }
+    }
+
+    public static long getDifferTime(String date) throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parse1 = df.parse("2018-1-10 00:00:00");
+        Date parse2 = df.parse(date);
+        long l = parse2.getTime() - parse1.getTime();
+        return l;
     }
 }

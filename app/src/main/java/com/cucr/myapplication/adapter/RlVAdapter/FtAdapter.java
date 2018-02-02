@@ -468,7 +468,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         //点击评论
         @ViewInject(R.id.rl_comment)
-        private RelativeLayout rl_comment;
+        private LinearLayout rl_comment;
 
         //评论数量
         @ViewInject(R.id.tv_session)
@@ -541,7 +541,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         //点击评论
         @ViewInject(R.id.rl_comment)
-        private RelativeLayout rl_comment;
+        private LinearLayout rl_comment;
 
         //评论数量
         @ViewInject(R.id.tv_session)
@@ -606,7 +606,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         //点击评论
         @ViewInject(R.id.rl_comment)
-        private RelativeLayout rl_comment;
+        private LinearLayout rl_comment;
 
         //评论数量
         @ViewInject(R.id.tv_session)

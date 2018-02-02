@@ -166,12 +166,24 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_comment"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
             >
+            <ImageView
+                android:id="@+id/iv_session3"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_35"
+                android:layout_toLeftOf="@id/tv_session"
+                android:paddingBottom="@dimen/dp_5"
+                android:paddingLeft="8dp"
+                android:paddingRight="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_5"
+                android:src="@drawable/icon_cm_nor"
+                />
 
 
             <TextView
@@ -185,32 +197,8 @@
                 android:textSize="@dimen/sp_13"
                 />
 
-            <ImageView
-                android:id="@+id/iv_session3"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="@dimen/dp_35"
-                android:layout_toLeftOf="@id/tv_session0"
-                android:paddingBottom="@dimen/dp_5"
-                android:paddingLeft="8dp"
-                android:paddingRight="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_5"
-                android:src="@drawable/icon_cm_nor"
-                />
 
-            <!--<ImageView-->
-            <!--android:id="@+id/iv_session3"-->
-            <!--android:layout_width="@dimen/dp_30"-->
-            <!--android:layout_height="@dimen/dp_35"-->
-            <!--android:layout_centerVertical="true"-->
-
-            <!--android:layout_toLeftOf="@id/tv_session"-->
-            <!--android:paddingBottom="@dimen/dp_10"-->
-            <!--android:paddingLeft="@dimen/dp_10"-->
-            <!--android:paddingRight="@dimen/dp_5"-->
-            <!--android:paddingTop="@dimen/dp_10"-->
-            <!--android:src="@drawable/icon_cm_nor"-->
-            <!--/>-->
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_good"

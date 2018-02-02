@@ -33,7 +33,6 @@
 
         </com.cucr.myapplication.widget.refresh.RefreshLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"

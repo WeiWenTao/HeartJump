@@ -1,12 +1,13 @@
 package com.cucr.myapplication.bean.Hyt;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cucr on 2018/1/26.
  */
 
-public class YyhdInfos {
+public class YyhdInfos implements Serializable {
 
     /**
      * errorMsg :
@@ -52,7 +53,7 @@ public class YyhdInfos {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         /**
          * activeContent : 这是活动内容2
          * activeName : 测试活动2
@@ -277,7 +278,7 @@ public class YyhdInfos {
             this.sysHytActiveZc = sysHytActiveZc;
         }
 
-        public static class CreateUserBean {
+        public static class CreateUserBean implements Serializable {
             /**
              * belongCompany :
              * id : 31
@@ -373,7 +374,7 @@ public class YyhdInfos {
             }
         }
 
-        public static class HytInfoBean {
+        public static class HytInfoBean implements Serializable {
             /**
              * auditor : 超级管理员
              * auditorTime : 2018-01-17 16:02:55
@@ -548,7 +549,7 @@ public class YyhdInfos {
                 this.userContact = userContact;
             }
 
-            public static class CreateUserBeanX {
+            public static class CreateUserBeanX implements Serializable {
                 /**
                  * belongCompany :
                  * id : 31
@@ -644,7 +645,7 @@ public class YyhdInfos {
                 }
             }
 
-            public static class StartUserBean {
+            public static class StartUserBean implements Serializable {
                 /**
                  * belongCompany :
                  * id : 33
@@ -741,7 +742,7 @@ public class YyhdInfos {
             }
         }
 
-        public static class SysHytActiveBigpadBean {
+        public static class SysHytActiveBigpadBean implements Serializable {
             /**
              * activeId : null
              * bigpads : [{"id":2,"sysHytActiveBigpad":null,"sysHytActiveBigpadInfo":{"address":"测试地址1","id":2,"picUrl":"/static/yuanshi_image/2ec501ee-0e15-4453-93eb-59389110364d.jpg","price":"测试价格1","purpose":"测试用途1","spec":"测试规格1"}},{"id":1,"sysHytActiveBigpad":null,"sysHytActiveBigpadInfo":{"address":"雄楚大道虎泉街交汇处","id":1,"picUrl":"/static/yuanshi_image/1f995cdb-2106-4ee3-ba61-795b55bff20b.jpg","price":"1001/天","purpose":"生日应援/纪念日应援","spec":"18.4米X12.28米（260m2）"}}]
@@ -796,7 +797,7 @@ public class YyhdInfos {
                 this.bigpads = bigpads;
             }
 
-            public static class BigpadsBean {
+            public static class BigpadsBean implements Serializable {
                 /**
                  * id : 2
                  * sysHytActiveBigpad : null
@@ -831,7 +832,7 @@ public class YyhdInfos {
                     this.sysHytActiveBigpadInfo = sysHytActiveBigpadInfo;
                 }
 
-                public static class SysHytActiveBigpadInfoBean {
+                public static class SysHytActiveBigpadInfoBean implements Serializable {
                     /**
                      * address : 测试地址1
                      * id : 2
@@ -899,7 +900,7 @@ public class YyhdInfos {
             }
         }
 
-        public static class SysHytActiveOpenscreenBean {
+        public static class SysHytActiveOpenscreenBean implements Serializable {
             /**
              * activeId : null
              * amount : 100
@@ -935,7 +936,7 @@ public class YyhdInfos {
             }
         }
 
-        public static class SysHytActiveZcBean {
+        public static class SysHytActiveZcBean implements Serializable {
             /**
              * activeId : null
              * amount : 100

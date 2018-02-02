@@ -19,6 +19,7 @@ public class Constans {
 
     public static final int TYPE_HEADER = 1; //头部
     public static final int TYPE_ITEM = 2;   //条目
+    public static final int TYPE_FOOTER = 3;   //脚部
 
     public static final int TYPE_ZERO = 0;
     public static final int TYPE_ONE = 1;
@@ -30,6 +31,9 @@ public class Constans {
     public static final int TYPE_SEVEN = 7;
     public static final int TYPE_EIGHT = 8;
     public static final int TYPE_NINE = 9;
+    public static final int TYPE_TEN = 10;
+    public static final int TYPE_ELEVEN = 11;
+    public static final int TYPE_TWEVEN = 12;
 
     public static final int TYPE_TEXT = 0;
 

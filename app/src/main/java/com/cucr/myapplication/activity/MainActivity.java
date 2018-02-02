@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
@@ -19,8 +21,8 @@ import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
-import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.umeng.socialize.UMShareAPI;
@@ -49,6 +51,12 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         initFragment(0);
         initRadioGroup();
         //TODO: 2017/4/28 Splash界面完成
+        DisplayMetrics dm=new DisplayMetrics();
+        // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
+        // MI 6        :DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        String s="屏幕的分辨率为："+dm.widthPixels+"*"+dm.heightPixels;
+        MyLogger.jLog().i(s);
 
     }
 
@@ -59,7 +67,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         RadioButton rb_4 = (RadioButton) findViewById(R.id.rb_4);
         RadioButton rb_mid = (RadioButton) findViewById(R.id.rb_mid);
 //        rb_4.setVisibility(View.GONE);
-
         //底部导航栏距离
         initDrawable(rb_1, 0, 0, 22, 25);
         initDrawable(rb_2, 0, 0, 21, 23);
@@ -164,7 +171,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mFragments.clear();
         UMShareAPI.get(this).release();
     }
 

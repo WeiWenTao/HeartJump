@@ -1,7 +1,6 @@
 package com.cucr.myapplication.activity.pay;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -12,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -22,11 +22,14 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.alipay.PayInfo;
 import com.cucr.myapplication.alipay.PayResult;
 import com.cucr.myapplication.alipay.PayResultInfo;
+import com.cucr.myapplication.alipay.WxPayInfo;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.EventIsSuccess;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
-import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ThreadUtils;
@@ -35,83 +38,123 @@ import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.cucr.myapplication.widget.dialog.DialogPerfirmPayResult;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PayCenterActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, DialogPayStyle.OnClickPay {
+public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, DialogPayStyle.OnClickPay {
 
     @ViewInject(R.id.rg1)
-    RadioGroup rg1;
-
-    @ViewInject(R.id.rg1_rb1)
-    RadioButton rg1_rb1;
-
-    @ViewInject(R.id.rg1_rb2)
-    RadioButton rg1_rb2;
-
-    @ViewInject(R.id.rg1_rb3)
-    RadioButton rg1_rb3;
+    private RadioGroup rg1;
 
     @ViewInject(R.id.rg2)
-    RadioGroup rg2;
-
-    @ViewInject(R.id.rg2_rb1)
-    RadioButton rg2_rb1;
-
-    @ViewInject(R.id.rg2_rb2)
-    RadioButton rg2_rb2;
-
-    @ViewInject(R.id.rg2_rb3)
-    RadioButton rg2_rb3;
-
-    @ViewInject(R.id.rg3)
-    RadioGroup rg3;
-
-    @ViewInject(R.id.rg3_rb1)
-    RadioButton rg3_rb1;
-
-    @ViewInject(R.id.rg3_rb2)
-    RadioButton rg3_rb2;
-
-    @ViewInject(R.id.rg3_rb3)
-    RadioButton rg3_rb3;
+    private RadioGroup rg2;
 
     //立即充值
     @ViewInject(R.id.tv_pay_now)
-    TextView tv_pay_now;
+    private TextView tv_pay_now;
 
     //其他数量
     @ViewInject(R.id.et_other)
-    EditText et_other;
+    private EditText et_other;
 
     //单位 星币
     @ViewInject(R.id.tv_other_yuan)
-    TextView tv_other_yuan;
+    private TextView tv_other_yuan;
 
-    //用户余额
-    @ViewInject(R.id.tv_user_money)
-    TextView tv_user_money;
+    //支付宝支付红点
+    @ViewInject(R.id.iv_alipay_d)
+    private ImageView iv_alipay_d;
+
+    //微信支付红点
+    @ViewInject(R.id.iv_wx_d)
+    private ImageView iv_wx_d;
 
 
-    private Map<Integer, Integer> moneys;
+    private Map<Integer, Double> moneys;
     private DialogPayStyle mDailogPayStyle;
 
     //上一个rb
     private RadioButton mPreRB;
+    private String orderNo;
 
     //当前rb
     private RadioButton currentRB;
     private double money;
-    private double finalMoney;
     private PayCenterCore payCore;
     private DialogPerfirmPayResult mPerfirmPayResulterfirmDialog;
+    private boolean isWXpay;
 
+
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    final String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    MyLogger.jLog().i("resultInfo" + resultInfo);
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        PayResultInfo payResultInfo = mGson.fromJson(resultInfo, PayResultInfo.class);
+                        String out_trade_no = payResultInfo.getAlipay_trade_app_pay_response().getOut_trade_no();
+                        getPayResult(out_trade_no);
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+//                        ToastUtils.showToast("支付成功");
+                        //去服务器查询结果
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        ToastUtils.showToast("支付失败");
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
+
+    private void getPayResult(String orderNo) {
+        payCore.queryResult(orderNo, new PayLisntener() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                MyLogger.jLog().i("reBackMsg" + reBackMsg);
+                if (reBackMsg.isSuccess()) {
+                    mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
+                } else {
+                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
+                    ToastUtils.showToast(reBackMsg.getMsg());
+                }
+            }
+
+            @Override
+            public void onRequestStar() {
+                mPerfirmPayResulterfirmDialog.show();
+            }
+        });
+    }
+
+    private IWXAPI mIwxapi;
 
     @Override
     protected void initChild() {
-
+        EventBus.getDefault().register(this);
         initTitle("充值中心");
 
         moneys = new HashMap<>();
@@ -120,7 +163,6 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.ShowAddressStyleTheme);
         mDailogPayStyle.setOnClickPay(this);
         payCore = new PayCenterCore();
-        queryMoney();
 
         initET();
         findRG();
@@ -176,13 +218,14 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
             public void afterTextChanged(Editable s) {
 
                 if (!TextUtils.isEmpty(s)) {
-                    tv_pay_now.setText("立即充值  " + (Integer.parseInt(s.toString()) / 10.0f) + "元");
+                    tv_pay_now.setText("立即充值  " + (Integer.parseInt(s.toString())) + "元");
+                    money = (Integer.parseInt(s.toString()));
                 } else {
                     tv_pay_now.setText("立即充值");
                     tv_pay_now.setEnabled(false);
                     MyLogger.jLog().i("tv_pay_now.setEnabled(false);");
 
-                    if ((rg1.getCheckedRadioButtonId() != -1 || rg2.getCheckedRadioButtonId() != -1 || rg3.getCheckedRadioButtonId() != -1)) {
+                    if ((rg1.getCheckedRadioButtonId() != -1 || rg2.getCheckedRadioButtonId() != -1)) {
                         tv_pay_now.setEnabled(true);
                         MyLogger.jLog().i("tv_pay_now.setEnabled(true);");
                     }
@@ -231,7 +274,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         } else {
             tv_pay_now.setEnabled(false);
             MyLogger.jLog().i("setEnabled(false);");
-            if (rg1.getCheckedRadioButtonId() != -1 || rg2.getCheckedRadioButtonId() != -1 || rg3.getCheckedRadioButtonId() != -1) {
+            if (rg1.getCheckedRadioButtonId() != -1 || rg2.getCheckedRadioButtonId() != -1) {
                 tv_pay_now.setEnabled(true);
                 MyLogger.jLog().i("setEnabled(true);");
             }
@@ -240,34 +283,29 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
 
     @Override
     protected int getChildRes() {
-        return R.layout.activity_pay_center;
+        return R.layout.activity_yyhd_paycenter;
     }
 
 
     private void initRBS() {
-        moneys.put(R.id.rg1_rb1, 50);
-        moneys.put(R.id.rg1_rb2, 100);
-        moneys.put(R.id.rg1_rb3, 200);
+        moneys.put(R.id.rg1_rb1, 1.0);
+        moneys.put(R.id.rg1_rb2, 5.20);
+        moneys.put(R.id.rg1_rb3, 13.14);
+        moneys.put(R.id.rg1_rb4, 99.0);
 
-        moneys.put(R.id.rg2_rb1, 100);
-        moneys.put(R.id.rg2_rb2, 500);
-        moneys.put(R.id.rg2_rb3, 800);
-
-        moneys.put(R.id.rg3_rb1, 1000);
-        moneys.put(R.id.rg3_rb2, 5000);
-        moneys.put(R.id.rg3_rb3, 10000);
+        moneys.put(R.id.rg2_rb1, 520.0);
+        moneys.put(R.id.rg2_rb2, 666.0);
+        moneys.put(R.id.rg2_rb3, 888.0);
+        moneys.put(R.id.rg2_rb4, 1314.0);
 
     }
 
     private void findRG() {
         rg1.setOnCheckedChangeListener(this);
         rg2.setOnCheckedChangeListener(this);
-        rg3.setOnCheckedChangeListener(this);
     }
 
-
     private int preId;
-
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -281,7 +319,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         tv_other_yuan.setVisibility(View.GONE);
         et_other.setText("");
         et_other.clearComposingText();
-        et_other.setHint("其他数量");
+        et_other.setHint("其他金额");
         et_other.setCursorVisible(false);
 
 
@@ -296,33 +334,8 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
         preId = checkedId;
         currentRB = (RadioButton) findViewById(preId);
         money = moneys.get(checkedId);
-        tv_pay_now.setText("立即充值  " + (money / 10) + "元");
+        tv_pay_now.setText("立即充值  " + money + "元");
     }
-
-    @OnClick(R.id.tv_pay_now)
-    public void payNow(View view) {
-        if (money == 0 && TextUtils.isEmpty(et_other.getText())) {
-            ToastUtils.showToast("请选择金额");
-            return;
-        }
-
-        if (!TextUtils.isEmpty(et_other.getText())) {
-            if (Integer.parseInt(et_other.getText().toString()) == 0) {
-                ToastUtils.showToast("请选择金额");
-                return;
-            }
-        }
-        if (!TextUtils.isEmpty(et_other.getText())) {
-//            MyLogger.jLog().i("金额是1:" + (Integer.parseInt(et_other.getText().toString()) / 10.0f));
-            finalMoney = (double) (Integer.parseInt(et_other.getText().toString()) / 10.0f);
-        } else {
-//            MyLogger.jLog().i("金额是2:" + money / 10.0f );
-            finalMoney = (double) (money / 10.0f);
-        }
-
-        mDailogPayStyle.show();
-    }
-
 
     @OnClick(R.id.ll_other)
     public void click(View view) {
@@ -342,7 +355,7 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
             /*隐藏软键盘*/
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputMethodManager.isActive()) {
-                inputMethodManager.hideSoftInputFromWindow(PayCenterActivity.this.getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(YyhdPayActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             return true;
         }
@@ -350,20 +363,20 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
     }
 
     //支付宝支付
-    @Override
+
     public void OnCLickAliPay() {
-        MyLogger.jLog().i("finalMoney:" + finalMoney);
-        payCore.aliPay(finalMoney, "心跳充值", new OnCommonListener() {
+        payCore.aliPay(money, "心跳充值", Constans.TYPE_ONE, 21, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 final PayInfo payInfo = mGson.fromJson(response.get(), PayInfo.class);
                 final String orderInfo = payInfo.getMsg();
+
                 if (payInfo.isSuccess()) {
                     //开启线程支付
                     ThreadUtils.getInstance().execute(new Runnable() {
                         @Override
                         public void run() {
-                            PayTask alipay = new PayTask(PayCenterActivity.this);
+                            PayTask alipay = new PayTask(YyhdPayActivity.this);
                             MyLogger.jLog().i("123:" + orderInfo);
                             Map<String, String> result = alipay.payV2(orderInfo, true);
                             Log.i("msp", result.toString());
@@ -375,99 +388,91 @@ public class PayCenterActivity extends BaseActivity implements RadioGroup.OnChec
                         }
                     });
                 } else {
-                    ToastUtils.showToast(PayCenterActivity.this, orderInfo);
+                    ToastUtils.showToast(YyhdPayActivity.this, orderInfo);
                 }
             }
         });
     }
 
     //微信支付
-    @Override
     public void OnClickWxPay() {
+        if (!UMShareAPI.get(MyApplication.getInstance()).isInstall(this, SHARE_MEDIA.WEIXIN)) {
+            ToastUtils.showToast("请先装微信客户端");
+            return;
+        }
+        //初始化微信api
+        mIwxapi = WXAPIFactory.createWXAPI(this, "wxbe72c1611`83cf70da");
+        mIwxapi.registerApp("wxbe72c16183cf70da"); //注册appid  appid可以在开发平台获取
 
-    }
-
-    public void queryMoney(){
-        payCore.queryUserMoney(new OnCommonListener() {
+        payCore.wxPay(1, "微信充值", 0, -1, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
-                if (reBackMsg.isSuccess()){
-                    tv_user_money.setText(reBackMsg.getMsg());
-                }else {
-                    ToastUtils.showToast(reBackMsg.getMsg());
+                final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
+                orderNo = payInfo.getObj().getMsg().getOrderNo();
+                if (payInfo.isSuccess()) {
+                    //开启线程支付
+                    ThreadUtils.getInstance().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            PayReq request = new PayReq(); //调起微信APP的对象
+                            //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
+                            request.appId = payInfo.getObj().getMsg().getAppid();
+                            request.partnerId = payInfo.getObj().getMsg().getPartnerid();
+                            request.prepayId = payInfo.getObj().getMsg().getPrepayid();//todo 这里为null
+                            request.packageValue = "Sign=WXPay";
+                            request.nonceStr = payInfo.getObj().getMsg().getNoncestr();
+                            request.timeStamp = payInfo.getObj().getMsg().getTimestamp() + "";
+                            request.sign = payInfo.getObj().getMsg().getSign();
+                            boolean b = mIwxapi.sendReq(request);//发送调起微信的请求
+                        }
+                    });
+                } else {
+                    ToastUtils.showToast(YyhdPayActivity.this, payInfo.getMsg());
                 }
             }
         });
+
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPayResult(EventIsSuccess event) {
+        getPayResult(orderNo);
+    }
 
-    private Handler mHandler = new Handler() {
-        @SuppressWarnings("unused")
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1: {
-                    @SuppressWarnings("unchecked")
-                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                    /**
-                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
-                     */
-                    final String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                    MyLogger.jLog().i("resultInfo"+resultInfo);
-                    String resultStatus = payResult.getResultStatus();
-                    // 判断resultStatus 为9000则代表支付成功
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        PayResultInfo payResultInfo = mGson.fromJson(resultInfo, PayResultInfo.class);
-                        String out_trade_no = payResultInfo.getAlipay_trade_app_pay_response().getOut_trade_no();
-                        payCore.queryResult(out_trade_no, new PayLisntener() {
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                                MyLogger.jLog().i("reBackMsg"+reBackMsg);
-                                if (reBackMsg.isSuccess()) {
-                                    mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
-                                    queryMoney();
-                                } else {
-                                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
-                                    ToastUtils.showToast(reBackMsg.getMsg());
-                                }
-                            }
+    @OnClick(R.id.tv_pay_now)
+    public void goToPay(View view) {
 
-                            @Override
-                            public void onRequestStar() {
-                                mPerfirmPayResulterfirmDialog.show();
-                            }
-
-                        });
-                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-//                        ToastUtils.showToast("支付成功");
-                        //去服务器查询结果
-
-                    } else {
-                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        ToastUtils.showToast("支付失败");
-                    }
-                    break;
-                }
-
-                default:
-                    break;
-            }
+        if (isWXpay) {
+            OnClickWxPay();
+        } else {
+            OnCLickAliPay();
         }
+    }
 
-        ;
-    };
+    //点击支付宝
+    @OnClick(R.id.ll_alipay)
+    public void alipay_way(View view) {
+        isWXpay = false;
+        iv_alipay_d.setImageResource(R.drawable.pc_sel);
+        iv_wx_d.setImageResource(R.drawable.pc_nor);
+    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        MyLogger.jLog().i("onActivityResult");
+    //点击微信支付
+    @OnClick(R.id.ll_wxpay)
+    public void wxpay_way(View view) {
+        isWXpay = true;
+        iv_wx_d.setImageResource(R.drawable.pc_sel);
+        iv_alipay_d.setImageResource(R.drawable.pc_nor);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        MyLogger.jLog().i("onResume");
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

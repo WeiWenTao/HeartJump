@@ -19,6 +19,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.alipay.PayInfo;
 import com.cucr.myapplication.alipay.PayResult;
 import com.cucr.myapplication.alipay.PayResultInfo;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
@@ -259,7 +260,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
     //支付宝支付逻辑
     public void alipay() {
         MyLogger.jLog().i("finalMoney:" + finalMoney);
-        payCore.aliPay(finalMoney, "心跳充值", new OnCommonListener() {
+        payCore.aliPay(finalMoney, "心跳充值", Constans.TYPE_ZERO,-1, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 final PayInfo payInfo = mGson.fromJson(response.get(), PayInfo.class);

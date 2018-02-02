@@ -86,9 +86,4 @@ public class FragmentHotAndFocusNews extends BaseFragment {
         return false;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mFragments.clear();
-    }
 }

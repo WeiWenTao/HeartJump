@@ -2,12 +2,14 @@ package com.cucr.myapplication.core.login;
 
 import android.content.Context;
 
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.interf.load.Regist;
 import com.cucr.myapplication.listener.OnGetYzmListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.listener.load.OnRegistListener;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
-import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.MyLogger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -22,16 +24,19 @@ import com.yanzhenjie.nohttp.rest.Response;
 public class RegistCore implements Regist {
 
     //验证码请求
-    private static final int REQUEST_YZM = 1;
+    private static final int REQUEST_YZM = 999;
 
     //登录请求
-    private static final int REQUEST_REGIST = 2;
+    private static final int REQUEST_REGIST = 998;
 
     //注册接口
     private OnRegistListener registListener;
 
     //获取验证码接口
     private OnGetYzmListener getYzmListener;
+
+    //三方平台接口
+    private RequersCallBackListener thirdLinstener;
 
     //取消标记
     private Object flag = new Object();
@@ -48,6 +53,7 @@ public class RegistCore implements Regist {
     }
 
 
+    //注册
     @Override
     public void regist(Context context, String yzm, String phoneNum, String psw, OnRegistListener registListener, boolean isRegist) {
         this.mContext = context;
@@ -71,10 +77,9 @@ public class RegistCore implements Regist {
 
             mQueue.add(REQUEST_REGIST, request, responseListener);
         }
-
-
     }
 
+    //获取验证码
     @Override
     public void getYzm(Context context, String userName, OnGetYzmListener getYzmListener) {
         this.mContext = context;
@@ -87,27 +92,65 @@ public class RegistCore implements Regist {
         mQueue.add(REQUEST_YZM, request, responseListener);
     }
 
+    //三方登录
+    @Override
+    public void thirdPlatformLoad(String loginType, String openId, String msgRegId, RequersCallBackListener commonListener) {
+        thirdLinstener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_OTHER_LOAD, RequestMethod.POST);
+        MyLogger.jLog().i("loginType:" + loginType);
+        request.add("loginType", loginType)
+                .add("openId", openId)
+                .add("msgRegId", msgRegId);
+
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
+    }
+
+    //三方注册
+    @Override
+    public void thirdPlatformRegist(String phone, String checkCode, String loginType, String openId,
+                                    String name, String gender, String iconurl, RequersCallBackListener commonListener) {
+        thirdLinstener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_OTHER_REGIST, RequestMethod.POST);
+        request.add("phone", phone) // 账号。
+                .add("checkCode", checkCode)
+                .add("loginType", loginType)
+                .add("name", name)
+                .add("gender", gender)
+                .add("iconurl", iconurl)
+                .add("openId", openId);
+
+        mQueue.add(Constans.TYPE_THREE, request, responseListener);
+    }
+
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-//            ToastUtils.showToast(context,"开始登录");
+            switch (what) {
+                case Constans.TYPE_TWO:
+                    thirdLinstener.onRequestStar(what);
+                    break;
+            }
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
             int responseCode = response.getHeaders().getResponseCode();
-            if (what == REQUEST_YZM) {
-                if (getYzmListener != null && responseCode == 200) {
+            switch (what) {
+                case REQUEST_YZM:
                     getYzmListener.onSuccess(response);
-                } else {
-                    ToastUtils.showToast(mContext, "未知错误:" + responseCode);
-                }
-            } else if (what == REQUEST_REGIST) {
-                if (registListener != null && responseCode == 200) {
+                    break;
+
+                case REQUEST_REGIST:
                     registListener.OnRegistSuccess(response);
-                } else {
-                    ToastUtils.showToast(mContext, "未知错误:" + responseCode);
-                }
+                    break;
+
+                case Constans.TYPE_TWO:
+                    thirdLinstener.onRequestSuccess(what, response);
+                    break;
+
+                case Constans.TYPE_THREE:
+                    thirdLinstener.onRequestSuccess(what, response);
+                    break;
             }
         }
 
@@ -131,7 +174,12 @@ public class RegistCore implements Regist {
 
         @Override
         public void onFinish(int what) {
-//            ToastUtils.showToast(context,"登录完成");
+            switch (what) {
+                case Constans.TYPE_TWO:
+                    thirdLinstener.onRequestFinish(what);
+                    break;
+            }
+
         }
     };
 

@@ -4,28 +4,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
-import com.cucr.myapplication.activity.star.StarListForAddActivity;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.core.login.RegistCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.OnGetYzmListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.listener.load.OnRegistListener;
-import com.cucr.myapplication.bean.login.LoadSuccess;
-import com.cucr.myapplication.bean.login.LoadUserInfo;
-import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -40,13 +35,10 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.HashSet;
 import java.util.Set;
 
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
-
 /**
  * 注册和忘记密码共用一个activity
  */
-public class NewRegistActivity extends Activity {
+public class NewRegistActivity extends Activity implements RequersCallBackListener {
 
     //电话号码
     @ViewInject(R.id.et_phone_num)
@@ -132,13 +124,13 @@ public class NewRegistActivity extends Activity {
         mSetPsw = et_set_psw.getText().toString();
 
         if (!mPhoneNum.matches(Constans.PHONE_REGEX)) {
-            ToastUtils.showToast(this, "手机号码有误哦");
+            ToastUtils.showToast("手机号码有误哦");
             return;
         }
 
         //密码小于6位
         if (mSetPsw.length() < 6) {
-            ToastUtils.showToast(this, "用户密码最少为6位哦");
+            ToastUtils.showToast("用户密码最少为6位哦");
             return;
         }
 
@@ -151,7 +143,7 @@ public class NewRegistActivity extends Activity {
                 ReBackMsg yzmInfo = mGson.fromJson(result, ReBackMsg.class);
                 //判断是否注册成功
                 if (yzmInfo.isSuccess()) {
-                    ToastUtils.showToast(mIsRegist?"注册成功!":"设置新密码成功!");
+                    ToastUtils.showToast(mIsRegist ? "注册成功!" : "设置新密码成功!");
 //                    存储账号和密码等信息
                     SpUtil.setParam(SpConstant.USER_NAEM, mPhoneNum);
                     SpUtil.setParam(SpConstant.PASSWORD, mSetPsw);
@@ -168,13 +160,13 @@ public class NewRegistActivity extends Activity {
             public void onRegistFailed() {
 
             }
-        },mIsRegist);
+        }, mIsRegist);
     }
 
     //获取验证码
     @OnClick(R.id.ll_getyzm)
     public void clickGetYzm(View view) {
-        if (runningThree){
+        if (runningThree) {
             return;
         }
         String phone_num = et_phone_num.getText().toString().trim();
@@ -193,10 +185,8 @@ public class NewRegistActivity extends Activity {
                 if (!yzmInfo.isSuccess()) {
                     //success = false 密码错误
                     // 显示服务器返回的错误信息
-                    ToastUtils.showToast(NewRegistActivity.this, yzmInfo.getMsg());
-                    MyLogger.jLog().i("验证码获取失败");
+                    ToastUtils.showToast(yzmInfo.getMsg());
                 } else {
-                    MyLogger.jLog().i("验证码获取成功");
                 }
             }
 
@@ -210,60 +200,7 @@ public class NewRegistActivity extends Activity {
     //登录请求
     private void logRequest() {
         //TODO 输入判断
-        new LoginCore(this).login(mPhoneNum, mSetPsw, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-
-                String s = response.get();
-                LoadUserInfo loadUserInfo = mGson.fromJson(s, LoadUserInfo.class);
-//                登录成功 保存密钥
-                if (loadUserInfo.isSuccess()) {
-                    LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
-                    //设置极光推送的tag
-                    tags.add(loadSuccess.getRoleId() + "");
-                    MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
-                    JPushInterface.setTags(NewRegistActivity.this, tags, new TagAliasCallback() {
-                        @Override
-                        public void gotResult(int i, String s, Set<String> set) {
-                            MyLogger.jLog().i("设置tags成功");
-                        }
-                    });
-//                    保存密钥
-                    SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
-//                    保存用户id
-                    SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
-//                    保存用户名和密码
-                    SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
-//                    保存身份信息
-                    SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
-//                    存储企业用户信息  信息不为空时 存储信息
-                    if (!TextUtils.isEmpty(loadSuccess.getCompanyName())){
-                        SpUtil.setParam(SpConstant.SP_QIYE_NAME,loadSuccess.getCompanyName());
-                        SpUtil.setParam(SpConstant.SP_QIYE_CONTACT,loadSuccess.getCompanyConcat());
-                    }
-//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-                    if (!((boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false))){
-//                        跳转关注界面
-                        Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
-                        intent.putExtra("formLoad",true);
-                        startActivity(intent);
-                    }else {
-//                        跳转到主界面
-                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
-                    }
-
-                    SpUtil.setParam(SpConstant.IS_FIRST_RUN,true);  //登录之后保存登录数据  下次登录判断是否第一次登录
-                    finish();
-
-
-                } else {
-                    //success = false 密码错误
-                    // 显示服务器返回的错误信息
-                    ToastUtils.showToast(NewRegistActivity.this, loadUserInfo.getMsg());
-
-                }
-            }
-        });
+        new LoginCore().login(mPhoneNum, mSetPsw, this);
     }
 
     @Override
@@ -273,13 +210,13 @@ public class NewRegistActivity extends Activity {
     }
 
     @OnClick(R.id.iv_back)
-    public void clickBack(View view){
+    public void clickBack(View view) {
         finish();
     }
 
     //用户协议
     @OnClick(R.id.tv_yhxy)
-    public void goYhxy(View view){
+    public void goYhxy(View view) {
         Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         intent.putExtra("url", HttpContans.HTTP_YHXY);
         intent.putExtra("from", true); //把字体设置成大号
@@ -287,5 +224,68 @@ public class NewRegistActivity extends Activity {
     }
 
 
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
 
+    }
+
+    /*private void loadend() {
+        LoadUserInfo loadUserInfo = mGson.fromJson( response.get(), LoadUserInfo.class);
+//                登录成功 保存密钥
+        if (loadUserInfo.isSuccess()) {
+            LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+            //设置极光推送的tag
+            tags.add(loadSuccess.getRoleId() + "");
+            MyLogger.jLog().i("设置tag成功，tag：" + loadSuccess.getRoleId());
+            JPushInterface.setTags(NewRegistActivity.this, tags, new TagAliasCallback() {
+                @Override
+                public void gotResult(int i, String s, Set<String> set) {
+                    MyLogger.jLog().i("设置tags成功");
+                }
+            });
+//                    保存密钥
+            SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
+//                    保存用户id
+            SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
+//                    保存用户名和密码
+            SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
+//                    保存身份信息
+            SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
+//                    存储企业用户信息  信息不为空时 存储信息
+            if (!TextUtils.isEmpty(loadSuccess.getCompanyName())) {
+                SpUtil.setParam(SpConstant.SP_QIYE_NAME, loadSuccess.getCompanyName());
+                SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, loadSuccess.getCompanyConcat());
+            }
+//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
+            if (!((boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false))) {
+//                        跳转关注界面
+                Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
+                intent.putExtra("formLoad", true);
+                startActivity(intent);
+            } else {
+//                        跳转到主界面
+                startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+            }
+
+            SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
+            finish();
+
+
+        } else {
+            //success = false 密码错误
+            // 显示服务器返回的错误信息
+            ToastUtils.showToast(NewRegistActivity.this, loadUserInfo.getMsg());
+
+        }
+    }*/
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
+    }
 }

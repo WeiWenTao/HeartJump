@@ -18,6 +18,24 @@ public class LoadSuccess {
     private String companyConcat;
     private String userHeadPortrait;
     private String name;
+    private String phone;
+    private int loginStatu;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getLoginStatu() {
+        return loginStatu;
+    }
+
+    public void setLoginStatu(int loginStatu) {
+        this.loginStatu = loginStatu;
+    }
 
     public String getName() {
         return name;

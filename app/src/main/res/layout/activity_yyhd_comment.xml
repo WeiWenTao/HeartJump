@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/ll_rootview"
+    tools:context="com.cucr.myapplication.activity.hyt.YyhdCommentActivity"
+    >
+
+    <RelativeLayout
+        android:id="@+id/comment_head"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
+
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            android:id="@+id/tv_base_title"
+            style="@style/TitleStyle"
+            android:text="全部评论"
+            android:textColor="@color/xtred"
+            />
+
+    </RelativeLayout>
+
+    <com.cucr.myapplication.widget.refresh.RefreshLayout
+        android:id="@+id/ref"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        >
+
+        <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+            android:id="@+id/rlv_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </com.cucr.myapplication.widget.refresh.RefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        >
+
+        <com.vanniktech.emoji.EmojiEditText
+            android:id="@+id/et_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:hint="我要吐槽"
+            android:imeOptions="actionSend|flagNoExtractUi"
+            android:textColorHint="#ababab"
+            android:textSize="@dimen/sp_13"
+            android:theme="@style/MyEditText"
+            />
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_emoji_send"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_10"
+            >
+
+            <ImageView
+                android:id="@+id/iv_emoji"
+                android:layout_width="31dp"
+                android:layout_height="31dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_20"
+                android:padding="@dimen/dp_5"
+                android:src="@drawable/icon_face"
+                />
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:padding="@dimen/dp_5"
+                android:text="发送"
+                android:textColor="#ababab"
+                android:textSize="@dimen/sp_15"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,9 +8,10 @@ import com.cucr.myapplication.listener.Pay.PayLisntener;
  */
 
 public interface PayCenterInterf {
-    void aliPay(double howMuch, String subject, OnCommonListener listener);
 
-    void wxPay();
+    void aliPay(double howMuch, String subject,int type,int activeId, OnCommonListener listener);
+
+    void wxPay(double total_fee, String body,int type,int activeId, OnCommonListener listener);
 
     void queryResult(String order, PayLisntener listener);
 

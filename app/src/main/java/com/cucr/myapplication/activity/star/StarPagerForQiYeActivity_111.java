@@ -365,13 +365,6 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        UMShareAPI.get(this).release();
-    }
-
     @OnClick(R.id.ll_photos)
     public void goPhotos(View view) {
         mIntent.putExtra("starId", mStarId);
@@ -392,4 +385,14 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
         startActivity(mIntent);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        UMShareAPI.get(this).release();
+        mDataList.clear();
+        mDataList = null;
+    }
+
 }

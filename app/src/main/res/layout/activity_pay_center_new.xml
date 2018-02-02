@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.pay.PayCenterActivity"
+    tools:context="com.cucr.myapplication.activity.pay.YyhdPayActivity"
     >
 
 
@@ -182,7 +182,6 @@
                 android:layout_marginTop="@dimen/dp_25"
                 android:background="#ccc"
                 />
-
 
             <TextView
                 android:layout_width="wrap_content"

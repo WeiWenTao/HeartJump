@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_item"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_userhead"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_margin="@dimen/dp_10"
+            android:src="@drawable/img_user"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                >
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最美人间四月天"
+                    android:textColor="#333"
+                    android:textSize="@dimen/sp_14"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/rl_good"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_10"
+                    >
+
+
+                    <ImageView
+                        android:id="@+id/iv_good"
+                        android:layout_width="@dimen/dp_25"
+                        android:layout_height="23dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tv_good_value"
+                        android:padding="@dimen/dp_5"
+                        android:src="@drawable/good_selector"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_good_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingBottom="1dp"
+                        android:text="23"
+                        android:textColor="#929292"
+                        android:textSize="@dimen/sp_12"
+                        />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:id="@+id/tv_comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3-20 10:25"
+                    android:textColor="#929292"
+                    android:textSize="@dimen/sp_12"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.vanniktech.emoji.EmojiTextView
+        android:layout_marginRight="@dimen/dp_10"
+        android:id="@+id/tv_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginLeft="60dp"
+        android:text="哇哇哇！行走的荷尔蒙，帅死了！"
+        android:textColor="#333"
+        android:textIsSelectable="true"
+        android:textSize="@dimen/sp_15"
+        app:emojiSize="@dimen/sp_15"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#ccc"
+        android:layout_height="1px"/>
+</LinearLayout>

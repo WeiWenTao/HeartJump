@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +14,12 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HytAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.Hyt.HytListInfos;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.bean.Hyt.HytListInfos;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -39,9 +39,14 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
     private int page;
     private int rows;
     private MyWaitDialog mMyWaitDialog;
+    private SwipeRecyclerView mRlv_hyt;
+    private boolean isLoadFinish;
 
     public Fragment_hyt(int startId) {
         this.startId = startId;
+    }
+
+    public Fragment_hyt() {
     }
 
     @Nullable
@@ -63,11 +68,11 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
         mIntent = new Intent(MyApplication.getInstance(), CreatHytActivity.class);
         mIntent.putExtra("starId", startId);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        RecyclerView rlv_hyt = (RecyclerView) rootView.findViewById(R.id.rlv_hyt);
-        rlv_hyt.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        mRlv_hyt = (SwipeRecyclerView) rootView.findViewById(R.id.rlv_hyt);
+        mRlv_hyt.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mAdapter = new HytAdapter();
         mAdapter.setOnClickItems(this);
-        rlv_hyt.setAdapter(mAdapter);
+        mRlv_hyt.setAdapter(mAdapter);
         queryHyt();
     }
 

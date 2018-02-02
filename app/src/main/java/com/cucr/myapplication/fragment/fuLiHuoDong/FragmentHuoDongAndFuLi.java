@@ -216,10 +216,4 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
             iv_sjx.setVisibility(View.VISIBLE);
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mFragments.clear();
-    }
 }

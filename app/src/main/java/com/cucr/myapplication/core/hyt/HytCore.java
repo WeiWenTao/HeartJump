@@ -155,6 +155,66 @@ public class HytCore implements HytInterf {
         mQueue.add(Constans.TYPE_SEVEN, request, listener);
     }
 
+    //后援活动支持者查询
+    @Override
+    public void querySupport(int page, int rows, int activeId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_SUPPORT_QUERY, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("page",page)
+                .add("rows",rows)
+                .add("activeId",activeId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_EIGHT, request, listener);
+    }
+
+    //应援活动评论查询
+    @Override
+    public void queryComment(int page, int rows, int activeId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_COMMENT_QUERY, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("page",page)
+                .add("rows",rows)
+                .add("activeId",activeId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_NINE, request, listener);
+    }
+
+    //应援活动评论
+    @Override
+    public void YyhdComment(int activeId, String content, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_COMMENT, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("activeId",activeId)
+                .add("comment",content)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_TEN, request, listener);
+    }
+
+    //应援活动评论点赞
+    @Override
+    public void YyhdCommentGood(int commentId, int activeId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_COMMENT_GOOD, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("activeId",activeId)
+                .add("commentId",commentId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_ELEVEN, request, listener);
+    }
+
+    @Override
+    public void YyhdGood(int activeId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_GOOD, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("activeId",activeId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_TWEVEN, request, listener);
+    }
+
 
     private OnResponseListener<String> listener = new OnResponseListener<String>() {
         @Override

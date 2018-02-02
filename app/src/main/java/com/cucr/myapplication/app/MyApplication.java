@@ -16,6 +16,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -44,6 +46,8 @@ public class MyApplication extends Application {
     private static RequestOptions glideOptions;
 
     private static Gson mGson;
+    public static IWXAPI mMsgApi;
+
 
 
     @Override
@@ -52,7 +56,10 @@ public class MyApplication extends Application {
         //友盟
         Config.DEBUG = true;
         UMShareAPI.get(this);
-
+//-----------------------------微信支付
+        mMsgApi = WXAPIFactory.createWXAPI(this,"wxbe72c16183cf70da");
+        mMsgApi.registerApp("wxbe72c16183cf70da");
+//-----------------------------
 
         //内存泄漏框架
         LeakCanary.install(this);
@@ -164,7 +171,6 @@ public class MyApplication extends Application {
     }
 
     {
-
         PlatformConfig.setWeixin("wxbe72c16183cf70da", "c26860d780adbae2ee43fd2363daeb12");
         PlatformConfig.setSinaWeibo("3008130677", "c3d7b94e018e217fddbb2f57fc97d650", "http://www.cucrxt.com");
         PlatformConfig.setQQZone("1106501884", "aEO7SIixJOZjsmqj");

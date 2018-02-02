@@ -11,7 +11,6 @@ import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -30,6 +29,7 @@ public class PayCenterCore implements PayCenterInterf {
 
     private RequestQueue mQueue;
     private OnCommonListener aliPayListener;
+    private OnCommonListener wxPayListener;
     private PayLisntener payResultListener;
     private OnCommonListener userMoneyListener;
     private Context context;
@@ -41,26 +41,41 @@ public class PayCenterCore implements PayCenterInterf {
 
 
     @Override
-    public void aliPay(double howMuch, String subject, OnCommonListener listener) {
-        MyLogger.jLog().i("howMuch:"+howMuch);
+    public void aliPay(double howMuch, String subject, int type, int activeId, OnCommonListener listener) {
         aliPayListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ALIPAY_PAY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("timeout_express", "30m");
         request.add("product_code", "QUICK_MSECURITY_PAY");
-        request.add("total_amount", howMuch + "");
+        request.add("total_amount", 0.01 + "");
         request.add("subject", subject);
         request.add("out_trade_no", getOutTradeNo());
         request.add("body", "真是太好用了!!!");
-
+        //传0充值星币  传1充值现金
+        request.add("type", type);
+        if (type == 1) {
+            request.add("hytActiveId", activeId);
+        }
         request.setCancelSign(1);
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 
     @Override
-    public void wxPay() {
+    public void wxPay(double total_fee, String body, int type, int activeId, OnCommonListener listener) {
+        wxPayListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_WX_PAY, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("total_fee", total_fee);
+        request.add("body", body);
 
+        //传0充值星币  传1充值现金
+        request.add("type", type);
+        if (type == 1) {
+            request.add("hytActiveId", activeId);
+        }
+
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
     @Override
@@ -116,7 +131,7 @@ public class PayCenterCore implements PayCenterInterf {
                     break;
 
                 case Constans.TYPE_TWO:
-
+                    wxPayListener.onRequestSuccess(response);
                     break;
 
                 case Constans.TYPE_THREE:

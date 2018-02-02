@@ -9,7 +9,9 @@ public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
 
-//    public static final String HTTP_HOST = "http://192.168.1.123:8080";
+//    public static final String HTTP_HOST = "http://192.168.1.110:8080";
+//    public static final String HTTP_HOST = "http://yin-wiki.51vip.biz";
+
 
     //服务协议
     public static final String HTTP_YHXY = "http://www.cucrxt.com/fwxy.html";
@@ -19,6 +21,12 @@ public class HttpContans {
 
     //验证码
     public static final String ADDRESS_YZM = "/interface/checkCode/getCheckCode";
+
+    //三方登录
+    public static final String ADDRESS_OTHER_LOAD = "/interface/user/otherLogin";
+
+    //三方注册
+    public static final String ADDRESS_OTHER_REGIST = "/interface/user/otherRegist";
 
     //动态登录
     public static final String ADDRESS_DONGTAI_LOAD = "/interface/user/dynamicLogin";
@@ -94,6 +102,9 @@ public class HttpContans {
 
     //支付宝支付接口
     public static final String ADDRESS_ALIPAY_PAY = "/interface/pay/alipaySign";
+
+    //微信支付接口
+    public static final String ADDRESS_WX_PAY = "/interface/pay/wxPrePay";
 
     //支付宝验证接口
     public static final String ADDRESS_ALIPAY_CHECK = "/interface/pay/payCheck";
@@ -205,5 +216,23 @@ public class HttpContans {
 
     //查询BigPad
     public static final String ADDRESS_BIGPAD_QUERY = "/interface/mobileHelpTeamActiveAction/bigpadQuery";
+
+    //后援团活动支持(报名)
+    public static final String ADDRESS_HYHD_SUPPORT = "/interface/mobileHelpTeamActiveAction/activeSignUp";
+
+    //后援团活动支持(报名)查询
+    public static final String ADDRESS_HYHD_SUPPORT_QUERY = "/interface/mobileHelpTeamActiveAction/activeSignUpQuery";
+
+    //后援团活动评论查询
+    public static final String ADDRESS_HYHD_COMMENT_QUERY = "/interface/mobileHelpTeamActiveAction/commentQuery";
+
+    //后援团活动评论
+    public static final String ADDRESS_HYHD_COMMENT = "/interface/mobileHelpTeamActiveAction/comment";
+
+    //后援团活动评论点赞
+    public static final String ADDRESS_HYHD_COMMENT_GOOD = "/interface/mobileHelpTeamActiveAction/commentGiveUp";
+
+    //后援团活动点赞
+    public static final String ADDRESS_HYHD_GOOD = "/interface/mobileHelpTeamActiveAction/giveUp";
 
 }

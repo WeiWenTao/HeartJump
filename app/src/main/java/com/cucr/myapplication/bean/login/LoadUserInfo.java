@@ -13,6 +13,24 @@ public class LoadUserInfo {
 
     private String msg;
     private boolean success;
+    private Object object;
+
+    @Override
+    public String toString() {
+        return "LoadUserInfo{" +
+                "msg='" + msg + '\'' +
+                ", success=" + success +
+                ", mObject=" + object +
+                '}';
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
 
     public String getMsg() {
         return msg;

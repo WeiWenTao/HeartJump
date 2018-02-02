@@ -184,8 +184,8 @@ public class OrderInfoUtil2_0 {
 		Random r = new Random();
 		key = key + r.nextInt();
 		key = key.substring(0, 15);
-		return "123";
-//		return key;
+//		return "123";
+		return key;
 	}
 
 }

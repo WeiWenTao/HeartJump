@@ -70,10 +70,10 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         //如果是企业用户
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE){
+        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
             //跳转企业用户看的明星主页
             mIntent = new Intent(MyApplication.getInstance(), StarPagerForQiYeActivity_111.class);
-        }else {
+        } else {
             //其他用户跳转粉丝看的主页
             mIntent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
         }
@@ -144,7 +144,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
 
     @OnClick(R.id.iv_head3)
     public void iv_head3(View view) {
-       starId = mRowsBean3.getId();
+        starId = mRowsBean3.getId();
         mIntent.putExtra("starId", starId);
         startActivity(mIntent);
         //发送明星id到明星主页
@@ -259,7 +259,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
                 BangDanInfo bangDanInfo = mGson.fromJson(response.get(), BangDanInfo.class);
                 if (bangDanInfo.isSuccess()) {
                     mAdapter.addData(bangDanInfo.getRows());
-                    if (rows > bangDanInfo.getRows().size()){
+                    if (rows > bangDanInfo.getRows().size()) {
                         ToastUtils.showEnd();
                     }
                 } else {
