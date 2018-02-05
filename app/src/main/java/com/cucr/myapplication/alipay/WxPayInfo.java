@@ -151,6 +151,37 @@ public class WxPayInfo {
             public void setTimestamp(int timestamp) {
                 this.timestamp = timestamp;
             }
+
+            @Override
+            public String toString() {
+                return "MsgBean{" +
+                        "appid='" + appid + '\'' +
+                        ", noncestr='" + noncestr + '\'' +
+                        ", packageX='" + packageX + '\'' +
+                        ", partnerid='" + partnerid + '\'' +
+                        ", prepayid='" + prepayid + '\'' +
+                        ", sign='" + sign + '\'' +
+                        ", timestamp=" + timestamp +
+                        ", orderNo='" + orderNo + '\'' +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "ObjBean{" +
+                    "msg=" + msg +
+                    ", code='" + code + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "WxPayInfo{" +
+                "msg='" + msg + '\'' +
+                ", obj=" + obj +
+                ", success=" + success +
+                '}';
     }
 }

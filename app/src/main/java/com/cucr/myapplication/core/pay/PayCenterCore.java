@@ -62,7 +62,7 @@ public class PayCenterCore implements PayCenterInterf {
     }
 
     @Override
-    public void wxPay(double total_fee, String body, int type, int activeId, OnCommonListener listener) {
+    public void wxPay(int total_fee, String body, int type, int activeId, OnCommonListener listener) {
         wxPayListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_WX_PAY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));

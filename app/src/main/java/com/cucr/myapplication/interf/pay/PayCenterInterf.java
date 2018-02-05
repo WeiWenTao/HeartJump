@@ -11,7 +11,7 @@ public interface PayCenterInterf {
 
     void aliPay(double howMuch, String subject,int type,int activeId, OnCommonListener listener);
 
-    void wxPay(double total_fee, String body,int type,int activeId, OnCommonListener listener);
+    void wxPay(int total_fee, String body,int type,int activeId, OnCommonListener listener);
 
     void queryResult(String order, PayLisntener listener);
 

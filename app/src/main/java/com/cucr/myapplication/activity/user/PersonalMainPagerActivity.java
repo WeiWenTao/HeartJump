@@ -132,7 +132,8 @@ public class PersonalMainPagerActivity extends Activity {
         mUserCore.queryUserCenterInfo(mUserId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                UserCenterInfo userInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
+                String json = response.get();
+                UserCenterInfo userInfo = MyApplication.getGson().fromJson(json, UserCenterInfo.class);
                 if (userInfo.isSuccess()) {
                     setData(userInfo.getObj());
                 } else {

@@ -44,6 +44,21 @@
         android:theme="@style/AppTheme"
         >
 
+        <!-- ==================7.0报错==================== -->
+        <!--
+        <provider
+            android:authorities="你的应用名.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+        -->
+        <!-- ====================================== -->
+
+
         <!-- ======================友盟========================= -->
         <!-- 友盟分享 -->
         <meta-data
@@ -405,6 +420,8 @@
             >
         </activity>
         <activity android:name=".activity.regist.BindTelActivity">
+        </activity>
+        <activity android:name=".activity.star.StarPagerActivity">
         </activity>
     </application>
 

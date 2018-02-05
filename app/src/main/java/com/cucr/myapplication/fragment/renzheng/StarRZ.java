@@ -26,20 +26,21 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.RZ.RzResult;
+import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.renZheng.CommitStarRzCore;
 import com.cucr.myapplication.core.renZheng.QueryRzResult;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.RZ.RzResult;
-import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogPhoto;
 import com.cucr.myapplication.widget.picture.MyLoader;
 import com.google.gson.Gson;
 import com.jaiky.imagespickers.ImageConfig;
@@ -141,6 +142,8 @@ public class StarRZ extends Fragment {
     private ImageConfig imageConfig;
     private ImageLoader instance;
     private Integer dataId;
+    private DialogPhoto mDialog;
+    private View mRootView;
 
     @Nullable
     @Override
@@ -151,15 +154,16 @@ public class StarRZ extends Fragment {
         mGson = new Gson();
         mCore = new CommitStarRzCore(getActivity());
         mQueryCore = new QueryRzResult();
-        View rootView = inflater.inflate(R.layout.fragment_ren_zheng_star, container, false);
-        ViewUtils.inject(this, rootView);
+        mRootView = inflater.inflate(R.layout.fragment_ren_zheng_star, container, false);
+        ViewUtils.inject(this, mRootView);
         initView();
         initHead();
-        return rootView;
+        return mRootView;
 
     }
 
     private void initView() {
+        mDialog = new DialogPhoto(mRootView.getContext(), R.style.MyDialogStyle);
         mQueryCore.queryRz(Constans.RZ_STAR, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -198,8 +202,8 @@ public class StarRZ extends Fragment {
         et_star_price.setText("" + startCost);
         iv_add_pic_positive.setVisibility(View.VISIBLE);
         iv_add_pic_nagetive.setVisibility(View.VISIBLE);
-        instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive,MyApplication.getImageLoaderOptions());
-        instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive,MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive, MyApplication.getImageLoaderOptions());
         //控件不可用
         setView(false, "审核中");
 

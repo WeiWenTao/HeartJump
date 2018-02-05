@@ -9,22 +9,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.star.StarPagerForFans;
-import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.DaBangAdapter;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.dabang.BangDanCore;
-import com.cucr.myapplication.fragment.BaseFragment;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.dabang.BangDanInfo;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
-import com.cucr.myapplication.utils.SpUtil;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.dabang.BangDanCore;
+import com.cucr.myapplication.fragment.BaseFragment;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
@@ -70,13 +66,14 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         //如果是企业用户
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+       /* if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
             //跳转企业用户看的明星主页
             mIntent = new Intent(MyApplication.getInstance(), StarPagerForQiYeActivity_111.class);
         } else {
             //其他用户跳转粉丝看的主页
             mIntent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
-        }
+        }*/
+        mIntent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mMyRefreshListView = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
         ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);

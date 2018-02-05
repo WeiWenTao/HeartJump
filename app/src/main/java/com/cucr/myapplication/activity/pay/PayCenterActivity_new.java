@@ -218,12 +218,10 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
         switch (payStyle) {
             case 1://支付宝
                 alipay();
-                MyLogger.jLog().i("支付宝");
                 break;
 
             case 2://微信
                 wxpay();
-                MyLogger.jLog().i("微信");
                 break;
         }
     }

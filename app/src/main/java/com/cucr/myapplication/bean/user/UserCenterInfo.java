@@ -62,7 +62,7 @@ public class UserCenterInfo {
         private int sex;
         private int gzmxsl;
         private int xbsl;
-        private Object userPicCover;
+        private String userPicCover;
         private int isgz;
         private String realName;
         private String yhnc;
@@ -117,11 +117,11 @@ public class UserCenterInfo {
             this.xbsl = xbsl;
         }
 
-        public Object getUserPicCover() {
+        public String getUserPicCover() {
             return userPicCover;
         }
 
-        public void setUserPicCover(Object userPicCover) {
+        public void setUserPicCover(String userPicCover) {
             this.userPicCover = userPicCover;
         }
 

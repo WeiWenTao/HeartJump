@@ -11,18 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.star.StarPagerForFans;
-import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.RLVStarAdapter;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
-import com.cucr.myapplication.utils.SpUtil;
+import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -73,15 +69,8 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
         mRlv_starlist.getRecyclerView().addItemDecoration(decor);
         mRlv_starlist.setAdapter(mAdapter);
         mRlv_starlist.onLoadingMore();
-        //如果是企业用户
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE){
-            //跳转企业用户看的明星主页
-            mIntent = new Intent(MyApplication.getInstance(), StarPagerForQiYeActivity_111.class);
-        }else {
-            //其他用户跳转粉丝看的主页
-            mIntent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
-        }
-
+        //跳转企业用户看的明星主页
+        mIntent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
         mAdapter.setOnItemClick(new RLVStarAdapter.OnItemClick() {
             @Override
             public void onItemClick(int starId) {

@@ -388,7 +388,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                         }
                     });
                 } else {
-                    ToastUtils.showToast(YyhdPayActivity.this, orderInfo);
+                    ToastUtils.showToast( orderInfo);
                 }
             }
         });
@@ -401,13 +401,14 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
             return;
         }
         //初始化微信api
-        mIwxapi = WXAPIFactory.createWXAPI(this, "wxbe72c1611`83cf70da");
+        mIwxapi = WXAPIFactory.createWXAPI(MyApplication.getInstance(), "wxbe72c161183cf70da");
         mIwxapi.registerApp("wxbe72c16183cf70da"); //注册appid  appid可以在开发平台获取
 
         payCore.wxPay(1, "微信充值", 0, -1, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
+                MyLogger.jLog().i("payInfo:" + payInfo);
                 orderNo = payInfo.getObj().getMsg().getOrderNo();
                 if (payInfo.isSuccess()) {
                     //开启线程支付
@@ -427,7 +428,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                         }
                     });
                 } else {
-                    ToastUtils.showToast(YyhdPayActivity.this, payInfo.getMsg());
+                    ToastUtils.showToast( payInfo.getMsg());
                 }
             }
         });

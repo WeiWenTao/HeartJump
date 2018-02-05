@@ -22,16 +22,11 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
-import com.cucr.myapplication.core.pay.PayCenterCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
@@ -43,6 +38,12 @@ import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -101,6 +102,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private PopupWindow popWindow;
     private DaShangPagerAdapter mDaShangPagerAdapter;
     private DialogShareStyle mDialog;
+    private Intent mIntent;
 
     @SuppressLint("ValidFragment")
     public Fragment_star_fentuan(int id) {
@@ -505,11 +507,16 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
     @Override
-    public void onClickUser(int userId) {
-        Intent intent = new Intent(mContext, PersonalMainPagerActivity.class);
-        intent.putExtra("userId", userId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    public void onClickUser(int userId, boolean isStar) {
+        if (isStar) {
+            mIntent = new Intent(mContext, StarPagerActivity.class);
+            mIntent.putExtra("starId", userId);
+        } else {
+            mIntent = new Intent(mContext, PersonalMainPagerActivity.class);
+            mIntent.putExtra("userId", userId);
+        }
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
     }
 
 

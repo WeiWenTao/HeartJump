@@ -122,10 +122,10 @@ public class MineFragment extends BaseFragment {
     //分配权限  先隐藏再根据身份显示
     private void showAndHide() {
         switch (((int) SpUtil.getParam(SpConstant.SP_STATUS,0))){
-            case Constans.TYPE_EVERYONE:    //无角色
+            case Constans.STATUS_EVERYONE:    //无角色
 
                 break;
-             case Constans.TYPE_ADMIN:      //管理员
+             case Constans.STATUS_ADMIN:      //管理员
 
                 break;
               case Constans.STATUS_STAR:    //明星
@@ -135,7 +135,7 @@ public class MineFragment extends BaseFragment {
               case Constans.STATUS_QIYE:    //企业
                   rl_my_yuyue.setVisibility(View.VISIBLE);  //预约
                 break;
-              case Constans.TYPE_COMMON_USER://普通用户
+              case Constans.STATUS_COMMON_USER://普通用户
 
                 break;
 

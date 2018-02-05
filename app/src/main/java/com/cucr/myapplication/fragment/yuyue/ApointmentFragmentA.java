@@ -21,19 +21,19 @@ import android.widget.Spinner;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.adapter.SpinnerAdapter.MySp1Adapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
-import com.cucr.myapplication.fragment.BaseFragment;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.bean.eventBus.EventOnClickFocus;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.bean.starList.StarListKey;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
+import com.cucr.myapplication.fragment.BaseFragment;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -125,7 +125,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         mAdapter = new StarListForQiYeAdapter(getActivity());
         allRows = new ArrayList<>();
         if (mIntent == null){
-            mIntent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
+            mIntent = new Intent(mContext, StarPagerActivity.class);
         }
         rows = 16;
         page = 1;

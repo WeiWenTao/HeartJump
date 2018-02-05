@@ -12,23 +12,30 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.hyt.HYTActivity;
+import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
+import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
+import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.bean.others.FragmentInfos;
+import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
+import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
-import com.cucr.myapplication.bean.others.FragmentInfos;
-import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -57,14 +64,7 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by cucr on 2017/11/3.
- * 因为要跳转 不可直接复用fragmengt
- */
-
-public class StarPagerForFans extends FragmentActivity {
-
-    private List<FragmentInfos> mDataList;
+public class StarPagerActivity extends FragmentActivity {
 
     //ViewPager
     @ViewInject(R.id.viewpager)
@@ -90,31 +90,45 @@ public class StarPagerForFans extends FragmentActivity {
     @ViewInject(R.id.backdrop)
     private ImageView backdrop;
 
-//    //关注
-//    @ViewInject(R.id.tv_focus_forqiye)
-//    private TextView tv_focus_forqiye;
+    //关注
+    @ViewInject(R.id.tv_focus_forqiye)
+    private TextView tv_focus_forqiye;
 
     //礼物动画
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
 
+    //企业看的
+    @ViewInject(R.id.ll_qiye_look)
+    private LinearLayout ll_qiye_look;
+
+    private StarListInfos.RowsBean mData;
     private FocusCore mCore;
     private Gson mGson;
     private int mStarId;
     private QueryStarListCore mStarCore;
+    private List<FragmentInfos> mDataList;
+    private Intent mIntent;
+    private float percent;//占屏比
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_star_pager_forfans);
+        setContentView(R.layout.activity_star_pager);
+
         EventBus.getDefault().register(this);
-        ViewUtils.inject(this);
-        mCore = new FocusCore();
-        mGson = MyApplication.getGson();
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-
-        initDatas();
+        ViewUtils.inject(this);
+        //确定身份 企业用户才显示预约栏
+        ll_qiye_look.setVisibility(CommonUtils.isQiYe() ? View.VISIBLE : View.GONE);
+        mCore = new FocusCore();
+        percent = 3.0f;
+        mGson = new Gson();
+        mStarCore = new QueryStarListCore();
+        mIntent = new Intent();
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getDatas();
         initIndicator();
         initVp();
     }
@@ -130,9 +144,11 @@ public class StarPagerForFans extends FragmentActivity {
         mDataList = new ArrayList<>();
 
         mDataList.add(new FragmentInfos(new Fragment_star_xingwen(true), "星闻"));
-//        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR) {
-//            mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
-//        }
+        //企业和明星用户才能看到数据信息
+        if (CommonUtils.isStar() || CommonUtils.isQiYe()) {
+            mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
+            percent = 4.0f;
+        }
         mDataList.add(new FragmentInfos(new Fragment_star_fentuan(mStarId), "粉团"));
         mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
 
@@ -148,7 +164,7 @@ public class StarPagerForFans extends FragmentActivity {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, 3.0f);
+                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, percent);
                 simplePagerTitleView.setText(mDataList.get(index).getTitle());
                 simplePagerTitleView.setNormalColor(Color.parseColor("#bfbfbf"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#ff4f49"));
@@ -178,58 +194,82 @@ public class StarPagerForFans extends FragmentActivity {
         ViewPagerHelper.bind(magicIndicator, mViewPager);
     }
 
-    // TODO: 2017/12/4 关注按钮
-  /*  //关注
+    //出演要求
+    @OnClick(R.id.tv_request)
+    public void request(View view) {
+        Intent intent = new Intent(MyApplication.getInstance(), StarRequiresActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //关注
     @OnClick(R.id.tv_focus_forqiye)
     public void focus(View view) {
         //是否已经关注该明星
         if (mData.getIsfollow() == 1) {
-            mCore.cancaleFocus(mData.getId(), new OnCommonListener() {
+            mCore.cancaleFocus(mStarId, new OnCommonListener() {
                 @Override
                 public void onRequestSuccess(Response<String> response) {
                     ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                     if (reBackMsg.isSuccess()) {
                         ToastUtils.showToast("已取消关注！");
                         mData.setIsfollow(0);
+                        tv_focus_forqiye.setText("关注");
                     } else {
                         ToastUtils.showToast(reBackMsg.getMsg());
                     }
                 }
             });
         } else {
-            mCore.toFocus(mData.getId());
+            mCore.toFocus(mStarId);
             mData.setIsfollow(1);
+            tv_focus_forqiye.setText("已关注");
         }
-        tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
-    }*/
 
-    //预约
-    @OnClick(R.id.tv_yuyue)
-    public void goYuYue(View view) {
-        ToastUtils.showToast("企业用户才能预约明星哦");
     }
 
-    public void initDatas() {
+    //跳转预约界面
+    @OnClick(R.id.tv_yuyue)
+    public void goYuYue(View view) {
+        Intent intent = new Intent(MyApplication.getInstance(), YuYueCatgoryActivity.class);
+        intent.putExtra("data", mData);
+        startActivity(intent);
+    }
+
+    public void getDatas() {
+
         //获取数据
         mStarId = getIntent().getIntExtra("starId", -1);
-        mStarCore = new QueryStarListCore();
+        //并初始化
         mStarCore.queryStar(2, 1, 1, mStarId, null, null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starInfos.isSuccess()) {
-                    StarListInfos.RowsBean rowsBean = starInfos.getRows().get(0);
+                    mData = starInfos.getRows().get(0);
                     //并初始化
-                    tv_fans.setText("粉丝 " + rowsBean.getFansCount());
-                    tv_starname.setText(rowsBean.getRealName());
-                    tv_base_title.setText(rowsBean.getRealName());
-//                    tv_focus_forqiye.setText(rowsBean.getIsfollow() == 1 ? "已关注" : "关注");
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                    tv_fans.setText("粉丝 " + mData.getFansCount());
+                    tv_starname.setText(mData.getRealName());
+                    tv_base_title.setText(mData.getRealName());
+                    tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
+                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
                 }
             }
         });
+    }
+
+    @OnClick(R.id.iv_base_back)
+    public void back(View view) {
+        setResult(111, getIntent().putExtra("data", mData));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(111, getIntent().putExtra("data", mData));
+        finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -328,16 +368,33 @@ public class StarPagerForFans extends FragmentActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        UMShareAPI.get(this).release();
+    @OnClick(R.id.ll_photos)
+    public void goPhotos(View view) {
+        mIntent.putExtra("starId", mStarId);
+        mIntent.setClass(MyApplication.getInstance(), PhotosAlbumActivity.class);
+        startActivity(mIntent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    //后援团
+    @OnClick(R.id.ll_hyt)
+    public void goHouYuanTuan(View view) {
+        mIntent.putExtra("starId", mStarId);
+        mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
+        startActivity(mIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        UMShareAPI.get(this).release();
+        mDataList.clear();
+        mDataList = null;
     }
 }

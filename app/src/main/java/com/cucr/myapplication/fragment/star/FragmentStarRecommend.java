@@ -13,10 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.star.StarPagerForQiYeActivity_111;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 
@@ -74,7 +74,7 @@ public class FragmentStarRecommend extends Fragment implements SwipeRecyclerView
             @Override
             public void onClickItems(int position) {
                 final StarListInfos.RowsBean rowsBean = rows.get(position);
-                Intent intent = new Intent(mContext, StarPagerForQiYeActivity_111.class);
+                Intent intent = new Intent(mContext, StarPagerActivity.class);
                 intent.putExtra("data", rowsBean);
                 finalPosition = position;
                 startActivityForResult(intent, 222);

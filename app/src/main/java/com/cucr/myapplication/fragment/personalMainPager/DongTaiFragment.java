@@ -305,7 +305,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
 
     //点击用户头像
     @Override
-    public void onClickUser(int userId) {
+    public void onClickUser(int userId,boolean isStar) {
         ToastUtils.showToast("已经是Ta的主页了哦");
 //        Intent intent = new Intent(mContext, PersonalMainPagerActivity.class);
 //        intent.putExtra("userId", userId);

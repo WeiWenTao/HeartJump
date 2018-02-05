@@ -1,71 +1,56 @@
 package com.cucr.myapplication.activity.setting;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.Window;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.editPersonalInfo.EditInfoCore;
-import com.cucr.myapplication.dao.CityDao;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.bean.EditPersonalInfo.PersonalInfo;
 import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.setting.BirthdayDate;
 import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.editPersonalInfo.EditInfoCore;
+import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.cucr.myapplication.utils.GetPathFromUri4kitkat;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
+import com.cucr.myapplication.widget.dialog.DialogGender;
+import com.cucr.myapplication.widget.dialog.DialogPhoto;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.luck.picture.lib.PictureSelectionModel;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.compress.Luban;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionCallback;
-import me.weyye.hipermission.PermissonItem;
 
-import static android.content.ContentValues.TAG;
+import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 
 
-public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
+public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.OnClickBt {
 
     //选择生日
     @ViewInject(R.id.tv_birthday_edit)
@@ -83,10 +68,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     @ViewInject(R.id.iv_head)
     private CircleImageView iv_head;
 
-    //popWindow背景
-    @ViewInject(R.id.fl_pop_bg)
-    private FrameLayout fl_pop_bg;
-
     //个性签名
     @ViewInject(R.id.et_my_sign)
     private EditText et_my_sign;
@@ -99,46 +80,26 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     @ViewInject(R.id.tv_phone)
     private TextView tv_phone;
 
-
     private DialogBirthdayStyle mBirthdayStyle;
     private String mYear = "0000";
     private String mMon = "00";
     private String mDay = "00";
     private String dateText;
-
-
-    private PopupWindow popWindow;
-    private PopupWindow genderPopWindow;
-    private LayoutInflater layoutInflater;
-    private TextView photograph, albums;
-    private LinearLayout cancel;
-
-    public static final int PHOTOZOOM = 0; // 相册/拍照
-    public static final int PHOTOTAKE = 1; // 相册/拍照
     public static final int IMAGE_COMPLETE = 2; // 结果
-    public static final int CROPREQCODE = 3; // 截取
-    private String photoSavePath;//保存路径
-    private String photoSaveName;//图pian名
-    private String path;//图片全路径
     private EditInfoCore mCore;//编辑
-    private String mProvince = "";
-    private String mCity = "";
-    private String mTemppath = "";
+    private String mProvince;
+    private String mCity;
+    private String mTemppath;
     private String birthdayMsg;
     private PersonMessage.ObjBean obj;
-    private List<PermissonItem> permissonItems;
-
-    public PersonalInfoActivity() {
-        super();
-    }
-
+    private DialogPhoto mDialog;
+    private DialogGender mGenderDialog;
+    private PictureSelectionModel mModel;
 
     @Override
     protected void initChild() {
         initTitle("个人资料");
-        permissonItems = new ArrayList<>();
-        permissonItems.add(new PermissonItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
-
+        initDialog();
         //用户编辑
         mCore = new EditInfoCore();
         //查询
@@ -146,12 +107,18 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         //初始化对话框
         mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, true);
 
-        initHead();
-
-        if (obj != null) {
-            initView();
-        }
+        initView();
     }
+
+    private void initDialog() {
+        mDialog = new DialogPhoto(this, R.style.MyDialogStyle);
+        mGenderDialog = new DialogGender(this, R.style.MyDialogStyle);
+        Window dialogWindow = mDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.BottomDialog_Animation);
+        mDialog.setOnClickBt(this);
+    }
+
 
     @Override
     protected int getChildRes() {
@@ -163,7 +130,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         //将editText光标放置末尾
         et_my_sign.setSelection(et_my_sign.getText().length());
         et_nickname.setSelection(et_nickname.getText().length());
-
         //头像回显
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
         //昵称回显
@@ -172,7 +138,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         tv_gender.setText(obj.getSex() == 0 ? "男" : "女");
         //电话回显
         tv_phone.setText(obj.getPhone());
-
         if (obj.getBirthday() == null) {
             obj.setBirthday(CommonUtils.getCurrentDate() + "00:00:00");
         }
@@ -186,18 +151,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         MyLogger.jLog().i("saved:" + birthdayMsg);
     }
 
-
-    private void initHead() {
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        File file = new File(Environment.getExternalStorageDirectory(), "ClipHeadPhoto/cache");
-        if (!file.exists())
-            file.mkdirs();
-        photoSavePath = Environment.getExternalStorageDirectory() + "/ClipHeadPhoto/cache/";
-        photoSaveName = System.currentTimeMillis() + ".png";
-    }
-
-
     //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
     @Override
     protected void onNewIntent(Intent intent) {
@@ -210,7 +163,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             mProvince = locationData.getName();
             tv_set_location.setText(mProvince + "  " + mCity);
         }
-
     }
 
     //选择生日
@@ -239,72 +191,19 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 mYear = date.getYear() + "";
                 mMon = (date.getMonth() + (isChange ? 1 : 2)) + "";
                 mDay = date.getDay() + "";
-//                } else {
-//                    dateText = CommonUtils.getCurrentDate();
-//                    mYear = dateText.substring(0, 4).trim();
-//                    mMon = dateText.substring(5, 7).trim();
-//                    mDay = dateText.substring(8, 10).trim();
-//                    //如果是以零开头就去掉零
-//                    if (mMon.startsWith("0")) {
-//                        mMon = mMon.substring(1);
-//                    }
-//
-//                    //同上
-//                    if (mDay.startsWith("0")) {
-//                        mDay = mDay.substring(1);
-//                    }
-
                 tv_birthday_edit.setText(mYear + "-" + mMon + "-" + mDay);
-//                }
-
             }
         });
 
         //显示日期对话框
         mBirthdayStyle.show();
-
-
     }
 
+    //   todo pop_gender_select
     //弹出性别选择框
     @OnClick(R.id.rl_gender)
     public void selectGender(View parent) {
-        CommonUtils.initPopBg(true, fl_pop_bg);
 
-        if (genderPopWindow == null) {
-            View genderView = layoutInflater.inflate(R.layout.pop_gender_select, null);
-            genderPopWindow = new PopupWindow(genderView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-            initGenderPop(genderView);
-        }
-        genderPopWindow.setAnimationStyle(R.style.AnimationFade);
-        genderPopWindow.setFocusable(true);
-        genderPopWindow.setOutsideTouchable(true);
-
-        genderPopWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        genderPopWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        genderPopWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-
-        genderPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                CommonUtils.initPopBg(false, fl_pop_bg);
-            }
-        });
-    }
-
-    private void initGenderPop(View genderView) {
-
-        genderView.findViewById(R.id.rl_popWindow_bg).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                genderPopWindow.dismiss();
-            }
-        });
-
-        genderView.findViewById(R.id.tv_man).setOnClickListener(this);
-        genderView.findViewById(R.id.tv_women).setOnClickListener(this);
-        genderView.findViewById(R.id.tv_cancle).setOnClickListener(this);
     }
 
     //选择所在地
@@ -319,173 +218,44 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     //换头像
     @OnClick(R.id.rl_change_headpic)
     public void chnagePic(View view) {
-        CommonUtils.initPopBg(true, fl_pop_bg);
-        showPopupWindow(iv_head);
-
+        mDialog.show();
     }
-
-
-    @SuppressWarnings("deprecation")
-    private void showPopupWindow(View parent) {
-        if (popWindow == null) {
-            View view = layoutInflater.inflate(R.layout.pop_select_photo, null);
-            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-            initPop(view);
-        }
-        popWindow.setAnimationStyle(R.style.AnimationFade);
-        popWindow.setFocusable(true);
-        popWindow.setOutsideTouchable(true);
-        popWindow.setBackgroundDrawable(new BitmapDrawable());
-        popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        popWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-        popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                CommonUtils.initPopBg(false, fl_pop_bg);
-            }
-        });
-    }
-
-    public void initPop(View view) {
-        photograph = (TextView) view.findViewById(R.id.photograph);//拍照
-        albums = (TextView) view.findViewById(R.id.albums);//相册
-        cancel = (LinearLayout) view.findViewById(R.id.cancel);//取消
-        view.findViewById(R.id.rl_popWindow_bg).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popWindow.dismiss();
-            }
-        });
-        photograph.setOnClickListener(new View.OnClickListener() {
-            private Intent mOpenCameraIntent;
-
-            @Override
-            public void onClick(View arg0) {
-                popWindow.dismiss();
-                photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
-                Uri imageUri = null;
-                mOpenCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
-                mOpenCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                mOpenCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                HiPermission.create(PersonalInfoActivity.this)
-                        .title("小主")
-                        .permissions(permissonItems)
-                        .filterColor(ResourcesCompat.getColor(getResources(), R.color.xtred, getTheme()))//图标的颜色
-                        .msg("这要用到相机哦")
-                        .style(R.style.PermissionBlueStyle)
-                        .permissions(permissonItems)
-                        .checkMutiPermission(new PermissionCallback() {
-                            @Override
-                            public void onClose() {
-                                Log.i(TAG, "用户关闭权限申请");
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                startActivityForResult(mOpenCameraIntent, PHOTOTAKE);
-                            }
-
-                            @Override
-                            public void onDeny(String permisson, int position) {
-                                Log.i(TAG, "onDeny");
-                            }
-
-                            @Override
-                            public void onGuarantee(String permisson, int position) {
-                                Log.i(TAG, "onGuarantee");
-                            }
-                        });
-            }
-        });
-        albums.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                popWindow.dismiss();
-                Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                openAlbumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(openAlbumIntent, PHOTOZOOM);
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                popWindow.dismiss();
-
-            }
-        });
-    }
-
 
     /**
      * 图片选择及拍照结果
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
-        Uri uri = null;
         switch (requestCode) {
-            case PHOTOZOOM://相册
-                if (data == null) {
-                    return;
-                }
-                uri = data.getData();
-//                String[] proj = {MediaStore.Images.Media.DATA};
-//                Cursor cursor = managedQuery(uri, proj, null, null, null);
-//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                cursor.moveToFirst();
-//                this.path = cursor.getString(column_index);// 图片在的路径
-
-                path = GetPathFromUri4kitkat.getPath(MyApplication.getInstance(), uri);
-
-                Intent intent3 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
-                intent3.putExtra("path", this.path);
-                startActivityForResult(intent3, IMAGE_COMPLETE);
-                break;
-
-            case PHOTOTAKE://拍照
-                this.path = photoSavePath + photoSaveName;
-                uri = Uri.fromFile(new File(this.path));
-                Intent intent2 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
-                intent2.putExtra("path", this.path);
-                startActivityForResult(intent2, IMAGE_COMPLETE);
+            //相机和相册的回调结果都在这里
+            case PictureConfig.CHOOSE_REQUEST:
+                // 图片选择结果回调
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                // 例如 LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                Intent intent1 = new Intent(PersonalInfoActivity.this, ClipActivity.class);
+                intent1.putExtra("path", selectList.get(0).getCompressPath());
+                startActivityForResult(intent1, IMAGE_COMPLETE);
                 break;
 
             case IMAGE_COMPLETE:
                 mTemppath = data.getStringExtra("path");
-                iv_head.setImageBitmap(getLoacalBitmap(mTemppath));
+                iv_head.setImageBitmap(CommonUtils.getLoacalBitmap(mTemppath));
                 break;
-
-            default:
-                break;
-
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    /**
-     * @param url
-     * @return
-     */
-    public static Bitmap getLoacalBitmap(String url) {
-        try {
-            FileInputStream fis = new FileInputStream(url);
-            return BitmapFactory.decodeStream(fis);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
         }
     }
-
 
     //昵称
     @OnClick(R.id.rl_nickname)
     public void nickName(View view) {
         et_nickname.requestFocus();
-
     }
 
     //个性签名
@@ -503,9 +273,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         String singName = et_my_sign.getText().toString();
         int sex = tv_gender.getText().equals("男") ? 0 : 1;
 
-        PersonalInfo personalInfo = new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath);
-
-        mCore.save(MyApplication.getInstance(), personalInfo, new OnCommonListener() {
+        mCore.save(MyApplication.getInstance(), new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 ReBackMsg msg = mGson.fromJson(response.get(), ReBackMsg.class);
@@ -521,36 +289,46 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void onBackPressed() {
-        //TODO
-//        if (popWindow.isShowing()){
-//            cancel.performClick();
-//        }
-        super.onBackPressed();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_man:
-                tv_gender.setText("男");
-                genderPopWindow.dismiss();
-                break;
-
-            case R.id.tv_women:
-                tv_gender.setText("女");
-                genderPopWindow.dismiss();
-                break;
-
-            case R.id.tv_cancle:
-                genderPopWindow.dismiss();
-                break;
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         mCore.stopRequest();
         super.onDestroy();
+    }
+
+    //打开相机
+    @Override
+    public void clickCamera() {
+        openCameraOrAblum(true);
+    }
+
+    //打开相册
+    @Override
+    public void clickAlbum() {
+        openCameraOrAblum(false);
+    }
+
+    //打开相册或相机
+    private void openCameraOrAblum(boolean isCamera) {
+        if (isCamera) {
+            mModel = PictureSelector.create(this)//相机
+                    .openCamera(PictureMimeType.ofImage());
+        } else {
+            mModel = PictureSelector.create(this)//相册
+                    .openGallery(PictureMimeType.ofImage());
+        }
+
+        mModel.maxSelectNum(9)
+                .imageSpanCount(3)
+                .selectionMode(PictureConfig.SINGLE)
+                .previewImage(false)
+//                            .selectionMedia(mData)
+                .compressGrade(Luban.THIRD_GEAR)
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .sizeMultiplier(0.5f)
+                .compress(true)
+                .cropCompressQuality(90)
+                .compressMode(LUBAN_COMPRESS_MODE)
+                .isGif(true)
+                .previewEggs(true)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 }

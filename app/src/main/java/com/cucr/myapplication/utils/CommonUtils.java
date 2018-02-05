@@ -21,7 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -213,6 +217,19 @@ public class CommonUtils {
         return bitmap;
     }
 
+    /**
+     * @param url
+     * @return
+     */
+    public static Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     //初始化Popwindow背景
     public static void initPopBg(boolean isIn, FrameLayout fl_pop_bg) {
@@ -553,5 +570,20 @@ public class CommonUtils {
             }
         }
         return false;
+    }
+
+    //获取身份信息
+    public static boolean isStar() {
+        return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR;
+    }
+
+    //获取身份信息
+    public static boolean isQiYe() {
+        return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE;
+    }
+
+    //获取身份信息
+    public static boolean isFans() {
+        return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE;
     }
 }

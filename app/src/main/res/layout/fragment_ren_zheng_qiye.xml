@@ -278,7 +278,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_25"
                 android:text="审核失败原因："
-                android:textColor="@color/red"
+                android:textColor="@color/xtred"
                 android:textSize="@dimen/sp_13"
                 />
 

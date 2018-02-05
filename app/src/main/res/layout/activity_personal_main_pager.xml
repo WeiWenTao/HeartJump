@@ -155,7 +155,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_liao"
-                android:layout_width="@dimen/layout_bothdistance10_worlduc_dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#fbf6f6"
@@ -182,7 +182,7 @@
 
             <TextView
                 android:id="@+id/tv_foucs"
-                android:layout_width="@dimen/layout_bothdistance10_worlduc_dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/xtred"
