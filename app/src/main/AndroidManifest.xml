@@ -354,11 +354,6 @@
         </activity>
         <activity android:name=".activity.pay.XbTxActivity">
         </activity>
-        <activity
-            android:name=".activity.star.StarPagerForQiYeActivity_111"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            >
-        </activity>
         <activity android:name=".activity.fenTuan.DaShangCatgoryActivity">
         </activity>
         <activity android:name=".activity.fenTuan.DaShangRecordActivity">
@@ -368,8 +363,6 @@
         <activity android:name=".activity.fenTuan.DsDuiHuanActivity">
         </activity>
         <activity android:name=".activity.star.StarRequiresActivity">
-        </activity>
-        <activity android:name=".activity.star.StarPagerForFans">
         </activity>
         <activity android:name=".activity.huodong.HdSecondCommentActivity">
         </activity>

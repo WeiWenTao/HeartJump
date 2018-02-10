@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,7 +25,7 @@ import java.util.List;
 public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarListHolder> {
 
     private Context mContext;
-    private List<MyFocusStarInfo.RowsBean> list;
+    private List<FocusInfo.RowsBean> list;
 
     @Override
     public StarListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,19 +34,19 @@ public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarList
         return new StarListHolder(rootView);
     }
 
-    public void setData(List<MyFocusStarInfo.RowsBean> list) {
+    public void setData(List<FocusInfo.RowsBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public void addData(List<MyFocusStarInfo.RowsBean> list) {
+    public void addData(List<FocusInfo.RowsBean> list) {
         this.list.addAll(list);
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(StarListHolder holder, final int position) {
-        final MyFocusStarInfo.RowsBean rowsBean = list.get(position);
+        final FocusInfo.RowsBean rowsBean = list.get(position);
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +      //头像
                 rowsBean.getStart().getUserHeadPortrait(), holder.starPic, MyApplication.getImageLoaderOptions());
         holder.starName.setText(rowsBean.getStart().getRealName());   //name

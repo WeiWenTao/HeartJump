@@ -9,8 +9,8 @@ import android.widget.ImageView;
 
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
 import com.cucr.myapplication.utils.MyLogger;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -24,14 +24,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StarListAdapter extends RecyclerView.Adapter {
     private Context context;
-    private List<MyFocusStarInfo.RowsBean> list;
+    private List<FocusInfo.RowsBean> list;
     private int clickPosition;
 
     public StarListAdapter(Context context) {
         this.context = context;
     }
 
-    public void setData(List<MyFocusStarInfo.RowsBean> list) {
+    public void setData(List<FocusInfo.RowsBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -69,7 +69,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
 
         } else {
 
-            MyFocusStarInfo.RowsBean.StartBean start = list.get(position).getStart();
+            FocusInfo.RowsBean.StartBean start = list.get(position).getStart();
             CircleImageView iv_head = ((MyStarHolder) holder).iv_head;
 
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + start.getUserHeadPortrait(), iv_head, MyApplication.getImageLoaderOptions());

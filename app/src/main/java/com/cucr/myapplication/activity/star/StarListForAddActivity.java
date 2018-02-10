@@ -16,13 +16,13 @@ import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 import com.cucr.myapplication.adapter.PagerAdapter.StarListPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
+import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
+import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
 import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -65,7 +65,7 @@ public class StarListForAddActivity extends Activity {
     private List<Fragment> mFragmentslist;
     private List<String> tytles;
     private StarListForQiYeAdapter mAdapter;
-    private QueryMyFocusStars mFocusCore;
+    private QueryFocus mFocusCore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class StarListForAddActivity extends Activity {
         mFragmentslist = new ArrayList<>();
         tytles = new ArrayList<>();
         mAdapter = new StarListForQiYeAdapter(this);
-        mFocusCore = new QueryMyFocusStars();
+        mFocusCore = new QueryFocus();
         initView();
 //        queryData();
     }
@@ -130,10 +130,10 @@ public class StarListForAddActivity extends Activity {
     //跳转主界面
     @OnClick(R.id.tv_enter)
     public void enterApp(View view) {
-        mFocusCore.queryMyFocuses(-1, 1, 10, new OnCommonListener() {
+        mFocusCore.queryMyFocusStars(-1, 1, 10, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyFocusStarInfo Info = mGson.fromJson(response.get(), MyFocusStarInfo.class);
+                FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
                     if (Info.getRows().size() > 0) {     //有关注明星
                         startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));

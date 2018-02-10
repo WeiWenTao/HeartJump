@@ -10,44 +10,10 @@
     >
             <!--android:id="@+id/iv_my_focus_back"-->
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout_focus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="@dimen/dp_55"
-            android:layout_marginRight="@dimen/dp_55"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/pink"
-            app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/white"
-            ></android.support.design.widget.TabLayout>
-
-        <ImageView
-            android:id="@+id/iv_base_back"
-            style="@style/IconBackStyle"
-            />
-
-
-    </RelativeLayout>
-
-    <android.support.v4.view.ViewPager
-        android:background="@color/white"
-        android:id="@+id/view_pager_focus"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></android.support.v4.view.ViewPager>
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/rlv"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       ></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

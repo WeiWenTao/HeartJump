@@ -30,10 +30,11 @@ import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
+import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
@@ -46,7 +47,6 @@ import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
 import com.cucr.myapplication.bean.eventBus.EventStarId;
 import com.cucr.myapplication.bean.others.FragmentInfos;
-import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -137,8 +137,8 @@ public class FragmentFans extends BaseFragment {
     //是否需要显示
     private boolean isShow = true;
     private StarListAdapter mAdapter;
-    private QueryMyFocusStars mCore;
-    private List<MyFocusStarInfo.RowsBean> mRows;
+    private QueryFocus mCore;
+    private List<FocusInfo.RowsBean> mRows;
     private QueryStarListCore mStarCore;
     private int page = 1;
     private int rows = 100;
@@ -158,7 +158,7 @@ public class FragmentFans extends BaseFragment {
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
         mStarCore = new QueryStarListCore();
-        mCore = new QueryMyFocusStars();
+        mCore = new QueryFocus();
         percent = 3.0f;
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -210,11 +210,11 @@ public class FragmentFans extends BaseFragment {
 
     private void queryMsg() {
         //TODO: 2017/12/4   刷新和加载
-        mCore.queryMyFocuses(-1, 1, 100, new OnCommonListener() {
+        mCore.queryMyFocusStars(-1, 1, 100, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 MyLogger.jLog().i("focusInfo:" + response.get());
-                MyFocusStarInfo Info = mGson.fromJson(response.get(), MyFocusStarInfo.class);
+                FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
                     mRows = Info.getRows();
                     mAdapter.setData(mRows);

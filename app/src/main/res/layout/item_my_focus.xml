@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
 
     <RelativeLayout
-
         android:layout_width="match_parent"
         android:layout_height="81dp"
         >
 
 
-        <ImageView
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:id="@+id/iv_user_icon_recommend_focus"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user_icon_all_focus"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
             android:src="@drawable/pic1_focus"
             />
 
         <LinearLayout
-            android:gravity="center"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="61dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@id/iv_user_icon_recommend_focus"
+            android:layout_toRightOf="@id/iv_user_icon_all_focus"
+            android:gravity="center"
             android:orientation="vertical"
             >
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="时尚达人soso"
@@ -39,13 +40,13 @@
                 />
 
             <TextView
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:id="@+id/tv_num"
+                android:id="@+id/tv_sign"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
+                android:ellipsize="end"
                 android:maxEms="14"
+                android:singleLine="true"
                 android:text="达康书记被玩坏啦！快顶《达康..."
                 android:textColor="#666"
                 android:textSize="@dimen/sp_13"
@@ -53,17 +54,18 @@
         </LinearLayout>
 
         <TextView
-            android:clickable="true"
-            android:layout_centerInParent="true"
+            android:id="@+id/tv_to_focus"
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/btn_bg_nor"
-            android:gravity="center"
-            android:text="加关注"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12"
+            android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/dp_10"
+            android:background="@drawable/btn_bg_sel"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="已关注"
+            android:textColor="@color/pink"
+            android:textSize="@dimen/sp_12"
             />
     </RelativeLayout>
 

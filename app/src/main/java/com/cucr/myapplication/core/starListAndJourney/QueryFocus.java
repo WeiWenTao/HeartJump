@@ -8,6 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.starList.MyFocusStars;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
@@ -22,22 +23,23 @@ import com.yanzhenjie.nohttp.rest.Response;
  * Created by cucr on 2017/9/6.
  */
 
-public class QueryMyFocusStars implements MyFocusStars {
+public class QueryFocus implements MyFocusStars {
 
     private OnCommonListener onCommonListener;
+    private RequersCallBackListener requersCallBackListener;
     /**
      * 请求队列。
      */
     private RequestQueue mQueue;
     private Context mContext;
 
-    public QueryMyFocusStars() {
+    public QueryFocus() {
         mContext = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
     @Override
-    public void queryMyFocuses(int queryUserId, int page, int rows, final OnCommonListener onCommonListener) {
+    public void queryMyFocusStars(int queryUserId, int page, int rows, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FOCUS, RequestMethod.POST);
@@ -50,18 +52,25 @@ public class QueryMyFocusStars implements MyFocusStars {
         request.add("rows", rows);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
-//        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
-//        request.setCacheKey(HttpContans.ADDRESS_MY_FOCUS);
-//        //没有缓存才去请求网络
-//        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
-
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
+    }
+
+    @Override
+    public void queryMyFocusOthers(int page, int rows, RequersCallBackListener requersCallBackListener) {
+        this.requersCallBackListener = requersCallBackListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FOCUS_OTHER, RequestMethod.POST);
+        // 添加普通参数。
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("page", page);
+        request.add("rows", rows);
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onStart(int what) {
-
+            requersCallBackListener.onRequestStar(what);
         }
 
         @Override
@@ -69,6 +78,9 @@ public class QueryMyFocusStars implements MyFocusStars {
             switch (what) {
                 case Constans.TYPE_ONE:
                     onCommonListener.onRequestSuccess(response);
+                    break;
+                case Constans.TYPE_TWO:
+                    requersCallBackListener.onRequestSuccess(what, response);
                     break;
             }
         }
@@ -80,7 +92,7 @@ public class QueryMyFocusStars implements MyFocusStars {
 
         @Override
         public void onFinish(int what) {
-
+            requersCallBackListener.onRequestFinish(what);
         }
     };
 }

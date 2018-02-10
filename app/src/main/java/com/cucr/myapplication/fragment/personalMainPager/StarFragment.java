@@ -16,8 +16,8 @@ import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.RLVStarAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
-import com.cucr.myapplication.bean.starList.MyFocusStarInfo;
-import com.cucr.myapplication.core.starListAndJourney.QueryMyFocusStars;
+import com.cucr.myapplication.bean.starList.FocusInfo;
+import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
@@ -35,7 +35,7 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
     private View mView;
     private int userId;
     private RLVStarAdapter mAdapter;
-    private QueryMyFocusStars mCore;
+    private QueryFocus mCore;
     private int page;
     private int rows;
     private SwipeRecyclerView mRlv_starlist;
@@ -58,7 +58,7 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
     private void initView() {
         page = 1;
         rows = 5;
-        mCore = new QueryMyFocusStars();
+        mCore = new QueryFocus();
         mRlv_starlist = (SwipeRecyclerView) mView.findViewById(R.id.rlv_his_starlist);
         mRlv_starlist.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mRlv_starlist.setOnLoadListener(this);
@@ -93,10 +93,10 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
 
         page = 1;
         //查询ta的关注明星
-        mCore.queryMyFocuses(userId, page, rows, new OnCommonListener() {
+        mCore.queryMyFocusStars(userId, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyFocusStarInfo starInfo = MyApplication.getGson().fromJson(response.get(), MyFocusStarInfo.class);
+                FocusInfo starInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
                 if (starInfo.isSuccess()) {
                     mAdapter.setData(starInfo.getRows());
                     if (starInfo.getTotal() == starInfo.getRows().size()) {
@@ -114,10 +114,10 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
     public void onLoadMore() {
 
         page++;
-        mCore.queryMyFocuses(userId, page, rows, new OnCommonListener() {
+        mCore.queryMyFocusStars(userId, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                MyFocusStarInfo starInfo = MyApplication.getGson().fromJson(response.get(), MyFocusStarInfo.class);
+                FocusInfo starInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
                 if (starInfo.isSuccess()) {
                     mAdapter.addData(starInfo.getRows());
                     //判断是否还有数据

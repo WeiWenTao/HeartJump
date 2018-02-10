@@ -6,7 +6,7 @@ import java.util.List;
  * Created by cucr on 2017/9/6.
  */
 
-public class MyFocusStarInfo {
+public class FocusInfo {
 
 
     /**
@@ -267,7 +267,7 @@ public class MyFocusStarInfo {
 
     @Override
     public String toString() {
-        return "MyFocusStarInfo{" +
+        return "FocusInfo{" +
                 "errorMsg='" + errorMsg + '\'' +
                 ", success=" + success +
                 ", total=" + total +

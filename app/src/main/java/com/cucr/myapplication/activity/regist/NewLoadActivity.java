@@ -191,6 +191,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             EventBus.getDefault().postSticky(new EventChageAccount());
+            UMShareAPI.get(this).release();
         }
     }
 
@@ -251,12 +252,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        UMShareAPI.get(this).release();
     }
 
     @Override

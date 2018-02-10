@@ -64,7 +64,7 @@ public class BangDanInfo {
         private int id;
         private String realName;
         private String userHeadPortrait;
-        private double userMoney;
+        private int userMoney;
         private String userPicCover;
 
         public int getId() {
@@ -91,11 +91,11 @@ public class BangDanInfo {
             this.userHeadPortrait = userHeadPortrait;
         }
 
-        public double getUserMoney() {
+        public int getUserMoney() {
             return userMoney;
         }
 
-        public void setUserMoney(double userMoney) {
+        public void setUserMoney(int userMoney) {
             this.userMoney = userMoney;
         }
 

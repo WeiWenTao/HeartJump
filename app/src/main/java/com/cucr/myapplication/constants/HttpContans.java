@@ -79,8 +79,14 @@ public class HttpContans {
     //取消关注
     public static final String ADDRESS_CANCLE_FOCUS = "/interface/mobileStartAction/cancelFollow";
 
-    //我的关注
+    //我关注的明星
     public static final String ADDRESS_MY_FOCUS = "/interface/mobileStartAction/myFollow";
+
+    //我关注的其他人(不包括明星)
+    public static final String ADDRESS_MY_FOCUS_OTHER = "/interface/mobileStartAction/myFollowOther";
+
+    //关注我的粉丝(不包括明星)
+    public static final String ADDRESS_MY_FANS = "/interface/mobileStartAction/followMeOther";
 
     //添加行程
     public static final String ADDRESS_ADD_JOURNEY = "/interface/mobileStartTripAction/addTrip";
@@ -234,5 +240,8 @@ public class HttpContans {
 
     //后援团活动点赞
     public static final String ADDRESS_HYHD_GOOD = "/interface/mobileHelpTeamActiveAction/giveUp";
+
+    //我的福利票务
+    public static final String ADDRESS_PIAOWU_QUERY = "/interface/mobileWelfareActiveAction/mineSignUpFlActive";
 
 }

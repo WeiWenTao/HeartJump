@@ -1,32 +1,42 @@
 package com.cucr.myapplication.activity.myHomePager;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
-import com.cucr.myapplication.adapter.PagerAdapter.FocusPagerAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.MyFocusAdapter;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.starList.FocusInfo;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
+import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.yanzhenjie.nohttp.rest.Response;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class FocusActivity extends BaseActivity {
+public class FocusActivity extends BaseActivity implements RequersCallBackListener {
 
     //导航栏
-    @ViewInject(R.id.tablayout_focus)
-    TabLayout tablayout_focus;
+    @ViewInject(R.id.rlv)
+    RecyclerView rlv;
 
-
-    private ViewPager mViewPager;
-    private static final String[] CHANNELS = new String[]{"全部关注", "推荐关注"};
-    private List<String> mDataList = Arrays.asList(CHANNELS);
+    private QueryFocus core;
+    private int page;
+    private int rows;
 
 
     @Override
     protected void initChild() {
-        initView();
-        initTableLayout();
+        page = 1;
+        rows = 10;
+        core = new QueryFocus();
+        rlv.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        MyFocusAdapter adapter = new MyFocusAdapter();
+        rlv.setAdapter(adapter);
+        core.queryMyFocusOthers(page,rows,this);
     }
 
     @Override
@@ -34,19 +44,28 @@ public class FocusActivity extends BaseActivity {
         return R.layout.activity_my_focus;
     }
 
-    private void initTableLayout() {
-        tablayout_focus.addTab(tablayout_focus.newTab().setText("推荐明星"));
-        tablayout_focus.addTab(tablayout_focus.newTab().setText("全部明星"));
-        tablayout_focus.setupWithViewPager(mViewPager);//将导航栏和viewpager进行关联
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        switch (what){
+            case Constans.TYPE_TWO:
+                FocusInfo focusInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
+                if (focusInfo.isSuccess()){
+                    List<FocusInfo.RowsBean> rows = focusInfo.getRows();
+                }else {
+                    ToastUtils.showToast(focusInfo.getErrorMsg());
+                }
+                break;
+
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
 
     }
 
+    @Override
+    public void onRequestFinish(int what) {
 
-    protected void initView() {
-        //初始化vp和vpi
-        mViewPager = (ViewPager) findViewById(R.id.view_pager_focus);
-        mViewPager.setAdapter(new FocusPagerAdapter(mDataList));
     }
-
-
 }
