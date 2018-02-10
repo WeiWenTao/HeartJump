@@ -131,7 +131,6 @@ public class StarPagerForQiYeActivity_111 extends FragmentActivity {
         initVp();
     }
 
-
     private void initVp() {
         mViewPager.setAdapter(new StarPagerAdapter(getSupportFragmentManager(), mDataList));
         mViewPager.setOffscreenPageLimit(2);
