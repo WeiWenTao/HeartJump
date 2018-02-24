@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.chat.HytChatActivity;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HytAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -83,7 +84,7 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
 
     private RequersCallBackListener mCommonListener = new RequersCallBackListener() {
         @Override
-        public void onRequestSuccess(int what,Response<String> response) {
+        public void onRequestSuccess(int what, Response<String> response) {
             HytListInfos hytListInfos = mGson.fromJson(response.get(), HytListInfos.class);
             mAdapter.setData(hytListInfos.getRows());
         }
@@ -113,6 +114,6 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
     //点击加入
     @Override
     public void onClickJoin(int hytId) {
-
+        startActivity(new Intent(MyApplication.getInstance(), HytChatActivity.class));
     }
 }

@@ -55,6 +55,17 @@ public class FocusCore implements Focus {
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
 
+
+    public void toFocus(int id, OnCommonListener listener) {
+        this.focusListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TO_FOCUS, RequestMethod.POST);
+        // 添加普通参数。
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("startId", id);
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_ONE, request, callback);
+    }
+
     @Override
     public void cancaleFocus(int id, OnCommonListener listener) {
         this.cancaleFocusListener = listener;
@@ -85,21 +96,17 @@ public class FocusCore implements Focus {
                 if (reBackMsg.isSuccess()) {
                     ToastUtils.showToast(mContext, "关注成功！");
                     EventBus.getDefault().post(new EventNotifyStarInfo());
+                    if (focusListener != null) {
+                        focusListener.onRequestSuccess(response);
+                    }
                 } else {
                     ToastUtils.showToast(mContext, reBackMsg.getMsg());
                 }
 
             } else if (what == Constans.TYPE_TWO) {
-                if (cancaleFocusListener!=null){
+                if (cancaleFocusListener != null) {
                     cancaleFocusListener.onRequestSuccess(response);
                 }
-
-//                if (reBackMsg.isSuccess()) {
-//                    ToastUtils.showToast("已取消关注！");
-//                    EventBus.getDefault().post(new EventNotifyStarInfo());
-//                } else {
-//                    ToastUtils.showToast(reBackMsg.getMsg());
-//                }
             }
         }
 

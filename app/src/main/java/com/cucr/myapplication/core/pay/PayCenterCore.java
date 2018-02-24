@@ -47,7 +47,7 @@ public class PayCenterCore implements PayCenterInterf {
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("timeout_express", "30m");
         request.add("product_code", "QUICK_MSECURITY_PAY");
-        request.add("total_amount", 0.01 + "");
+        request.add("total_amount", howMuch);
         request.add("subject", subject);
         request.add("out_trade_no", getOutTradeNo());
         request.add("body", "真是太好用了!!!");

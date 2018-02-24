@@ -19,20 +19,34 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.alipay.PayInfo;
 import com.cucr.myapplication.alipay.PayResult;
 import com.cucr.myapplication.alipay.PayResultInfo;
+import com.cucr.myapplication.alipay.WxPayInfo;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.EventIsSuccess;
+import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
-import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.cucr.myapplication.widget.dialog.DialogPerfirmPayResult;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,26 +54,30 @@ import java.util.Map;
 public class PayCenterActivity_new extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
     @ViewInject(R.id.rg1)
-    RadioGroup rg1;
+    private RadioGroup rg1;
 
     @ViewInject(R.id.rg2)
-    RadioGroup rg2;
+    private RadioGroup rg2;
 
     //立即充值
     @ViewInject(R.id.tv_pay_now)
-    TextView tv_pay_now;
+    private TextView tv_pay_now;
 
     //支付宝选择
     @ViewInject(R.id.iv_alipay_d)
-    ImageView iv_alipay_d;
+    private ImageView iv_alipay_d;
 
     //微信选择
     @ViewInject(R.id.iv_wx_d)
-    ImageView iv_wx_d;
+    private ImageView iv_wx_d;
 
     //用户余额
     @ViewInject(R.id.tv_user_money)
-    TextView tv_user_money;
+    private TextView tv_user_money;
+
+    //用户账号
+    @ViewInject(R.id.tv_account)
+    private TextView tv_account;
 
     //上次勾选
     private int preId;
@@ -136,17 +154,22 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
         initTitle("充值中心");
 
         moneys = new HashMap<>();
-
+        EventBus.getDefault().register(this);
         mDailogPayStyle = new DialogPayStyle(this, R.style.ShowAddressStyleTheme);
         mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.ShowAddressStyleTheme);
         payCore = new PayCenterCore();
         queryMoney();
-
+        tv_account.setText(SpUtil.getParam(SpConstant.USER_NAEM, "") + "");
         findRG();
         initRBS();
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected int getChildRes() {
@@ -221,7 +244,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                 break;
 
             case 2://微信
-                wxpay();
+                wxPay();
                 break;
         }
     }
@@ -258,7 +281,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
     //支付宝支付逻辑
     public void alipay() {
         MyLogger.jLog().i("finalMoney:" + finalMoney);
-        payCore.aliPay(finalMoney, "心跳充值", Constans.TYPE_ZERO,-1, new OnCommonListener() {
+        payCore.aliPay(finalMoney, "心跳充值", Constans.TYPE_ZERO, -1, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 final PayInfo payInfo = mGson.fromJson(response.get(), PayInfo.class);
@@ -286,8 +309,74 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
         });
     }
 
-    //微信支付逻辑
-    public void wxpay() {
+    private IWXAPI mIwxapi;
+    private String orderNo;
 
+    //微信支付
+    public void wxPay() {
+        if (!UMShareAPI.get(MyApplication.getInstance()).isInstall(this, SHARE_MEDIA.WEIXIN)) {
+            ToastUtils.showToast("请先装微信客户端");
+            return;
+        }
+        //初始化微信api
+        mIwxapi = WXAPIFactory.createWXAPI(MyApplication.getInstance(), "wxbe72c161183cf70da");
+        mIwxapi.registerApp("wxbe72c16183cf70da"); //注册appid  appid可以在开发平台获取
+
+        payCore.wxPay((int) (money * 10), "微信充值", 0, -1, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
+                MyLogger.jLog().i("payInfo:" + payInfo);
+                orderNo = payInfo.getObj().getMsg().getOrderNo();
+                if (payInfo.isSuccess()) {
+                    //开启线程支付
+                    ThreadUtils.getInstance().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            PayReq request = new PayReq(); //调起微信APP的对象
+                            //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
+                            request.appId = payInfo.getObj().getMsg().getAppid();
+                            request.partnerId = payInfo.getObj().getMsg().getPartnerid();
+                            request.prepayId = payInfo.getObj().getMsg().getPrepayid();
+                            request.packageValue = "Sign=WXPay";
+                            request.nonceStr = payInfo.getObj().getMsg().getNoncestr();
+                            request.timeStamp = payInfo.getObj().getMsg().getTimestamp() + "";
+                            request.sign = payInfo.getObj().getMsg().getSign();
+                            mIwxapi.sendReq(request);//发送调起微信的请求
+                        }
+                    });
+                } else {
+                    ToastUtils.showToast(payInfo.getMsg());
+                }
+            }
+        });
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPayResult(EventIsSuccess event) {
+        getPayResult(orderNo);
+    }
+
+    private void getPayResult(String orderNo) {
+        payCore.queryResult(orderNo, new PayLisntener() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                MyLogger.jLog().i("reBackMsg" + reBackMsg);
+                if (reBackMsg.isSuccess()) {
+                    mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
+                } else {
+                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
+                    ToastUtils.showToast(reBackMsg.getMsg());
+                }
+            }
+
+            @Override
+            public void onRequestStar() {
+                mPerfirmPayResulterfirmDialog.show();
+            }
+        });
     }
 }

@@ -38,6 +38,8 @@ public class QueryFocus implements MyFocusStars {
         mQueue = NoHttp.newRequestQueue();
     }
 
+
+    //查询我关注的明星
     @Override
     public void queryMyFocusStars(int queryUserId, int page, int rows, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
@@ -55,6 +57,7 @@ public class QueryFocus implements MyFocusStars {
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 
+    //查询我关注的其他人
     @Override
     public void queryMyFocusOthers(int page, int rows, RequersCallBackListener requersCallBackListener) {
         this.requersCallBackListener = requersCallBackListener;
@@ -67,10 +70,25 @@ public class QueryFocus implements MyFocusStars {
         mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
+    //查询我关注的其他人
+    @Override
+    public void queryMyFens(int page, int rows, RequersCallBackListener requersCallBackListener) {
+        this.requersCallBackListener = requersCallBackListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FANS, RequestMethod.POST);
+        // 添加普通参数。
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("page", page);
+        request.add("rows", rows);
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_THREE, request, responseListener);
+    }
+
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onStart(int what) {
-            requersCallBackListener.onRequestStar(what);
+            if (requersCallBackListener != null) {
+                requersCallBackListener.onRequestStar(what);
+            }
         }
 
         @Override
@@ -79,7 +97,12 @@ public class QueryFocus implements MyFocusStars {
                 case Constans.TYPE_ONE:
                     onCommonListener.onRequestSuccess(response);
                     break;
+
                 case Constans.TYPE_TWO:
+                    requersCallBackListener.onRequestSuccess(what, response);
+                    break;
+
+                case Constans.TYPE_THREE:
                     requersCallBackListener.onRequestSuccess(what, response);
                     break;
             }
@@ -92,7 +115,9 @@ public class QueryFocus implements MyFocusStars {
 
         @Override
         public void onFinish(int what) {
-            requersCallBackListener.onRequestFinish(what);
+            if (requersCallBackListener != null) {
+                requersCallBackListener.onRequestFinish(what);
+            }
         }
     };
 }

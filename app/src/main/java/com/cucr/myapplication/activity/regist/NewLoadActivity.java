@@ -1,15 +1,14 @@
 package com.cucr.myapplication.activity.regist;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
@@ -28,6 +27,8 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.core.login.RegistCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.runtimepermissions.PermissionsManager;
+import com.cucr.myapplication.runtimepermissions.PermissionsResultAction;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -83,13 +84,26 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(this).setShareConfig(config);
 
+        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
+            @Override
+            public void onGranted() {
+                Toast.makeText(NewLoadActivity.this, "All permissions have been granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDenied(String permission) {
+                Toast.makeText(NewLoadActivity.this, "Permission " + permission + " has been denied", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         mRegistCore = new RegistCore();
         bindIntent = new Intent(MyApplication.getInstance(), BindTelActivity.class);
         mDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mGson = MyApplication.getGson();
         mKeys = new ArrayList<>();
         tags = new HashSet<>();
-        if (Build.VERSION.SDK_INT >= 23) {
+       /* if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.CALL_PHONE,
@@ -101,16 +115,16 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
                     Manifest.permission.GET_ACCOUNTS,
                     Manifest.permission.WRITE_APN_SETTINGS};
             requestPermissions(mPermissionList, 123);
-        }
+        }*/
         initViews();
     }
 
-    //申请权限回调
+  /*  //申请权限回调
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
 
-    }
+    }*/
 
     private void initViews() {
         mIntent = new Intent(MyApplication.getInstance(), NewRegistActivity.class);

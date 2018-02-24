@@ -170,13 +170,16 @@ dependencies {
     compile 'xyz.zpayh:hdimageview:1.0.2'
 
     //折叠布局
-//    compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
+
+    //    compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 
     //指示器
     compile 'me.relex:circleindicator:1.2.2@aar'
+
     //倒计时
     compile 'com.github.iwgang:countdownview:2.1.6'
 
     //微信支付
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation project(':lib_easeui')
 }

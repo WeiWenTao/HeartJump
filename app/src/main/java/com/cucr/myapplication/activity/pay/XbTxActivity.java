@@ -1,5 +1,6 @@
 package com.cucr.myapplication.activity.pay;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
@@ -29,7 +30,7 @@ public class XbTxActivity extends BaseActivity {
 
     @OnClick(R.id.iv_rule)
     public void showRule(View view) {
-
+        startActivity(new Intent(MyApplication.getInstance(), TxRuleActivity.class));
     }
 
     @OnClick(R.id.ll_xb)
@@ -37,7 +38,7 @@ public class XbTxActivity extends BaseActivity {
         et_xb.setFocusable(true);
         et_xb.setFocusableInTouchMode(true);
         et_xb.requestFocus();
-        CommonUtils.hideKeyBorad(MyApplication.getInstance(),et_xb,false);
+        CommonUtils.hideKeyBorad(MyApplication.getInstance(), et_xb, false);
 
     }
 

@@ -23,6 +23,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <!-- 环信 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -121,6 +126,58 @@
             />
 
         <!-- ======================友盟========================= -->
+
+
+        <!-- ======================环信========================= -->
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="1106180223253739#xintiaohuyu"
+            />
+        <!-- 声明SDK所需的service SDK核心功能 -->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true"
+            />
+        <service
+            android:name="com.hyphenate.chat.EMJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+        <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- 这是环信遗漏的 自己声明 -->
+        <activity android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity">
+        </activity>
+        <activity
+            android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            />
+
+        <!-- //key:这里是百度地图key -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"
+            />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="XzvLDk9Wa20GcRp7TvNlu05TXE9BuzNg"
+            />
+        <!-- ======================环信========================= -->
 
 
         <!-- PictureSelector 6.0以上 拍照bug -->
@@ -415,6 +472,12 @@
         <activity android:name=".activity.regist.BindTelActivity">
         </activity>
         <activity android:name=".activity.star.StarPagerActivity">
+        </activity>
+        <activity android:name=".activity.myHomePager.MineFansActivity">
+        </activity>
+        <activity android:name=".activity.pay.TxRuleActivity">
+        </activity>
+        <activity android:name=".activity.chat.HytChatActivity">
         </activity>
     </application>
 

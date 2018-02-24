@@ -8,6 +8,10 @@ import android.view.View;
  * 用于给GridLayoutManager设置间距
  */
 
+/**
+ * mRecyclerView.addItemDecoration(new RecycleViewDivider(
+ * mContext, LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.divide_gray_color)));
+ */
 
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 

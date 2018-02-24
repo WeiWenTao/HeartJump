@@ -118,7 +118,7 @@
         <item name="android:windowBackground">@drawable/shape_dialog_wait</item>
     </style>
 
-  <!--底部dialog样式-->
+    <!--底部dialog样式-->
     <style name="MyDialogStyle" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -249,11 +249,9 @@
     <!--返回键样式-->
     <style name="IconBackStyle">
         <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">44dp</item>
-        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginLeft">@dimen/dp_10</item>
-        <item name="android:paddingTop">@dimen/dp_10</item>
-        <item name="android:paddingBottom">14dp</item>
         <item name="android:paddingRight">40dp</item>
         <item name="android:src">@drawable/icon_back</item>
     </style>
@@ -281,7 +279,6 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
-
 
 
     <!--动态权限主题-->

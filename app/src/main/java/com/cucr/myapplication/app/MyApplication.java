@@ -12,6 +12,8 @@ import com.cucr.myapplication.BuildConfig;
 import com.cucr.myapplication.R;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.gson.Gson;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.EaseUI;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -49,7 +51,6 @@ public class MyApplication extends Application {
     public static IWXAPI mMsgApi;
 
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,10 +58,10 @@ public class MyApplication extends Application {
         Config.DEBUG = true;
         UMShareAPI.get(this);
 //-----------------------------微信支付
-        mMsgApi = WXAPIFactory.createWXAPI(this,"wxbe72c16183cf70da");
+        mMsgApi = WXAPIFactory.createWXAPI(this, "wxbe72c16183cf70da");
         mMsgApi.registerApp("wxbe72c16183cf70da");
 //-----------------------------
-
+        initIM();
         //内存泄漏框架
         LeakCanary.install(this);
         //极光推送初始化
@@ -128,6 +129,13 @@ public class MyApplication extends Application {
 
     }
 
+    private void initIM() {
+        EMOptions options = new EMOptions();
+// 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        EaseUI.getInstance().init(this, options);
+    }
+
 
     //视频缓存
     private HttpProxyCacheServer proxy;
@@ -160,7 +168,6 @@ public class MyApplication extends Application {
     public static RequestOptions getGlideOptions() {
         return glideOptions;
     }
-
 
 
     public static Gson getGson() {

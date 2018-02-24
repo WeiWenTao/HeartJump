@@ -114,6 +114,15 @@ public class FocusInfo {
             private String realName;
             private String signName;
             private String userHeadPortrait;
+            private boolean noFocus;
+
+            public boolean isNoFocus() {
+                return noFocus;
+            }
+
+            public void setNoFocus(boolean noFocus) {
+                this.noFocus = noFocus;
+            }
 
             public int getId() {
                 return id;
@@ -192,6 +201,15 @@ public class FocusInfo {
             private String realName;
             private String signName;
             private String userHeadPortrait;
+            private boolean noFocus;
+
+            public boolean isNoFocus() {
+                return noFocus;
+            }
+
+            public void setNoFocus(boolean noFocus) {
+                this.noFocus = noFocus;
+            }
 
             public int getId() {
                 return id;

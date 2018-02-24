@@ -30,11 +30,10 @@
         <ImageView
             android:id="@+id/iv_rule"
             android:layout_width="50dp"
-            android:layout_height="35dp"
-            android:layout_alignParentBottom="true"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:paddingBottom="12dp"
-
+            android:paddingTop="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_12"
             android:src="@drawable/moneyrule"
             />
 

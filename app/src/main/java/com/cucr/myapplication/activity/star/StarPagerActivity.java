@@ -64,7 +64,7 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarPagerActivity extends FragmentActivity {
+public class StarPagerActivity extends FragmentActivity implements OnCommonListener {
 
     //ViewPager
     @ViewInject(R.id.viewpager)
@@ -241,23 +241,7 @@ public class StarPagerActivity extends FragmentActivity {
         //获取数据
         mStarId = getIntent().getIntExtra("starId", -1);
         //并初始化
-        mStarCore.queryStar(2, 1, 1, mStarId, null, null, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
-                if (starInfos.isSuccess()) {
-                    mData = starInfos.getRows().get(0);
-                    //并初始化
-                    tv_fans.setText("粉丝 " + mData.getFansCount());
-                    tv_starname.setText(mData.getRealName());
-                    tv_base_title.setText(mData.getRealName());
-                    tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
-                } else {
-                    ToastUtils.showToast(starInfos.getErrorMsg());
-                }
-            }
-        });
+        mStarCore.queryStar(2, 1, 1, mStarId, null, null, this);
     }
 
     @OnClick(R.id.iv_base_back)
@@ -396,5 +380,22 @@ public class StarPagerActivity extends FragmentActivity {
         UMShareAPI.get(this).release();
         mDataList.clear();
         mDataList = null;
+    }
+
+    //查询明星信息回调
+    @Override
+    public void onRequestSuccess(Response<String> response) {
+        StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
+        if (starInfos.isSuccess()) {
+            mData = starInfos.getRows().get(0);
+            //并初始化
+            tv_fans.setText("粉丝 " + mData.getFansCount());
+            tv_starname.setText(mData.getRealName());
+            tv_base_title.setText(mData.getRealName());
+            tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+        } else {
+            ToastUtils.showToast(starInfos.getErrorMsg());
+        }
     }
 }

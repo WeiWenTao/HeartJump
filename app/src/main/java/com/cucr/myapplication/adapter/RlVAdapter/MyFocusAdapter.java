@@ -1,17 +1,30 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.starList.FocusInfo;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.focus.FocusCore;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -22,6 +35,9 @@ import java.util.List;
 public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHolder> {
 
     private List<FocusInfo.RowsBean> rows;
+    private FocusCore mCore;
+    private MyApplication mInstance;
+    private Intent mIntent;
 
     public void setData(List<FocusInfo.RowsBean> rows) {
         this.rows = rows;
@@ -30,15 +46,61 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
 
     @Override
     public FocusHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_my_focus, parent, false);
+        mInstance = MyApplication.getInstance();
+        mIntent = new Intent(mInstance, PersonalMainPagerActivity.class);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mCore = new FocusCore();
+        View inflate = LayoutInflater.from(mInstance).inflate(R.layout.item_my_focus, parent, false);
         return new FocusHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(FocusHolder holder, int position) {
-//        FocusInfo.RowsBean rowsBean = rows.get(position);
-//        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_user_icon_all_focus, MyApplication.getImageLoaderOptions());
-//        holder.tv_name.setText(rowsBean.getStart().);
+        final FocusInfo.RowsBean.StartBean start = rows.get(0).getStart();
+        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + start.getUserHeadPortrait(), holder.iv_user_icon_all_focus, MyApplication.getImageLoaderOptions());
+        holder.tv_name.setText(start.getName());
+        holder.tv_sign.setText(start.getSignName());
+        if (start.isNoFocus()) {
+            holder.tv_to_focus.setText("加关注");
+            holder.tv_to_focus.setTextColor(Color.WHITE);
+            holder.tv_to_focus.setBackgroundResource(R.drawable.circle_r_13_sel);
+        } else {
+            holder.tv_to_focus.setText("已关注");
+            holder.tv_to_focus.setTextColor(Color.parseColor("#ff4f49"));
+            holder.tv_to_focus.setBackgroundResource(R.drawable.circle_r_13_nor);
+        }
+        holder.tv_to_focus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (start.isNoFocus()) {
+                    mCore.toFocus(start.getId(), new OnCommonListener() {
+                        @Override
+                        public void onRequestSuccess(Response<String> response) {
+                            ToastUtils.showToast("关注成功");
+                        }
+                    });
+
+                } else {
+                    mCore.cancaleFocus(start.getId(), new OnCommonListener() {
+                        @Override
+                        public void onRequestSuccess(Response<String> response) {
+                            ToastUtils.showToast("已取消关注");
+                        }
+                    });
+                }
+                start.setNoFocus(!start.isNoFocus());
+                notifyDataSetChanged();
+                EventBus.getDefault().post(new CommentEvent(999));
+            }
+        });
+        holder.rlv_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIntent.putExtra("userId", start.getId());
+                mInstance.startActivity(mIntent);
+            }
+        });
+
     }
 
     @Override
@@ -59,6 +121,9 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
 
         @ViewInject(R.id.tv_to_focus)
         private TextView tv_to_focus;
+
+        @ViewInject(R.id.rlv_item)
+        private RelativeLayout rlv_item;
 
         public FocusHolder(View itemView) {
             super(itemView);

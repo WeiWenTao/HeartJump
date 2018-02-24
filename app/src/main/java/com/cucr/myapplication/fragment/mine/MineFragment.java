@@ -17,6 +17,7 @@ import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
 import com.cucr.myapplication.activity.journey.MyJourneyActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
+import com.cucr.myapplication.activity.myHomePager.MineFansActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
 import com.cucr.myapplication.activity.pay.TxRecordActivity;
 import com.cucr.myapplication.activity.setting.InvateActivity;
@@ -26,6 +27,7 @@ import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -121,21 +123,21 @@ public class MineFragment extends BaseFragment {
 
     //分配权限  先隐藏再根据身份显示
     private void showAndHide() {
-        switch (((int) SpUtil.getParam(SpConstant.SP_STATUS,0))){
+        switch (((int) SpUtil.getParam(SpConstant.SP_STATUS, 0))) {
             case Constans.STATUS_EVERYONE:    //无角色
 
                 break;
-             case Constans.STATUS_ADMIN:      //管理员
+            case Constans.STATUS_ADMIN:      //管理员
 
                 break;
-              case Constans.STATUS_STAR:    //明星
-                  rl_require.setVisibility(View.VISIBLE);   //要求
-                  rl_my_journey.setVisibility(View.VISIBLE);//行程
+            case Constans.STATUS_STAR:    //明星
+                rl_require.setVisibility(View.VISIBLE);   //要求
+                rl_my_journey.setVisibility(View.VISIBLE);//行程
                 break;
-              case Constans.STATUS_QIYE:    //企业
-                  rl_my_yuyue.setVisibility(View.VISIBLE);  //预约
+            case Constans.STATUS_QIYE:    //企业
+                rl_my_yuyue.setVisibility(View.VISIBLE);  //预约
                 break;
-              case Constans.STATUS_COMMON_USER://普通用户
+            case Constans.STATUS_COMMON_USER://普通用户
 
                 break;
 
@@ -145,6 +147,13 @@ public class MineFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN) //点击保存的时候再查一遍
     public void onDataSynEvent(EventQueryPersonalInfo event) {
         queryInfos();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //取消关注了  更新关注数量
+    public void onDataSynEvent(CommentEvent event) {
+        if (event.getFlag() == 999) {
+            queryInfos();
+        }
     }
 
     //查询用户信息
@@ -180,10 +189,10 @@ public class MineFragment extends BaseFragment {
     }
 
     private void setData(UserCenterInfo.ObjBean obj) {
-        tv_focus.setText(obj.getGzsl()+"");
-        tv_fans.setText(obj.getFssl()+"");
-        tv_xb.setText(obj.getXbsl()+"");
-        tv_dt.setText(obj.getDtsl()+"");
+        tv_focus.setText(obj.getGzsl() + "");
+        tv_fans.setText(obj.getFssl() + "");
+        tv_xb.setText(obj.getXbsl() + "");
+        tv_dt.setText(obj.getDtsl() + "");
     }
 
     private void initViews() {
@@ -251,7 +260,7 @@ public class MineFragment extends BaseFragment {
     //粉丝
     @OnClick(R.id.ll_mine_fans)
     public void goFans(View view) {
-        mIntent.setClass(mContext, FocusActivity.class);
+        mIntent.setClass(mContext, MineFansActivity.class);
         mContext.startActivity(mIntent);
     }
 

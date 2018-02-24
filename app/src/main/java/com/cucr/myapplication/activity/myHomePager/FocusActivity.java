@@ -15,17 +15,16 @@ import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import java.util.List;
-
 public class FocusActivity extends BaseActivity implements RequersCallBackListener {
 
     //导航栏
     @ViewInject(R.id.rlv)
-    RecyclerView rlv;
+    private RecyclerView rlv;
 
     private QueryFocus core;
     private int page;
     private int rows;
+    private MyFocusAdapter mAdapter;
 
 
     @Override
@@ -34,8 +33,8 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
         rows = 10;
         core = new QueryFocus();
         rlv.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
-        MyFocusAdapter adapter = new MyFocusAdapter();
-        rlv.setAdapter(adapter);
+        mAdapter = new MyFocusAdapter();
+        rlv.setAdapter(mAdapter);
         core.queryMyFocusOthers(page,rows,this);
     }
 
@@ -50,7 +49,7 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
             case Constans.TYPE_TWO:
                 FocusInfo focusInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
                 if (focusInfo.isSuccess()){
-                    List<FocusInfo.RowsBean> rows = focusInfo.getRows();
+                    mAdapter.setData(focusInfo.getRows());
                 }else {
                     ToastUtils.showToast(focusInfo.getErrorMsg());
                 }

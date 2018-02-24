@@ -58,6 +58,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((HytItemHolder) holder).tv_hyt_name.setText(rowsBean.getName());
             ((HytItemHolder) holder).tv_hyt_peoples.setText(rowsBean.getUserContact() + "人热聊中");
             //加入用及时通讯
+            // TODO: 2018/2/24
 //            ((HytItemHolder) holder).tv_join.setText(rowsBean.getCreateUser().);
 
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(),

@@ -33,6 +33,28 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * _ooOoo_
+ * o8888888o
+ * 88" . "88
+ * (| -_- |)
+ * O\  =  /O
+ * ____/`---'\____
+ * .'  \\|     |//  `.
+ * /  \\|||  :  |||//  \
+ * |  _||||| -:- |||||-  \
+ * |   | \\\  -  /// |   |
+ * | \_|  ''\---/''  |   |
+ * \  .-\__  `-`  ___/-. |
+ * __`. .'  /--.--\  `. . __
+ * ."" '<  `.___\_<|>_/___.'  >'"".
+ * | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+ * \  \ `-.   \_ __\ /__ _/   .-` /  /
+ * ======`-.____`-.___\_____/___.-`____.-'======
+ * <p>
+ * ......................................
+ * 佛祖保佑                 代码无BUG
+ */
 public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
 
     private List<Fragment> mFragments;
@@ -51,11 +73,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         initFragment(0);
         initRadioGroup();
         //TODO: 2017/4/28 Splash界面完成
-        DisplayMetrics dm=new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
         // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
         // MI 6        :DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        String s="屏幕的分辨率为："+dm.widthPixels+"*"+dm.heightPixels;
+        String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);
 
     }
@@ -66,7 +88,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         RadioButton rb_3 = (RadioButton) findViewById(R.id.rb_3);
         RadioButton rb_4 = (RadioButton) findViewById(R.id.rb_4);
         RadioButton rb_mid = (RadioButton) findViewById(R.id.rb_mid);
-//        rb_4.setVisibility(View.GONE);
+//      rb_4.setVisibility(View.GONE);
         //底部导航栏距离
         initDrawable(rb_1, 0, 0, 22, 25);
         initDrawable(rb_2, 0, 0, 21, 23);

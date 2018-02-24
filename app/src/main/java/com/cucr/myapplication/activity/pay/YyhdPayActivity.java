@@ -388,7 +388,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                         }
                     });
                 } else {
-                    ToastUtils.showToast( orderInfo);
+                    ToastUtils.showToast(orderInfo);
                 }
             }
         });
@@ -404,7 +404,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
         mIwxapi = WXAPIFactory.createWXAPI(MyApplication.getInstance(), "wxbe72c161183cf70da");
         mIwxapi.registerApp("wxbe72c16183cf70da"); //注册appid  appid可以在开发平台获取
 
-        payCore.wxPay(1, "微信充值", 0, -1, new OnCommonListener() {
+        payCore.wxPay((int) (money * 100), "微信充值", 0, -1, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
@@ -419,16 +419,16 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                             //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
                             request.appId = payInfo.getObj().getMsg().getAppid();
                             request.partnerId = payInfo.getObj().getMsg().getPartnerid();
-                            request.prepayId = payInfo.getObj().getMsg().getPrepayid();//todo 这里为null
+                            request.prepayId = payInfo.getObj().getMsg().getPrepayid();
                             request.packageValue = "Sign=WXPay";
                             request.nonceStr = payInfo.getObj().getMsg().getNoncestr();
                             request.timeStamp = payInfo.getObj().getMsg().getTimestamp() + "";
                             request.sign = payInfo.getObj().getMsg().getSign();
-                            boolean b = mIwxapi.sendReq(request);//发送调起微信的请求
+                            mIwxapi.sendReq(request);//发送调起微信的请求
                         }
                     });
                 } else {
-                    ToastUtils.showToast( payInfo.getMsg());
+                    ToastUtils.showToast(payInfo.getMsg());
                 }
             }
         });
@@ -475,5 +475,6 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        UMShareAPI.get(this).release();
     }
 }
