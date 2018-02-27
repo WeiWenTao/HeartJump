@@ -15,7 +15,7 @@ public abstract class BaseActivity extends Activity {
 
     //标题
     protected TextView tv_title;
-    protected static Gson mGson;
+    protected Gson mGson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

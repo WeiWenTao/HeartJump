@@ -61,8 +61,6 @@ public class CityDao {
                     String pcode = cursor.getString(cursor.getColumnIndex("pcode"));
                     byte[] names = cursor.getBlob(cursor.getColumnIndex("name"));
                     String name = new String(names, "gbk");
-
-
                     locationData = new LocationData(id, code, name, pcode);
                     citys.add(locationData);
                     locationData = null;

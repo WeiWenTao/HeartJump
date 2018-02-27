@@ -15,8 +15,8 @@ import com.cucr.myapplication.activity.journey.AddJourneyActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
-import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.dao.CityDao;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,15 +27,12 @@ public class LocalityProvienceActivity extends BaseActivity {
     private ListView mLv_provience;
     private List<LocationData> mProvinces;
     private boolean mNeedShow;
-
     private Map<String, Class> actives;
-
-
     private String mWhich;
-
 
     @Override
     protected void initChild() {
+
         actives = new HashMap<>();
         //个人中心
         actives.put("PersonalInfoActivity", PersonalInfoActivity.class);
@@ -73,7 +70,7 @@ public class LocalityProvienceActivity extends BaseActivity {
         //添加头
         mLv_provience.addHeaderView(View.inflate(this, R.layout.header_item_location, null));
 //        mLv_provience.setHeaderDividersEnabled(false);
-        mLv_provience.setAdapter(new LocationAdapter(mProvinces, true));
+        mLv_provience.setAdapter(new LocationAdapter(mProvinces, mNeedShow));
 
         mLv_provience.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,5 +95,4 @@ public class LocalityProvienceActivity extends BaseActivity {
             }
         });
     }
-
 }

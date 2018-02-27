@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.chat.HytChatActivity;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HytAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -114,6 +113,7 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
     //点击加入
     @Override
     public void onClickJoin(int hytId) {
-        startActivity(new Intent(MyApplication.getInstance(), HytChatActivity.class));
+        //todo 登录聊天账号
+//        startActivity(new Intent(MyApplication.getInstance(), HytChatActivity.class));
     }
 }

@@ -20,11 +20,11 @@ android {
         multiDexEnabled true
         dependencies { compile 'com.android.support:multidex:1.0.1' }
 
-//        ndk {
-//            //选择要添加的对应cpu类型的.so库。
-//            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
-//            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-//        }
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
@@ -45,6 +45,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    configurations {
+//        all*.exclude group: 'com.android.support', module: 'support-v4'
+//    }
 
     signingConfigs {
         debug {
@@ -67,6 +71,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     //    compile 'com.squareup.okhttp3:okhttp:3.6.0' 和nohttp里面的okhttp冲突
+
     compile 'com.android.support:support-v4:25.2.0'
 
     //MagicIndicator
@@ -181,5 +186,6 @@ dependencies {
 
     //微信支付
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    implementation project(':lib_easeui')
+    implementation project(':IMKit')
+
 }
