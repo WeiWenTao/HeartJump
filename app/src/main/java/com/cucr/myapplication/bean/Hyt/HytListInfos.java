@@ -73,6 +73,25 @@ public class HytListInfos {
         private String createTime;
         private CreateUserBean createUser;
         private String email;
+        private int groupOfNumber;
+
+        public int getGroupOfNumber() {
+            return groupOfNumber;
+        }
+
+        public void setGroupOfNumber(int groupOfNumber) {
+            this.groupOfNumber = groupOfNumber;
+        }
+
+        public int getIsJoin() {
+            return isJoin;
+        }
+
+        public void setIsJoin(int isJoin) {
+            this.isJoin = isJoin;
+        }
+
+        private int isJoin;
         private int id;
         private String idCard;
         private String idCardPic1;

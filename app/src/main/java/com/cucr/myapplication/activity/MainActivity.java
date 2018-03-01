@@ -33,29 +33,10 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * _ooOoo_
- * o8888888o
- * 88" . "88
- * (| -_- |)
- * O\  =  /O
- * ____/`---'\____
- * .'  \\|     |//  `.
- * /  \\|||  :  |||//  \
- * |  _||||| -:- |||||-  \
- * |   | \\\  -  /// |   |
- * | \_|  ''\---/''  |   |
- * \  .-\__  `-`  ___/-. |
- * __`. .'  /--.--\  `. . __
- * ."" '<  `.___\_<|>_/___.'  >'"".
- * | | :  `- \`.;`\ _ /`;.`/ - ` : | |
- * \  \ `-.   \_ __\ /__ _/   .-` /  /
- * ======`-.____`-.___\_____/___.-`____.-'======
- * <p>
- * ......................................
- * 佛祖保佑                 代码无BUG
- */
-public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
+
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider {
 
     private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
@@ -66,7 +47,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         setContentView(R.layout.activity_main);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-
+        initIM();
         //获取从 我的-明星-右上角加关注 界面跳转过来的数据
         findView();
         initView();
@@ -79,7 +60,10 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);
+    }
 
+    private void initIM() {
+        RongIM.setUserInfoProvider(this, true);
     }
 
     private void findView() {
@@ -196,5 +180,10 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         UMShareAPI.get(this).release();
     }
 
-
+    //获取用户信息返回给融云
+    @Override
+    public UserInfo getUserInfo(String s) {
+        //todo
+        return null;
+    }
 }

@@ -31,6 +31,7 @@ import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import cn.jpush.android.api.JPushInterface;
+import io.rong.imkit.RongIM;
 
 
 /**
@@ -52,6 +53,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //融云
+        RongIM.init(this);
+
         //友盟
         Config.DEBUG = true;
         UMShareAPI.get(this);

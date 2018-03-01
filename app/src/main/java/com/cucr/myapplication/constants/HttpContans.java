@@ -8,6 +8,8 @@ package com.cucr.myapplication.constants;
 public class HttpContans {
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
+    //EN数据
+    public static final String HTTP_EN = "http://210.14.157.131:8149/clker_inter/";
 
 //    public static final String HTTP_HOST = "http://192.168.1.110:8080";
 //    public static final String HTTP_HOST = "http://yin-wiki.51vip.biz";
@@ -241,7 +243,12 @@ public class HttpContans {
     //后援团活动点赞
     public static final String ADDRESS_HYHD_GOOD = "/interface/mobileHelpTeamActiveAction/giveUp";
 
+    //后援团成员查询
+    public static final String ADDRESS_MEMBERS_QUERY = "/interface/mobileHelpTeamAction/helpTeamUserList";
+
+    //退出后援团
+    public static final String ADDRESS_HYT_EXIT = "/interface/mobileHelpTeamAction/quitTeam";
+
     //我的福利票务
     public static final String ADDRESS_PIAOWU_QUERY = "/interface/mobileWelfareActiveAction/mineSignUpFlActive";
-
 }

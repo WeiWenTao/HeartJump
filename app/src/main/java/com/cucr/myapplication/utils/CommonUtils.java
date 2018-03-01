@@ -586,4 +586,20 @@ public class CommonUtils {
     public static boolean isFans() {
         return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE;
     }
+
+    //根据积分获取头衔
+    public static String getTip(int i) {
+        if (i >= 0 && i < 1000) {
+            return "新水粉";
+        } else if (i >= 1000 && i < 3000) {
+            return "冒泡粉";
+        } else if (i >= 3000 && i < 6000) {
+            return "活跃粉";
+        } else if (i >= 6000 && i < 10000) {
+            return "资深粉";
+        } else if (i >= 10000) {
+            return "死忠粉";
+        }
+        return "新水粉";
+    }
 }

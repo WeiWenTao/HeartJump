@@ -43,6 +43,9 @@ public interface HytInterf {
     //后援团点赞
     void YyhdGood(int activeId, RequersCallBackListener commonListener);
 
+    //后援团成员查询
+    void queryMembers(String hytId, RequersCallBackListener commonListener);
 
-//    void leaveHyt();
+    //退出后援团
+    void leaveHyt(String hytId, RequersCallBackListener commonListener);
 }

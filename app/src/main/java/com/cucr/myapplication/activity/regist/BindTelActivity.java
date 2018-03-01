@@ -21,8 +21,10 @@ import com.cucr.myapplication.bean.login.UserAccountInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.core.login.RegistCore;
 import com.cucr.myapplication.bean.login.ThirdLoadInfo;
+import com.cucr.myapplication.listener.LoadChatServer;
 import com.cucr.myapplication.listener.OnGetYzmListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
@@ -40,8 +42,9 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import io.rong.imlib.RongIMClient;
 
-public class BindTelActivity extends BaseActivity implements RequersCallBackListener {
+public class BindTelActivity extends BaseActivity implements RequersCallBackListener, LoadChatServer {
 
     @ViewInject(R.id.et_tel)
     private EditText et_tel;
@@ -181,6 +184,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getObj(), LoadSuccess.class);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
+            new ChatCore().connect(loadSuccess.getToken(),this);
             UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), "",
                     HttpContans.HTTP_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
             SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
@@ -245,4 +249,16 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             ToastUtils.showToast(loadUserInfo.getMsg());
         }
     }
+
+    //============================聊天服务器回调====================================
+    @Override
+    public void onLoadSuccess(String userid) {
+        MyLogger.jLog().i("登录聊天服务器成功 userId =" + userid);
+    }
+
+    @Override
+    public void onLoadFial(RongIMClient.ErrorCode errorCode) {
+        MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
+    }
+    //================================================================
 }

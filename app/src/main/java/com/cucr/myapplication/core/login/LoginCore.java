@@ -14,7 +14,9 @@ import com.cucr.myapplication.bean.login.UserAccountInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.interf.load.LoadByPsw;
+import com.cucr.myapplication.listener.LoadChatServer;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
@@ -36,17 +38,18 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import io.rong.imlib.RongIMClient;
 
 /**
  * Created by 911 on 2017/8/11.
  * TODO 这里进行联网操作
  */
 
-public class LoginCore implements LoadByPsw {
+public class LoginCore implements LoadByPsw, LoadChatServer {
 
     private RequersCallBackListener loginListener;
     private Context context;
-
+    private ChatCore mChatCore;
 
     /**
      * 请求的时候等待框。
@@ -72,6 +75,7 @@ public class LoginCore implements LoadByPsw {
         context = MyApplication.getInstance();
         tags = new HashSet<>();
         mKeys = new ArrayList<>();
+        mChatCore = new ChatCore();
     }
 
     @Override
@@ -145,6 +149,9 @@ public class LoginCore implements LoadByPsw {
         MyLogger.jLog().i("loadUserInfo:" + loadUserInfo);
         if (loadUserInfo.isSuccess()) {
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
+            //登录聊天服务器
+            //登录融云
+            mChatCore.connect(loadSuccess.getToken(),this);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
             UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), mPassWord,
@@ -222,4 +229,15 @@ public class LoginCore implements LoadByPsw {
 
     }
 
+    //==========================登录聊天服务器====================================
+    @Override
+    public void onLoadSuccess(String userid) {
+        MyLogger.jLog().i("登录聊天服务器成功 userId =" + userid);
+    }
+
+    @Override
+    public void onLoadFial(RongIMClient.ErrorCode errorCode) {
+        MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
+    }
+    //==============================================================
 }

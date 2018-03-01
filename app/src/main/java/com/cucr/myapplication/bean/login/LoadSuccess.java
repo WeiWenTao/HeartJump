@@ -20,6 +20,15 @@ public class LoadSuccess {
     private String name;
     private String phone;
     private int loginStatu;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getPhone() {
         return phone;

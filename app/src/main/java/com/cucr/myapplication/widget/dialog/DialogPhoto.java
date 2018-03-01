@@ -18,7 +18,6 @@ import com.cucr.myapplication.R;
 
 public class DialogPhoto extends Dialog implements View.OnClickListener {
 
-
     public DialogPhoto(Context context, int themeResId) {
         super(context, themeResId);
         Window window = getWindow();

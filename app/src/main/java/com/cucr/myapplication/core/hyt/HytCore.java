@@ -215,6 +215,28 @@ public class HytCore implements HytInterf {
         mQueue.add(Constans.TYPE_TWEVEN, request, listener);
     }
 
+    //后援团成员查询
+    @Override
+    public void queryMembers(String hytId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MEMBERS_QUERY, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("hytId",hytId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_THIRTEEN, request, listener);
+    }
+
+    //退出后援团
+    @Override
+    public void leaveHyt(String hytId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYT_EXIT, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("hytId",hytId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_FOURTEEN, request, listener);
+    }
+
 
     private OnResponseListener<String> listener = new OnResponseListener<String>() {
         @Override

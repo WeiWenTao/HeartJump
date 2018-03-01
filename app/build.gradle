@@ -18,7 +18,7 @@ android {
 
 //        这两句 解决重复依赖bug
         multiDexEnabled true
-        dependencies { compile 'com.android.support:multidex:1.0.1' }
+//        dependencies { compile 'com.android.support:multidex:1.0.1' }
 
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -43,6 +43,13 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
         }
     }
 
@@ -71,8 +78,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     //    compile 'com.squareup.okhttp3:okhttp:3.6.0' 和nohttp里面的okhttp冲突
-
-    compile 'com.android.support:support-v4:25.2.0'
+//    compile 'com.android.support:support-v4:25.2.0'
 
     //MagicIndicator
     compile project(':lib_svpi')
@@ -187,5 +193,4 @@ dependencies {
     //微信支付
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation project(':IMKit')
-
 }

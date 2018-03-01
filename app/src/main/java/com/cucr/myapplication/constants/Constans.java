@@ -34,6 +34,9 @@ public class Constans {
     public static final int TYPE_TEN = 10;
     public static final int TYPE_ELEVEN = 11;
     public static final int TYPE_TWEVEN = 12;
+    public static final int TYPE_THIRTEEN  = 13;
+    public static final int TYPE_FOURTEEN  = 14;
+    public static final int TYPE_FIFTEEN  = 15;
 
     public static final int TYPE_TEXT = 0;
 

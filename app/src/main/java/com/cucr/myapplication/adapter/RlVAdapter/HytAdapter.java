@@ -56,10 +56,15 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //-----------------------------------------------------------------------------
             final HytListInfos.RowsBean rowsBean = rows.get(position - 1);
             ((HytItemHolder) holder).tv_hyt_name.setText(rowsBean.getName());
-            ((HytItemHolder) holder).tv_hyt_peoples.setText(rowsBean.getUserContact() + "人热聊中");
-            //加入用及时通讯
-            // TODO: 2018/2/24
-//            ((HytItemHolder) holder).tv_join.setText(rowsBean.getCreateUser().);
+            ((HytItemHolder) holder).tv_hyt_peoples.setText(rowsBean.getGroupOfNumber() + "人热聊中");
+            //0表示未加入
+            if (rowsBean.getIsJoin() == 0) {
+                ((HytItemHolder) holder).tv_join.setText("加入");
+                ((HytItemHolder) holder).tv_join.setBackgroundResource(R.drawable.corner_13);
+            }else {
+                ((HytItemHolder) holder).tv_join.setText("已加入");
+                ((HytItemHolder) holder).tv_join.setBackgroundResource(R.drawable.corner_13_gray);
+            }
 
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(),
                     ((HytItemHolder) holder).iv_pic, MyApplication.getImageLoaderOptions());
@@ -78,7 +83,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
                     }
-                    mOnClickItems.onClickJoin(rowsBean.getId());
+                    mOnClickItems.onClickJoin(rowsBean.getId(),rowsBean.getName(),rowsBean.getIsJoin() != 0);
                 }
             });
         }
@@ -141,6 +146,6 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnClickItems {
         void onClickItem(int position);
 
-        void onClickJoin(int hytId);
+        void onClickJoin(int hytId,String name,boolean isjoin);
     }
 }
