@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
+              android:background="@color/white"
     >
 
     <LinearLayout
@@ -23,10 +24,10 @@
             />
 
         <TextView
+            android:id="@+id/tv_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_15"
-            android:text="235011"
             android:textColor="@color/white"
             android:textSize="25dp"
             />
@@ -34,6 +35,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_has"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +45,5 @@
         android:layout_marginTop="@dimen/dp_15"
         android:layout_marginBottom="@dimen/dp_25"
         />
-
-
 
 </LinearLayout>

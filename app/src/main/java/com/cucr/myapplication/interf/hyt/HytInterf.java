@@ -48,4 +48,13 @@ public interface HytInterf {
 
     //退出后援团
     void leaveHyt(String hytId, RequersCallBackListener commonListener);
+
+    //禁言
+    void hytLock(int lockd, String hytId, int howlong, RequersCallBackListener commonListener);
+
+    //解除禁言
+    void hytUnLock(String lockd, String hytId, RequersCallBackListener commonListener);
+
+    //获取禁言列表
+    void hytLockList(String hytId, RequersCallBackListener commonListener);
 }

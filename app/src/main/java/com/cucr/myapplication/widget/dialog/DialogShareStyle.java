@@ -44,8 +44,16 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     private ShareEntity entity;
     private final WaitDialog mDialog;
 
+    //粉团的分享
     public void setData(ShareEntity entity) {
         this.entity = entity;
+        show();
+    }
+
+    //邀请有礼的分享
+    public void setData2(ShareEntity entity) {
+        this.entity = entity;
+        show();
     }
 
     public DialogShareStyle(Context context, int themeResId) {

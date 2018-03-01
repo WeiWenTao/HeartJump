@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/iv_sel"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/dp_10"
+        android:src="@drawable/remove_sel"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_sel"
+        android:text="10分钟"
+        android:textColor="@color/color_666"
+        android:textSize="@dimen/sp_15"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/iv_sel"
+        android:background="#ccc"
+        />
+
+    <View
+        android:layout_width="@dimen/layout_bothdistance10_worlduc_dp"
+        android:layout_height="60dp"/>
+
+</RelativeLayout>

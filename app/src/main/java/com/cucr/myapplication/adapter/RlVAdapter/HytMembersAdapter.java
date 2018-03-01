@@ -41,6 +41,9 @@ public class HytMembersAdapter extends RecyclerView.Adapter<HytMembersAdapter.My
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         holder.tv_name.setText(rowsBean.getUser().getName());
         holder.tv_tip.setText(CommonUtils.getTip(rowsBean.getIntegral()));
+        if (position == 0) {
+            holder.tv_captain.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -52,12 +55,14 @@ public class HytMembersAdapter extends RecyclerView.Adapter<HytMembersAdapter.My
         private ImageView iv_pic;
         private TextView tv_name;
         private TextView tv_tip;
+        private TextView tv_captain;
 
         public MyHolder(View itemView) {
             super(itemView);
             iv_pic = (ImageView) itemView.findViewById(R.id.iv_pic);
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_tip = (TextView) itemView.findViewById(R.id.tv_tip);
+            tv_captain = (TextView) itemView.findViewById(R.id.tv_captain);
         }
     }
 

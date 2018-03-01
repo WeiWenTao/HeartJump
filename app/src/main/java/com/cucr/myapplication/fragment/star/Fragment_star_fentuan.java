@@ -485,8 +485,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //分享
     @Override
     public void onClickshare(int dataId) {
-        mDialog.setData(new ShareEntity(null, null, HttpContans.ADDRESS_FT_SHARE + dataId, ""));
-        mDialog.show();
+        mDialog.setData(new ShareEntity("this is title", " this is describe", HttpContans.ADDRESS_FT_SHARE + dataId, ""));
     }
 
     //弹出打赏框

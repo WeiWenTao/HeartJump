@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.hyt.HytMemberListActivity"
+    tools:context="com.cucr.myapplication.activity.fuli.PiaoWuActivity"
     >
 
     <RelativeLayout
-        android:id="@+id/rl_head"
+        android:fitsSystemWindows="true"
+        android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/zise"
         >
-
 
         <ImageView
             android:id="@+id/iv_base_back"
@@ -23,27 +22,16 @@
             />
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_base_title"
             style="@style/TitleStyle"
-            android:text="后援团成员"
+            android:text="我的票务"
             android:textColor="@color/xtred"
-            />
-
-        <ImageView
-            android:id="@+id/iv_member"
-            android:layout_width="38dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/dp_10"
-            android:src="@drawable/team_delete"
-            android:visibility="gone"
             />
 
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rlv_members"
+        android:id="@+id/rlv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         ></android.support.v7.widget.RecyclerView>

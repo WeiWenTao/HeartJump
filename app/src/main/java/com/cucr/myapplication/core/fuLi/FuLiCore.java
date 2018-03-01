@@ -7,10 +7,9 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.fuli.QueryFuLi;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -27,8 +26,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 public class FuLiCore implements QueryFuLi {
 
     private Context mContext;
-    private OnCommonListener fuLiListener;
-    private OnCommonListener huoDongListener;
+    private RequersCallBackListener listener;
     /**
      * 请求队列。
      */
@@ -40,8 +38,8 @@ public class FuLiCore implements QueryFuLi {
     }
 
     @Override
-    public void QueryDuiHuan(int page, int rows, final OnCommonListener listener) {
-        this.fuLiListener = listener;
+    public void QueryDuiHuan(int page, int rows, final RequersCallBackListener listener) {
+        this.listener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_GOODS, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
@@ -56,8 +54,8 @@ public class FuLiCore implements QueryFuLi {
 
 
     @Override
-    public void QueryHuoDong(int page, int rows, OnCommonListener listener) {
-        this.huoDongListener = listener;
+    public void QueryHuoDong(int page, int rows, RequersCallBackListener listener) {
+        this.listener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_ACTIVE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
@@ -71,46 +69,38 @@ public class FuLiCore implements QueryFuLi {
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
+    @Override
+    public void QueryMyActive(int page, int rows, RequersCallBackListener listener) {
+        this.listener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_ACTIVE, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("page", page)
+                .add("rows", rows)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+
+        mQueue.add(Constans.TYPE_THREE, request, callback);
+    }
+
     //回调
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+            listener.onRequestStar(what);
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            switch (what) {
-                case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("福利商品请求成功，Cache?"+response.isFromCache());
-                    fuLiListener.onRequestSuccess(response);
-                    break;
-
-                case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("福利活动请求成功，Cache?"+response.isFromCache());
-                    huoDongListener.onRequestSuccess(response);
-                    break;
-            }
-
+            listener.onRequestSuccess(what,response);
         }
 
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, mContext);
-            switch (what) {
-                case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("福利商品请求失败");
-                    break;
-
-                case Constans.TYPE_TWO:
-                    MyLogger.jLog().i("福利活动请求失败");
-                    break;
-            }
         }
 
         @Override
         public void onFinish(int what) {
-
+            listener.onRequestFinish(what);
         }
     };
 

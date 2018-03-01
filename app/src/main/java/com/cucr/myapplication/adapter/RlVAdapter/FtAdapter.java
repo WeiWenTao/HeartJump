@@ -87,6 +87,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final QueryFtInfos.RowsBean rowsBean = rows.get(position);
+        boolean isStar = rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR;
 // -------------------------------------------------------------------------------------------------
         if (holder instanceof Tp1_Holder) {  //视频
 
@@ -101,7 +102,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());
             //视频封面
             ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video_pic);
-
+            ((Tp1_Holder) holder).iv_tag.setVisibility(isStar?View.VISIBLE:View.INVISIBLE);
             ((Tp1_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp1_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp1_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
@@ -110,6 +111,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }else {
                 ((Tp1_Holder) holder).tv_content.setText(rowsBean.getContent());
             }
+
             ((Tp1_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
             ((Tp1_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             if (TextUtils.isEmpty(rowsBean.getContent())) {
@@ -212,7 +214,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp2_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
-
+            ((Tp2_Holder) holder).iv_tag.setVisibility(isStar?View.VISIBLE:View.INVISIBLE);
             ((Tp2_Holder) holder).image_layout.loadImage(rowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
                 @Override
                 public void layoutFinish(List<ImageView> images) {
@@ -341,6 +343,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp3_Holder) holder).tv_favorite.setText(rowsBean.getGiveUpCount() + "");    //点赞数量
             ((Tp3_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
             ((Tp3_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
+            ((Tp3_Holder) holder).iv_tag.setVisibility(isStar?View.VISIBLE:View.INVISIBLE);
             //点击分享
             ((Tp3_Holder) holder).rl_share.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -490,7 +493,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.ll_type1)
         private LinearLayout ll_type1;
 
-        //点赞热力区域
+        //点赞区域
         @ViewInject(R.id.ll_good)
         private LinearLayout ll_good;
 
@@ -502,6 +505,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //打赏按钮
         @ViewInject(R.id.iv_dashang)
         private ImageView iv_dashang;
+
+        //明星标识
+        @ViewInject(R.id.iv_tag)
+        private ImageView iv_tag;
 
         public Tp1_Holder(View itemView) {
             super(itemView);
@@ -571,6 +578,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.iv_dashang)
         private ImageView iv_dashang;
 
+        //明星标识
+        @ViewInject(R.id.iv_tag)
+        private ImageView iv_tag;
+
         public Tp2_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -635,6 +646,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //点赞区域
         @ViewInject(R.id.ll_good)
         private LinearLayout ll_good;
+
+        //明星标识
+        @ViewInject(R.id.iv_tag)
+        private ImageView iv_tag;
 
         public Tp3_Holder(View itemView) {
             super(itemView);

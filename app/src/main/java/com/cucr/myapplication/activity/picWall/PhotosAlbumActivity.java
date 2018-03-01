@@ -13,10 +13,10 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.PicWallAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.core.user.PicWallCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
+import com.cucr.myapplication.core.user.PicWallCore;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -78,6 +78,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
         mCore.queryPic(page, rows, orderType, false, mStarId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
+                // TODO: 2018/3/1
                 mInfo = mGson.fromJson(response.get(), PicWallInfo.class);
                 if (mInfo.isSuccess()) {
                     mAdapter.setData(mInfo.getRows());

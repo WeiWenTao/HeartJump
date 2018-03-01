@@ -7,5 +7,5 @@ import com.cucr.myapplication.listener.OnCommonListener;
  */
 
 public interface QueryPersonalInfo {
-    void queryPersonalInfo(OnCommonListener onCommonListener);
+    void queryPersonalInfo(String userId,OnCommonListener onCommonListener);
 }

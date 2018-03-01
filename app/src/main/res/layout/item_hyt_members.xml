@@ -28,6 +28,21 @@
         />
 
     <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_captain"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/tv_name"
+        android:background="@drawable/corner_r_6_sel"
+        android:gravity="center"
+        android:text="团长"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"
+        />
+
+    <TextView
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

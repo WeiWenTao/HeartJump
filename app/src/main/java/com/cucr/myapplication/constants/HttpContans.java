@@ -162,6 +162,9 @@ public class HttpContans {
     //道具提现
     public static final String ADDRESS_GIFT_TX = "/interface/mobileTransactionAction/propWithdrawals";
 
+    //提现记录
+    public static final String ADDRESS_TX_RECORD = "/interface/mobileTransactionAction/transactionQuery";
+
     //明星数据
     public static final String ADDRESS_STAR_DATA = "/interface/dataPicAction/pic1";
 
@@ -248,6 +251,18 @@ public class HttpContans {
 
     //退出后援团
     public static final String ADDRESS_HYT_EXIT = "/interface/mobileHelpTeamAction/quitTeam";
+
+    //后援团禁言
+    public static final String ADDRESS_HYT_LOCK = "/interface/mobileHelpTeamAction/gag";
+
+    //后援团解除禁言
+    public static final String ADDRESS_HYT_UNLOCK = "/interface/mobileHelpTeamAction/cancelGag";
+
+    //后援团禁言列表查询
+    public static final String ADDRESS_HYT_LOCK_LIST = "/interface/mobileHelpTeamAction/gagList";
+
+    //邀请注册
+    public static final String ADDRESS_INVATE_REGIST = HTTP_HOST + "/interface/joinUsAction/page?userId=";
 
     //我的福利票务
     public static final String ADDRESS_PIAOWU_QUERY = "/interface/mobileWelfareActiveAction/mineSignUpFlActive";

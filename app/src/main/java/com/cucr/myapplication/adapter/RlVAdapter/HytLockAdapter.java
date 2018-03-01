@@ -44,7 +44,7 @@ public class HytLockAdapter extends RecyclerView.Adapter<HytLockAdapter.MyHolder
             @Override
             public void onClick(View v) {
                 if (mOnClickItem != null){
-                    mOnClickItem.clickItem();
+                    mOnClickItem.clickItem(rowsBean.getUser().getId());
                 }
             }
         });
@@ -75,6 +75,6 @@ public class HytLockAdapter extends RecyclerView.Adapter<HytLockAdapter.MyHolder
     }
 
     public interface OnClickItem{
-        void clickItem();
+        void clickItem(int id);
     }
 }

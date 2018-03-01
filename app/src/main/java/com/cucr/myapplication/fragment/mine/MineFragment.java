@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
+import com.cucr.myapplication.activity.fuli.PiaoWuActivity;
 import com.cucr.myapplication.activity.journey.MyJourneyActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
 import com.cucr.myapplication.activity.myHomePager.MineFansActivity;
@@ -174,7 +175,7 @@ public class MineFragment extends BaseFragment {
         });
 
 
-        qucryCore.queryPersonalInfo(new OnCommonListener() {
+        qucryCore.queryPersonalInfo((SpUtil.getParam(SpConstant.USER_ID, -1)+""),new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
@@ -302,7 +303,8 @@ public class MineFragment extends BaseFragment {
     //票务
     @OnClick(R.id.rl_piaowu)
     public void goPw(View view) {
-
+        mIntent.setClass(mContext, PiaoWuActivity.class);
+        mContext.startActivity(mIntent);
     }
 
     //行程

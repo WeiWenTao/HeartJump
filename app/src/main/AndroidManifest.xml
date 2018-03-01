@@ -346,11 +346,6 @@
             >
         </activity>
         <activity android:name=".activity.setting.MyRequiresActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".activity.pay.XbTxActivity">
         </activity>
@@ -442,6 +437,10 @@
         <activity android:name=".activity.hyt.UnLockActivity">
         </activity>
         <activity android:name=".activity.hyt.LockActivity">
+        </activity>
+        <activity android:name=".activity.hyt.LockDetialActivity">
+        </activity>
+        <activity android:name=".activity.fuli.PiaoWuActivity">
         </activity>
     </application>
 

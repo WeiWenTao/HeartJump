@@ -32,6 +32,7 @@ public class PayCenterCore implements PayCenterInterf {
     private OnCommonListener wxPayListener;
     private PayLisntener payResultListener;
     private OnCommonListener userMoneyListener;
+    private OnCommonListener TxRecordListener;
     private Context context;
 
     public PayCenterCore() {
@@ -101,6 +102,18 @@ public class PayCenterCore implements PayCenterInterf {
         mQueue.add(Constans.TYPE_FORE, request, responseListener);
     }
 
+    @Override
+    public void queryTxRecoed(int type, OnCommonListener listener) {
+        TxRecordListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TX_RECORD, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        if (type != -1) {
+            request.add("type", type);
+        }
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_FIVE, request, responseListener);
+    }
+
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
 
         @Override
@@ -119,6 +132,7 @@ public class PayCenterCore implements PayCenterInterf {
                     break;
 
                 case Constans.TYPE_FORE:
+
                     break;
             }
         }
@@ -141,6 +155,10 @@ public class PayCenterCore implements PayCenterInterf {
 
                 case Constans.TYPE_FORE:
                     userMoneyListener.onRequestSuccess(response);
+
+                    break;
+                case Constans.TYPE_FIVE:
+                    TxRecordListener.onRequestSuccess(response);
 
                     break;
             }

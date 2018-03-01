@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_10"
+    app:cardCornerRadius="@dimen/dp_8"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/color_666"
+            android:scaleType="centerCrop"
+            android:src="@drawable/active2"
+            app:sriv_left_top_corner_radius="@dimen/dp_8"
+            app:sriv_right_top_corner_radius="@dimen/dp_8"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            >
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="有效期至2018-03-20"
+                android:textColor="@color/color_666"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_detial"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="详情"
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_15"
+                    />
+
+                <ImageView
+                    android:layout_marginTop="1dp"
+                    android:layout_width="15dp"
+                    android:layout_height="14dp"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:src="@drawable/icon_more"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

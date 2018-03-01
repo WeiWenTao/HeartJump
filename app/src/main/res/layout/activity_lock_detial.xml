@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.hyt.UnLockActivity"
+    tools:context="com.cucr.myapplication.activity.hyt.LockDetialActivity"
     >
 
     <RelativeLayout
@@ -24,30 +25,35 @@
 
         <TextView
             style="@style/TitleStyle"
-            android:text="解除禁言"
+            android:text="选禁言天数"
             android:textColor="@color/xtred"
             />
 
+
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rlv_list"
+    <ListView
+        android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        ></android.support.v7.widget.RecyclerView>
+        android:background="@color/white"
+        android:divider="@null"
+        >
+    </ListView>
 
     <Button
-        android:id="@+id/bt_unlock"
+        android:id="@+id/tv_yes"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:background="@drawable/shape_immediately_pay_bg"
-        android:textSize="@dimen/sp_18"
-        android:textColor="@color/white"
-        android:text="确定解除"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/dp_50"
         android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/shape_immediately_pay_bg"
+        android:gravity="center"
+        android:text="确   定"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
         />
+
 </LinearLayout>

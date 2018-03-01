@@ -116,6 +116,7 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
         mCore.queryActive(false, -1, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
+                // TODO: 2018/3/1  
                 QiYeHuoDongInfo info = mGson.fromJson(response.get(), QiYeHuoDongInfo.class);
                 if (info.isSuccess()) {
                     mRowBeans = info.getRows();

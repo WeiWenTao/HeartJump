@@ -70,15 +70,6 @@ public class HytMembers {
         private Object sort;
         private int startId;
         private UserBean user;
-        private boolean isSel;
-
-        public boolean isSel() {
-            return isSel;
-        }
-
-        public void setSel(boolean sel) {
-            isSel = sel;
-        }
 
         public int getHytId() {
             return hytId;

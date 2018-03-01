@@ -2,6 +2,7 @@ package com.cucr.myapplication.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,20 +13,26 @@ import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
 import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
 import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.umeng.socialize.UMShareAPI;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
@@ -40,7 +47,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
-
+    private QueryPersonalMsgCore qucryCore;
+    private UserInfo mUserInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         initIM();
+        qucryCore = new QueryPersonalMsgCore();
         //获取从 我的-明星-右上角加关注 界面跳转过来的数据
         findView();
         initView();
@@ -182,8 +191,21 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     //获取用户信息返回给融云
     @Override
-    public UserInfo getUserInfo(String s) {
-        //todo
-        return null;
+    public UserInfo getUserInfo(String userId) {
+        final Gson gson = new Gson();
+        qucryCore.queryPersonalInfo(userId, new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                PersonMessage personMessage = gson.fromJson(response.get().toString(), PersonMessage.class);
+                if (personMessage.isSuccess()) {
+                    //todo 获取别人头像会签名错误
+                    PersonMessage.ObjBean obj = gson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
+                    mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.HTTP_HOST + obj.getUserHeadPortrait()));
+                } else {
+                    ToastUtils.showToast(personMessage.getMsg());
+                }
+            }
+        });
+        return mUserInfo;
     }
 }

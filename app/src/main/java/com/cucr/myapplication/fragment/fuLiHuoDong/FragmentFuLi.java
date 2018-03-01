@@ -12,16 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.FuLiAdapter;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.fuli.ActiveInfo;
+import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.fuLi.FuLiCore;
-import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.fuli.ActiveInfo;
-import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -35,7 +36,7 @@ import java.util.List;
  * Created by cucr on 2017/9/1.
  */
 
-public class FragmentFuLi extends Fragment {
+public class FragmentFuLi extends Fragment implements RequersCallBackListener {
     View view;
 
     //活动福利
@@ -76,36 +77,12 @@ public class FragmentFuLi extends Fragment {
     //查询福利活动
     private void queryActiveInfo() {
         //活动
-        mCore.QueryHuoDong(page, 15, new OnCommonListener() { //每次请求15条数据
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                ActiveInfo activeInfo = mGson.fromJson(response.get(), ActiveInfo.class);
-                if (activeInfo.isSuccess()) {
-                    activeInfos = activeInfo.getRows();
-                    activeAdapter.setDate(activeInfos);
-                } else {
-                    ToastUtils.showToast(mContext, activeInfo.getErrorMsg());
-                }
-            }
-        });
+        mCore.QueryHuoDong(page, 15, this);
     }
 
     private void queryDduiHuanInfo() {
         //兑换
-        mCore.QueryDuiHuan(1, 1000, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                final DuiHuanGoosInfo duiHuanGoosInfo = mGson.fromJson(response.get(), DuiHuanGoosInfo.class);
-                if (duiHuanGoosInfo.isSuccess()) {
-                    goodInfos = duiHuanGoosInfo.getRows();
-                    //更新数据
-                    activeAdapter.setDuiHuan(goodInfos);
-                } else {
-                    ToastUtils.showToast(mContext, duiHuanGoosInfo.getErrorMsg());
-                }
-
-            }
-        });
+        mCore.QueryDuiHuan(1, 1000, this);
     }
 
 
@@ -125,4 +102,35 @@ public class FragmentFuLi extends Fragment {
         });
     }
 
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_TWO) {
+            ActiveInfo activeInfo = mGson.fromJson(response.get(), ActiveInfo.class);
+            if (activeInfo.isSuccess()) {
+                activeInfos = activeInfo.getRows();
+                activeAdapter.setDate(activeInfos);
+            } else {
+                ToastUtils.showToast(mContext, activeInfo.getErrorMsg());
+            }
+        } else if (what == Constans.TYPE_ONE) {
+            DuiHuanGoosInfo duiHuanGoosInfo = mGson.fromJson(response.get(), DuiHuanGoosInfo.class);
+            if (duiHuanGoosInfo.isSuccess()) {
+                goodInfos = duiHuanGoosInfo.getRows();
+                //更新数据
+                activeAdapter.setDuiHuan(goodInfos);
+            } else {
+                ToastUtils.showToast(mContext, duiHuanGoosInfo.getErrorMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
+    }
 }
