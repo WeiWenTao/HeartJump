@@ -25,7 +25,6 @@ public class SettingAccountSafeActivity extends BaseActivity implements DialogCh
     @ViewInject(R.id.tv_phone)
     private TextView tv_phone;
 
-
     private DialogChangePswStyle mPswDialog;
     private AccountCore mCore;
     private MyWaitDialog mWaitDialog;

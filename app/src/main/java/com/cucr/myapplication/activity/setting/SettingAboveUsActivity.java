@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.AppInfo;
 import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.AppInfo;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -32,6 +32,7 @@ public class SettingAboveUsActivity extends BaseActivity {
     }
 
     private void initData() {
+
         mCore.queryCode(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
