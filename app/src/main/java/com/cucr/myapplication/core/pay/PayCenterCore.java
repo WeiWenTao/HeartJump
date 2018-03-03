@@ -9,6 +9,7 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.pay.PayCenterInterf;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
@@ -33,6 +34,7 @@ public class PayCenterCore implements PayCenterInterf {
     private PayLisntener payResultListener;
     private OnCommonListener userMoneyListener;
     private OnCommonListener TxRecordListener;
+    private RequersCallBackListener commonListener;
     private Context context;
 
     public PayCenterCore() {
@@ -114,10 +116,24 @@ public class PayCenterCore implements PayCenterInterf {
         mQueue.add(Constans.TYPE_FIVE, request, responseListener);
     }
 
+    //提现申请
+    @Override
+    public void TxRequest(String txAccount, String name, String amount, RequersCallBackListener listener) {
+        commonListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TX_REQUEST, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("account", txAccount)
+                .add("name", name)
+                .add("xbCount", amount)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_SIX, request, responseListener);
+    }
+
     private OnResponseListener<String> responseListener = new OnResponseListener<String>() {
 
         @Override
         public void onStart(int what) {
+
             switch (what) {
                 case Constans.TYPE_ONE:
 
@@ -134,11 +150,16 @@ public class PayCenterCore implements PayCenterInterf {
                 case Constans.TYPE_FORE:
 
                     break;
+
+                case Constans.TYPE_SIX:
+                    commonListener.onRequestStar(what);
+                    break;
             }
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
+
             switch (what) {
                 case Constans.TYPE_ONE:
                     aliPayListener.onRequestSuccess(response);
@@ -155,11 +176,14 @@ public class PayCenterCore implements PayCenterInterf {
 
                 case Constans.TYPE_FORE:
                     userMoneyListener.onRequestSuccess(response);
-
                     break;
+
                 case Constans.TYPE_FIVE:
                     TxRecordListener.onRequestSuccess(response);
+                    break;
 
+                case Constans.TYPE_SIX:
+                    commonListener.onRequestSuccess(what, response);
                     break;
             }
 //
@@ -173,7 +197,9 @@ public class PayCenterCore implements PayCenterInterf {
 
         @Override
         public void onFinish(int what) {
-
+            if (what == Constans.TYPE_SIX) {
+                commonListener.onRequestFinish(what);
+            }
         }
     };
 

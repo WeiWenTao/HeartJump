@@ -192,5 +192,10 @@ dependencies {
 
     //微信支付
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+    //融云即时通讯
     implementation project(':IMKit')
+
+    //二维码
+    compile 'com.google.zxing:core:3.3.0'
 }

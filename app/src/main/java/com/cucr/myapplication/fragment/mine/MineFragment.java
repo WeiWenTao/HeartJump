@@ -175,7 +175,7 @@ public class MineFragment extends BaseFragment {
         });
 
 
-        qucryCore.queryPersonalInfo((SpUtil.getParam(SpConstant.USER_ID, -1)+""),new OnCommonListener() {
+        qucryCore.queryPersonalInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);

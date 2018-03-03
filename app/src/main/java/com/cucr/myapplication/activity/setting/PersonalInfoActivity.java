@@ -50,7 +50,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 
 
-public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.OnClickBt {
+public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.OnClickBt, DialogGender.OnClickBt {
 
     //选择生日
     @ViewInject(R.id.tv_birthday_edit)
@@ -111,12 +111,19 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     }
 
     private void initDialog() {
+//        dialog = new DialogErWeiMa(this, R.style.MyDialogStyle);
+
         mDialog = new DialogPhoto(this, R.style.MyDialogStyle);
-        mGenderDialog = new DialogGender(this, R.style.MyDialogStyle);
         Window dialogWindow = mDialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
         dialogWindow.setWindowAnimations(R.style.BottomDialog_Animation);
         mDialog.setOnClickBt(this);
+
+        mGenderDialog = new DialogGender(this, R.style.MyDialogStyle);
+        Window window = mGenderDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation);
+        mGenderDialog.setOnClickBt(this);
     }
 
 
@@ -132,6 +139,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         et_nickname.setSelection(et_nickname.getText().length());
         //头像回显
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
+        mTemppath = obj.getUserHeadPortrait();
         //昵称回显
         et_nickname.setText(obj.getName());
         //性别回显
@@ -203,7 +211,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     //弹出性别选择框
     @OnClick(R.id.rl_gender)
     public void selectGender(View parent) {
-
+        mGenderDialog.show();
     }
 
     //选择所在地
@@ -219,6 +227,9 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     @OnClick(R.id.rl_change_headpic)
     public void chnagePic(View view) {
         mDialog.show();
+//        dialog.setDate(new ErWeiMaInfo("123","aaa","qewqewqe"));
+//        dialog.show();
+
     }
 
     /**
@@ -330,5 +341,15 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                 .isGif(true)
                 .previewEggs(true)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    @Override
+    public void clickMan() {
+        tv_gender.setText("男");
+    }
+
+    @Override
+    public void clickWoman() {
+        tv_gender.setText("女");
     }
 }

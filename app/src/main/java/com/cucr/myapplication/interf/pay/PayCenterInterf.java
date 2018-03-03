@@ -2,6 +2,7 @@ package com.cucr.myapplication.interf.pay;
 
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 
 /**
  * Created by cucr on 2017/10/16.
@@ -18,4 +19,7 @@ public interface PayCenterInterf {
     void queryUserMoney(OnCommonListener listener);
 
     void queryTxRecoed(int type, OnCommonListener listener);
+
+    void TxRequest(String txAccount,String name,String amount, RequersCallBackListener listener);
+
 }

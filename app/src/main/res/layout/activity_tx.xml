@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.pay.XbTxActivity"
     >
@@ -32,8 +33,8 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:paddingTop="@dimen/dp_12"
             android:paddingBottom="@dimen/dp_12"
+            android:paddingTop="@dimen/dp_12"
             android:src="@drawable/moneyrule"
             />
 
@@ -67,10 +68,10 @@
                 android:layout_marginLeft="@dimen/dp_15"
                 android:background="@null"
                 android:hint="支付宝账号"
+                android:inputType="number"
                 android:textColor="@color/color_333"
                 android:textColorHint="#bbb"
                 android:textSize="@dimen/sp_15"
-                android:inputType="number"
                 />
         </LinearLayout>
 
@@ -131,6 +132,7 @@
             android:gravity="right"
             android:inputType="number"
             android:minWidth="1dp"
+            android:maxLength="6"
             android:textColor="@color/xtred"
             android:textSize="25sp"
             />
@@ -169,6 +171,7 @@
         >
 
         <TextView
+            android:id="@+id/tv_have"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
@@ -181,10 +184,12 @@
             />
 
         <TextView
+            android:id="@+id/all"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
+            android:background="@color/white"
             android:gravity="right"
             android:paddingBottom="@dimen/dp_5"
             android:paddingTop="@dimen/dp_15"
@@ -195,7 +200,8 @@
 
     </LinearLayout>
 
-    <TextView
+    <Button
+        android:id="@+id/bt_confirm"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"

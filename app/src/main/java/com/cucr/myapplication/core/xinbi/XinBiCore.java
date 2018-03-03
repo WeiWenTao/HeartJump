@@ -40,7 +40,6 @@ public class XinBiCore implements XinBiInterf {
                 .add("rewardType",giftIds)
                 .add("count",giftCounts)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
-
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 

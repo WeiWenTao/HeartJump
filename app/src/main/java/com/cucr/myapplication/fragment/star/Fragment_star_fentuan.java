@@ -1,6 +1,5 @@
 package com.cucr.myapplication.fragment.star;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -72,13 +71,14 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @ViewInject(R.id.tv_gift)
     private TextView gift;
 
+    //背包
+    @ViewInject(R.id.tv_backpack)
+    private TextView backpack;
+
     //礼物和背包 ViewPager
     @ViewInject(R.id.vp_dahsnag)
     private NoScrollPager vp_dahsnag;
 
-    //背包
-    @ViewInject(R.id.tv_backpack)
-    private TextView backpack;
 
     private PayCenterCore mPayCenterCore;
     private View view;
@@ -166,7 +166,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         });
 
         queryBackpack();
-
 
     }
 
@@ -335,7 +334,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 //                        .forResult(Constans.TYPE_TWO);
                 break;
         }
-
         intent.putExtra("starId", starId);
         startActivityForResult(intent, 3);
     }
@@ -343,13 +341,11 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 3 && resultCode == 10) {
             //发布成功  再次查询
             onRefresh();
             rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
-
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             QueryFtInfos.RowsBean mRowsBean = (QueryFtInfos.RowsBean) data.getSerializableExtra("rowsBean");
             final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
@@ -358,7 +354,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             rowsBean.setCommentCount(mRowsBean.getCommentCount());
             mAdapter.notifyDataSetChanged();
         }
-
     }
 
     @Override
@@ -376,7 +371,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         }
         page = 1;
         queryFtInfo();
-
     }
 
 

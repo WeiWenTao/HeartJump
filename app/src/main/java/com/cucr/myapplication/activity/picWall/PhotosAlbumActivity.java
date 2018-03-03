@@ -78,7 +78,6 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
         mCore.queryPic(page, rows, orderType, false, mStarId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                // TODO: 2018/3/1
                 mInfo = mGson.fromJson(response.get(), PicWallInfo.class);
                 if (mInfo.isSuccess()) {
                     mAdapter.setData(mInfo.getRows());

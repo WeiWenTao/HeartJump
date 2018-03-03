@@ -14,11 +14,13 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.CommentEvent;
+import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -38,6 +40,7 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
     private FocusCore mCore;
     private MyApplication mInstance;
     private Intent mIntent;
+    private Gson mGson;
 
     public void setData(List<FocusInfo.RowsBean> rows) {
         this.rows = rows;
@@ -50,6 +53,7 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
         mIntent = new Intent(mInstance, PersonalMainPagerActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mCore = new FocusCore();
+        mGson = MyApplication.getGson();
         View inflate = LayoutInflater.from(mInstance).inflate(R.layout.item_my_focus, parent, false);
         return new FocusHolder(inflate);
     }
@@ -76,7 +80,15 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
                     mCore.toFocus(start.getId(), new OnCommonListener() {
                         @Override
                         public void onRequestSuccess(Response<String> response) {
-                            ToastUtils.showToast("关注成功");
+                            ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                            if (reBackMsg.isSuccess()) {
+                                ToastUtils.showToast("关注成功");
+                                start.setNoFocus(!start.isNoFocus());
+                                notifyDataSetChanged();
+                                EventBus.getDefault().post(new CommentEvent(999));
+                            } else {
+                                ToastUtils.showToast(reBackMsg.getMsg());
+                            }
                         }
                     });
 
@@ -84,13 +96,19 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
                     mCore.cancaleFocus(start.getId(), new OnCommonListener() {
                         @Override
                         public void onRequestSuccess(Response<String> response) {
-                            ToastUtils.showToast("已取消关注");
+                            ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                            if (reBackMsg.isSuccess()) {
+                                ToastUtils.showToast("取消关注成功");
+                                start.setNoFocus(!start.isNoFocus());
+                                notifyDataSetChanged();
+                                EventBus.getDefault().post(new CommentEvent(999));
+                            } else {
+                                ToastUtils.showToast(reBackMsg.getMsg());
+                            }
                         }
                     });
                 }
-                start.setNoFocus(!start.isNoFocus());
-                notifyDataSetChanged();
-                EventBus.getDefault().post(new CommentEvent(999));
+
             }
         });
         holder.rlv_item.setOnClickListener(new View.OnClickListener() {

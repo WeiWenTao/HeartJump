@@ -393,4 +393,11 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
     }
     //================================================================
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(this).release();
+    }
 }

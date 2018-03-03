@@ -73,7 +73,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
     </RelativeLayout>
 

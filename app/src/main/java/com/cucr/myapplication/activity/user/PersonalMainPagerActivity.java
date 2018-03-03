@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -12,28 +13,32 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.PersonalMainPagerAdapter;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
+import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.focus.FocusCore;
 import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.personalMainPager.DongTaiFragment;
 import com.cucr.myapplication.fragment.personalMainPager.StarFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
-import com.cucr.myapplication.bean.login.ReBackMsg;
-import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -100,6 +105,10 @@ public class PersonalMainPagerActivity extends Activity {
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
 
+    //礼物动画
+    @ViewInject(R.id.ll_footbar)
+    private LinearLayout ll_footbar;
+
 
     private List<String> mDataList;
     private UserCore mUserCore;
@@ -117,7 +126,9 @@ public class PersonalMainPagerActivity extends Activity {
         EventBus.getDefault().register(this);
         ViewUtils.inject(this);
         mUserId = getIntent().getIntExtra("userId", -1);
-
+        if (mUserId == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
+            ll_footbar.setVisibility(View.GONE);
+        }
         initData();     //查个人信息
         initViews();
 
@@ -170,6 +181,8 @@ public class PersonalMainPagerActivity extends Activity {
         mViewPager.setAdapter(new PersonalMainPagerAdapter(getFragmentManager(), fragmentList));
     }
 
+
+
     //初始化标签栏
     private void initIndicator() {
         //背景
@@ -215,6 +228,12 @@ public class PersonalMainPagerActivity extends Activity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
     //返回
     @OnClick(R.id.iv_pager_back)
     public void back(View view) {
@@ -224,7 +243,6 @@ public class PersonalMainPagerActivity extends Activity {
     //点击关注
     @OnClick(R.id.tv_foucs)
     public void foucs(View view) {
-        MyLogger.jLog().i("foucs");
         if (isFoucs) {
             mFocusCore.cancaleFocus(mUserId, new OnCommonListener() {
                 @Override
@@ -234,6 +252,8 @@ public class PersonalMainPagerActivity extends Activity {
                         ToastUtils.showToast("已取消关注！");
                         mFssl = mFssl - 1;
                         tv_fenes.setText("粉丝 " + (mFssl));
+                    } else {
+                        ToastUtils.showToast(reBackMsg.getMsg());
                     }
                 }
             });
@@ -358,5 +378,6 @@ public class PersonalMainPagerActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        UMShareAPI.get(this).release();
     }
 }

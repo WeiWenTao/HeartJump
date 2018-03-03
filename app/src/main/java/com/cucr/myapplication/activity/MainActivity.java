@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
+import com.cucr.myapplication.bean.EditPersonalInfo.IMPersonalInfo;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -193,16 +193,15 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     public UserInfo getUserInfo(String userId) {
         final Gson gson = new Gson();
-        qucryCore.queryPersonalInfo(userId, new OnCommonListener() {
+        qucryCore.queryPersonalById(userId, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                PersonMessage personMessage = gson.fromJson(response.get().toString(), PersonMessage.class);
-                if (personMessage.isSuccess()) {
-                    //todo 获取别人头像会签名错误
-                    PersonMessage.ObjBean obj = gson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
+                IMPersonalInfo info = gson.fromJson(response.get().toString(), IMPersonalInfo.class);
+                if (info.isSuccess()) {
+                    IMPersonalInfo.ObjBean obj = info.getObj();
                     mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.HTTP_HOST + obj.getUserHeadPortrait()));
                 } else {
-                    ToastUtils.showToast(personMessage.getMsg());
+                    ToastUtils.showToast(info.getMsg());
                 }
             }
         });

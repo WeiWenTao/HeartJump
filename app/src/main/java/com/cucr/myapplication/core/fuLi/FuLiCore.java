@@ -72,7 +72,7 @@ public class FuLiCore implements QueryFuLi {
     @Override
     public void QueryMyActive(int page, int rows, RequersCallBackListener listener) {
         this.listener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_ACTIVE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIAOWU_QUERY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)

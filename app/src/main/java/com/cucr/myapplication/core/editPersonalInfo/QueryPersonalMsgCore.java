@@ -10,6 +10,7 @@ import com.cucr.myapplication.interf.personalinfo.QueryPersonalInfo;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
+import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -24,6 +25,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 public class QueryPersonalMsgCore implements QueryPersonalInfo {
 
     private OnCommonListener onCommonListener;
+    private OnCommonListener personalListener;
 
     /**
      * 请求队列。
@@ -35,16 +37,30 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
         mContext = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
+
     @Override
-    public void queryPersonalInfo(String userId,final OnCommonListener onCommonListener) {
+    public void queryPersonalInfo( final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_USERINFO, RequestMethod.POST);
         // 添加普通参数。
 
-        request.add("userId", userId);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
+    }
+
+    //根据id查用户
+    @Override
+    public void queryPersonalById(String userId, OnCommonListener onCommonListener) {
+        this.personalListener = onCommonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_USERINFO_BYID, RequestMethod.POST);
+        // 添加普通参数。
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("otherUserId", userId);
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+
+        mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
     private OnResponseListener responseListener = new OnResponseListener() {
@@ -58,6 +74,9 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
             switch (what) {
                 case Constans.TYPE_ONE:
                     onCommonListener.onRequestSuccess(response);
+                    break;
+                case Constans.TYPE_TWO:
+                    personalListener.onRequestSuccess(response);
                     break;
             }
         }

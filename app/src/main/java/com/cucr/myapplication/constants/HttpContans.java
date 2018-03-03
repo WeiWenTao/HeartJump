@@ -6,12 +6,14 @@ package com.cucr.myapplication.constants;
  */
 
 public class HttpContans {
+
     //服务器
     public static final String HTTP_HOST = "http://101.132.96.199";
+
     //EN数据
     public static final String HTTP_EN = "http://210.14.157.131:8149/clker_inter/";
 
-//    public static final String HTTP_HOST = "http://192.168.1.110:8080";
+//    public static final String HTTP_HOST = "http://192.168.1.137:8080";
 //    public static final String HTTP_HOST = "http://yin-wiki.51vip.biz";
 
 
@@ -165,6 +167,9 @@ public class HttpContans {
     //提现记录
     public static final String ADDRESS_TX_RECORD = "/interface/mobileTransactionAction/transactionQuery";
 
+    //提现记录
+    public static final String ADDRESS_TX_REQUEST = "/interface/mobileTransactionAction/xbWithdrawals";
+
     //明星数据
     public static final String ADDRESS_STAR_DATA = "/interface/dataPicAction/pic1";
 
@@ -173,6 +178,9 @@ public class HttpContans {
 
     //用户中心
     public static final String ADDRESS_USER_CENTER = "/interface/user/userCenter";
+
+    //重置密码
+    public static final String ADDRESS_RELEASE_PSW = "/interface/user/reppass";
 
     //活动查询(企业)
     public static final String ADDRESS_QUERY_ACTIVE = "/interface/mobileStartAppointment/queryActive";
@@ -266,4 +274,7 @@ public class HttpContans {
 
     //我的福利票务
     public static final String ADDRESS_PIAOWU_QUERY = "/interface/mobileWelfareActiveAction/mineSignUpFlActive";
+
+    //根据id查用户(融云IM)
+    public static final String ADDRESS_USERINFO_BYID = "/interface/user/queryUserInfo";
 }

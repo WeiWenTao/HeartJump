@@ -24,7 +24,7 @@
             />
         <ImageView
             style="@style/My_Arrow"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
         <include layout="@layout/horizontal_line_for10dp"/>
@@ -44,7 +44,7 @@
             />
         <ImageView
             style="@style/My_Arrow"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
         <include layout="@layout/horizontal_line_for10dp"/>
 
@@ -64,7 +64,7 @@
             />
         <ImageView
             style="@style/My_Arrow"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
         <include layout="@layout/horizontal_line_for10dp"/>
     </RelativeLayout>
@@ -82,7 +82,7 @@
             />
         <ImageView
             style="@style/My_Arrow"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
         <include layout="@layout/horizontal_line_for10dp"/>
     </RelativeLayout>
@@ -100,7 +100,7 @@
             />
         <ImageView
             style="@style/My_Arrow"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
         <include layout="@layout/horizontal_line_for10dp"/>

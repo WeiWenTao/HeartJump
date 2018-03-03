@@ -12,20 +12,17 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
-import com.cucr.myapplication.core.pay.PayCenterCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
@@ -34,13 +31,21 @@ import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,6 +61,10 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     //礼物
     @ViewInject(R.id.tv_gift)
     private TextView gift;
+
+    //背包
+    @ViewInject(R.id.tv_backpack)
+    private TextView backpack;
 
     //礼物和背包 ViewPager
     @ViewInject(R.id.vp_dahsnag)
@@ -80,6 +89,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     private Context mContext;
     private int position;
     private Integer giveNum;
+    private DialogShareStyle mDialog;
 
     @SuppressLint("ValidFragment")
     public DongTaiFragment(int userId) {
@@ -151,6 +161,11 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     }
 
     private void inipopWindow() {
+        mDialog = new DialogShareStyle(getActivity(), R.style.MyDialogStyle);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
+
         if (popWindow == null) {
             View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
             ViewUtils.inject(this, view);
@@ -284,8 +299,8 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     }
 
     @Override
-    public void onClickshare(int position) {
-
+    public void onClickshare(int id) {
+        mDialog.setData(new ShareEntity("this is title", " this is describe", HttpContans.ADDRESS_FT_SHARE + id, ""));
     }
 
     @Override
@@ -326,6 +341,27 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
                 mAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    //礼物
+    @OnClick(R.id.tv_gift)
+    public void gift(View view) {
+        vp_dahsnag.setCurrentItem(0);
+        gift.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setBackgroundColor(getResources().getColor(R.color.zise));
+        gift.setTextColor(getResources().getColor(R.color.xtred));
+        backpack.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    //背包
+    @OnClick(R.id.tv_backpack)
+    public void backpack(View view) {
+        vp_dahsnag.setCurrentItem(1);
+        backpack.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setBackgroundColor(getResources().getColor(R.color.zise));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setTextColor(getResources().getColor(R.color.zongse));
     }
 
     @Override
