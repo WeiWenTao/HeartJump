@@ -123,6 +123,18 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         mQueue.add(Constans.TYPE_FIVE, request, callback);
     }
 
+    //阅读量
+    @Override
+    public void ftRead(int dataId) {
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_READ, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("dataId",dataId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+
+        //无参数
+        mQueue.add(Constans.TYPE_SIX, request, callback);
+    }
+
 
     //回调
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
@@ -157,6 +169,9 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                 case Constans.TYPE_FIVE:
                     MyLogger.jLog().i("背包信息查询成功，Cache?" + response.isFromCache());
                     queryBackpackListener.onRequestSuccess(response);
+                    break;
+                case Constans.TYPE_SIX:
+                    MyLogger.jLog().i("阅读量:" + response);
                     break;
             }
 

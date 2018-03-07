@@ -5,12 +5,15 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.PicWallPagerAdapter;
+import com.cucr.myapplication.fragment.picWall.MyFavoritePicWallFragment;
 import com.cucr.myapplication.fragment.picWall.MyPicWallFragment;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
@@ -40,11 +43,16 @@ public class MyPicWallActivity extends Activity {
     private void init() {
         mFragments = new ArrayList<>();
         mFragments.add(new MyPicWallFragment());
-        mFragments.add(new MyPicWallFragment());
+        mFragments.add(new MyFavoritePicWallFragment());
         vp_pics.setAdapter(new PicWallPagerAdapter(getFragmentManager(), mFragments));
         tablayout.addTab(tablayout.newTab().setText("我的图集"));
         tablayout.addTab(tablayout.newTab().setText("我喜欢的"));
         tablayout.setupWithViewPager(vp_pics);//将导航栏和viewpager进行关联
+    }
+
+    @OnClick(R.id.iv_base_back)
+    public void back(View view) {
+        finish();
     }
 
     @Override

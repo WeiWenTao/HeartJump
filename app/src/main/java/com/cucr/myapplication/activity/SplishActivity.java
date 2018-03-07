@@ -103,7 +103,6 @@ public class SplishActivity extends Activity {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void getevent(EventChageAccount event) {
-        MyLogger.jLog().i("关闭了哦");
         finish();
         if (event != null) {
             EventBus.getDefault().removeStickyEvent(event);

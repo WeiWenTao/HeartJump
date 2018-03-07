@@ -88,10 +88,6 @@ public class Fragment_yyhd extends LazyFragment_app implements YyhdAdapter.OnCli
         onRefresh();
     }
 
-    private void loadData() {
-        mCore.queryHytActive(page, rows, starId, this);
-    }
-
     //点亮开屏
     @Override
     public void clickYyhd1() {

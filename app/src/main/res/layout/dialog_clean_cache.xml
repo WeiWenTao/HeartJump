@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:layout_height="50dp"
             android:text="确定"
-            android:textColor="#78ceb7"
+            android:textColor="@color/xtred"
             android:textSize="18sp"
             />
     </LinearLayout>

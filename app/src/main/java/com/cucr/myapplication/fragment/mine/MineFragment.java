@@ -15,20 +15,26 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
+import com.cucr.myapplication.activity.fenTuan.DsDuiHuanActivity;
 import com.cucr.myapplication.activity.fuli.PiaoWuActivity;
 import com.cucr.myapplication.activity.journey.MyJourneyActivity;
 import com.cucr.myapplication.activity.myHomePager.FocusActivity;
 import com.cucr.myapplication.activity.myHomePager.MineFansActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
 import com.cucr.myapplication.activity.pay.TxRecordActivity;
+import com.cucr.myapplication.activity.picWall.MyPicWallActivity;
 import com.cucr.myapplication.activity.setting.InvateActivity;
+import com.cucr.myapplication.activity.setting.LearnningActivity;
 import com.cucr.myapplication.activity.setting.MyRequiresActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.bean.eventBus.CommentEvent;
+import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
+import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -36,9 +42,6 @@ import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
-import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
-import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -297,6 +300,28 @@ public class MineFragment extends BaseFragment {
     @OnClick(R.id.rl_my_yuyue)
     public void goYuYue(View view) {
         mIntent.setClass(mContext, MyYuYueActivity.class);
+        mContext.startActivity(mIntent);
+    }
+
+    //我的图集
+    @OnClick(R.id.rl_my_pics)
+    public void goPics(View view) {
+        // TODO: 2018/3/6
+        mIntent.setClass(mContext, MyPicWallActivity.class);
+        mContext.startActivity(mIntent);
+    }
+
+    //新手教程
+    @OnClick(R.id.rl_learning)
+    public void goLearning(View view) {
+        mIntent.setClass(mContext, LearnningActivity.class);
+        mContext.startActivity(mIntent);
+    }
+
+    //礼物背包
+    @OnClick(R.id.rl_bp)
+    public void goBp(View view) {
+        mIntent.setClass(mContext, DsDuiHuanActivity.class);
         mContext.startActivity(mIntent);
     }
 

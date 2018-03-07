@@ -12,9 +12,6 @@ import com.cucr.myapplication.R;
  */
 
 public class DialogPublishStyle extends Dialog {
-    public DialogPublishStyle(Context context) {
-        super(context);
-    }
 
     public DialogPublishStyle(Context context, int themeResId) {
         super(context, themeResId);

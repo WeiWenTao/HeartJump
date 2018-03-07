@@ -40,7 +40,6 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.DialogPhoto;
 import com.cucr.myapplication.widget.picture.MyLoader;
 import com.google.gson.Gson;
 import com.jaiky.imagespickers.ImageConfig;
@@ -142,7 +141,6 @@ public class StarRZ extends Fragment {
     private ImageConfig imageConfig;
     private ImageLoader instance;
     private Integer dataId;
-    private DialogPhoto mDialog;
     private View mRootView;
 
     @Nullable
@@ -163,7 +161,6 @@ public class StarRZ extends Fragment {
     }
 
     private void initView() {
-        mDialog = new DialogPhoto(mRootView.getContext(), R.style.MyDialogStyle);
         mQueryCore.queryRz(Constans.RZ_STAR, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {

@@ -217,8 +217,6 @@
         </activity>
         <activity android:name=".activity.setting.SettingMessageActivity">
         </activity>
-        <activity android:name=".activity.setting.SettingLikeActivity">
-        </activity>
         <activity android:name=".activity.setting.SettingAboveUsActivity">
         </activity>
         <activity android:name=".activity.setting.SettingAccountSafeActivity">
@@ -442,6 +440,10 @@
         <activity android:name=".activity.hyt.LockDetialActivity">
         </activity>
         <activity android:name=".activity.fuli.PiaoWuActivity">
+        </activity>
+        <activity android:name=".activity.setting.LearnningActivity">
+        </activity>
+        <activity android:name=".activity.setting.LearnCatgoryActivity">
         </activity>
     </application>
 

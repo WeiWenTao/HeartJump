@@ -1,7 +1,6 @@
 package com.cucr.myapplication.activity.myHomePager;
 
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -12,30 +11,28 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
 
-public class FocusActivity extends BaseActivity implements RequersCallBackListener {
+public class FocusActivity extends BaseActivity implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
 
     //导航栏
     @ViewInject(R.id.rlv)
-    private RecyclerView rlv;
+    private SwipeRecyclerView rlv;
 
     private QueryFocus core;
-    private int page;
-    private int rows;
     private MyFocusAdapter mAdapter;
 
 
     @Override
     protected void initChild() {
-        page = 1;
-        rows = 10;
         core = new QueryFocus();
-        rlv.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        rlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mAdapter = new MyFocusAdapter();
         rlv.setAdapter(mAdapter);
-        core.queryMyFocusOthers(page,rows,this);
+        core.queryMyFocusOthers(page, rows, this);
+        rlv.setOnLoadListener(this);
     }
 
     @Override
@@ -45,12 +42,21 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        switch (what){
+        switch (what) {
             case Constans.TYPE_TWO:
                 FocusInfo focusInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
-                if (focusInfo.isSuccess()){
-                    mAdapter.setData(focusInfo.getRows());
-                }else {
+                if (focusInfo.isSuccess()) {
+                    if (isRefresh) {
+                        mAdapter.setData(focusInfo.getRows());
+                    } else {
+                        mAdapter.addDate(focusInfo.getRows());
+                    }
+                    if (focusInfo.getTotal() <= page * rows) {
+                        rlv.onNoMore("没有更多了");
+                    } else {
+                        rlv.complete();
+                    }
+                } else {
                     ToastUtils.showToast(focusInfo.getErrorMsg());
                 }
                 break;
@@ -65,6 +71,26 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
 
     @Override
     public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_TWO) {
+            if (rlv.isRefreshing()) {
+                rlv.getSwipeRefreshLayout().setRefreshing(false);
+            }
+        }
+    }
 
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        rlv.getSwipeRefreshLayout().setRefreshing(true);
+        core.queryMyFens(page, rows, this);
+    }
+
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        rlv.onLoadingMore();
+        core.queryMyFens(page, rows, this);
     }
 }

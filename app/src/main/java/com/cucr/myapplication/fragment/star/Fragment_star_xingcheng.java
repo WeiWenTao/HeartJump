@@ -10,17 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.RlvPersonalJourneyAdapter;
-import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventStarId;
 import com.cucr.myapplication.bean.starJourney.StarJourneyList;
 import com.cucr.myapplication.bean.starJourney.StarScheduleLIst;
+import com.cucr.myapplication.core.starListAndJourney.QueryJourneyList;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lantouzi.wheelview.WheelView;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -38,7 +39,9 @@ public class Fragment_star_xingcheng extends Fragment {
 
     private View view;
     private WheelView mWheelview;
+    private MultiStateView multiStateView;
     private RecyclerView mRlv_journey;
+    private RecyclerView rlv_test;
     private Context mContext;
     private QueryJourneyList mCore;
     private Gson mGson;
@@ -104,6 +107,8 @@ public class Fragment_star_xingcheng extends Fragment {
                     mWheelview.setItems(obj);
                     if (obj != null && obj.size() > 0) {
                         queryJourneyByTime(0);
+                    } else {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                     }
                     MyLogger.jLog().i("size" + starScheduleLIst.getObj().size());
                 } else {
@@ -117,7 +122,9 @@ public class Fragment_star_xingcheng extends Fragment {
 
     private void initView() {
         mRlv_journey = (RecyclerView) view.findViewById(R.id.rlv_journey);
+        rlv_test = (RecyclerView) view.findViewById(R.id.rlv_test);
         mWheelview = (WheelView) view.findViewById(R.id.wheelview);
+        multiStateView = (MultiStateView) view.findViewById(R.id.multiStateView);
         //设置单位（没啥用，设置属性的时候才有用 ）
         mWheelview.setAdditionCenterMark(" ");
         initWheelView();
@@ -132,6 +139,10 @@ public class Fragment_star_xingcheng extends Fragment {
         mRlv_journey.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new RlvPersonalJourneyAdapter(mContext, mRows);
         mRlv_journey.setAdapter(mAdapter);
+
+        rlv_test.setLayoutManager(new LinearLayoutManager(mContext));
+        rlv_test.setAdapter(mAdapter);
+
 
         mWheelview.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override

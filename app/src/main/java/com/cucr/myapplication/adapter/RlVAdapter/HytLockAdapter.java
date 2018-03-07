@@ -29,6 +29,13 @@ public class HytLockAdapter extends RecyclerView.Adapter<HytLockAdapter.MyHolder
         notifyDataSetChanged();
     }
 
+    public void addData(List<HytMembers.RowsBean> rows) {
+        if (this.rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
+    }
+
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hyt_lock, parent, false);
@@ -43,7 +50,7 @@ public class HytLockAdapter extends RecyclerView.Adapter<HytLockAdapter.MyHolder
         holder.rlv_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickItem != null){
+                if (mOnClickItem != null) {
                     mOnClickItem.clickItem(rowsBean.getUser().getId());
                 }
             }
@@ -74,7 +81,7 @@ public class HytLockAdapter extends RecyclerView.Adapter<HytLockAdapter.MyHolder
         mOnClickItem = onClickItem;
     }
 
-    public interface OnClickItem{
+    public interface OnClickItem {
         void clickItem(int id);
     }
 }

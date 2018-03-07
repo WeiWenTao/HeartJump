@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.fuli.DuiHuanCatgoryActivity;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fuli.ActiveInfo;
 import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -34,14 +34,21 @@ public class FuLiAdapter extends RecyclerView.Adapter {
     private List<DuiHuanGoosInfo.RowsBean> goodInfos;
     private int hasDuiHuan;
 
-    public FuLiAdapter(Context context, List<ActiveInfo.RowsBean> activeInfos) {
-        this.activeInfos = activeInfos;
-        mContext = context;
+    public FuLiAdapter() {
+        mContext = MyApplication.getInstance();
     }
 
     public void setDate(List<ActiveInfo.RowsBean> activeInfos) {
         this.activeInfos = activeInfos;
         notifyDataSetChanged();
+    }
+
+    public void addDate(List<ActiveInfo.RowsBean> activeInfos) {
+        if (activeInfos == null) {
+            return;
+        }
+        notifyItemInserted(this.activeInfos.size() + 1);
+        this.activeInfos.addAll(activeInfos);
     }
 
     public void setDuiHuan(List<DuiHuanGoosInfo.RowsBean> goodInfos) {
@@ -76,17 +83,17 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-                //显示图片
-                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + bean.getPicUrl(), ((FiLiHolder) holder).iv_active_bg);
-                //显示进行状态
-                String endTime = bean.getEndTime();
-                ((FiLiHolder) holder).tv_isopen.setText(CommonUtils.IsGone(endTime) ? "进行中" : "已结束");
-                //跳转链接
+            //显示图片
+            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + bean.getPicUrl(), ((FiLiHolder) holder).iv_active_bg);
+            //显示进行状态
+            String endTime = bean.getEndTime();
+            ((FiLiHolder) holder).tv_isopen.setText(CommonUtils.IsGone(endTime) ? "进行中" : "已结束");
+            //跳转链接
 //            String locationUrl = rowsBean.getLocationUrl();
 
         } else if (holder instanceof DuiHuanViewHolder) {
             FuLiDuiHuanAdapter fuLiDuiHuanAdapter = new FuLiDuiHuanAdapter(mContext);
-            ((DuiHuanViewHolder) holder).mRlv_duihuan.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
+            ((DuiHuanViewHolder) holder).mRlv_duihuan.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             ((DuiHuanViewHolder) holder).mRlv_duihuan.setAdapter(fuLiDuiHuanAdapter);
             fuLiDuiHuanAdapter.setDate(goodInfos);
             fuLiDuiHuanAdapter.setOnItemListener(new FuLiDuiHuanAdapter.OnItemListener() {

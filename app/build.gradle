@@ -28,7 +28,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "5ea55ccf04dc7e3f7a83a475", //JPush上注册的包名对应的appkey.
+                JPUSH_APPKEY : "2dafdd5fd4ad109cbc32a885", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
@@ -198,4 +198,5 @@ dependencies {
 
     //二维码
     compile 'com.google.zxing:core:3.3.0'
+
 }

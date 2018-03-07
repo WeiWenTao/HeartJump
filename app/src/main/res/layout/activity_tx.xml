@@ -208,7 +208,6 @@
         android:layout_marginTop="65dp"
         android:background="@drawable/sgi_btn"
         android:gravity="center"
-        android:text="兑换成300元,确认提现"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_18"
         />

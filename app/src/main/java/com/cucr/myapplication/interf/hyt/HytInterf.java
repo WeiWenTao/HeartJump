@@ -44,7 +44,7 @@ public interface HytInterf {
     void YyhdGood(int activeId, RequersCallBackListener commonListener);
 
     //后援团成员查询
-    void queryMembers(String hytId, RequersCallBackListener commonListener);
+    void queryMembers(int page, int rows, String hytId, RequersCallBackListener commonListener);
 
     //退出后援团
     void leaveHyt(String hytId, RequersCallBackListener commonListener);

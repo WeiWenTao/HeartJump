@@ -45,7 +45,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
         mGson = MyApplication.getGson();
     }
 
-    public void setKeys(List<String> keys){
+    public void setKeys(List<String> keys) {
         this.keys = keys;
         notifyDataSetChanged();
     }
@@ -66,8 +66,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
         holder.item_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickItem != null) {
-                    mOnClickItem.onClickItem(v, keys.get(position),position);
+                if (mOnClickItem != null && keys.size() > 1) {
+                    mOnClickItem.onClickItem(v, keys.get(position), position);
                 }
             }
         });
@@ -105,6 +105,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     }
 
     public interface OnClickItem {
-        void onClickItem(View view, String keys,int position);
+        void onClickItem(View view, String keys, int position);
     }
 }

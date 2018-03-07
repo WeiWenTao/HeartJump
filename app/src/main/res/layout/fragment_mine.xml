@@ -7,7 +7,6 @@
               android:orientation="vertical"
     >
 
-
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_13"
             android:text="我的"
-            android:textColor="@color/white"
+            android:textColor="@color/title_color"
             android:textSize="@dimen/sp_18"
             />
 
@@ -431,6 +430,35 @@
                         />
                 </RelativeLayout>
 
+                <!--我的图集-->
+                <RelativeLayout
+                    android:id="@+id/rl_my_pics"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_pics"
+                        style="@style/My_iv"
+                        android:background="@color/color_999"
+                        />
+                    <!--icon-learning-->
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_pics"
+                        android:text="我的图集"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
                 <!--邀请有礼-->
                 <RelativeLayout
                     android:id="@+id/rl_yaoqing"
@@ -473,6 +501,35 @@
                         />
                 </RelativeLayout>
 
+                <!--新手教程-->
+                <RelativeLayout
+                    android:id="@+id/rl_learning"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_learning"
+                        style="@style/My_iv"
+                        android:background="@color/color_999"
+                        />
+                    <!--icon-mypic-->
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_learning"
+                        android:text="新手教程"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
                 <!--设置-->
                 <RelativeLayout
                     android:id="@+id/rl_setting"
@@ -503,7 +560,6 @@
                     android:id="@+id/rl_piaowu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="@dimen/dp_40"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="#fff"
                     >
@@ -518,6 +574,36 @@
                         style="@style/My_tv"
                         android:layout_toRightOf="@id/iv_my_rl_piaowu"
                         android:text="票务福利"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
+                <!--礼物背包-->
+                <RelativeLayout
+                    android:id="@+id/rl_bp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/dp_40"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_rl_bp"
+                        style="@style/My_iv"
+                        android:background="@color/color_999"
+                        />
+                    <!--icon-pack-->
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_rl_bp"
+                        android:text="礼物背包"
                         />
 
                     <ImageView

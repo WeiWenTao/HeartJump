@@ -18,7 +18,7 @@ import com.cucr.myapplication.R;
 
 public class DialogDaShangStyle extends Dialog implements View.OnClickListener {
 
-    EditText et_other;
+    private EditText et_other;
     private RadioGroup mRg_xingbi;
     private InputMethodManager imm;
 

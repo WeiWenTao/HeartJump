@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.MyPicWall;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.HttpContans;
@@ -57,13 +59,16 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     @ViewInject(R.id.rlv_foot)
     private RelativeLayout rlv_foot;
 
+    @ViewInject(R.id.ll_good)
+    private LinearLayout ll_good;
+
     private int prePosition;
     private PicWallInfo mData;
     private int mPosotion;
     private PicWallCore mCore;
     private int count;
-    private int dataId;
     private Gson mGson;
+    private Intent mIntent;
     private TranslateAnimation mHeadShow;
     private TranslateAnimation mFootShow;
     private TranslateAnimation mHeadHide;
@@ -88,27 +93,8 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
         mGson = MyApplication.getGson();
         mData = (PicWallInfo) getIntent().getSerializableExtra("data");
         mPosotion = getIntent().getIntExtra("posotion", 0);
+        mIntent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
         initAni();
-       /* rlv_pics.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance(), LinearLayoutManager.HORIZONTAL, false));
-        rlv_pics.setAdapter(new PicWallCatgoryAdapter(mData));
-        rlv_pics.scrollToPosition(mPosotion);
-        PagerSnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(rlv_pics);
-        rlv_pics.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-                    if (position != -1 && prePosition != position) {
-                        upData();
-                        prePosition = position;
-                    }
-                }
-            }
-        });*/
-
-
         MyPicWall adapter = new MyPicWall(mData);
         adapter.setOnItemClick(this);
         vp.setAdapter(adapter);
@@ -169,7 +155,9 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     //页面滑动了 更新数据
     private void upData() {
         PicWallInfo.RowsBean rowsBean = mData.getRows().get(mPosotion);
-        dataId = rowsBean.getId();
+        mIntent.putExtra("userId", rowsBean.getUser().getId());
+        //只有审核通过的图片才有点赞功能
+        ll_good.setVisibility(rowsBean.getStatu() == 1 ? View.VISIBLE : View.GONE);
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser()
                 .getUserHeadPortrait(), iv_user_head, MyApplication.getImageLoaderOptions());
         tv_goodnum.setText(rowsBean.getGiveUpCount() + "");
@@ -213,7 +201,6 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
         intent.putExtra("data", mData);
 //        PicWallInfo.RowsBean rowsBean = mData.getRows().get(3);
 //        rowsBean.setGiveUpCount(0);
-        MyLogger.jLog().i("testInfo1:" + mData.getRows().get(3).getGiveUpCount());
         setResult(-1, intent);
         finish();
     }
@@ -238,7 +225,6 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     public void showAni() {
         rlv_foot.setVisibility(View.VISIBLE);
         comment_head.setVisibility(View.VISIBLE);
-
         comment_head.startAnimation(mHeadShow);
         rlv_foot.startAnimation(mFootShow);
 
@@ -257,7 +243,7 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     @Override
     public void onAnimationEnd(Animation animation) {
         isStart = false;
-        if (animation == mFootHide){
+        if (animation == mFootHide) {
             comment_head.setVisibility(View.GONE);
             rlv_foot.setVisibility(View.GONE);
         }
@@ -266,5 +252,15 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     @Override
     public void onAnimationRepeat(Animation animation) {
 
+    }
+
+    @OnClick(R.id.iv_user_head)
+    public void goPersonal(View view) {
+        startActivity(mIntent);
+    }
+
+    @OnClick(R.id.tv_username)
+    public void goPersonalToo(View view) {
+        startActivity(mIntent);
     }
 }

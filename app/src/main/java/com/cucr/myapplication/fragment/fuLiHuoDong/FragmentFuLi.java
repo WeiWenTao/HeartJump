@@ -1,13 +1,11 @@
 package com.cucr.myapplication.fragment.fuLiHuoDong;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +23,7 @@ import com.cucr.myapplication.core.fuLi.FuLiCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -36,22 +35,17 @@ import java.util.List;
  * Created by cucr on 2017/9/1.
  */
 
-public class FragmentFuLi extends Fragment implements RequersCallBackListener {
-    View view;
-
+public class FragmentFuLi extends Fragment implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
     //活动福利
     @ViewInject(R.id.rlv_fuli)
-    RecyclerView rlv_fuli;
+    private SwipeRecyclerView rlv_fuli;
 
+    private View view;
     private Gson mGson;
     private FuLiCore mCore;
     private int page;
-    private Context mContext;
-    //兑换查询结果
-    private List<DuiHuanGoosInfo.RowsBean> goodInfos;
-
-    //活动查询结果
-    private List<ActiveInfo.RowsBean> activeInfos;
+    private boolean isRefresh;
+    private int rows;
     private FuLiAdapter activeAdapter;
     private Intent mIntent;
 
@@ -59,8 +53,8 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = 1;
+        rows = 2;
         mGson = new Gson();
-        mContext = MyApplication.getInstance();
         mIntent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         mCore = new FuLiCore();
         //view的复用
@@ -69,15 +63,9 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener {
             ViewUtils.inject(this, view);
             initRLV();
             queryDduiHuanInfo();
-            queryActiveInfo();
+            onRefresh();
         }
         return view;
-    }
-
-    //查询福利活动
-    private void queryActiveInfo() {
-        //活动
-        mCore.QueryHuoDong(page, 15, this);
     }
 
     private void queryDduiHuanInfo() {
@@ -87,10 +75,10 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener {
 
 
     private void initRLV() {
-        rlv_fuli.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
-        activeAdapter = new FuLiAdapter(mContext, activeInfos);
-
+        rlv_fuli.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        activeAdapter = new FuLiAdapter();
         rlv_fuli.setAdapter(activeAdapter);
+        rlv_fuli.setOnLoadListener(this);
         activeAdapter.setOnItemListener(new FuLiAdapter.OnItemListener() {
             @Override
             public void OnItemClick(View view, int activeId) {
@@ -105,21 +93,28 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener {
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
         if (what == Constans.TYPE_TWO) {
-            ActiveInfo activeInfo = mGson.fromJson(response.get(), ActiveInfo.class);
-            if (activeInfo.isSuccess()) {
-                activeInfos = activeInfo.getRows();
-                activeAdapter.setDate(activeInfos);
-            } else {
-                ToastUtils.showToast(mContext, activeInfo.getErrorMsg());
+            ActiveInfo infos = mGson.fromJson(response.get(), ActiveInfo.class);
+            if (infos.isSuccess()) {
+                if (isRefresh) {
+                    activeAdapter.setDate(infos.getRows());
+                } else {
+                    activeAdapter.addDate(infos.getRows());
+                }
+                if (infos.getTotal() <= page * rows) {
+                    rlv_fuli.onNoMore("没有更多了");
+                } else {
+                    rlv_fuli.complete();
+                }
             }
         } else if (what == Constans.TYPE_ONE) {
             DuiHuanGoosInfo duiHuanGoosInfo = mGson.fromJson(response.get(), DuiHuanGoosInfo.class);
             if (duiHuanGoosInfo.isSuccess()) {
-                goodInfos = duiHuanGoosInfo.getRows();
+                //兑换查询结果
+                List<DuiHuanGoosInfo.RowsBean> goodInfos = duiHuanGoosInfo.getRows();
                 //更新数据
                 activeAdapter.setDuiHuan(goodInfos);
             } else {
-                ToastUtils.showToast(mContext, duiHuanGoosInfo.getErrorMsg());
+                ToastUtils.showToast(duiHuanGoosInfo.getErrorMsg());
             }
         }
     }
@@ -131,6 +126,31 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener {
 
     @Override
     public void onRequestFinish(int what) {
-
+        if (what == Constans.TYPE_TWO) {
+            if (rlv_fuli.isRefreshing()) {
+                rlv_fuli.getSwipeRefreshLayout().setRefreshing(false);
+            }
+        }
     }
+
+    //查询福利活动
+    //刷新
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        rlv_fuli.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.QueryHuoDong(page, rows, this);
+    }
+
+    //查询福利活动
+    //加载
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        rlv_fuli.onLoadingMore();
+        mCore.QueryHuoDong(page, rows, this);
+    }
+
 }

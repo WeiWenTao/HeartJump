@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_13"
             android:text="心跳榜"
-            android:textColor="@color/white"
+            android:textColor="@color/title_color"
             android:textSize="@dimen/sp_18"
             />
 

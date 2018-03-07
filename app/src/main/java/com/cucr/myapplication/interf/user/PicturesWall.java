@@ -1,6 +1,7 @@
 package com.cucr.myapplication.interf.user;
 
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.List;
@@ -11,9 +12,13 @@ import java.util.List;
 
 public interface PicturesWall {
 
-    void queryPic(int page,int rows,int orderType,boolean queryMine,int startId,OnCommonListener onCommonListener);
+    void queryPic(int page,int rows,int orderType,boolean queryMine,int startId,RequersCallBackListener onCommonListener);
 
-    void upLoadPic(int strid , List<LocalMedia> mData, OnCommonListener commonListener);
+    void queryMyFavoritePic(int page,int rows,RequersCallBackListener onCommonListener);
+
+    void upLoadPic(int strid , List<LocalMedia> mData, RequersCallBackListener commonListener);
 
     void picGoods(int dataId,int goodCount,OnCommonListener onCommonListener);
+
+    void delPic(int dataId,RequersCallBackListener onCommonListener);
 }

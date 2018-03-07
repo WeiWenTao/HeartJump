@@ -36,7 +36,7 @@ import io.rong.imlib.model.Conversation;
  */
 
 @SuppressLint("ValidFragment")
-public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
+public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems, SwipeRecyclerView.OnLoadListener, RequersCallBackListener {
 
     private Context mContext;
     private View rootView;
@@ -49,6 +49,7 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
     private int rows;
     private MyWaitDialog mMyWaitDialog;
     private SwipeRecyclerView mRlv_hyt;
+    private boolean isRefresh;
 
     public Fragment_hyt(int startId) {
         this.startId = startId;
@@ -79,42 +80,20 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mRlv_hyt = (SwipeRecyclerView) rootView.findViewById(R.id.rlv_hyt);
         mRlv_hyt.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        mRlv_hyt.setOnLoadListener(this);
         mAdapter = new HytAdapter();
         mAdapter.setOnClickItems(this);
         mRlv_hyt.setAdapter(mAdapter);
-        queryHyt();
-    }
-
-    //查询
-    private void queryHyt() {
-        mCore.queryHyt(startId, page, rows, mCommonListener);
+        onRefresh();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1 && data.getBooleanExtra("need", false)) {
-            queryHyt();
+            onRefresh();
         }
     }
-
-    private RequersCallBackListener mCommonListener = new RequersCallBackListener() {
-        @Override
-        public void onRequestSuccess(int what, Response<String> response) {
-            HytListInfos hytListInfos = mGson.fromJson(response.get(), HytListInfos.class);
-            mAdapter.setData(hytListInfos.getRows());
-        }
-
-        @Override
-        public void onRequestStar(int what) {
-            mMyWaitDialog.show();
-        }
-
-        @Override
-        public void onRequestFinish(int what) {
-            mMyWaitDialog.dismiss();
-        }
-    };
 
     //点击条目
     @Override
@@ -132,10 +111,10 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
         final Conversation.ConversationType conversationType = Conversation.ConversationType.GROUP;
         if (isjoin) {
 //            RongIM.getInstance().startConversation(MyApplication.getInstance(), Conversation.ConversationType.GROUP, hytId + "", name);
-                Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().processName).buildUpon().appendPath("conversation").appendPath(conversationType.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", hytId+"").appendQueryParameter("title", name).build();
-                startActivityForResult(new Intent("android.intent.action.VIEW", uri),2);
+            Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().processName).buildUpon().appendPath("conversation").appendPath(conversationType.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", hytId + "").appendQueryParameter("title", name).build();
+            startActivityForResult(new Intent("android.intent.action.VIEW", uri), 2);
             return;
-            }
+        }
 
         mCore.joinHyt(hytId, new RequersCallBackListener() {
             @Override
@@ -144,10 +123,10 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
                     CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                     if (msg.isSuccess()) {
                         //再次查询
-                        queryHyt();
+                        onRefresh();
 //                        RongIM.getInstance().startConversation(MyApplication.getInstance(), Conversation.ConversationType.GROUP, hytId + "", name);
-                        Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().processName).buildUpon().appendPath("conversation").appendPath(conversationType.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", hytId+"").appendQueryParameter("title", name).build();
-                        startActivityForResult(new Intent("android.intent.action.VIEW", uri),2);
+                        Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().processName).buildUpon().appendPath("conversation").appendPath(conversationType.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", hytId + "").appendQueryParameter("title", name).build();
+                        startActivityForResult(new Intent("android.intent.action.VIEW", uri), 2);
                     } else {
                         ToastUtils.showToast(msg.getMsg());
                     }
@@ -164,5 +143,58 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems {
                 mMyWaitDialog.dismiss();
             }
         });
+    }
+
+    //刷新
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        mRlv_hyt.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.queryHyt(startId, page, rows, this);
+    }
+
+    //加载
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        mRlv_hyt.onLoadingMore();
+        mCore.queryHyt(startId, page, rows, this);
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        HytListInfos infos = mGson.fromJson(response.get(), HytListInfos.class);
+        if (infos.isSuccess()) {
+            if (isRefresh) {
+                mAdapter.setData(infos.getRows());
+            } else {
+                mAdapter.addData(infos.getRows());
+            }
+            if (infos.getTotal() <= page * rows) {
+                mRlv_hyt.onNoMore("没有更多了");
+            } else {
+                mRlv_hyt.complete();
+            }
+        } else {
+            ToastUtils.showToast(infos.getErrorMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        switch (what) {
+            //后援活动查询
+            case Constans.TYPE_TWO:
+                if (mRlv_hyt.isRefreshing()) {
+                    mRlv_hyt.getSwipeRefreshLayout().setRefreshing(false);
+                }
+                break;
+        }
     }
 }

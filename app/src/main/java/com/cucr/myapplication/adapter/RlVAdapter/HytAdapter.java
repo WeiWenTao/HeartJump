@@ -46,8 +46,8 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
-                    }
                     mOnClickItems.onClickItem(position);
+                    }
                 }
             });
 
@@ -61,7 +61,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (rowsBean.getIsJoin() == 0) {
                 ((HytItemHolder) holder).tv_join.setText("加入");
                 ((HytItemHolder) holder).tv_join.setBackgroundResource(R.drawable.corner_13);
-            }else {
+            } else {
                 ((HytItemHolder) holder).tv_join.setText("已加入");
                 ((HytItemHolder) holder).tv_join.setBackgroundResource(R.drawable.corner_13_gray);
             }
@@ -83,7 +83,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
                     }
-                    mOnClickItems.onClickJoin(rowsBean.getId(),rowsBean.getName(),rowsBean.getIsJoin() != 0);
+                    mOnClickItems.onClickJoin(rowsBean.getId(), rowsBean.getName(), rowsBean.getIsJoin() != 0);
                 }
             });
         }
@@ -94,16 +94,16 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return rows == null ? 1 : rows.size() + 1;
     }
 
-
     public void setData(List<HytListInfos.RowsBean> rows) {
         this.rows = rows;
         notifyDataSetChanged();
     }
 
-
     public void addData(List<HytListInfos.RowsBean> rows) {
-        this.rows.addAll(rows);
-        notifyDataSetChanged();
+        if (this.rows != null) {
+            this.rows.addAll(rows);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -146,6 +146,6 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnClickItems {
         void onClickItem(int position);
 
-        void onClickJoin(int hytId,String name,boolean isjoin);
+        void onClickJoin(int hytId, String name, boolean isjoin);
     }
 }

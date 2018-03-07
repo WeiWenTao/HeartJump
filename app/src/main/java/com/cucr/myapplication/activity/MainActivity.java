@@ -30,7 +30,6 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.google.gson.Gson;
 import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -43,12 +42,13 @@ import java.util.List;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider {
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, OnCommonListener {
 
     private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
     private QueryPersonalMsgCore qucryCore;
     private UserInfo mUserInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,19 +192,18 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     //获取用户信息返回给融云
     @Override
     public UserInfo getUserInfo(String userId) {
-        final Gson gson = new Gson();
-        qucryCore.queryPersonalById(userId, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                IMPersonalInfo info = gson.fromJson(response.get().toString(), IMPersonalInfo.class);
-                if (info.isSuccess()) {
-                    IMPersonalInfo.ObjBean obj = info.getObj();
-                    mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.HTTP_HOST + obj.getUserHeadPortrait()));
-                } else {
-                    ToastUtils.showToast(info.getMsg());
-                }
-            }
-        });
+        qucryCore.queryPersonalById(userId, this);
         return mUserInfo;
+    }
+
+    @Override
+    public void onRequestSuccess(Response<String> response) {
+        IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
+        if (info.isSuccess()) {
+            IMPersonalInfo.ObjBean obj = info.getObj();
+            mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.HTTP_HOST + obj.getUserHeadPortrait()));
+        } else {
+            ToastUtils.showToast(info.getMsg());
+        }
     }
 }

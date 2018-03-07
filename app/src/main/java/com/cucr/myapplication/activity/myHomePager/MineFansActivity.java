@@ -1,7 +1,6 @@
 package com.cucr.myapplication.activity.myHomePager;
 
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -12,30 +11,27 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
 
-public class MineFansActivity extends BaseActivity implements RequersCallBackListener {
+public class MineFansActivity extends BaseActivity implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
 
-    //导航栏
     @ViewInject(R.id.rlv)
-    private RecyclerView rlv;
+    private SwipeRecyclerView rlv;
 
     private QueryFocus core;
-    private int page;
-    private int rows;
     private MyFocusAdapter mAdapter;
 
 
     @Override
     protected void initChild() {
-        page = 1;
-        rows = 10;
         core = new QueryFocus();
-        rlv.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        rlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mAdapter = new MyFocusAdapter();
         rlv.setAdapter(mAdapter);
-        core.queryMyFens(page, rows, this);
+        rlv.setOnLoadListener(this);
+        onRefresh();
     }
 
     @Override
@@ -49,7 +45,16 @@ public class MineFansActivity extends BaseActivity implements RequersCallBackLis
             case Constans.TYPE_THREE:
                 FocusInfo focusInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
                 if (focusInfo.isSuccess()) {
-                    mAdapter.setData(focusInfo.getRows());
+                    if (isRefresh) {
+                        mAdapter.setData(focusInfo.getRows());
+                    } else {
+                        mAdapter.addDate(focusInfo.getRows());
+                    }
+                    if (focusInfo.getTotal() <= page * rows) {
+                        rlv.onNoMore("没有更多了");
+                    } else {
+                        rlv.complete();
+                    }
                 } else {
                     ToastUtils.showToast(focusInfo.getErrorMsg());
                 }
@@ -65,6 +70,26 @@ public class MineFansActivity extends BaseActivity implements RequersCallBackLis
 
     @Override
     public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_THREE) {
+            if (rlv.isRefreshing()) {
+                rlv.getSwipeRefreshLayout().setRefreshing(false);
+            }
+        }
+    }
 
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        rlv.getSwipeRefreshLayout().setRefreshing(true);
+        core.queryMyFens(page, rows, this);
+    }
+
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        rlv.onLoadingMore();
+        core.queryMyFens(page, rows, this);
     }
 }

@@ -47,6 +47,13 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
         notifyDataSetChanged();
     }
 
+    public void addDate(List<FocusInfo.RowsBean> rows) {
+        if (rows == null) {
+            return;
+        }
+        notifyItemInserted(this.rows.size() + 1);
+        this.rows.addAll(rows);
+    }
     @Override
     public FocusHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mInstance = MyApplication.getInstance();

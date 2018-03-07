@@ -29,6 +29,13 @@ public class HytMembersAdapter extends RecyclerView.Adapter<HytMembersAdapter.My
         notifyDataSetChanged();
     }
 
+    public void addData(List<HytMembers.RowsBean> rows) {
+        if (this.rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
+    }
+
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hyt_members, parent, false);

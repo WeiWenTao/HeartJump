@@ -13,14 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.coverflow.GalleryRecyclerView;
-import com.cucr.myapplication.widget.coverflow.Item;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -28,7 +27,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DuiHuanCatgoryActivity extends Activity {
@@ -43,7 +41,6 @@ public class DuiHuanCatgoryActivity extends Activity {
     //    private int[] mImgs ={R.mipmap.test1,R.mipmap.test2,R.mipmap.test3,R.mipmap.test4,R.mipmap.test5,R.mipmap.test6,R.mipmap.test7
 //            ,R.mipmap.test8,R.mipmap.test9,R.mipmap.test10,R.mipmap.test11,R.mipmap.test12,R.mipmap.test13,R.mipmap.test14,R.mipmap.test15
 //            ,R.mipmap.test16,R.mipmap.test17,R.mipmap.test18,R.mipmap.test19,R.mipmap.test20,R.mipmap.test21,R.mipmap.test22,R.mipmap.test23};
-    private List<Item> mlist = new ArrayList<>();
     private int[] mImgs = new int[20];
     private Intent mIntent;
     private List<DuiHuanGoosInfo.RowsBean> mDatas;
@@ -110,7 +107,7 @@ public class DuiHuanCatgoryActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(DuiHuanCatgoryActivity.this, DingDanActivity.class);
-                        intent.putExtra("data",data);
+                        intent.putExtra("data", data);
                         startActivity(intent);
                     }
                 });

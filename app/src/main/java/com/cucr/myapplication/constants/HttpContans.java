@@ -128,6 +128,9 @@ public class HttpContans {
     //粉团评论
     public static final String ADDRESS_FT_COMMENT = "/interface/mobileContentAction/comment";
 
+    //粉团阅读量
+    public static final String ADDRESS_FT_READ = "/interface/mobileContentAction/read";
+
     //粉团评论点赞
     public static final String ADDRESS_FT_COMMENT_GOODS = "/interface/mobileContentAction/commentGiveUp";
 
@@ -209,8 +212,14 @@ public class HttpContans {
     //图集查询
     public static final String ADDRESS_PIC_QUERY = "/interface/mobileStartAtlasAction/upAtlasQuery";
 
+    //我喜欢的图集
+    public static final String ADDRESS_PIC_FAVORITE = "/interface/mobileStartAtlasAction/like";
+
     //图集点赞
     public static final String ADDRESS_PIC_GOODS = "/interface/mobileStartAtlasAction/giveUp";
+
+    //图集删除
+    public static final String ADDRESS_PIC_DELETE = "/interface/mobileStartAtlasAction/del";
 
     //粉团分享
     public static final String ADDRESS_FT_SHARE = HTTP_HOST + "/interface/newsShare/page?fansNewsContentId=";

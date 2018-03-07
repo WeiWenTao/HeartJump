@@ -282,7 +282,7 @@ public class SwipeRecyclerView extends FrameLayout
             mWrapperAdapter.notifyItemRemoved(mWrapperAdapter.getItemCount());
         }
     }
-    
+
     /**
      * call method {@link OnLoadListener#onRefresh()}
      */

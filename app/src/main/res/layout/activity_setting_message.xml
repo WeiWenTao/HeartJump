@@ -13,76 +13,6 @@
     <include layout="@layout/activity_base_title"/>
 
     <RelativeLayout
-        android:id="@+id/rl_comment"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        >
-
-
-        <TextView
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_15"
-            android:textColor="#666"
-            android:text="评论"
-            />
-
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:src="@drawable/icon_more"
-            />
-
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
-            android:background="#ebebeb"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_like"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        >
-
-
-        <TextView
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_15"
-            android:textColor="#666"
-            android:text="赞"
-            />
-
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:src="@drawable/icon_more"
-            />
-
-
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#f6f6f6"/>
-
-    <RelativeLayout
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -105,7 +35,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:id="@+id/toggle_message_tip"
             android:layout_width="35dp"
-            toggle:tbOnColor="#f68d89"
+            toggle:tbOnColor="#ff4f49"
             toggle:tbOffColor="#ddd"
             toggle:tbSpotColor="#fff"
             android:layout_height="20dp" >
@@ -132,7 +62,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp_15"
             android:textColor="#666"
-            android:text="关注的明星有新动态提醒哦"
+            android:text="关注的明星有新动态提醒我"
             />
 
         <com.zcw.togglebutton.ToggleButton
@@ -141,7 +71,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:id="@+id/toggle_focus_tip"
             android:layout_width="35dp"
-            toggle:tbOnColor="#f68d89"
+            toggle:tbOnColor="#ff4f49"
             toggle:tbOffColor="#ddd"
             toggle:tbSpotColor="#fff"
             android:layout_height="20dp" >

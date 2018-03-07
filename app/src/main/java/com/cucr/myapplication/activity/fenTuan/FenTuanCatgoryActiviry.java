@@ -162,10 +162,12 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     protected void initChild() {
         EventBus.getDefault().register(this);
         initTitle("详情");
-        rows = 20;
+        rows = 5;
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
         initData();
+        //阅读量
+        queryCore.ftRead(mRowsBean.getId());
         initGiftAndBackPack();
         setUpEmojiPopup();
         initLV();

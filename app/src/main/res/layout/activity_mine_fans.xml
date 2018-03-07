@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.myHomePager.FocusActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <!--android:id="@+id/iv_my_focus_back"-->
 
@@ -29,16 +29,16 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
             android:text="我的粉丝"
-            android:textColor="@color/white"
+            android:textColor="@color/title_color"
             android:textSize="18sp"
             />
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
         android:id="@+id/rlv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></android.support.v7.widget.RecyclerView>
+        />
 
 </LinearLayout>

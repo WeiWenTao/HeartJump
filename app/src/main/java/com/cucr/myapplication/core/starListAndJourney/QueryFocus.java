@@ -70,7 +70,7 @@ public class QueryFocus implements MyFocusStars {
         mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
-    //查询我关注的其他人
+    //查询我的粉丝
     @Override
     public void queryMyFens(int page, int rows, RequersCallBackListener requersCallBackListener) {
         this.requersCallBackListener = requersCallBackListener;

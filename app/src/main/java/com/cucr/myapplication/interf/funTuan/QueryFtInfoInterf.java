@@ -18,4 +18,6 @@ public interface QueryFtInfoInterf {
 
     void queryBackpackInfo(OnCommonListener listener);
 
+    void ftRead(int dataId);
+
 }

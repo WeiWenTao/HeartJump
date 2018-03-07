@@ -29,7 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
             android:text="兑换详情"
-            android:textColor="@color/white"
+            android:textColor="@color/title_color"
             android:textSize="18sp"
             />
 

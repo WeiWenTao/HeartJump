@@ -37,17 +37,18 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/rlv_bp_duihuan"
         ></android.support.v7.widget.RecyclerView>
 
-    <TextView
+    <Button
         android:id="@+id/tv_to_duihuna"
         android:layout_width="300dp"
         android:layout_height="@dimen/dp_40"
-        android:background="@drawable/shape_common_bg_for_20r"
-        android:text="价值3000星币 立即兑换"
+        android:background="@drawable/shape_load_bg_nor"
         android:gravity="center"
+        android:layout_marginBottom="@dimen/dp_60"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
         android:textColor="@color/white"

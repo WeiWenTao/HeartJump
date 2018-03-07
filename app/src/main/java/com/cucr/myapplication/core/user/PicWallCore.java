@@ -8,6 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.user.PicturesWall;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
@@ -34,8 +35,7 @@ import java.util.List;
 
 public class PicWallCore implements PicturesWall {
 
-    private OnCommonListener upLoadListener;
-    private OnCommonListener queryListener;
+    private RequersCallBackListener listener;
     private OnCommonListener goodListener;
     /**
      * 请求队列。
@@ -50,9 +50,10 @@ public class PicWallCore implements PicturesWall {
         files = new ArrayList<>();
     }
 
+    //图集查询
     @Override
-    public void queryPic(int page, int rows, int orderType, boolean queryMine, int startId, OnCommonListener onCommonListener) {
-        this.queryListener = onCommonListener;
+    public void queryPic(int page, int rows, int orderType, boolean queryMine, int startId, RequersCallBackListener onCommonListener) {
+        this.listener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_QUERY, RequestMethod.POST);
         if (startId != -1) {
             request.add("startId", startId);
@@ -67,8 +68,19 @@ public class PicWallCore implements PicturesWall {
     }
 
     @Override
-    public void upLoadPic(int startId, List<LocalMedia> mData, OnCommonListener commonListener) {
-        this.upLoadListener = commonListener;
+    public void queryMyFavoritePic(int page, int rows, RequersCallBackListener onCommonListener) {
+        this.listener = onCommonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_FAVORITE, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("page", page)
+                .add("rows", rows)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_FORE, request, callback);
+    }
+
+    @Override
+    public void upLoadPic(int startId, List<LocalMedia> mData, RequersCallBackListener commonListener) {
+        this.listener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_UPLOAD, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", startId)
@@ -78,8 +90,8 @@ public class PicWallCore implements PicturesWall {
             BasicBinary binary = new FileBinary(new File(compressPath), compressPath.substring(compressPath.lastIndexOf("/")));
             binary.setUploadListener(i, mOnUploadListener);
             files.add(binary);
-
         }
+        MyLogger.jLog().i("filesSize:" + files.size());
         request.add("pic", files);
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
@@ -96,11 +108,29 @@ public class PicWallCore implements PicturesWall {
         mQueue.add(Constans.TYPE_THREE, request, callback);
     }
 
+    //图集删除
+    @Override
+    public void delPic(int dataId, RequersCallBackListener onCommonListener) {
+        this.listener = onCommonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_DELETE, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("dataId", dataId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_FIVE, request, callback);
+    }
+
 
     OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-            MyLogger.jLog().i("onStart");
+            switch (what) {
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_TWO:
+                case Constans.TYPE_FORE:
+                case Constans.TYPE_FIVE:
+                    listener.onRequestStar(what);
+                    break;
+            }
         }
 
         @Override
@@ -108,11 +138,10 @@ public class PicWallCore implements PicturesWall {
             switch (what) {
 
                 case Constans.TYPE_ONE:
-                    queryListener.onRequestSuccess(response);
-                    break;
-
                 case Constans.TYPE_TWO:
-                    upLoadListener.onRequestSuccess(response);
+                case Constans.TYPE_FORE:
+                case Constans.TYPE_FIVE:
+                    listener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_THREE:
@@ -130,6 +159,15 @@ public class PicWallCore implements PicturesWall {
 
         @Override
         public void onFinish(int what) {
+            switch (what) {
+                case Constans.TYPE_TWO:
+                    files.clear();
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_FORE:
+                case Constans.TYPE_FIVE:
+                    listener.onRequestFinish(what);
+                    break;
+            }
         }
     };
 

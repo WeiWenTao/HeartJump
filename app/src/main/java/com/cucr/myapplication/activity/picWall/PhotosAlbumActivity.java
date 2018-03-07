@@ -15,13 +15,15 @@ import com.cucr.myapplication.adapter.RlVAdapter.PicWallAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.user.PicWallCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpacesItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogSort;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -41,12 +43,13 @@ import java.util.List;
 
 import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 
-public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickBt, PicWallAdapter.OnItemClickListener, SwipeRecyclerView.OnLoadListener {
+public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickBt, PicWallAdapter.OnItemClickListener, SwipeRecyclerView.OnLoadListener, RequersCallBackListener {
 
     @ViewInject(R.id.rlv_picwall)
     private SwipeRecyclerView rlv_picwall;
 
     private DialogSort mDialog;
+    private MyWaitDialog mWaitDialog;
     private PicWallCore mCore;
     private PictureSelectionModel mPictureModel;
     private int mStarId;
@@ -57,6 +60,8 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     private int page;
     private int rows;
     private int orderType;
+    private boolean isRefresh;
+    private List<LocalMedia> mLocalMedia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,36 +75,15 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 
     }
 
-
-    private void loadData() {
-        rlv_picwall.getSwipeRefreshLayout().setRefreshing(true);
-        rlv_picwall.getRecyclerView().smoothScrollToPosition(0);
-        page = 1;
-        mCore.queryPic(page, rows, orderType, false, mStarId, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                mInfo = mGson.fromJson(response.get(), PicWallInfo.class);
-                if (mInfo.isSuccess()) {
-                    mAdapter.setData(mInfo.getRows());
-                    rlv_picwall.complete();
-                    if (mInfo.getRows().size() < rows) {
-                        rlv_picwall.onNoMore("");
-                    }
-                } else {
-                    ToastUtils.showToast(mInfo.getErrorMsg());
-                }
-            }
-        });
-    }
-
     private void init() {
         rows = 15;
         page = 1;
         orderType = 1;   //默认按时间排序
-        mIntent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        mIntent = new Intent();
         mCore = new PicWallCore();
         mGson = MyApplication.getGson();
         mDialog = new DialogSort(this, R.style.MyDialogStyle);
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mDialog.setOnClickBt(this);
         mStarId = getIntent().getIntExtra("starId", -1);
         Window dialogWindow = mDialog.getWindow();
@@ -148,14 +132,14 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     @Override
     public void clickSortByTime() {
         orderType = 1;
-        loadData();
+        onRefresh();
     }
 
     //按点赞量排序
     @Override
     public void clickSortByGoods() {
         orderType = 0;
-        loadData();
+        onRefresh();
     }
 
     //选择图片上传
@@ -171,18 +155,8 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择
-                    List<LocalMedia> localMedia = PictureSelector.obtainMultipleResult(data);
-                    mCore.upLoadPic(mStarId, localMedia, new OnCommonListener() {
-                        @Override
-                        public void onRequestSuccess(Response<String> response) {
-                            CommonRebackMsg msg = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
-                            if (msg.isSuccess()) {
-                                ToastUtils.showToast("图集上传成功,请等待审核");
-                            } else {
-                                ToastUtils.showToast(msg.getMsg());
-                            }
-                        }
-                    });
+                    mLocalMedia = PictureSelector.obtainMultipleResult(data);
+                    mCore.upLoadPic(mStarId, mLocalMedia, this);
                     break;
 
                 case 2:
@@ -196,58 +170,83 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
         }
     }
 
-
     @Override
     public void clickUser(int userId) {
+        mIntent.setClass(MyApplication.getInstance(), PersonalMainPagerActivity.class);
         mIntent.putExtra("userId", userId);
         startActivity(mIntent);
     }
 
     @Override
     public void clickItem(int posotion, PicWallInfo.RowsBean rowsBean, ImageView imageView) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            imageView.setTransitionName("aaa");
-//        }
-        Intent intent = new Intent(MyApplication.getInstance(), PicWallCatgoryActivity.class);
-        intent.putExtra("data", mInfo);
-        intent.putExtra("posotion", posotion);
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            startActivity(intent,
-//                    ActivityOptions.makeSceneTransitionAnimation(this, imageView, "aaa").toBundle());
-//        } else {
-
-        startActivityForResult(intent, 2);
-//        }
+        mIntent.setClass(MyApplication.getInstance(), PicWallCatgoryActivity.class);
+        mIntent.putExtra("data", mInfo);
+        mIntent.putExtra("posotion", posotion);
+        startActivityForResult(mIntent, 2);
     }
 
     @Override
     public void onRefresh() {
-        loadData();
+        isRefresh = true;
+        page = 1;
+        rlv_picwall.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.queryPic(page, rows, orderType, false, mStarId, this);
     }
 
     @Override
     public void onLoadMore() {
-
+        isRefresh = false;
         page++;
         rlv_picwall.onLoadingMore();
-        mCore.queryPic(page, rows, 1, false, mStarId, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                PicWallInfo picWallInfo = mGson.fromJson(response.get(), PicWallInfo.class);
-                if (picWallInfo.isSuccess()) {
-                    MyLogger.jLog().i("picWallInfosize:" + picWallInfo.getRows().size());
-                    rlv_picwall.complete();
-                    mAdapter.addData(picWallInfo.getRows());
-                    mInfo.getRows().addAll(picWallInfo.getRows());
-                    if (picWallInfo.getTotal() < rows * page) {
-                        rlv_picwall.onNoMore("");
-                    }
-                } else {
-                    ToastUtils.showToast(picWallInfo.getErrorMsg());
-                }
-            }
-        });
+        mCore.queryPic(page, rows, orderType, false, mStarId, this);
     }
 
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_ONE) {
+            PicWallInfo picWallInfo = mGson.fromJson(response.get(), PicWallInfo.class);
+            if (picWallInfo.isSuccess()) {
+                if (isRefresh) {
+                    mAdapter.setData(picWallInfo.getRows());
+                    mInfo = picWallInfo;
+                } else {
+                    mAdapter.addData(picWallInfo.getRows());
+                    mInfo.getRows().addAll(picWallInfo.getRows());
+                }
+                if (picWallInfo.getTotal() <= page * rows) {
+                    rlv_picwall.onNoMore("没有更多了");
+                } else {
+                    rlv_picwall.complete();
+                }
+            } else {
+                ToastUtils.showToast(picWallInfo.getErrorMsg());
+            }
+        } else if (what == Constans.TYPE_TWO) {
+            CommonRebackMsg msg = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
+            if (msg.isSuccess()) {
+                ToastUtils.showToast("图集上传成功,可在<我的图集>界面查看审核状态");
+                mLocalMedia.clear();
+            } else {
+                ToastUtils.showToast(msg.getMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        if (what == Constans.TYPE_TWO) {
+            mWaitDialog.show();
+        }
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_ONE) {
+            if (rlv_picwall.isRefreshing()) {
+                rlv_picwall.getSwipeRefreshLayout().setRefreshing(false);
+            }
+        } else if (what == Constans.TYPE_TWO) {
+            mWaitDialog.dismiss();
+        }
+    }
 }

@@ -236,7 +236,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="@dimen/dp_25"
                                 toggle:tbOffColor="#ddd"
-                                toggle:tbOnColor="#f68d89"
+                                toggle:tbOnColor="@color/xtred"
                                 toggle:tbSpotColor="#fff"
                                 >
                             </com.zcw.togglebutton.ToggleButton>

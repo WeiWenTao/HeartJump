@@ -409,7 +409,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }
             });
@@ -418,6 +418,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
+                        boolean b = rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR;
+                        MyLogger.jLog().i("isstar:" + b + ",rolaid:" + rowsBean.getCreateUserRoleId());
                         mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }

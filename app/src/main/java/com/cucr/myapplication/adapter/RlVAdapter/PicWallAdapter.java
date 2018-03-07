@@ -12,14 +12,15 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
-import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.constants.HttpContans;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cucr on 2018/1/3.
@@ -27,7 +28,12 @@ import java.util.List;
 
 public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallHolder> {
 
+    public PicWallAdapter() {
+        map = new HashMap<>();
+    }
+
     private List<PicWallInfo.RowsBean> rows;
+    private Map<Integer, Integer> map;
 
     public void setData(List<PicWallInfo.RowsBean> rows) {
         this.rows = rows;
@@ -38,16 +44,16 @@ public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallH
         if (this.rows == null || rows == null || rows.size() == 0) {
             return;
         }
+        notifyItemInserted(this.rows.size() + 1);
+        this.rows.addAll(rows);
 //        notifyDataSetChanged();
-//        notifyItemInserted(this.rows.size());
-        notifyItemRangeChanged(this.rows.size(), this.rows.size() + rows.size());
+//        notifyItemRangeChanged(this.rows.size(), this.rows.size() + rows.size());
     }
 
     @Override
     public PicWallHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_rlv_picwall, parent, false);
-        PicWallHolder holder = new PicWallHolder(view);
-        return holder;
+        return new PicWallHolder(view);
     }
 
     @Override
@@ -56,7 +62,21 @@ public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallH
             holder.iv_pic.setTransitionName("aaa");
         }
         final PicWallInfo.RowsBean rowsBean = rows.get(position);
-        MyLogger.jLog().i("position:" + position + ",count:" + rowsBean.getGiveUpCount());
+//======================================================================
+//        Integer viewHeight = map.get(position);
+//        if (viewHeight != null) {
+//            ViewGroup.LayoutParams layoutParams = holder.iv_pic.getLayoutParams();
+//            layoutParams.height = viewHeight;
+//            holder.iv_pic.setLayoutParams(layoutParams);
+//        } else {
+//            //网络请求获取到图片的Drawable或者bitmap,得到图片宽高比例，并得到View高度viewHeight
+//            ViewGroup.LayoutParams layoutParams = holder.iv_pic.getLayoutParams();
+//            viewHeight = layoutParams.height;
+//            holder.iv_pic.setLayoutParams(layoutParams);
+//            map.put(position, viewHeight);
+//
+//        }
+//======================================================================
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_user_head, MyApplication.getImageLoaderOptions());
         holder.tv_goods_num.setText(rowsBean.getGiveUpCount() + "");

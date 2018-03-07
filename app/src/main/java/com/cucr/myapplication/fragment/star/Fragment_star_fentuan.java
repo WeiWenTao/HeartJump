@@ -79,7 +79,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @ViewInject(R.id.vp_dahsnag)
     private NoScrollPager vp_dahsnag;
 
-
     private PayCenterCore mPayCenterCore;
     private View view;
     private Context mContext;
@@ -212,7 +211,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-                    MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
                     mAdapter.setData(mQueryFtInfos);
                     rlv_fentuan.complete();
                     if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {
@@ -382,7 +380,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
-
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
                     mAdapter.addData(mQueryFtInfoss.getRows());

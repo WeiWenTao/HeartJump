@@ -3,18 +3,18 @@ package com.cucr.myapplication.activity.fenTuan;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.BackPackDuiHuanAdapter;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
-import com.cucr.myapplication.core.xinbi.XinBiCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.xinbi.XinBiCore;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -33,7 +33,7 @@ public class DsDuiHuanActivity extends BaseActivity implements BackPackDuiHuanAd
 
     //兑换按钮
     @ViewInject(R.id.tv_to_duihuna)
-    TextView tv_to_duihuna;
+    Button tv_to_duihuna;
 
     private int how;
     private Map<Integer, Integer> gifts;
@@ -51,9 +51,7 @@ public class DsDuiHuanActivity extends BaseActivity implements BackPackDuiHuanAd
         mAdapter = new BackPackDuiHuanAdapter();
         mAdapter.setOnResultChange(this);
         rlv_bp_duihuan.setAdapter(mAdapter);
-
         duihuanSuccess();
-
 
     }
 
@@ -61,7 +59,15 @@ public class DsDuiHuanActivity extends BaseActivity implements BackPackDuiHuanAd
         initGiftCoast(mFtBackpackInfo);
         mAdapter.setData(mFtBackpackInfo);
         how = mFtBackpackInfo.getObj().getZjg();
-        tv_to_duihuna.setText("价值" + how + "星币 立即兑换");
+        if (how == 0) {
+            tv_to_duihuna.setText("暂无可以兑换的礼物哦");
+            tv_to_duihuna.setBackgroundResource(R.drawable.shape_load_bg_nor);
+            tv_to_duihuna.setEnabled(false);
+        } else {
+            tv_to_duihuna.setText("价值" + how + "星币 立即兑换");
+            tv_to_duihuna.setBackgroundResource(R.drawable.shape_immediately_pay_bg);
+            tv_to_duihuna.setEnabled(true);
+        }
     }
 
     //初始化礼物总价值

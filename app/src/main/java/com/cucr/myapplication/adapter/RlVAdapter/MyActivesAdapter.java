@@ -36,6 +36,13 @@ public class MyActivesAdapter extends RecyclerView.Adapter<MyActivesAdapter.MyHo
         notifyDataSetChanged();
     }
 
+    public void addData(List<MyActives.RowsBean> rows) {
+        if (this.rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
+    }
+
     @Override
     public void onBindViewHolder(MyHoder holder, int position) {
         final MyActives.RowsBean rowsBean = rows.get(position);
@@ -44,8 +51,8 @@ public class MyActivesAdapter extends RecyclerView.Adapter<MyActivesAdapter.MyHo
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickItem != null){
-                    mOnClickItem.onItemClick(new ErWeiMaInfo(rowsBean.getActive().getActiveName(),rowsBean.getOrderNo()));
+                if (mOnClickItem != null) {
+                    mOnClickItem.onItemClick(new ErWeiMaInfo(rowsBean.getActive().getActiveName(), rowsBean.getOrderNo()));
                 }
             }
         });
@@ -76,7 +83,7 @@ public class MyActivesAdapter extends RecyclerView.Adapter<MyActivesAdapter.MyHo
         mOnClickItem = onClickItem;
     }
 
-    public interface OnClickItem{
+    public interface OnClickItem {
         void onItemClick(ErWeiMaInfo info);
     }
 }

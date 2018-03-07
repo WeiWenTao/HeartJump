@@ -16,6 +16,9 @@ public abstract class BaseActivity extends Activity {
     //标题
     protected TextView tv_title;
     protected Gson mGson;
+    protected boolean isRefresh;
+    protected int page;
+    protected int rows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,8 @@ public abstract class BaseActivity extends Activity {
         setContentView(getChildRes());
         ViewUtils.inject(this);
         mGson = new Gson();
+        page = 1;
+        rows = 15;
         //初始化沉浸栏、标题内容、返回键
         initBar();
 

@@ -3,4 +3,11 @@
     <declare-styleable name="gallery">
         <attr name="selectitem" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="MultiStateView"><attr format="reference" name="msv_loadingView"/><attr format="reference" name="msv_emptyView"/><attr format="reference" name="msv_errorView"/><attr format="enum" name="msv_viewState">
+        <enum name="content" value="0"/>
+        <enum name="error" value="1"/>
+        <enum name="empty" value="2"/>
+        <enum name="loading" value="3"/>
+    </attr><attr format="boolean" name="msv_animateViewChanges"/></declare-styleable>
 </resources>
