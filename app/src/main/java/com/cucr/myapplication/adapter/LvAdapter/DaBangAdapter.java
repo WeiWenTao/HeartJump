@@ -60,7 +60,7 @@ public class DaBangAdapter extends BaseAdapter {
         TextView tv_xingbi = cvh.getView(R.id.tv_xingbi, TextView.class);     //心跳值
         TextView tv_ranking = cvh.getTv(R.id.tv_ranking);     //排名
 
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_name.setText(rowsBean.getRealName());
         tv_xingbi.setText(rowsBean.getUserMoney() + "");
         tv_ranking.setText(position + 4 + "");

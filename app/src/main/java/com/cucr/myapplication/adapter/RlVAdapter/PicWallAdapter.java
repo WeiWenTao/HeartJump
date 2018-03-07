@@ -77,8 +77,8 @@ public class PicWallAdapter extends RecyclerView.Adapter<PicWallAdapter.PicWallH
 //
 //        }
 //======================================================================
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_user_head, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_user_head, MyApplication.getImageLoaderOptions());
         holder.tv_goods_num.setText(rowsBean.getGiveUpCount() + "");
         holder.tv_user_name.setText(rowsBean.getUser().getName());
         holder.ll_personal.setOnClickListener(new View.OnClickListener() {

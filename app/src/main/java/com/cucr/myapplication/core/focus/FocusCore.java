@@ -47,7 +47,7 @@ public class FocusCore implements Focus {
     @Override
     public void toFocus(int id) {
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TO_FOCUS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_TO_FOCUS, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("startId", id);
@@ -58,7 +58,7 @@ public class FocusCore implements Focus {
 
     public void toFocus(int id, OnCommonListener listener) {
         this.focusListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TO_FOCUS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_TO_FOCUS, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("startId", id);
@@ -69,7 +69,7 @@ public class FocusCore implements Focus {
     @Override
     public void cancaleFocus(int id, OnCommonListener listener) {
         this.cancaleFocusListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_CANCLE_FOCUS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_CANCLE_FOCUS, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("startId", id);

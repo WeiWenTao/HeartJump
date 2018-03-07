@@ -48,7 +48,7 @@ public class EditInfoCore implements SavePersonalInfo {
         //用户头像
         String head = personalInfo.getuserHeadPortrait();
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_EDIT_USERINFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_EDIT_USERINFO, RequestMethod.POST);
 
         // 添加普通参数。
         request.add("userId", personalInfo.getUserId());

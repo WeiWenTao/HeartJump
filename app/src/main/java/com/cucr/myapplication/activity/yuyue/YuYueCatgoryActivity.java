@@ -146,7 +146,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
         tv_price.setMovementMethod(LinkMovementMethod.getInstance());
         //-----------------------------------------价格-------------------------------------
         tv_star_name.setText(mData.getRealName());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getStartShowPic(), iv_head, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mData.getStartShowPic(), iv_head, MyApplication.getImageLoaderOptions());
         scene = 1; //默认场景为室外
 
         et_qiyename.setText((String) SpUtil.getParam(SpConstant.SP_QIYE_NAME, ""));

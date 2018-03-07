@@ -35,7 +35,7 @@ public class MyPicWall extends PagerAdapter implements View.OnClickListener {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        String url = HttpContans.HTTP_HOST + mData.getRows().get(position).getPicUrl();
+        String url = HttpContans.IMAGE_HOST + mData.getRows().get(position).getPicUrl();
         PhotoView view = new PhotoView(MyApplication.getInstance());
         view.setOnClickListener(this);
         //开启缩放

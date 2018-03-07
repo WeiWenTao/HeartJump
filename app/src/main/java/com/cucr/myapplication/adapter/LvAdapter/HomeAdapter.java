@@ -84,7 +84,7 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                 cvh1.getTv(R.id.tv_reads).setText(rowsBean.getReadCount() + "");     //阅读量
 
 
-                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), cvh1.getIv(R.id.iv_video), MyApplication.getImageLoaderOptions());
+                ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), cvh1.getIv(R.id.iv_video), MyApplication.getImageLoaderOptions());
 
                 return cvh1.convertView;
 
@@ -95,9 +95,9 @@ public class HomeAdapter extends BaseAdapter implements View.OnClickListener {
                 cvh2.getTv(R.id.tv_from).setText(rowsBean.getCreateUserName());     //来自
                 cvh2.getTv(R.id.tv_reads).setText(rowsBean.getReadCount() + "");     //阅读量
                 try {
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), cvh2.getIv(R.id.iv_pic1), MyApplication.getImageLoaderOptions());
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(1).getFileUrl(), cvh2.getIv(R.id.iv_pic2), MyApplication.getImageLoaderOptions());
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(2).getFileUrl(), cvh2.getIv(R.id.iv_pic3), MyApplication.getImageLoaderOptions());
+                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), cvh2.getIv(R.id.iv_pic1), MyApplication.getImageLoaderOptions());
+                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(1).getFileUrl(), cvh2.getIv(R.id.iv_pic2), MyApplication.getImageLoaderOptions());
+                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(2).getFileUrl(), cvh2.getIv(R.id.iv_pic3), MyApplication.getImageLoaderOptions());
 
                 } catch (Exception e) {
                     MyLogger.jLog().i("跳过");

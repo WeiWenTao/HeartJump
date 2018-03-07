@@ -58,13 +58,17 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case Constans.TYPE_VIDEO:
                 return new Tp1_Holder(mLayoutInflater.inflate(R.layout.item_xw_type02, parent, false));
 
-            //图片
+            //图片(+文字)
             case Constans.TYPE_PICTURE:
                 return new Tp2_Holder(mLayoutInflater.inflate(R.layout.item_xw_type01, parent, false));
 
             //纯文本
             case Constans.TYPE_TEXT:
                 return new Tp3_Holder(mLayoutInflater.inflate(R.layout.item_xw_type00, parent, false));
+
+            //图集
+            case Constans.TYPE_ALBUM:
+                return new Tp4_Holder(mLayoutInflater.inflate(R.layout.item_xw_type03, parent, false));
 
         }
         return null;
@@ -90,7 +94,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Tp1_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             ((Tp1_Holder) holder).tv_reads.setText(rowsBean.getReadCount() + "");     //阅读量
 
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video, MyApplication.getImageLoaderOptions());
 
             ((Tp1_Holder) holder).ll_item_video.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,14 +109,10 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Tp2_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             ((Tp2_Holder) holder).tv_reads.setText(rowsBean.getReadCount() + "");     //阅读量
 
-            try {
-                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), ((Tp2_Holder) holder).iv_pic1, MyApplication.getImageLoaderOptions());
-                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(1).getFileUrl(), ((Tp2_Holder) holder).iv_pic2, MyApplication.getImageLoaderOptions());
-                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(2).getFileUrl(), ((Tp2_Holder) holder).iv_pic3, MyApplication.getImageLoaderOptions());
-            } catch (Exception e) {
-                MyLogger.jLog().i("跳过");
-                notifyDataSetChanged();
-            }
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), ((Tp2_Holder) holder).iv_pic1, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(1).getFileUrl(), ((Tp2_Holder) holder).iv_pic2, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(2).getFileUrl(), ((Tp2_Holder) holder).iv_pic3, MyApplication.getImageLoaderOptions());
+
 
             ((Tp2_Holder) holder).ll_item_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,7 +122,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 // -------------------------------------------------------------------------------------------------
-        } else { //文字
+        } else if (holder instanceof Tp3_Holder){ //文字
             ((Tp3_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp3_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             ((Tp3_Holder) holder).tv_reads.setText(rowsBean.getReadCount() + "");     //阅读量
@@ -136,6 +136,17 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     context.startActivity(mIntent);
                 }
             });
+
+        }else if (holder instanceof Tp4_Holder){
+            ((Tp4_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
+            ((Tp4_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
+            ((Tp4_Holder) holder).tv_reads.setText(rowsBean.getReadCount() + "");     //阅读量
+
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), ((Tp2_Holder) holder).iv_pic1, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(1).getFileUrl(), ((Tp2_Holder) holder).iv_pic2, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(2).getFileUrl(), ((Tp2_Holder) holder).iv_pic3, MyApplication.getImageLoaderOptions());
+            //跳转图集界面
+
         }
     }
 
@@ -247,4 +258,39 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    //Album
+    class Tp4_Holder extends RecyclerView.ViewHolder {
+        //标题
+        @ViewInject(R.id.tv_title)
+        TextView tv_title;
+
+        //图片1
+        @ViewInject(R.id.iv_pic1)
+        ImageView iv_pic1;
+
+        //图片2
+        @ViewInject(R.id.iv_pic2)
+        ImageView iv_pic2;
+
+        //图片3
+        @ViewInject(R.id.iv_pic3)
+        ImageView iv_pic3;
+
+        //来自
+        @ViewInject(R.id.tv_from)
+        TextView tv_from;
+
+        //阅读量
+        @ViewInject(R.id.tv_reads)
+        TextView tv_reads;
+
+        //条目
+        @ViewInject(R.id.ll_item_pic)
+        LinearLayout ll_item_pic;
+
+        public Tp4_Holder(View itemView) {
+            super(itemView);
+            ViewUtils.inject(this, itemView);
+        }
+    }
 }

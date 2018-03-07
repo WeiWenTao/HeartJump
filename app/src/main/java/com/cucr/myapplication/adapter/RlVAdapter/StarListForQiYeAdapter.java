@@ -127,7 +127,7 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
         Resources resources = mContext.getResources();
         //显示明星列表图片
         MyLogger.jLog().i("设置了明星图片 position：" + position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getStartShowPic(), holder.iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getStartShowPic(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         //粉丝数量
         holder.tv_star_fans.setText(rowsBean.getFansCount());
         //明星姓名

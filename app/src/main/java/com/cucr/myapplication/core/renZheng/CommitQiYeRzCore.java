@@ -51,7 +51,7 @@ public class CommitQiYeRzCore implements CommitQiYeRZ {
         this.listener = listener;
         mWaitDialog = new WaitDialog(activity,"正在提交...");
         // 创建请求对象。
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST
                 + HttpContans.ADDRESS_QIYE_RZ, RequestMethod.POST);
 
         // 添加请求参数。

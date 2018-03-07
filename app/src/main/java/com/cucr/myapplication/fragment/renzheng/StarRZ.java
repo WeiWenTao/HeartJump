@@ -199,8 +199,8 @@ public class StarRZ extends Fragment {
         et_star_price.setText("" + startCost);
         iv_add_pic_positive.setVisibility(View.VISIBLE);
         iv_add_pic_nagetive.setVisibility(View.VISIBLE);
-        instance.displayImage(HttpContans.HTTP_HOST + pic1, iv_add_pic_positive, MyApplication.getImageLoaderOptions());
-        instance.displayImage(HttpContans.HTTP_HOST + pic2, iv_add_pic_nagetive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.IMAGE_HOST + pic1, iv_add_pic_positive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.IMAGE_HOST + pic2, iv_add_pic_nagetive, MyApplication.getImageLoaderOptions());
         //控件不可用
         setView(false, "审核中");
 

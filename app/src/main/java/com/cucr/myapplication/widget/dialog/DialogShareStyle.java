@@ -178,7 +178,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     //分享到新浪微博
     private void sharToSina() {
         UMWeb web = new UMWeb(entity.getLink());
-        web.setThumb(new UMImage(context, HttpContans.HTTP_HOST+"/static/yuanshi_image/6847824d-d77d-441d-b48d-5658629aaf83.png"));
+        web.setThumb(new UMImage(context, HttpContans.IMAGE_HOST +"/static/yuanshi_image/6847824d-d77d-441d-b48d-5658629aaf83.png"));
         web.setDescription("测试描述111");
         web.setTitle("测试标题222");
 

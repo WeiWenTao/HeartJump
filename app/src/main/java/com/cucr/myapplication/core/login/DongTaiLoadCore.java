@@ -49,7 +49,7 @@ public class DongTaiLoadCore implements LoadByDongTai {
     public void login(Context context, String userName, String yzm, OnDongTaiLoginListener loginListener) {
         this.dongTaiListener = loginListener;
         this.context = context;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DONGTAI_LOAD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DONGTAI_LOAD, RequestMethod.POST);
         request.add("phone", userName) // 账号。
                 .add("checkCode", yzm)
                 .add("driverId", CommonUtils.getDiverID(context)) // 设备id。
@@ -65,7 +65,7 @@ public class DongTaiLoadCore implements LoadByDongTai {
     public void getYzm(Context context, String userName, OnGetYzmListener yzmListener) {
         this.yzmListener = yzmListener;
         this.context = context;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_YZM, RequestMethod.GET);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_YZM, RequestMethod.GET);
         request.add("phoneNumber", userName) // 账号。
                 // 设置取消标志。
                 .setCancelSign(flag);

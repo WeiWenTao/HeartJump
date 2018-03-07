@@ -42,7 +42,7 @@ public class BangDanCore implements BangDan {
     @Override
     public void queryBangDanInfo(int page, int rows, OnCommonListener listener) {
         bangDanListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_BANG_DAN_INFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_BANG_DAN_INFO, RequestMethod.POST);
         // 添加普通参数。
         request.add("page",page);
         request.add("rows",rows);
@@ -55,7 +55,7 @@ public class BangDanCore implements BangDan {
     @Override
     public void daBang(int money, int starId, OnCommonListener listener) {
         daBangListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DA_BANG, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DA_BANG, RequestMethod.POST);
         // 添加普通参数。
         request.add("money", money);
         request.add("startId", starId);

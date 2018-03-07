@@ -93,7 +93,7 @@ public class DuiHuanCatgoryActivity extends Activity {
                 //价格
                 ((TextView) holder.getView(R.id.tv_price)).setText(data.getShopPrice() + "星币");
                 //封面
-                ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + data.getShopPicUrl(), ((ImageView) holder.getView(R.id.img_duihuan)), MyApplication.getImageLoaderOptions());
+                ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + data.getShopPicUrl(), ((ImageView) holder.getView(R.id.img_duihuan)), MyApplication.getImageLoaderOptions());
 
                 //没有库存不能兑换
                 if (data.getStock() > 0) {

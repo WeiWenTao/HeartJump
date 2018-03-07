@@ -59,7 +59,7 @@ public class RegistCore implements Regist {
         this.mContext = context;
         this.registListener = registListener;
         if (isRegist) {
-            Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
+            Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_REGIST, RequestMethod.POST);
             request.add("checkCode", yzm) // 账号。
                     .add("phone", phoneNum)
                     .add("password", psw) // 密码。
@@ -68,7 +68,7 @@ public class RegistCore implements Regist {
 
             mQueue.add(REQUEST_REGIST, request, responseListener);
         } else {
-            Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FORGET_PSW, RequestMethod.POST);
+            Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FORGET_PSW, RequestMethod.POST);
             request.add("phoneNumber", phoneNum) // 账号。
                     .add("code", yzm)
                     .add("password", psw) // 密码。
@@ -84,7 +84,7 @@ public class RegistCore implements Regist {
     public void getYzm(Context context, String userName, OnGetYzmListener getYzmListener) {
         this.mContext = context;
         this.getYzmListener = getYzmListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_YZM, RequestMethod.GET);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_YZM, RequestMethod.GET);
         request.add("phoneNumber", userName) // 账号。
                 // 设置取消标志。
                 .setCancelSign(flag);
@@ -96,7 +96,7 @@ public class RegistCore implements Regist {
     @Override
     public void thirdPlatformLoad(String loginType, String openId, String msgRegId, RequersCallBackListener commonListener) {
         thirdLinstener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_OTHER_LOAD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_OTHER_LOAD, RequestMethod.POST);
         MyLogger.jLog().i("loginType:" + loginType);
         request.add("loginType", loginType)
                 .add("openId", openId)
@@ -110,7 +110,7 @@ public class RegistCore implements Regist {
     public void thirdPlatformRegist(String phone, String checkCode, String loginType, String openId,
                                     String name, String gender, String iconurl, RequersCallBackListener commonListener) {
         thirdLinstener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_OTHER_REGIST, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_OTHER_REGIST, RequestMethod.POST);
         request.add("phone", phone) // 账号。
                 .add("checkCode", checkCode)
                 .add("loginType", loginType)

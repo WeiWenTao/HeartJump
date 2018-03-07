@@ -42,7 +42,7 @@ public class YuYueCore implements YuYueInterf {
                           String activeStartTime, String activeEndTime, int activeScene,
                           String activeInfo, int peopleCount, OnCommonListener listener) {
         yuYueListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_APPOINMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ADD_APPOINMENT, RequestMethod.POST);
         request.add(SpConstant.USER_ID, (int) SpUtil.getParam(SpConstant.USER_ID, -1))
                 .add("startId", starId)
                 .add("activeName", activeName)
@@ -59,7 +59,7 @@ public class YuYueCore implements YuYueInterf {
     @Override
     public void myYuYue(int page, int rows, OnCommonListener commonListener) {
         myYueListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_APOINMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_MY_APOINMENT, RequestMethod.POST);
         request.add(SpConstant.USER_ID, (int) SpUtil.getParam(SpConstant.USER_ID, -1))
                 .add("page", page)
                 .add("rows", rows)

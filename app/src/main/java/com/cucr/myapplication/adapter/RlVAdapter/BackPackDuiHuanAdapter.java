@@ -42,7 +42,7 @@ public class BackPackDuiHuanAdapter extends RecyclerView.Adapter<BackPackDuiHuan
 
         holder.tv_num.setText("X " + listBean.getBalance());
         holder.tv_result.setText(listBean.getBalance() + "");
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         listBean.getUserAccountType().getPicUrl(),
                 holder.iv_gift_pic, MyApplication.getImageLoaderOptions());
 

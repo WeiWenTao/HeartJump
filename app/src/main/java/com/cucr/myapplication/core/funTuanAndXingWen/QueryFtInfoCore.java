@@ -48,7 +48,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     @Override
     public void queryFtInfo(int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, OnCommonListener listener) {
         ftQuerylistener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
         if (starId != -1) {
             request.add("startId", starId);
@@ -76,7 +76,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     public void ftGoods(int contentId, OnCommonListener listener) {
         MyLogger.jLog().i("粉团点赞:contentId:" + contentId);
         ftGoodlistener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_GOOD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FT_GOOD, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", contentId)    //数据id
@@ -88,7 +88,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     @Override
     public void toComment(int contentId, int commentId, String content, OnCommonListener listener) {
         toCommentlistener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_COMMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FT_COMMENT, RequestMethod.POST);
         // 添加普通参数。
         if (commentId != -1) {
             //一级评论不用传
@@ -106,7 +106,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     @Override
     public void queryGift(OnCommonListener listener) {
         queryGiftListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_GFITINFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_GFITINFO, RequestMethod.POST);
         mQueue.add(Constans.TYPE_FORE, request, callback);
     }
 
@@ -115,7 +115,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     @Override
     public void queryBackpackInfo(OnCommonListener listener) {
         queryBackpackListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_BACKPACKINFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_BACKPACKINFO, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 
@@ -126,7 +126,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     //阅读量
     @Override
     public void ftRead(int dataId) {
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_FT_READ, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FT_READ, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId",dataId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));

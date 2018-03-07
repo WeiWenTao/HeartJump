@@ -1,9 +1,11 @@
 package com.cucr.myapplication.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.app.MyApplication;
 
 /**
@@ -35,10 +37,10 @@ public class ToastUtils {
      * @param message
      */
     public static void showToast(Context context, String message) {
-//        if (message.equals("签名错误")) {
-//            context.startActivity(new Intent(context, NewLoadActivity.class));
-//            return;
-//        }
+        if (message.equals("签名错误")) {
+            context.startActivity(new Intent(context, NewLoadActivity.class));
+            return;
+        }
         if (toast == null) {
             toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
             toast.show();
@@ -59,6 +61,10 @@ public class ToastUtils {
     }
 
     public static void showToast(String message) {
+        if (message.equals("签名错误")) {
+            MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), NewLoadActivity.class));
+            return;
+        }
         if (toast == null) {
             toast = Toast.makeText(MyApplication.getInstance(), message, Toast.LENGTH_SHORT);
             toast.show();

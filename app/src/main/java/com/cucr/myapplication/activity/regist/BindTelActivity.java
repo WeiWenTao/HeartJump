@@ -186,7 +186,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             //这里保存的信息账号管理界面用-------------------------------------------------------
             new ChatCore().connect(loadSuccess.getToken(),this);
             UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), "",
-                    HttpContans.HTTP_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
+                    HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
             SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
             edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
             //两个容器 类似于联表查询效果

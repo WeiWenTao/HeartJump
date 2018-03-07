@@ -83,7 +83,7 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
             @Override
             public void OnItemClick(View view, int activeId) {
                 //跳转到福利活动详情
-                mIntent.putExtra("url", HttpContans.HTTP_HOST + HttpContans.ADDRESS_FULI_ACTIVE_DETIAL
+                mIntent.putExtra("url", HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FULI_ACTIVE_DETIAL
                         + "?activeId=" + activeId + "&userId=" + SpUtil.getParam(SpConstant.USER_ID, -1));
                 startActivity(mIntent);
             }

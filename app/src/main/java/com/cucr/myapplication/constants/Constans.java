@@ -46,7 +46,7 @@ public class Constans {
 
     public static final int TYPE_VIDEO = 2;
 
-
+    public static final int TYPE_ALBUM = 3;
 
     public static final int TYPE_OTHER = -1;
 

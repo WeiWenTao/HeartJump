@@ -39,7 +39,7 @@ public class QueryRzResult implements QueryRz {
     @Override
     public void queryRz(int type, OnCommonListener listener) {
         this.listener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_RZ, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_RZ, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("type", type);

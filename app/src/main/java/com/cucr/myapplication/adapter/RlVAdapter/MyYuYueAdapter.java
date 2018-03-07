@@ -43,7 +43,7 @@ public class MyYuYueAdapter extends RecyclerView.Adapter<MyYuYueAdapter.MyHolder
         holder.mTv_star_name.setText(rowsBean.getAppStartUser().getRealName());
         holder.mTv_time.setText(rowsBean.getActiveStartTime());
         holder.mTv_title.setText(rowsBean.getActiveName());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                 rowsBean.getAppStartUser().getUserHeadPortrait(), holder.mIv_head,
                 MyApplication .getImageLoaderOptions());
     }

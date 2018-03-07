@@ -35,7 +35,7 @@ public class XinBiCore implements XinBiInterf {
     @Override
     public void giftDuiHuan(String giftIds, String giftCounts, OnCommonListener listener) {
         giftDuiHuanListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_GIFT_TX, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_GIFT_TX, RequestMethod.POST);
         request.add(SpConstant.USER_ID, (int) SpUtil.getParam(SpConstant.USER_ID, -1))
                 .add("rewardType",giftIds)
                 .add("count",giftCounts)

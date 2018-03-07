@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.utils.MyLogger;
@@ -63,7 +62,7 @@ public class SplishActivity extends Activity {
         @Override
         public void onFinish() {
             MyLogger.jLog().i("timmer:finish");
-            startActivity(new Intent(MyApplication.getInstance(), NewLoadActivity.class));
+            startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
         }
     };
 

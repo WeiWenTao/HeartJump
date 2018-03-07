@@ -45,7 +45,7 @@ public class StarJourney implements Journey {
     @Override
     public void addJourney(String place, String content, String tripTime, OnCommonListener commonListener) {
         this.addJourneyListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_JOURNEY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ADD_JOURNEY, RequestMethod.POST);
         tripTime = tripTime + " 00:00:00";
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -61,7 +61,7 @@ public class StarJourney implements Journey {
     @Override
     public void deleteJourney(int dataId, OnCommonListener commonListener) {
         this.delJourneyListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DELETE_JOURNEY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DELETE_JOURNEY, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)

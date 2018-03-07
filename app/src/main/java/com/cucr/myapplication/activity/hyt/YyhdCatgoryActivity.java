@@ -141,7 +141,7 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
 
     //页面初始化
     private void initPager() {
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getPicUrl(),
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getPicUrl(),
                 iv_yy_pic, MyApplication.getImageLoaderOptions());
         tv_hd_catgory.setText(mRowsBean.getActiveName());
         tv_yyhd_content.setText(mRowsBean.getActiveContent());
@@ -188,7 +188,7 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
         }
         //后援团信息
         YyhdInfos.RowsBean.HytInfoBean hytInfo = mRowsBean.getHytInfo();
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + hytInfo.getPicUrl(),
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + hytInfo.getPicUrl(),
                 iv_head, MyApplication.getImageLoaderOptions());
         tv_hyt_name.setText(hytInfo.getName());
         tv_comments.setText(mRowsBean.getCommentCount() + "");

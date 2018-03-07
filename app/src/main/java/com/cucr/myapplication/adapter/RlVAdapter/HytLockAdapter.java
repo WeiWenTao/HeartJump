@@ -45,7 +45,7 @@ public class HytLockAdapter extends RecyclerView.Adapter<HytLockAdapter.MyHolder
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
         final HytMembers.RowsBean rowsBean = rows.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         holder.tv_name.setText(rowsBean.getUser().getName());
         holder.rlv_item.setOnClickListener(new View.OnClickListener() {
             @Override

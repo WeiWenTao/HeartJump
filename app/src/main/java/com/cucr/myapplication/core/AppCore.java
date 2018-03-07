@@ -29,7 +29,7 @@ public class AppCore {
 
     public void queryCode(OnCommonListener listener) {
         codeListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_APP_UPDATA, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_APP_UPDATA, RequestMethod.POST);
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 

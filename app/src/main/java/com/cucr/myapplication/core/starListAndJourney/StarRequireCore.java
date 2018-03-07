@@ -41,7 +41,7 @@ public class StarRequireCore implements StarRequires {
                             int economyClass, int carNum, int bed, int hzs, int fsjj,
                             String qtyq, List<String> startTimeList, OnCommonListener listener) {
         addStarRequire = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ADD_REQUIREMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ADD_REQUIREMENT, RequestMethod.POST);
         //id < 0 表示不用传  数据id  不传就是新增 传就是修改
         if (id > 0) {
             request.add("id", id);
@@ -65,7 +65,7 @@ public class StarRequireCore implements StarRequires {
     @Override
     public void queryStarRequire(int StarId, OnCommonListener onCommonListener) {
         queryStarRequire = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_REQUIREMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_REQUIREMENT, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", StarId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));

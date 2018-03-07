@@ -41,7 +41,7 @@ public class ImgPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        String url = HttpContans.HTTP_HOST + attrFileList.get(position).getFileUrl();
+        String url = HttpContans.IMAGE_HOST + attrFileList.get(position).getFileUrl();
         PhotoView view = new PhotoView(context);
 
         //开启缩放

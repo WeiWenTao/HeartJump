@@ -54,7 +54,7 @@ public class PicWallCore implements PicturesWall {
     @Override
     public void queryPic(int page, int rows, int orderType, boolean queryMine, int startId, RequersCallBackListener onCommonListener) {
         this.listener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_QUERY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PIC_QUERY, RequestMethod.POST);
         if (startId != -1) {
             request.add("startId", startId);
         }
@@ -70,7 +70,7 @@ public class PicWallCore implements PicturesWall {
     @Override
     public void queryMyFavoritePic(int page, int rows, RequersCallBackListener onCommonListener) {
         this.listener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_FAVORITE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PIC_FAVORITE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
@@ -81,7 +81,7 @@ public class PicWallCore implements PicturesWall {
     @Override
     public void upLoadPic(int startId, List<LocalMedia> mData, RequersCallBackListener commonListener) {
         this.listener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_UPLOAD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PIC_UPLOAD, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", startId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
@@ -100,7 +100,7 @@ public class PicWallCore implements PicturesWall {
     public void picGoods(int dataId, int giveUpCount, OnCommonListener onCommonListener) {
         this.goodListener = onCommonListener;
         MyLogger.jLog().i("dataId:" + dataId + ",giveUpCount:" + giveUpCount);
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_GOODS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PIC_GOODS, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)
                 .add("giveUpCount", giveUpCount)
@@ -112,7 +112,7 @@ public class PicWallCore implements PicturesWall {
     @Override
     public void delPic(int dataId, RequersCallBackListener onCommonListener) {
         this.listener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PIC_DELETE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PIC_DELETE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));

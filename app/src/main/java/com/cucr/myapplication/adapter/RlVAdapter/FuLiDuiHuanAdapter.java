@@ -47,7 +47,7 @@ public class FuLiDuiHuanAdapter extends RecyclerView.Adapter<FuLiDuiHuanAdapter.
     public void onBindViewHolder(FiLiDuiHuanHolder holder, final int position) {
         //设置图片
         if (list!= null){
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + list.get(position).getShopPicUrl(), holder.iv_duihuan_icon, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + list.get(position).getShopPicUrl(), holder.iv_duihuan_icon, MyApplication.getImageLoaderOptions());
             holder.tv_goods_price.setText(list.get(position).getShopPrice()+"星币");
         }
 

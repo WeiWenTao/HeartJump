@@ -91,7 +91,7 @@ public class DaShangGiftAdapter extends RecyclerView.Adapter<DaShangGiftAdapter.
 //                break;
 //        }
 
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST+rowsBean.getPicUrl(),holder.iv_gift_img,MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +rowsBean.getPicUrl(),holder.iv_gift_img,MyApplication.getImageLoaderOptions());
         holder.tv_gift_coast.setText(rowsBean.getProportion() + "");   //礼物价值
         holder.tv_gift_name.setText(rowsBean.getName());          //礼物名称
         holder.ll_item.setOnClickListener(new View.OnClickListener() {

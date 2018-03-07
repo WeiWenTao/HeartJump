@@ -41,7 +41,7 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
     @Override
     public void queryPersonalInfo( final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_USERINFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_USERINFO, RequestMethod.POST);
         // 添加普通参数。
 
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
@@ -54,7 +54,7 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
     @Override
     public void queryPersonalById(String userId, OnCommonListener onCommonListener) {
         this.personalListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_USERINFO_BYID, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_USERINFO_BYID, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("otherUserId", userId);

@@ -42,6 +42,7 @@ import java.util.regex.PatternSyntaxException;
  */
 
 public class CommonUtils {
+
     /**
      * 判断手机网络
      */

@@ -46,7 +46,7 @@ public class PayCenterCore implements PayCenterInterf {
     @Override
     public void aliPay(double howMuch, String subject, int type, int activeId, OnCommonListener listener) {
         aliPayListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ALIPAY_PAY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ALIPAY_PAY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("timeout_express", "30m");
         request.add("product_code", "QUICK_MSECURITY_PAY");
@@ -67,7 +67,7 @@ public class PayCenterCore implements PayCenterInterf {
     @Override
     public void wxPay(int total_fee, String body, int type, int activeId, OnCommonListener listener) {
         wxPayListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_WX_PAY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_WX_PAY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("total_fee", total_fee);
         request.add("body", body);
@@ -84,7 +84,7 @@ public class PayCenterCore implements PayCenterInterf {
     @Override
     public void queryResult(String order, PayLisntener listener) {
         payResultListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ALIPAY_CHECK, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ALIPAY_CHECK, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("orderNo", order)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
@@ -98,7 +98,7 @@ public class PayCenterCore implements PayCenterInterf {
     @Override
     public void queryUserMoney(OnCommonListener listener) {
         userMoneyListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_USER_MONEY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_USER_MONEY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_FORE, request, responseListener);
@@ -107,7 +107,7 @@ public class PayCenterCore implements PayCenterInterf {
     @Override
     public void queryTxRecoed(int type, OnCommonListener listener) {
         TxRecordListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TX_RECORD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_TX_RECORD, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         if (type != -1) {
             request.add("type", type);
@@ -120,7 +120,7 @@ public class PayCenterCore implements PayCenterInterf {
     @Override
     public void TxRequest(String txAccount, String name, String amount, RequersCallBackListener listener) {
         commonListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_TX_REQUEST, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_TX_REQUEST, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("account", txAccount)
                 .add("name", name)

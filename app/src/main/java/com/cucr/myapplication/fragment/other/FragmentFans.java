@@ -185,7 +185,7 @@ public class FragmentFans extends BaseFragment {
                     tv_fans.setText("粉丝 " + rowsBean.getFansCount());
                     tv_starname.setText(rowsBean.getRealName());
                     tv_star_title.setText(rowsBean.getRealName());
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
                 }
@@ -353,7 +353,7 @@ public class FragmentFans extends BaseFragment {
         MyLogger.jLog().i("打赏动画");
         iv_gift.setVisibility(View.VISIBLE);
         MyLogger.jLog().i(event);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + event.getGiftPic(), iv_gift);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + event.getGiftPic(), iv_gift);
 
 
         switch (event.getGiftId()) {

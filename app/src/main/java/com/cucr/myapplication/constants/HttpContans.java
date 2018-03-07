@@ -8,282 +8,287 @@ package com.cucr.myapplication.constants;
 public class HttpContans {
 
     //服务器
-    public static final String HTTP_HOST = "http://101.132.96.199";
+//    public static final String IMAGE_HOST =HOST+ "http://101.132.96.199";
 
     //EN数据
     public static final String HTTP_EN = "http://210.14.157.131:8149/clker_inter/";
 
-//    public static final String HTTP_HOST = "http://192.168.1.137:8080";
-//    public static final String HTTP_HOST = "http://yin-wiki.51vip.biz";
+    public static final String IMAGE_HOST = "";
+
+//    public static final String HOST = "http://192.168.1.130:8080";
+
+    public static final String HOST = "http://192.168.1.141:8080";
+
+//    public static final String IMAGE_HOST =HOST+ "http://yin-wiki.51vip.biz";
 
 
     //服务协议
-    public static final String HTTP_YHXY = "http://www.cucrxt.com/fwxy.html";
+    public static final String HTTP_YHXY = HOST + "http://www.cucrxt.com/fwxy.html";
 
     //注册
-    public static final String ADDRESS_REGIST = "/interface/user/regist";
+    public static final String ADDRESS_REGIST = HOST + "/interface/user/regist";
 
     //验证码
-    public static final String ADDRESS_YZM = "/interface/checkCode/getCheckCode";
+    public static final String ADDRESS_YZM = HOST + "/interface/checkCode/getCheckCode";
 
     //三方登录
-    public static final String ADDRESS_OTHER_LOAD = "/interface/user/otherLogin";
+    public static final String ADDRESS_OTHER_LOAD = HOST + "/interface/user/otherLogin";
 
     //三方注册
-    public static final String ADDRESS_OTHER_REGIST = "/interface/user/otherRegist";
+    public static final String ADDRESS_OTHER_REGIST = HOST + "/interface/user/otherRegist";
 
     //动态登录
-    public static final String ADDRESS_DONGTAI_LOAD = "/interface/user/dynamicLogin";
+    public static final String ADDRESS_DONGTAI_LOAD = HOST + "/interface/user/dynamicLogin";
 
     //忘记密码
-    public static final String ADDRESS_FORGET_PSW = "/interface/user/forgivePass";
+    public static final String ADDRESS_FORGET_PSW = HOST + "/interface/user/forgivePass";
 
     //密码登录
-    public static final String ADDRESS_PSW_LOAD = "/interface/user/login";
+    public static final String ADDRESS_PSW_LOAD = HOST + "/interface/user/login";
 
     //用户信息编辑
-    public static final String ADDRESS_EDIT_USERINFO = "/interface/user/edit";
+    public static final String ADDRESS_EDIT_USERINFO = HOST + "/interface/user/edit";
 
     //用户信息查询
-    public static final String ADDRESS_QUERY_USERINFO = "/interface/user/queryMine";
+    public static final String ADDRESS_QUERY_USERINFO = HOST + "/interface/user/queryMine";
 
     //商品购买
-    public static final String ADDRESS_SHOP = "/interface/mobileOrder/createOrder";
+    public static final String ADDRESS_SHOP = HOST + "/interface/mobileOrder/createOrder";
 
     //明星认证
-    public static final String ADDRESS_STAR_RZ = "/interface/authenticationAction/start";
+    public static final String ADDRESS_STAR_RZ = HOST + "/interface/authenticationAction/start";
 
     //企业认证
-    public static final String ADDRESS_QIYE_RZ = "/interface/authenticationAction/company";
+    public static final String ADDRESS_QIYE_RZ = HOST + "/interface/authenticationAction/company";
 
     //认证查询
-    public static final String ADDRESS_QUERY_RZ = "/interface/authenticationAction/authenticationResult";
+    public static final String ADDRESS_QUERY_RZ = HOST + "/interface/authenticationAction/authenticationResult";
 
     //福利商品查询
-    public static final String ADDRESS_FULI_GOODS = "/interface/shopAction/shopList";
+    public static final String ADDRESS_FULI_GOODS = HOST + "/interface/shopAction/shopList";
 
     //企业活动发布
-    public static final String ADDRESS_ACTIVE_PUBLISH = "/interface/mobileStartAppointment/applyActive";
+    public static final String ADDRESS_ACTIVE_PUBLISH = HOST + "/interface/mobileStartAppointment/applyActive";
 
     //福利活动查询
-    public static final String ADDRESS_FULI_ACTIVE = "/interface/mobileWelfareActiveAction/list";
+    public static final String ADDRESS_FULI_ACTIVE = HOST + "/interface/mobileWelfareActiveAction/list";
 
     //首页banner
-    public static final String ADDRESS_HOME_BANNER = "/interface/mobileBannerAction/banner";
+    public static final String ADDRESS_HOME_BANNER = HOST + "/interface/mobileBannerAction/banner";
 
     //用户余额
-    public static final String ADDRESS_USER_MONEY = "/interface/userMoneyAction/balance";
+    public static final String ADDRESS_USER_MONEY = HOST + "/interface/userMoneyAction/balance";
 
     //明星查询
-    public static final String ADDRESS_QUERY_STAR = "/interface/mobileStartAction/query";
+    public static final String ADDRESS_QUERY_STAR = HOST + "/interface/mobileStartAction/query";
 
     //关注
-    public static final String ADDRESS_TO_FOCUS = "/interface/mobileStartAction/follow";
+    public static final String ADDRESS_TO_FOCUS = HOST + "/interface/mobileStartAction/follow";
 
     //取消关注
-    public static final String ADDRESS_CANCLE_FOCUS = "/interface/mobileStartAction/cancelFollow";
+    public static final String ADDRESS_CANCLE_FOCUS = HOST + "/interface/mobileStartAction/cancelFollow";
 
     //我关注的明星
-    public static final String ADDRESS_MY_FOCUS = "/interface/mobileStartAction/myFollow";
+    public static final String ADDRESS_MY_FOCUS = HOST + "/interface/mobileStartAction/myFollow";
 
     //我关注的其他人(不包括明星)
-    public static final String ADDRESS_MY_FOCUS_OTHER = "/interface/mobileStartAction/myFollowOther";
+    public static final String ADDRESS_MY_FOCUS_OTHER = HOST + "/interface/mobileStartAction/myFollowOther";
 
     //关注我的粉丝(不包括明星)
-    public static final String ADDRESS_MY_FANS = "/interface/mobileStartAction/followMeOther";
+    public static final String ADDRESS_MY_FANS = HOST + "/interface/mobileStartAction/followMeOther";
 
     //添加行程
-    public static final String ADDRESS_ADD_JOURNEY = "/interface/mobileStartTripAction/addTrip";
+    public static final String ADDRESS_ADD_JOURNEY = HOST + "/interface/mobileStartTripAction/addTrip";
 
     //删除行程
-    public static final String ADDRESS_DELETE_JOURNEY = "/interface/mobileStartTripAction/delTrip";
+    public static final String ADDRESS_DELETE_JOURNEY = HOST + "/interface/mobileStartTripAction/delTrip";
 
     //查询 “ 我的行程 ” 列表 （根据时间表查询行程）
-    public static final String ADDRESS_QUERY_JOURNEY = "/interface/mobileStartTripAction/startTrip";
+    public static final String ADDRESS_QUERY_JOURNEY = HOST + "/interface/mobileStartTripAction/startTrip";
 
     //查询行程时间表
-    public static final String ADDRESS_QUERY_JOURNEY_SCHEDULE = "/interface/mobileStartTripAction/tripTimeGroup";
+    public static final String ADDRESS_QUERY_JOURNEY_SCHEDULE = HOST + "/interface/mobileStartTripAction/tripTimeGroup";
 
     //粉团发布动态
-    public static final String ADDRESS_PUBLISH_FT_INFO = "/interface/mobileContentAction/applyInfo";
+    public static final String ADDRESS_PUBLISH_FT_INFO = HOST + "/interface/mobileContentAction/applyInfo";
 
     //查询粉团信息
-    public static final String ADDRESS_QUERY_FT_INFO = "/interface/mobileContentAction/queryInfo";
+    public static final String ADDRESS_QUERY_FT_INFO = HOST + "/interface/mobileContentAction/queryInfo";
 
     //支付宝支付接口
-    public static final String ADDRESS_ALIPAY_PAY = "/interface/pay/alipaySign";
+    public static final String ADDRESS_ALIPAY_PAY = HOST + "/interface/pay/alipaySign";
 
     //微信支付接口
-    public static final String ADDRESS_WX_PAY = "/interface/pay/wxPrePay";
+    public static final String ADDRESS_WX_PAY = HOST + "/interface/pay/wxPrePay";
 
     //支付宝验证接口
-    public static final String ADDRESS_ALIPAY_CHECK = "/interface/pay/payCheck";
+    public static final String ADDRESS_ALIPAY_CHECK = HOST + "/interface/pay/payCheck";
 
     //粉团文章点赞
-    public static final String ADDRESS_FT_GOOD = "/interface/mobileContentAction/giveUp";
+    public static final String ADDRESS_FT_GOOD = HOST + "/interface/mobileContentAction/giveUp";
 
     //粉团评论查询
-    public static final String ADDRESS_FT_COMMENT_QUERY = "/interface/mobileContentAction/commentQuery";
+    public static final String ADDRESS_FT_COMMENT_QUERY = HOST + "/interface/mobileContentAction/commentQuery";
 
     //粉团评论
-    public static final String ADDRESS_FT_COMMENT = "/interface/mobileContentAction/comment";
+    public static final String ADDRESS_FT_COMMENT = HOST + "/interface/mobileContentAction/comment";
 
     //粉团阅读量
-    public static final String ADDRESS_FT_READ = "/interface/mobileContentAction/read";
+    public static final String ADDRESS_FT_READ = HOST + "/interface/mobileContentAction/read";
 
     //粉团评论点赞
-    public static final String ADDRESS_FT_COMMENT_GOODS = "/interface/mobileContentAction/commentGiveUp";
+    public static final String ADDRESS_FT_COMMENT_GOODS = HOST + "/interface/mobileContentAction/commentGiveUp";
 
     //榜单查询
-    public static final String ADDRESS_BANG_DAN_INFO = "/interface/mobileBillboardAction/billboardList";
+    public static final String ADDRESS_BANG_DAN_INFO = HOST + "/interface/mobileBillboardAction/billboardList";
 
     //打榜
-    public static final String ADDRESS_DA_BANG = "/interface/mobileBillboardAction/dabang";
+    public static final String ADDRESS_DA_BANG = HOST + "/interface/mobileBillboardAction/dabang";
 
     //添加要求
-    public static final String ADDRESS_ADD_REQUIREMENT = "/interface/mobileRequirementAction/addRequirement";
+    public static final String ADDRESS_ADD_REQUIREMENT = HOST + "/interface/mobileRequirementAction/addRequirement";
 
     //要求查询
-    public static final String ADDRESS_QUERY_REQUIREMENT = "/interface/mobileRequirementAction/queryRequirement";
+    public static final String ADDRESS_QUERY_REQUIREMENT = HOST + "/interface/mobileRequirementAction/queryRequirement";
 
     //预约
-    public static final String ADDRESS_ADD_APPOINMENT = "/interface/mobileStartAppointment/appointment";
+    public static final String ADDRESS_ADD_APPOINMENT = HOST + "/interface/mobileStartAppointment/appointment";
 
     //礼物信息
-    public static final String ADDRESS_QUERY_GFITINFO = "/interface/mobileGiftAction/idealMoneyList";
+    public static final String ADDRESS_QUERY_GFITINFO = HOST + "/interface/mobileGiftAction/idealMoneyList";
 
     //背包信息
-    public static final String ADDRESS_QUERY_BACKPACKINFO = "/interface/mobileGiftAction/mineIdealMoneyList";
+    public static final String ADDRESS_QUERY_BACKPACKINFO = HOST + "/interface/mobileGiftAction/mineIdealMoneyList";
 
     //粉团打赏
-    public static final String ADDRESS_DA_SHANG = "/interface/mobileGiftAction/reward";
+    public static final String ADDRESS_DA_SHANG = HOST + "/interface/mobileGiftAction/reward";
 
     //打赏列表
-    public static final String ADDRESS_DS_LIST = "/interface/mobileGiftAction/rewardList";
+    public static final String ADDRESS_DS_LIST = HOST + "/interface/mobileGiftAction/rewardList";
 
     //打赏我的
-    public static final String ADDRESS_DS_ME = "/interface/mobileGiftAction/rewardHis";
+    public static final String ADDRESS_DS_ME = HOST + "/interface/mobileGiftAction/rewardHis";
 
     //道具提现
-    public static final String ADDRESS_GIFT_TX = "/interface/mobileTransactionAction/propWithdrawals";
+    public static final String ADDRESS_GIFT_TX = HOST + "/interface/mobileTransactionAction/propWithdrawals";
 
     //提现记录
-    public static final String ADDRESS_TX_RECORD = "/interface/mobileTransactionAction/transactionQuery";
+    public static final String ADDRESS_TX_RECORD = HOST + "/interface/mobileTransactionAction/transactionQuery";
 
     //提现记录
-    public static final String ADDRESS_TX_REQUEST = "/interface/mobileTransactionAction/xbWithdrawals";
+    public static final String ADDRESS_TX_REQUEST = HOST + "/interface/mobileTransactionAction/xbWithdrawals";
 
     //明星数据
-    public static final String ADDRESS_STAR_DATA = "/interface/dataPicAction/pic1";
+    public static final String ADDRESS_STAR_DATA = HOST + "/interface/dataPicAction/pic1";
 
     //明星查询字段
-    public static final String ADDRESS_STAR_KEY = "/interface/mobileSysCodeAction/getList";
+    public static final String ADDRESS_STAR_KEY = HOST + "/interface/mobileSysCodeAction/getList";
 
     //用户中心
-    public static final String ADDRESS_USER_CENTER = "/interface/user/userCenter";
+    public static final String ADDRESS_USER_CENTER = HOST + "/interface/user/userCenter";
 
     //重置密码
-    public static final String ADDRESS_RELEASE_PSW = "/interface/user/reppass";
+    public static final String ADDRESS_RELEASE_PSW = HOST + "/interface/user/reppass";
 
     //活动查询(企业)
-    public static final String ADDRESS_QUERY_ACTIVE = "/interface/mobileStartAppointment/queryActive";
+    public static final String ADDRESS_QUERY_ACTIVE = HOST + "/interface/mobileStartAppointment/queryActive";
 
     //活动点赞
-    public static final String ADDRESS_ACTIVE_GOOD = "/interface/mobileStartAppointment/activeGiveUp";
+    public static final String ADDRESS_ACTIVE_GOOD = HOST + "/interface/mobileStartAppointment/activeGiveUp";
 
     //活动评论
-    public static final String ADDRESS_ACTIVE_COMMENT = "/interface/mobileStartAppointment/applyActiveComment";
+    public static final String ADDRESS_ACTIVE_COMMENT = HOST + "/interface/mobileStartAppointment/applyActiveComment";
 
     //活动评论查询
-    public static final String ADDRESS_ACTIVE_COMMENT_QUERY = "/interface/mobileStartAppointment/activeCommentQuery";
+    public static final String ADDRESS_ACTIVE_COMMENT_QUERY = HOST + "/interface/mobileStartAppointment/activeCommentQuery";
 
     //活动评论查询
-    public static final String ADDRESS_ACTIVE_COMMENT_GOOD = "/interface/mobileStartAppointment/activeCommentGiveUp";
+    public static final String ADDRESS_ACTIVE_COMMENT_GOOD = HOST + "/interface/mobileStartAppointment/activeCommentGiveUp";
 
     //福利活动跳转
-    public static final String ADDRESS_FULI_ACTIVE_DETIAL = "/interface/mobileWelfareActiveAction/activeDetails";
+    public static final String ADDRESS_FULI_ACTIVE_DETIAL = HOST + "/interface/mobileWelfareActiveAction/activeDetails";
 
     //应用更新
-    public static final String ADDRESS_APP_UPDATA = "/interface/MobileVersionCheck/versionCheck";
+    public static final String ADDRESS_APP_UPDATA = HOST + "/interface/MobileVersionCheck/versionCheck";
 
     //图集上传
-    public static final String ADDRESS_PIC_UPLOAD = "/interface/mobileStartAtlasAction/upAtlas";
+    public static final String ADDRESS_PIC_UPLOAD = HOST + "/interface/mobileStartAtlasAction/upAtlas";
 
     //图集查询
-    public static final String ADDRESS_PIC_QUERY = "/interface/mobileStartAtlasAction/upAtlasQuery";
+    public static final String ADDRESS_PIC_QUERY = HOST + "/interface/mobileStartAtlasAction/upAtlasQuery";
 
     //我喜欢的图集
-    public static final String ADDRESS_PIC_FAVORITE = "/interface/mobileStartAtlasAction/like";
+    public static final String ADDRESS_PIC_FAVORITE = HOST + "/interface/mobileStartAtlasAction/like";
 
     //图集点赞
-    public static final String ADDRESS_PIC_GOODS = "/interface/mobileStartAtlasAction/giveUp";
+    public static final String ADDRESS_PIC_GOODS = HOST + "/interface/mobileStartAtlasAction/giveUp";
 
     //图集删除
-    public static final String ADDRESS_PIC_DELETE = "/interface/mobileStartAtlasAction/del";
+    public static final String ADDRESS_PIC_DELETE = HOST + "/interface/mobileStartAtlasAction/del";
 
     //粉团分享
-    public static final String ADDRESS_FT_SHARE = HTTP_HOST + "/interface/newsShare/page?fansNewsContentId=";
+    public static final String ADDRESS_FT_SHARE = HOST + "/interface/newsShare/page?fansNewsContentId=";
 
     //我的预约
-    public static final String ADDRESS_MY_APOINMENT = "/interface/mobileStartAppointment/myAppointment";
+    public static final String ADDRESS_MY_APOINMENT = HOST + "/interface/mobileStartAppointment/myAppointment";
 
     //创建后援团
-    public static final String ADDRESS_CREATE_HYT = "/interface/mobileHelpTeamAction/createTeam";
+    public static final String ADDRESS_CREATE_HYT = HOST + "/interface/mobileHelpTeamAction/createTeam";
 
     //后援活动查询
-    public static final String ADDRESS_QUERY_HYT_ACTIVE = "/interface/mobileHelpTeamActiveAction/queryActive";
+    public static final String ADDRESS_QUERY_HYT_ACTIVE = HOST + "/interface/mobileHelpTeamActiveAction/queryActive";
 
     //后援团查询
-    public static final String ADDRESS_QUERY_HYT = "/interface/mobileHelpTeamAction/teamList";
+    public static final String ADDRESS_QUERY_HYT = HOST + "/interface/mobileHelpTeamAction/teamList";
 
     //加入后援团
-    public static final String ADDRESS_JOIN_HYT = "/interface/mobileHelpTeamAction/joinTeam";
+    public static final String ADDRESS_JOIN_HYT = HOST + "/interface/mobileHelpTeamAction/joinTeam";
 
     //应援活动创建
-    public static final String ADDRESS_YYHD_CREATE = "/interface/mobileHelpTeamActiveAction/createActive";
+    public static final String ADDRESS_YYHD_CREATE = HOST + "/interface/mobileHelpTeamActiveAction/createActive";
 
     //查询BigPad
-    public static final String ADDRESS_BIGPAD_QUERY = "/interface/mobileHelpTeamActiveAction/bigpadQuery";
+    public static final String ADDRESS_BIGPAD_QUERY = HOST + "/interface/mobileHelpTeamActiveAction/bigpadQuery";
 
     //后援团活动支持(报名)
-    public static final String ADDRESS_HYHD_SUPPORT = "/interface/mobileHelpTeamActiveAction/activeSignUp";
+    public static final String ADDRESS_HYHD_SUPPORT = HOST + "/interface/mobileHelpTeamActiveAction/activeSignUp";
 
     //后援团活动支持(报名)查询
-    public static final String ADDRESS_HYHD_SUPPORT_QUERY = "/interface/mobileHelpTeamActiveAction/activeSignUpQuery";
+    public static final String ADDRESS_HYHD_SUPPORT_QUERY = HOST + "/interface/mobileHelpTeamActiveAction/activeSignUpQuery";
 
     //后援团活动评论查询
-    public static final String ADDRESS_HYHD_COMMENT_QUERY = "/interface/mobileHelpTeamActiveAction/commentQuery";
+    public static final String ADDRESS_HYHD_COMMENT_QUERY = HOST + "/interface/mobileHelpTeamActiveAction/commentQuery";
 
     //后援团活动评论
-    public static final String ADDRESS_HYHD_COMMENT = "/interface/mobileHelpTeamActiveAction/comment";
+    public static final String ADDRESS_HYHD_COMMENT = HOST + "/interface/mobileHelpTeamActiveAction/comment";
 
     //后援团活动评论点赞
-    public static final String ADDRESS_HYHD_COMMENT_GOOD = "/interface/mobileHelpTeamActiveAction/commentGiveUp";
+    public static final String ADDRESS_HYHD_COMMENT_GOOD = HOST + "/interface/mobileHelpTeamActiveAction/commentGiveUp";
 
     //后援团活动点赞
-    public static final String ADDRESS_HYHD_GOOD = "/interface/mobileHelpTeamActiveAction/giveUp";
+    public static final String ADDRESS_HYHD_GOOD = HOST + "/interface/mobileHelpTeamActiveAction/giveUp";
 
     //后援团成员查询
-    public static final String ADDRESS_MEMBERS_QUERY = "/interface/mobileHelpTeamAction/helpTeamUserList";
+    public static final String ADDRESS_MEMBERS_QUERY = HOST + "/interface/mobileHelpTeamAction/helpTeamUserList";
 
     //退出后援团
-    public static final String ADDRESS_HYT_EXIT = "/interface/mobileHelpTeamAction/quitTeam";
+    public static final String ADDRESS_HYT_EXIT = HOST + "/interface/mobileHelpTeamAction/quitTeam";
 
     //后援团禁言
-    public static final String ADDRESS_HYT_LOCK = "/interface/mobileHelpTeamAction/gag";
+    public static final String ADDRESS_HYT_LOCK = HOST + "/interface/mobileHelpTeamAction/gag";
 
     //后援团解除禁言
-    public static final String ADDRESS_HYT_UNLOCK = "/interface/mobileHelpTeamAction/cancelGag";
+    public static final String ADDRESS_HYT_UNLOCK = HOST + "/interface/mobileHelpTeamAction/cancelGag";
 
     //后援团禁言列表查询
-    public static final String ADDRESS_HYT_LOCK_LIST = "/interface/mobileHelpTeamAction/gagList";
+    public static final String ADDRESS_HYT_LOCK_LIST = HOST + "/interface/mobileHelpTeamAction/gagList";
 
     //邀请注册
-    public static final String ADDRESS_INVATE_REGIST = HTTP_HOST + "/interface/joinUsAction/page?userId=";
+    public static final String ADDRESS_INVATE_REGIST = HOST + "/interface/joinUsAction/page?userId=";
 
     //我的福利票务
-    public static final String ADDRESS_PIAOWU_QUERY = "/interface/mobileWelfareActiveAction/mineSignUpFlActive";
+    public static final String ADDRESS_PIAOWU_QUERY = HOST + "/interface/mobileWelfareActiveAction/mineSignUpFlActive";
 
     //根据id查用户(融云IM)
-    public static final String ADDRESS_USERINFO_BYID = "/interface/user/queryUserInfo";
+    public static final String ADDRESS_USERINFO_BYID = HOST + "/interface/user/queryUserInfo";
 }

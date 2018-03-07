@@ -32,7 +32,7 @@ public class PicWallCatgoryAdapter extends RecyclerView.Adapter<PicWallCatgoryAd
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                 data.getRows().get(position).getPicUrl(),
                 holder.iv, MyApplication.getImageLoaderOptions());
 

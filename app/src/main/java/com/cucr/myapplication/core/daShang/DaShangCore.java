@@ -40,7 +40,7 @@ public class DaShangCore implements DaShangInterf {
     @Override
     public void reward(int rewardContentId, int payType, int rewardType, int rewardMoney, OnCommonListener commonListener) {
         rewardListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DA_SHANG, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DA_SHANG, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("rewardContentId", rewardContentId) //打赏内容id
@@ -55,7 +55,7 @@ public class DaShangCore implements DaShangInterf {
     @Override
     public void queryDsList(int rewardContentId, OnCommonListener commonListener) {
         dsListListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DS_LIST, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DS_LIST, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("rewardContentId", rewardContentId) //打赏内容id
@@ -67,7 +67,7 @@ public class DaShangCore implements DaShangInterf {
     @Override
     public void queryDsMe(int queryMine, int rows, int page, OnCommonListener commonListener) {
         dsMeListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_DS_ME, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DS_ME, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("queryMine", queryMine)

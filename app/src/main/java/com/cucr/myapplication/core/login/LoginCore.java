@@ -83,7 +83,7 @@ public class LoginCore implements LoadByPsw, LoadChatServer {
         this.loginListener = loginListener;
         mPassWord = psw;
         // 创建请求对象。
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PSW_LOAD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PSW_LOAD, RequestMethod.POST);
 
         // 如果有密钥 添加加密后的请求参数。
 //        if (!TextUtils.isEmpty(sign)){
@@ -155,7 +155,7 @@ public class LoginCore implements LoadByPsw, LoadChatServer {
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
             UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), mPassWord,
-                    HttpContans.HTTP_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
+                    HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
             SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
             edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
             //两个容器 类似于联表查询效果

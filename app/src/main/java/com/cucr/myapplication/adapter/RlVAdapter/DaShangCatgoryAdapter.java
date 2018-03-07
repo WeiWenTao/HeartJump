@@ -39,12 +39,12 @@ public class DaShangCatgoryAdapter extends RecyclerView.Adapter<DaShangCatgoryAd
     @Override
     public void onBindViewHolder(DSCatgoryHolder holder, int position) {
         final DaShangListInfo.RowsBean rowsBean = rows.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         rowsBean.getRewardUser().getUserHeadPortrait(), holder.iv_ds_userhead,
                 MyApplication.getImageLoaderOptions());
         holder.tv_ds_username.setText(rowsBean.getRewardUser().getName());
         holder.tv_ds_time.setText(rowsBean.getRewardTime());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         rowsBean.getRewardType().getPicUrl(), holder.iv_ds_img,
                 MyApplication.getImageLoaderOptions());
     }

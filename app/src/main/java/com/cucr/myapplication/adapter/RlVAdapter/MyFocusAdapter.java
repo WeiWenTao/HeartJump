@@ -68,7 +68,7 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
     @Override
     public void onBindViewHolder(FocusHolder holder, int position) {
         final FocusInfo.RowsBean.StartBean start = rows.get(0).getStart();
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + start.getUserHeadPortrait(), holder.iv_user_icon_all_focus, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + start.getUserHeadPortrait(), holder.iv_user_icon_all_focus, MyApplication.getImageLoaderOptions());
         holder.tv_name.setText(start.getName());
         holder.tv_sign.setText(start.getSignName());
         if (start.isNoFocus()) {

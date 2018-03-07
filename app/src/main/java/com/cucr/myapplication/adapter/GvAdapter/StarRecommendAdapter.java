@@ -121,7 +121,7 @@ public class StarRecommendAdapter extends BaseAdapter {
         ImageView iv_pic = cvh.getIv(R.id.iv_pic);
 
         //显示明星列表图片
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getStartShowPic(), iv_pic);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getStartShowPic(), iv_pic);
 
         //粉丝数量
         tv_star_fans.setText(rowsBean.getFansCount());

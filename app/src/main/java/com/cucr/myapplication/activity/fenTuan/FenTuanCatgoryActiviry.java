@@ -303,7 +303,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         });
 
         //设置数据
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
         tv_neckname.setText(mRowsBean.getCreateUserName());
         tv_time_form.setText(mRowsBean.getCreaetTime());
         tv_lookcount.setText(mRowsBean.getReadCount() + "");
@@ -331,7 +331,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             @Override
             public void layoutFinish(List<ImageView> images) {
                 for (int i = 0; i < mRowsBean.getAttrFileList().size(); i++) {
-                    ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
+                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
                 }
             }
         });
@@ -621,7 +621,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         MyLogger.jLog().i("打赏动画");
         iv_gift.setVisibility(View.VISIBLE);
         MyLogger.jLog().i(event);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + event.getGiftPic(), iv_gift);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + event.getGiftPic(), iv_gift);
 
 
         switch (event.getGiftId()) {

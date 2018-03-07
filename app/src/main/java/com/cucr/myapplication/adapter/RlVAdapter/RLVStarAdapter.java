@@ -47,7 +47,7 @@ public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarList
     @Override
     public void onBindViewHolder(StarListHolder holder, final int position) {
         final FocusInfo.RowsBean rowsBean = list.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +      //头像
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +      //头像
                 rowsBean.getStart().getUserHeadPortrait(), holder.starPic, MyApplication.getImageLoaderOptions());
         holder.starName.setText(rowsBean.getStart().getRealName());   //name
         holder.ll_item_star.setOnClickListener(new View.OnClickListener() {

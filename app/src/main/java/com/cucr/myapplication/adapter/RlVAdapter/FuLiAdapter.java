@@ -84,7 +84,7 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                 }
             });
             //显示图片
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + bean.getPicUrl(), ((FiLiHolder) holder).iv_active_bg);
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + bean.getPicUrl(), ((FiLiHolder) holder).iv_active_bg);
             //显示进行状态
             String endTime = bean.getEndTime();
             ((FiLiHolder) holder).tv_isopen.setText(CommonUtils.IsGone(endTime) ? "进行中" : "已结束");

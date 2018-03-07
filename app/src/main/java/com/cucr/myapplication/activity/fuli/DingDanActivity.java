@@ -100,7 +100,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
         iv_goods_del.setEnabled(false);
         tv_goods_name.setText(mData.getShopName());
         tv_goods_price.setText(mData.getShopPrice() + "星币");
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getShopPicUrl(), iv_goods_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mData.getShopPicUrl(), iv_goods_pic, MyApplication.getImageLoaderOptions());
         //设置监听
         et_receive_person_name.addTextChangedListener(this);
         et_receive_person_local_catgory.addTextChangedListener(this);

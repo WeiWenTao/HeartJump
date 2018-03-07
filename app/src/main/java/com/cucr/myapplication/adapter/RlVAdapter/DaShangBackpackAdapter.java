@@ -89,7 +89,7 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
 //                break;
 //        }
 
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + listBean.getUserAccountType().getPicUrl(), holder.iv_bp_img, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + listBean.getUserAccountType().getPicUrl(), holder.iv_bp_img, MyApplication.getImageLoaderOptions());
         holder.tv_bp_save.setText(listBean.getBalance() + "");   //礼物个数
         holder.tv_bp_name.setText(listBean.getUserAccountType().getName());          //礼物名称
         holder.ll_item.setOnClickListener(new View.OnClickListener() {

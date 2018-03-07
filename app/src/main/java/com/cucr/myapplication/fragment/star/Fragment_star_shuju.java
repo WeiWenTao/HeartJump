@@ -77,6 +77,6 @@ public class Fragment_star_shuju extends Fragment {
                 MyLogger.jLog().i("开始加载");
             }
         });
-        wv.loadUrl(HttpContans.HTTP_HOST + HttpContans.ADDRESS_STAR_DATA);
+        wv.loadUrl(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_STAR_DATA);
     }
 }

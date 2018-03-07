@@ -39,7 +39,7 @@ public class HytCore implements HytInterf {
                          String phoneNum, String address,
                          RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_CREATE_HYT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_CREATE_HYT, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", startId)
                 .add("name", hytName)
@@ -61,7 +61,7 @@ public class HytCore implements HytInterf {
     @Override
     public void queryHyt(int startId, int page, int rows, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_HYT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_HYT, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", startId)
                 .add("page", page)
@@ -74,7 +74,7 @@ public class HytCore implements HytInterf {
     @Override
     public void joinHyt(int hytId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_JOIN_HYT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_JOIN_HYT, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("hytId", hytId);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
@@ -84,7 +84,7 @@ public class HytCore implements HytInterf {
     @Override
     public void querYyhdJE(String actionCode, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_STAR_KEY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_STAR_KEY, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("actionCode", actionCode);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
@@ -98,7 +98,7 @@ public class HytCore implements HytInterf {
                            String bgInfoIds, String city, String scale, String amount3,
                            String explains, String picUrl, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_YYHD_CREATE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_YYHD_CREATE, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeName", activeName)
                 .add("activeContent", activeContent)
@@ -136,7 +136,7 @@ public class HytCore implements HytInterf {
     @Override
     public void queryBigPadInfo(RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_BIGPAD_QUERY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_BIGPAD_QUERY, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_SIX, request, listener);
@@ -146,7 +146,7 @@ public class HytCore implements HytInterf {
     @Override
     public void queryHytActive(int page, int rows, int starId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_HYT_ACTIVE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_HYT_ACTIVE, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
@@ -159,7 +159,7 @@ public class HytCore implements HytInterf {
     @Override
     public void querySupport(int page, int rows, int activeId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_SUPPORT_QUERY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYHD_SUPPORT_QUERY, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
@@ -172,7 +172,7 @@ public class HytCore implements HytInterf {
     @Override
     public void queryComment(int page, int rows, int activeId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_COMMENT_QUERY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYHD_COMMENT_QUERY, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
@@ -185,7 +185,7 @@ public class HytCore implements HytInterf {
     @Override
     public void YyhdComment(int activeId, String content, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_COMMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYHD_COMMENT, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeId", activeId)
                 .add("comment", content)
@@ -197,7 +197,7 @@ public class HytCore implements HytInterf {
     @Override
     public void YyhdCommentGood(int commentId, int activeId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_COMMENT_GOOD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYHD_COMMENT_GOOD, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeId", activeId)
                 .add("commentId", commentId)
@@ -208,7 +208,7 @@ public class HytCore implements HytInterf {
     @Override
     public void YyhdGood(int activeId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYHD_GOOD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYHD_GOOD, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeId", activeId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
@@ -219,7 +219,7 @@ public class HytCore implements HytInterf {
     @Override
     public void queryMembers(int page, int rows, String hytId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MEMBERS_QUERY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_MEMBERS_QUERY, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
                 .add("rows", rows)
@@ -232,7 +232,7 @@ public class HytCore implements HytInterf {
     @Override
     public void leaveHyt(String hytId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYT_EXIT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYT_EXIT, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("hytId", hytId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
@@ -243,7 +243,7 @@ public class HytCore implements HytInterf {
     @Override
     public void hytLock(int lockd, String hytId, int howlong, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYT_LOCK, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYT_LOCK, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("hytId", hytId)
                 .add("gagUserId", lockd)
@@ -256,7 +256,7 @@ public class HytCore implements HytInterf {
     @Override
     public void hytUnLock(String lockd, String hytId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYT_UNLOCK, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYT_UNLOCK, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("hytId", hytId)
                 .add("gagUserIds", lockd)
@@ -268,7 +268,7 @@ public class HytCore implements HytInterf {
     @Override
     public void hytLockList(String hytId, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HYT_LOCK_LIST, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYT_LOCK_LIST, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("hytId", hytId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));

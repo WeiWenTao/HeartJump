@@ -200,7 +200,7 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initViews() {
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mObj.getUserHeadPortrait(),
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mObj.getUserHeadPortrait(),
                 userPic, MyApplication.getImageLoaderOptions());
         nickName.setText(mObj.getName());
         if (TextUtils.isEmpty(mObj.getSignName())) {

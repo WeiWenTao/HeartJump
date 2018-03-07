@@ -40,7 +40,7 @@ public class YyhdCommentAdater extends RecyclerView.Adapter<YyhdCommentAdater.My
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
         final YyhdCommentInfo.RowsBean rowsBean = rows.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         rowsBean.getUser().getUserHeadPortrait(), holder.iv_userhead,
                 MyApplication.getImageLoaderOptions());
         holder.tv_comment_content.setText(CommonUtils.unicode2String(rowsBean.getComment()));

@@ -125,7 +125,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/test_555"
             />
-        <!--android:src="@drawable/img1"-->
 
         <ImageView
             android:id="@+id/iv_pic2"

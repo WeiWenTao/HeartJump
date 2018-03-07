@@ -67,11 +67,11 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (holder instanceof YyhdItemHolder) {
             final YyhdInfos.RowsBean rowsBean = rows.get(position - 1);
             //头像
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                             rowsBean.getCreateUser().getUserHeadPortrait(),
                     ((YyhdItemHolder) holder).iv_headpic, MyApplication.getImageLoaderOptions());
             //封面
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                             rowsBean.getPicUrl(),
                     ((YyhdItemHolder) holder).iv_yyhd_cover, MyApplication.getImageLoaderOptions());
             //后援团名称

@@ -66,7 +66,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((HytItemHolder) holder).tv_join.setBackgroundResource(R.drawable.corner_13_gray);
             }
 
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(),
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getPicUrl(),
                     ((HytItemHolder) holder).iv_pic, MyApplication.getImageLoaderOptions());
 
             ((HytItemHolder) holder).rl_item.setOnClickListener(new View.OnClickListener() {

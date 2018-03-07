@@ -126,9 +126,9 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         TextView tv_num2 = (TextView) headView.findViewById(R.id.tv_num2);
         TextView tv_num3 = (TextView) headView.findViewById(R.id.tv_num3);
 
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean1.getUserHeadPortrait(), userHead1, MyApplication.getImageLoaderOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean2.getUserHeadPortrait(), userHead2, MyApplication.getImageLoaderOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean3.getUserHeadPortrait(), userHead3, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean1.getUserHeadPortrait(), userHead1, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean2.getUserHeadPortrait(), userHead2, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean3.getUserHeadPortrait(), userHead3, MyApplication.getImageLoaderOptions());
 
         tv_name1.setText(mRowsBean1.getRealName());
         tv_name2.setText(mRowsBean2.getRealName());

@@ -60,7 +60,7 @@ public class YyhdSupprotAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser()
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUser()
                     .getUserHeadPortrait(), ((MySupportHolder) holder).iv_item, MyApplication.
                     getImageLoaderOptions());
         } else if (holder instanceof MyMoreHolder) {

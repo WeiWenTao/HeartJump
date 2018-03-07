@@ -62,8 +62,8 @@ public class VideoActivity extends Activity {
 
         //获取视频信息
         rowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("rowsBean");
-        url = HttpContans.HTTP_HOST + rowsBean.getAttrFileList().get(0).getFileUrl();
-//        url = HttpContans.HTTP_HOST + getIntent().getStringExtra("path");
+        url = HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl();
+//        url = HttpContans.IMAGE_HOST + getIntent().getStringExtra("path");
         player.setDefaultRetryTime(5 * 1000);
         MyLogger.jLog().i("videoUrl:" + url);
 

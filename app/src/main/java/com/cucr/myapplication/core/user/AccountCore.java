@@ -34,7 +34,7 @@ public class AccountCore implements AccountCenterInterf {
     @Override
     public void relasePsw(String oldPsw, String newPsw, RequersCallBackListener listener) {
         this.mListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_RELEASE_PSW, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_RELEASE_PSW, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("oldpassword", oldPsw)
                 .add("newpassword", newPsw)

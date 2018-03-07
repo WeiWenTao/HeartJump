@@ -248,10 +248,10 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         tv_actives_money.setText(receivedBean.getYs() + "万");
         mTv_all_comment.setText(receivedBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
         ll_show_money.setVisibility(receivedBean.getOpenys() == 0 ? View.VISIBLE : View.GONE);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         receivedBean.getApplyUser().getUserHeadPortrait(), iv_head,
                 MyApplication.getImageLoaderOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         receivedBean.getPicurl(), iv_active_pic,
                 MyApplication.getImageLoaderOptions());
     }

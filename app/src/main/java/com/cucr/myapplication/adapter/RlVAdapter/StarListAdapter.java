@@ -72,7 +72,7 @@ public class StarListAdapter extends RecyclerView.Adapter {
             FocusInfo.RowsBean.StartBean start = list.get(position).getStart();
             CircleImageView iv_head = ((MyStarHolder) holder).iv_head;
 
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + start.getUserHeadPortrait(), iv_head, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + start.getUserHeadPortrait(), iv_head, MyApplication.getImageLoaderOptions());
 
             iv_head.setOnClickListener(new View.OnClickListener() {
                 @Override

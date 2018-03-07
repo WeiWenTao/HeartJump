@@ -151,7 +151,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         iv_pic.setOnClickListener(this);
         tv_neckname.setOnClickListener(this);
         //设置数据
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mRowsBean.getUser().getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUser().getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
         tv_neckname.setText(mRowsBean.getUser().getName());
         tv_time_form.setText(mRowsBean.getReleaseTime());
         tv_content.setText(CommonUtils.unicode2String(mRowsBean.getComment()));

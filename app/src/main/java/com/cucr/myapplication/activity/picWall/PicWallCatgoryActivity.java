@@ -158,7 +158,7 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
         mIntent.putExtra("userId", rowsBean.getUser().getId());
         //只有审核通过的图片才有点赞功能
         ll_good.setVisibility(rowsBean.getStatu() == 1 ? View.VISIBLE : View.GONE);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUser()
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUser()
                 .getUserHeadPortrait(), iv_user_head, MyApplication.getImageLoaderOptions());
         tv_goodnum.setText(rowsBean.getGiveUpCount() + "");
         tv_username.setText(rowsBean.getUser().getName());

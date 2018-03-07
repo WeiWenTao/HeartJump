@@ -44,7 +44,7 @@ public class QueryFocus implements MyFocusStars {
     public void queryMyFocusStars(int queryUserId, int page, int rows, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FOCUS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_MY_FOCUS, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         if (queryUserId != -1) {
@@ -61,7 +61,7 @@ public class QueryFocus implements MyFocusStars {
     @Override
     public void queryMyFocusOthers(int page, int rows, RequersCallBackListener requersCallBackListener) {
         this.requersCallBackListener = requersCallBackListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FOCUS_OTHER, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_MY_FOCUS_OTHER, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("page", page);
@@ -74,7 +74,7 @@ public class QueryFocus implements MyFocusStars {
     @Override
     public void queryMyFens(int page, int rows, RequersCallBackListener requersCallBackListener) {
         this.requersCallBackListener = requersCallBackListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_MY_FANS, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_MY_FANS, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("page", page);

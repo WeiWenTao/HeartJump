@@ -51,8 +51,8 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
         final QiYeHuoDongInfo.RowsBean rowsBean = rows.get(position);
         MyLogger.jLog().i("activePosition:" + position + ",rowsBean:" + rowsBean);
 
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicurl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getApplyUser().getUserHeadPortrait(), holder.iv_head, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getPicurl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getApplyUser().getUserHeadPortrait(), holder.iv_head, MyApplication.getImageLoaderOptions());
         holder.tv_title.setText(rowsBean.getActiveName());
         holder.tv_name.setText(rowsBean.getApplyUser().getRealName());
         holder.tv_commends.setText(rowsBean.getCommentCount() + "");

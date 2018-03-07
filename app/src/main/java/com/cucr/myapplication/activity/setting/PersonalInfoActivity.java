@@ -138,7 +138,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         et_my_sign.setSelection(et_my_sign.getText().length());
         et_nickname.setSelection(et_nickname.getText().length());
         //头像回显
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getUserHeadPortrait(), iv_head);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + obj.getUserHeadPortrait(), iv_head);
         mTemppath = obj.getUserHeadPortrait();
         //昵称回显
         et_nickname.setText(obj.getName());

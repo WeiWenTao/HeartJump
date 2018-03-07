@@ -62,7 +62,7 @@ public class FtPublishCore implements FenTuanInterf {
     public void publishFtInfo(int starId, final int type, String content, List<LocalMedia> mData, final OnUpLoadListener listener) {
         this.listener = listener;
         this.type = type;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_PUBLISH_FT_INFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PUBLISH_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", starId)

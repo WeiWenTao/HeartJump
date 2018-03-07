@@ -40,7 +40,7 @@ public class QueryBannerCore implements QueryHomeBanner {
         this.commonListener = commonListener;
         flag = new Object();
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_HOME_BANNER, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HOME_BANNER, RequestMethod.POST);
 
         request.setCancelSign(flag);
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖

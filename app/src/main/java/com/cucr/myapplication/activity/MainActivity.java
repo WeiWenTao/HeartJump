@@ -201,7 +201,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
         if (info.isSuccess()) {
             IMPersonalInfo.ObjBean obj = info.getObj();
-            mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.HTTP_HOST + obj.getUserHeadPortrait()));
+            mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.IMAGE_HOST + obj.getUserHeadPortrait()));
         } else {
             ToastUtils.showToast(info.getMsg());
         }

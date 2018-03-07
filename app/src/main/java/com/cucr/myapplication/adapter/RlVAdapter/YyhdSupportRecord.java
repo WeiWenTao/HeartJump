@@ -35,7 +35,7 @@ public class YyhdSupportRecord extends RecyclerView.Adapter<YyhdSupportRecord.Re
     @Override
     public void onBindViewHolder(RecordHolder holder, int position) {
         YyhdSupports.RowsBean rowsBean = rows.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST +
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
                         rowsBean.getUser().getUserHeadPortrait(), holder.iv_headpic,
                 MyApplication.getImageLoaderOptions());
         holder.tv_je.setText("¥" + rowsBean.getAmount());

@@ -72,7 +72,7 @@ public class BigPadPagerAdapter extends PagerAdapter {
                 }
             }
         });
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getPicUrl(),
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getPicUrl(),
                 iv_bigpad, MyApplication.getImageLoaderOptions());
         tv_yy_use.setText(rowsBean.getPurpose());
         tv_yy_address.setText(rowsBean.getAddress());

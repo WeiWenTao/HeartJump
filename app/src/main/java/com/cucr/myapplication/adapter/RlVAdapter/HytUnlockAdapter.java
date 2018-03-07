@@ -41,7 +41,7 @@ public class HytUnlockAdapter extends RecyclerView.Adapter<HytUnlockAdapter.MyHo
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
         final HytLockList.RowsBean rowsBean = rows.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getUserHeadPortrait(), holder.iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         holder.tv_name.setText(rowsBean.getName());
         String difValue = DataUtils.getDifValue(rowsBean.getTime());
         holder.tv_tip.setText("被禁言" + difValue.replace("-"," "));

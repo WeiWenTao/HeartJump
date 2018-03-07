@@ -162,7 +162,7 @@ public class PersonalMainPagerActivity extends Activity {
         initIndicator();
         isFoucs = obj.getIsgz() == 1;
         tv_foucs.setText(isFoucs ? "已关注" : "加关注");
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + obj.getYhtx(), iv_star_head, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + obj.getYhtx(), iv_star_head, MyApplication.getImageLoaderOptions());
         tv_nick_name.setText(obj.getYhnc());
         tv_focuses.setText("关注 " + obj.getGzsl());
         mFssl = obj.getFssl();
@@ -282,7 +282,7 @@ public class PersonalMainPagerActivity extends Activity {
         MyLogger.jLog().i("打赏动画");
         iv_gift.setVisibility(View.VISIBLE);
         MyLogger.jLog().i(event);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + event.getGiftPic(), iv_gift);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + event.getGiftPic(), iv_gift);
 
 
         switch (event.getGiftId()) {

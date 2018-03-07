@@ -46,7 +46,7 @@ public class QueryStarListCore implements StarListInfo {
     public void queryStar(int type, int page, int row, int startId, String userCost, String userType, final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("type", type);
@@ -72,7 +72,7 @@ public class QueryStarListCore implements StarListInfo {
     public void queryZiDuan(String actionCode, OnCommonListener onCommonListener) {
 
         this.queryZdListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_STAR_KEY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_STAR_KEY, RequestMethod.POST);
         // 添加普通参数。
         request.add("actionCode", actionCode);
 

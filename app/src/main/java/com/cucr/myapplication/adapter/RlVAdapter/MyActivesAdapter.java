@@ -46,7 +46,7 @@ public class MyActivesAdapter extends RecyclerView.Adapter<MyActivesAdapter.MyHo
     @Override
     public void onBindViewHolder(MyHoder holder, int position) {
         final MyActives.RowsBean rowsBean = rows.get(position);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + rowsBean.getActive().getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getActive().getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         holder.tv_time.setText("有效期至" + rowsBean.getActive().getEndTime().substring(0, 10));
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override

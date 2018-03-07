@@ -42,7 +42,7 @@ public class DingDanCore implements DuiHuanDingDan {
                           String rececivedPhone, int num, int shopId, final OnCommonListener listener) {
         this.listener = listener;
 
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_SHOP, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_SHOP, RequestMethod.POST);
 
         // 添加普通参数。
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));

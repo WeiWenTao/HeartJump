@@ -52,7 +52,7 @@ public class HuoDongCore implements HuoDongInterf {
                               String activeStartTime, int ys, String activeInfo, int openys, int peopleCount,
                               String picurl, OnCommonListener onCommonListener) {
         this.publishListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ACTIVE_PUBLISH, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ACTIVE_PUBLISH, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeName", activeName)
                 .add("activePlace", CommonUtils.replaceOtherChars(activePlace)) //去除特殊字符
@@ -78,7 +78,7 @@ public class HuoDongCore implements HuoDongInterf {
     @Override
     public void queryActive(boolean byMe, int dataId, int page, int rows, OnCommonListener onCommonListener) {
         this.queryListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_ACTIVE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_ACTIVE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("byMe", byMe)
                 .add("page", page)
@@ -94,7 +94,7 @@ public class HuoDongCore implements HuoDongInterf {
     @Override
     public void activeGiveUp(int dataId, OnCommonListener onCommonListener) {
         this.giveUpListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ACTIVE_GOOD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ACTIVE_GOOD, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
@@ -105,7 +105,7 @@ public class HuoDongCore implements HuoDongInterf {
     @Override
     public void activeComment(int dataId, String comment, int commentParentId, OnCommonListener onCommonListener) {
         this.commentListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ACTIVE_COMMENT, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ACTIVE_COMMENT, RequestMethod.POST);
         if (commentParentId != -1) {
             //一级评论不用传
             request.add("commentParentId", commentParentId);
@@ -122,7 +122,7 @@ public class HuoDongCore implements HuoDongInterf {
     @Override
     public void activeCommentQuery(int contentId, int parentId, int page, int rows, OnCommonListener onCommonListener) {
         this.commentQueryListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ACTIVE_COMMENT_QUERY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ACTIVE_COMMENT_QUERY, RequestMethod.POST);
         if (parentId != -1) {
             //一级评论不用传
             request.add("parentId", parentId);
@@ -139,7 +139,7 @@ public class HuoDongCore implements HuoDongInterf {
     @Override
     public void activeCommentGood(int contentId, int dataId, OnCommonListener onCommonListener) {
         this.commentGoodListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_ACTIVE_COMMENT_GOOD, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ACTIVE_COMMENT_GOOD, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("contentId", contentId)
                 .add("dataId", dataId)

@@ -261,7 +261,7 @@ public class StarPagerActivity extends FragmentActivity implements OnCommonListe
         MyLogger.jLog().i("打赏动画");
         iv_gift.setVisibility(View.VISIBLE);
         MyLogger.jLog().i(event);
-        ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + event.getGiftPic(), iv_gift);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + event.getGiftPic(), iv_gift);
 
 
         switch (event.getGiftId()) {
@@ -393,7 +393,7 @@ public class StarPagerActivity extends FragmentActivity implements OnCommonListe
             tv_starname.setText(mData.getRealName());
             tv_base_title.setText(mData.getRealName());
             tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
-            ImageLoader.getInstance().displayImage(HttpContans.HTTP_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
         } else {
             ToastUtils.showToast(starInfos.getErrorMsg());
         }

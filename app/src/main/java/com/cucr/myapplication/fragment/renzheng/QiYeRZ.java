@@ -232,9 +232,9 @@ public class QiYeRZ extends Fragment {
         img_qiye_positive.setVisibility(View.VISIBLE);
         img_qiye_nagetive.setVisibility(View.VISIBLE);
         img_qieye_zhizhao.setVisibility(View.VISIBLE);
-        instance.displayImage(HttpContans.HTTP_HOST + pic1, img_qiye_positive, MyApplication.getImageLoaderOptions());
-        instance.displayImage(HttpContans.HTTP_HOST + pic2, img_qiye_nagetive, MyApplication.getImageLoaderOptions());
-        instance.displayImage(HttpContans.HTTP_HOST + pic3, img_qieye_zhizhao, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.IMAGE_HOST + pic1, img_qiye_positive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.IMAGE_HOST + pic2, img_qiye_nagetive, MyApplication.getImageLoaderOptions());
+        instance.displayImage(HttpContans.IMAGE_HOST + pic3, img_qieye_zhizhao, MyApplication.getImageLoaderOptions());
 
         switch (result) {
             case 1:

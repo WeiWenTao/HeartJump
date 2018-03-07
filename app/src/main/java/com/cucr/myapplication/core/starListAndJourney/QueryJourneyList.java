@@ -44,7 +44,7 @@ public class QueryJourneyList implements QueryJourney {
     @Override
     public void queryJourneySchedule(int starId, OnCommonListener commonListener) {
         this.scheduleListener = commonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_JOURNEY_SCHEDULE, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_JOURNEY_SCHEDULE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("startId", starId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
@@ -65,7 +65,7 @@ public class QueryJourneyList implements QueryJourney {
     @Override
     public void QueyrStarJourney(int rows, int page, int starId, String tripTime, final OnCommonListener listener) {
         queryListener = listener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.HTTP_HOST + HttpContans.ADDRESS_QUERY_JOURNEY, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_JOURNEY, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("rows", rows)
