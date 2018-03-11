@@ -3,6 +3,7 @@ package com.cucr.myapplication.activity.star;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,20 +11,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 import com.cucr.myapplication.adapter.PagerAdapter.StarListPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.starList.FocusInfo;
+import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
 import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -138,7 +139,8 @@ public class StarListForAddActivity extends Activity {
                     if (Info.getRows().size() > 0) {     //有关注明星
                         startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
                         //登录之后保存登录数据  下次登录判断是否第一次登录
-                        SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);
+                        SharedPreferences.Editor edit = SpUtil.getNewSp().edit();
+                        edit.putBoolean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)) + "", true).commit();
                         finish();
                     } else {
                         ToastUtils.showToast("至少要关注一位明星哦");

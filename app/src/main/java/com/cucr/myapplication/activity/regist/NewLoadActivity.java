@@ -181,6 +181,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         mUserName = mEt_accunt.getText().toString();
         mPassWord = mEt_psw.getText().toString();
         //TODO 输入判断
+
         mLoginCore.login(mUserName, mPassWord, this);
     }
 
@@ -277,8 +278,13 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
     public void onRequestSuccess(int what, Response<String> response) {
 
         switch (what) {
+            //密码登录
             case Constans.TYPE_ONE:
                 //逻辑都在loginCore中
+                CommonRebackMsg msg1 = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
+                if (msg1.isSuccess()) {
+                    UMShareAPI.get(this).release();//释放内存
+                }
                 break;
 
             case Constans.TYPE_TWO:
@@ -290,6 +296,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
                 } else {
                     //不成功 去绑定手机号
                     startActivity(bindIntent);
+                    UMShareAPI.get(this).release();
                 }
 
                 break;
@@ -323,6 +330,9 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
             //---------------------------------------------------------------------------------
 
+            //保存头像
+            SpUtil.setParam(SpConstant.SP_USERHEAD, loadSuccess.getUserHeadPortrait());
+
             //设置极光推送的tag
             tags.add(loadSuccess.getRoleId() + "");
 //                    保存密钥
@@ -350,21 +360,22 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)) {
+            if (!(SpUtil.getNewSp().getBoolean(loadSuccess.getUserId() + "", false))) {
                 MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
                 intent.putExtra("formLoad", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                UMShareAPI.get(this).release();
             } else {
                 MyLogger.jLog().i("isFirst_不是第一次登录");
 //                        跳转到主界面
                 Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                UMShareAPI.get(this).release();
             }
-            SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
         } else {
             //success = false 密码错误
             // 显示服务器返回的错误信息

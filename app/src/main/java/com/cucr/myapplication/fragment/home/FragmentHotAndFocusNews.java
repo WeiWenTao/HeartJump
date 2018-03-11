@@ -57,8 +57,8 @@ public class FragmentHotAndFocusNews extends BaseFragment {
 
     private void initView() {
         mFragments = new ArrayList<>();
-        mFragments.add(new HomeFragment());
-        mFragments.add(new HomeFragment());
+        mFragments.add(new HomeHotFragment());
+        mFragments.add(new HomeFocusFragment());
         vp_hot_focus.setAdapter(new HomeNewsPagerAdapter(getFragmentManager(), mFragments));
     }
 

@@ -47,7 +47,7 @@ public class FuLiAdapter extends RecyclerView.Adapter {
         if (activeInfos == null) {
             return;
         }
-        notifyItemInserted(this.activeInfos.size() + 1);
+        notifyItemInserted(this.activeInfos.size() + 2);
         this.activeInfos.addAll(activeInfos);
     }
 

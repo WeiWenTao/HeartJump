@@ -11,7 +11,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_marginLeft="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_5"
         android:paddingTop="@dimen/dp_5"
@@ -32,11 +32,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_title"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             android:ellipsize="end"
             android:lineSpacingExtra="@dimen/dp_3"
             android:maxLines="2"
-            android:text="冯轲首次还原2年前求婚真相 对张靓颖冷漠是因为一个电话"
+            android:text="冯轲首次还原2年前求婚真相 对张靓颖冷漠是因为一个电话冯轲首次还原2年前求婚真相 对张靓颖冷漠是因为一个电话"
             android:textColor="@color/color_666"
             android:textSize="@dimen/sp_12"
             />
@@ -51,32 +51,15 @@
             android:textSize="@dimen/sp_12"
             />
 
+
         <LinearLayout
+            android:id="@+id/ll_mystar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="9dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="1dp"
-                android:src="@drawable/icon_pv_nor"
-                />
-
-            <TextView
-                android:id="@+id/tv_reads"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:text="6534"
-                android:textColor="#929292"
-                android:textSize="@dimen/sp_12"
-                />
-        </LinearLayout>
+            />
 
     </RelativeLayout>
 

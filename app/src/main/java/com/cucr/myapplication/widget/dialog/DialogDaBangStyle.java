@@ -17,9 +17,10 @@ import com.cucr.myapplication.R;
 
 public class DialogDaBangStyle extends Dialog implements View.OnClickListener {
 
-    EditText et_other;
+    private EditText et_other;
     private RadioGroup mRg_xingbi;
     private InputMethodManager imm;
+    private String text;
 
     public DialogDaBangStyle(Context context, int themeResId) {
         super(context, themeResId);
@@ -29,7 +30,6 @@ public class DialogDaBangStyle extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_da_bang);
-
         initView();
     }
 
@@ -37,10 +37,15 @@ public class DialogDaBangStyle extends Dialog implements View.OnClickListener {
         mRg_xingbi = (RadioGroup) findViewById(R.id.rg_xingbi);
         TextView et_tv_cancle = (TextView) findViewById(R.id.tv_cancle);
         TextView tv_confirm = (TextView) findViewById(R.id.tv_confirm);
-
+        TextView tv_dashang_title = (TextView) findViewById(R.id.tv_dashang_title);
+        tv_dashang_title.setText(text);
         et_tv_cancle.setOnClickListener(this);
         tv_confirm.setOnClickListener(this);
+    }
 
+
+    public void setData(String text) {
+        this.text = "给" + text + "打榜";
     }
 
     //获取星币数量

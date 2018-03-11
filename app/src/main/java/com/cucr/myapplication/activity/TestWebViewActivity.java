@@ -27,9 +27,9 @@ public class TestWebViewActivity extends BaseActivity {
     protected void initChild() {
         initTitle("详情");
         String url = getIntent().getStringExtra("url");
+        url = "https://weibo.com/yangmiblog?topnav=1&wvr=6&topsug=1&is_hot=1";
         MyLogger.jLog().i("url:" + url);
         WebSettings settings = wv.getSettings();
-
 
         //webView  加载视频，下面五行必须
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -61,7 +61,6 @@ public class TestWebViewActivity extends BaseActivity {
                 b2.setCancelable(false);
                 b2.create();
                 b2.show();
-
 
                 return true;
             }

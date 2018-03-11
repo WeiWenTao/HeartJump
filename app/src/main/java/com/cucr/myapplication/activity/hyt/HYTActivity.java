@@ -38,9 +38,7 @@ public class HYTActivity extends Activity {
         ViewUtils.inject(this);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-
         init();
-
     }
 
     private void init() {

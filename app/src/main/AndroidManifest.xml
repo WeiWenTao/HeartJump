@@ -445,6 +445,10 @@
         </activity>
         <activity android:name=".activity.setting.LearnCatgoryActivity">
         </activity>
+        <activity android:name=".activity.GuideActivity">
+        </activity>
+        <activity android:name=".activity.fenTuan.XingWenCommentActivity">
+        </activity>
     </application>
 
 </manifest>

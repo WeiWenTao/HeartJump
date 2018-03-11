@@ -69,7 +69,6 @@
                 android:id="@+id/tv_name2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="创联凯尔"
                 android:textColor="@color/color_333"
                 android:textSize="@dimen/sp_15"
                 />
@@ -94,7 +93,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_3"
-                    android:text="12345"
                     android:textColor="@color/xtred"
                     android:textSize="@dimen/sp_13"
                     />
@@ -175,7 +173,6 @@
                 android:id="@+id/tv_name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="创联凯尔"
                 android:textColor="@color/color_333"
                 android:textSize="@dimen/sp_15"
                 />
@@ -200,7 +197,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_3"
-                    android:text="12345"
                     android:textColor="@color/xtred"
                     android:textSize="@dimen/sp_13"
                     />
@@ -282,7 +278,6 @@
                 android:id="@+id/tv_name3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="创联凯尔"
                 android:textColor="@color/color_333"
                 android:textSize="@dimen/sp_15"
                 />
@@ -307,7 +302,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_3"
-                    android:text="12345"
                     android:textColor="@color/xtred"
                     android:textSize="@dimen/sp_13"
                     />

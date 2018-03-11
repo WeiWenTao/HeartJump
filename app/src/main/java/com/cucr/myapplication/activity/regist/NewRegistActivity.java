@@ -257,7 +257,7 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
                 SpUtil.setParam(SpConstant.SP_QIYE_CONTACT, loadSuccess.getCompanyConcat());
             }
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!((boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false))) {
+            if (!((boolean) SpUtil.getParam(SpConstant.IS_FIRST_LOAD, false))) {
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
                 intent.putExtra("formLoad", true);
@@ -267,7 +267,7 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
                 startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
             }
 
-            SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
+            SpUtil.setParam(SpConstant.IS_FIRST_LOAD, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
             finish();
 
 

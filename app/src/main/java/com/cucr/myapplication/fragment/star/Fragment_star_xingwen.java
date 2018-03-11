@@ -36,7 +36,6 @@ import org.greenrobot.eventbus.ThreadMode;
 @SuppressLint("ValidFragment")
 public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView.OnLoadListener {
 
-
     @ViewInject(R.id.rlv_xingwen)
     private SwipeRecyclerView rlv_xingwen;
 
@@ -127,6 +126,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
+
                     mAdapter.setData(mQueryFtInfos);
                     rlv_xingwen.getRecyclerView().smoothScrollToPosition(0);
                     if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {

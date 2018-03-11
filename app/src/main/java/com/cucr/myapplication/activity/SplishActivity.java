@@ -9,7 +9,9 @@ import android.os.Environment;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ZipUtil;
 
@@ -55,14 +57,17 @@ public class SplishActivity extends Activity {
 //                } else {
 //                    mTimmer.setText(1 + "s");
 //            }
-            MyLogger.jLog().i("timmer:"+l);
+            MyLogger.jLog().i("timmer:" + l);
         }
 
 
         @Override
         public void onFinish() {
-            MyLogger.jLog().i("timmer:finish");
-            startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+            if (SpUtil.getNewSp().getBoolean(SpConstant.IS_FIRST_RUN, false)) {
+                startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+            } else {
+                startActivity(new Intent(MyApplication.getInstance(), GuideActivity.class));
+            }
         }
     };
 
@@ -70,7 +75,7 @@ public class SplishActivity extends Activity {
         //实例化文件对象 判断文件是否存在
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
         file.mkdir();
-        if (!file.exists()) {
+        if (!file.exists() || file.listFiles() == null) {
             //解压文件
             initZip();
         }

@@ -102,6 +102,7 @@ public class QueryFtInfos implements Serializable {
         private String content;
         private String creaetTime;
         private Integer createUserId;
+        private Integer newTransCount;
         private String createUserName;
         private Integer dataType;
         private FansTeamBean fansTeam;
@@ -134,6 +135,14 @@ public class QueryFtInfos implements Serializable {
 
         public void setDssl(Integer dssl) {
             this.dssl = dssl;
+        }
+
+        public Integer getNewTransCount() {
+            return newTransCount;
+        }
+
+        public void setNewTransCount(Integer newTransCount) {
+            this.newTransCount = newTransCount;
         }
 
 

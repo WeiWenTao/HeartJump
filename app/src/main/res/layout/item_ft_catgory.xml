@@ -152,7 +152,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="3dp"
             android:layout_marginTop="1dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
     </LinearLayout>
 

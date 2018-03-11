@@ -19,7 +19,6 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.user.PicWallCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpacesItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogSort;
@@ -161,7 +160,6 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 
                 case 2:
                     PicWallInfo Info = (PicWallInfo) data.getSerializableExtra("data");
-                    MyLogger.jLog().i("testInfo2:" + mInfo.getRows().get(3).getGiveUpCount());
                     mInfo.getRows().clear();
                     mInfo.getRows().addAll(Info.getRows());
                     mAdapter.notifyDataSetChanged();

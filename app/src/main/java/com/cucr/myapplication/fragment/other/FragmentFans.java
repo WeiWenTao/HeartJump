@@ -176,6 +176,7 @@ public class FragmentFans extends BaseFragment {
 
     //初始化明星封面数据
     private void initDatas(int starId) {
+        MyLogger.jLog().i("starId" + starId);
         mStarCore.queryStar(type, page, rows, starId, null, null, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -216,14 +217,22 @@ public class FragmentFans extends BaseFragment {
                 MyLogger.jLog().i("focusInfo:" + response.get());
                 FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
+                    iv_icon_unfold.setVisibility(View.VISIBLE);
                     mRows = Info.getRows();
+                    if (Constans.STATUS_STAR == ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1))) {
+                        FocusInfo.RowsBean rowsBean = new FocusInfo.RowsBean(null, -1,
+                                new FocusInfo.RowsBean.StartBean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)),
+                                        (String) SpUtil.getParam(SpConstant.SP_USERHEAD, "")));
+                        mRows.add(0, rowsBean);
+                    }
                     mAdapter.setData(mRows);
                     if (mRows == null || mRows.size() == 0) {
                         return;
                     }
                     //默认查询第一个明星数据
-                    EventBus.getDefault().postSticky(new EventFIrstStarId(mRows.get(0).getStart().getId()));
-                    mStarId = mRows.get(0).getStart().getId();
+                    int id = mRows.get(0).getStart().getId();
+                    EventBus.getDefault().postSticky(new EventFIrstStarId(id));
+                    mStarId = id;
                     initDatas(mStarId);
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
@@ -462,7 +471,7 @@ public class FragmentFans extends BaseFragment {
             drawer_rcv.setVisibility(View.VISIBLE);
             drawer_rcv.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.classify_menu_in));
             CommonUtils.animationAlpha(bg, true);
-            CommonUtils.animationRotate(iv_icon_unfold, true,300);
+            CommonUtils.animationRotate(iv_icon_unfold, true, 300);
             bg.setEnabled(false);
             bg.setVisibility(View.VISIBLE);
             isShow = false;
@@ -474,7 +483,7 @@ public class FragmentFans extends BaseFragment {
             isShow = true;
             drawer_rcv.setVisibility(View.GONE);
             CommonUtils.animationAlpha(bg, false);
-            CommonUtils.animationRotate(iv_icon_unfold, false,300);
+            CommonUtils.animationRotate(iv_icon_unfold, false, 300);
         }
 
         CommonUtils.setAnimationListener(new CommonUtils.AnimationListener() {

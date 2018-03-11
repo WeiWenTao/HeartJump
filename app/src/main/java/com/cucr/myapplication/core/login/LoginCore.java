@@ -174,6 +174,9 @@ public class LoginCore implements LoadByPsw, LoadChatServer {
             tags.add(loadSuccess.getRoleId() + "");
 //                    保存密钥
             SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
+//                      保存头像
+            SpUtil.setParam(SpConstant.SP_USERHEAD, loadSuccess.getUserHeadPortrait());
+
 //                    保存用户id
             SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存身份信息
@@ -197,21 +200,22 @@ public class LoginCore implements LoadByPsw, LoadChatServer {
             });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)) {
+            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_LOAD, false)) {
                 MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
                 intent.putExtra("formLoad", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             } else {
                 MyLogger.jLog().i("isFirst_不是第一次登录");
 //                        跳转到主界面
                 Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             }
-            SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
         } else {
             //success = false 密码错误
             // 显示服务器返回的错误信息

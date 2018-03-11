@@ -66,6 +66,12 @@ public class FocusInfo {
         private StartBean start;
         private UserBean user;
 
+        public RowsBean(String followTime, int id, StartBean start) {
+            this.followTime = followTime;
+            this.id = id;
+            this.start = start;
+        }
+
         public String getFollowTime() {
             return followTime;
         }
@@ -115,6 +121,11 @@ public class FocusInfo {
             private String signName;
             private String userHeadPortrait;
             private boolean noFocus;
+
+            public StartBean(int id, String userHeadPortrait) {
+                this.id = id;
+                this.userHeadPortrait = userHeadPortrait;
+            }
 
             public boolean isNoFocus() {
                 return noFocus;

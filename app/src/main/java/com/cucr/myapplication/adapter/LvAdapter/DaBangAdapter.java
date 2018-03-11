@@ -1,6 +1,5 @@
 package com.cucr.myapplication.adapter.LvAdapter;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,12 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.dabang.BangDanInfo;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonViewHolder;
-import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -25,13 +23,7 @@ import java.util.List;
 
 public class DaBangAdapter extends BaseAdapter {
 
-    private DialogDaBangStyle dialog;
-
     private List<BangDanInfo.RowsBean> rows;
-
-    public DaBangAdapter(Context context) {
-        dialog = new DialogDaBangStyle(context, R.style.BirthdayStyleTheme);
-    }
 
     @Override
     public int getCount() {

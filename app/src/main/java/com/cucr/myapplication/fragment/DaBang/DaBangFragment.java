@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.DaBang;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -54,6 +55,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     private int rows;
     private RefreshLayout mMyRefreshListView;
     private Intent mIntent;
+    private Context dialogContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
 
     @Override
     protected void initView(View childView) {
+        dialogContext = childView.getContext();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         //如果是企业用户
@@ -83,16 +86,18 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         rows = 15;
         headView = View.inflate(mContext, R.layout.head_dabang, null);
         ViewUtils.inject(this, headView);
-        mDialog = new DialogDaBangStyle(childView.getContext(), R.style.BirthdayStyleTheme);
-        mDialog.setConfirmListener(this);
+
         mCore = new BangDanCore(mContext);
 
         lv_dabang.addHeaderView(headView);
-        mAdapter = new DaBangAdapter(mContext);
+        mAdapter = new DaBangAdapter();
         lv_dabang.setAdapter(mAdapter);
         mAdapter.setOnClick(new DaBangAdapter.OnClick() {
             @Override
             public void daBang(BangDanInfo.RowsBean rowsBean) {
+                mDialog = new DialogDaBangStyle(dialogContext, R.style.BirthdayStyleTheme);
+                mDialog.setConfirmListener(DaBangFragment.this);
+                mDialog.setData(rowsBean.getRealName());
                 mDialog.show();
                 starId = rowsBean.getId();
             }
@@ -168,18 +173,27 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
 
     @OnClick(R.id.iv_dabang_first)
     public void daBangFirst(View view) {
+        mDialog = new DialogDaBangStyle(dialogContext, R.style.BirthdayStyleTheme);
+        mDialog.setData(mRowsBean1.getRealName());
+        mDialog.setConfirmListener(DaBangFragment.this);
         mDialog.show();
         starId = mRowsBean1.getId();
     }
 
     @OnClick(R.id.iv_dabang_second)
     public void daBangSecond(View view) {
+        mDialog = new DialogDaBangStyle(dialogContext, R.style.BirthdayStyleTheme);
+        mDialog.setData(mRowsBean2.getRealName());
+        mDialog.setConfirmListener(DaBangFragment.this);
         mDialog.show();
         starId = mRowsBean2.getId();
     }
 
     @OnClick(R.id.iv_dabang_third)
     public void daBangThird(View view) {
+        mDialog = new DialogDaBangStyle(dialogContext, R.style.BirthdayStyleTheme);
+        mDialog.setData(mRowsBean3.getRealName());
+        mDialog.setConfirmListener(DaBangFragment.this);
         mDialog.show();
         starId = mRowsBean3.getId();
     }

@@ -39,7 +39,6 @@ public class HomePhotoPagerAdapter extends PagerAdapter {
         View itemView = null;
 
         if (itemView == null){
-
             itemView = View.inflate(mContext, R.layout.item_pager_home_photo,null);
             ImageView iv_home_photo = (ImageView) itemView.findViewById(R.id.iv_home_photo);
             iv_home_photo.setImageResource(R.drawable.pic1_tv);

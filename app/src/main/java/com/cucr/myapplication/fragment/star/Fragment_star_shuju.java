@@ -14,10 +14,16 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.bean.eventBus.EventStarId;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by 911 on 2017/6/24.
@@ -31,6 +37,14 @@ public class Fragment_star_shuju extends Fragment {
 
     @ViewInject(R.id.ll_load)
     private LinearLayout ll_load;
+
+    private int starId;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Nullable
     @Override
@@ -46,9 +60,24 @@ public class Fragment_star_shuju extends Fragment {
     }
 
 
+    //第一个明星
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+    public void onDataSynEvent(EventFIrstStarId event) {
+        starId = event.getFirstId();
+        String url = HttpContans.ADDRESS_STAR_DATA + starId;
+        wv.loadUrl(url);
+    }
+
+    //切换明星的时候
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(EventStarId event) {
+        starId = event.getStarId();
+        String url = HttpContans.ADDRESS_STAR_DATA + starId;
+        wv.loadUrl(url);
+    }
+
     private void initViews() {
         WebSettings settings = wv.getSettings();
-
 
         //webView  加载视频，下面五行必须
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -77,6 +106,11 @@ public class Fragment_star_shuju extends Fragment {
                 MyLogger.jLog().i("开始加载");
             }
         });
-        wv.loadUrl(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_STAR_DATA);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

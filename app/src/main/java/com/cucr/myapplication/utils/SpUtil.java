@@ -20,17 +20,25 @@ public class SpUtil {
 
     //sp实例
     private static SharedPreferences sp;
+    private static SharedPreferences sp_new;
     //账号管理专用sp
     private static SharedPreferences accountSp;
 
-    public static SharedPreferences getSp(){
+    public static SharedPreferences getSp() {
         if (sp == null) {
             sp = MyApplication.getInstance().getSharedPreferences(SpConstant.SP_NAME, Context.MODE_PRIVATE);
         }
         return sp;
     }
 
-    public static SharedPreferences getAccountSp(){
+    public static SharedPreferences getNewSp() {
+        if (sp_new == null) {
+            sp_new = MyApplication.getInstance().getSharedPreferences(SpConstant.SP_NEW, Context.MODE_PRIVATE);
+        }
+        return sp_new;
+    }
+
+    public static SharedPreferences getAccountSp() {
         if (accountSp == null) {
             accountSp = MyApplication.getInstance().getSharedPreferences(Constans.ACCOUNTS, Context.MODE_PRIVATE);
         }
@@ -60,7 +68,6 @@ public class SpUtil {
     }
 
 
-
     public static Object getParam(String key, Object defaultObject) {
         String type = defaultObject.getClass().getSimpleName();
         if (sp == null) {
@@ -83,16 +90,16 @@ public class SpUtil {
 
     public static void writeFirstRun(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, MODE_PRIVATE);
-        sp.edit().putInt(SpConstant.IS_FIRST_RUN, BuildConfig.VERSION_CODE).commit();
+        sp.edit().putInt(SpConstant.IS_FIRST_LOAD, BuildConfig.VERSION_CODE).commit();
     }
 
     public static boolean readNeedUpdata(Context context) {
         return context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
-                .getInt(SpConstant.IS_FIRST_RUN, 0) < BuildConfig.VERSION_CODE;
+                .getInt(SpConstant.IS_FIRST_LOAD, 0) < BuildConfig.VERSION_CODE;
     }
 
 //    public static boolean isFirstRun(Context context) {
 //        return context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
-//                .getInt(SpConstant.IS_FIRST_RUN, -1) == -1;
+//                .getInt(SpConstant.IS_FIRST_LOAD, -1) == -1;
 //    }
 }

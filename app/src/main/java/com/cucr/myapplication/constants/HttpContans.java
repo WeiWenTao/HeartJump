@@ -179,7 +179,7 @@ public class HttpContans {
     public static final String ADDRESS_TX_REQUEST = HOST + "/interface/mobileTransactionAction/xbWithdrawals";
 
     //明星数据
-    public static final String ADDRESS_STAR_DATA = HOST + "/interface/dataPicAction/pic1";
+    public static final String ADDRESS_STAR_DATA = HOST + "/interface/dataPicAction/pic1?starId=";
 
     //明星查询字段
     public static final String ADDRESS_STAR_KEY = HOST + "/interface/mobileSysCodeAction/getList";

@@ -87,7 +87,6 @@ public class Fragment_star_xingcheng extends Fragment {
     //明星id
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
-        MyLogger.jLog().i("行程_EventStarId");
         starId = event.getStarId();
         if (mCore == null) {
             mCore = new QueryJourneyList();

@@ -11,8 +11,17 @@ public class SpConstant {
     public static final String SP_QIYE_NAME = "qiyeName";
     public static final String SP_QIYE_CONTACT = "qiyeContact";
 
+    //用户头像
+    public static final String SP_USERHEAD = "userHead";
+
     //sp文件名
     public static final String SP_NAME = "config";
+
+    //新的sp 用于存储是否第一次登录
+    public static final String SP_NEW = "new_config";
+
+    //是否首次登录
+    public static final String IS_FIRST_LOAD = "is_first_load";
 
     //是否首次运行
     public static final String IS_FIRST_RUN = "is_first_run";

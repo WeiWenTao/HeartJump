@@ -81,39 +81,39 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     //根布局
     @ViewInject(R.id.rootview)
-    ViewGroup rootview;
+    private ViewGroup rootview;
 
     //评论列表
     @ViewInject(R.id.lv_ft_catgory)
-    ListView lv_ft_catgory;
+    private ListView lv_ft_catgory;
 
     //点赞
     @ViewInject(R.id.iv_zan)
-    ImageView iv_zan;
+    private ImageView iv_zan;
 
     //点赞数量
     @ViewInject(R.id.tv_givecount)
-    TextView tv_givecount;
+    private TextView tv_givecount;
 
     //评论框
     @ViewInject(R.id.et_comment)
-    EmojiEditText et_comment;
+    private EmojiEditText et_comment;
 
     //评论数量
     @ViewInject(R.id.tv_comment_count)
-    TextView tv_comment_count;
+    private TextView tv_comment_count;
 
     //评论和点赞
     @ViewInject(R.id.ll_comment_good)
-    LinearLayout ll_comment_good;
+    private LinearLayout ll_comment_good;
 
     //表情和发送
     @ViewInject(R.id.ll_emoji_send)
-    LinearLayout ll_emoji_send;
+    private LinearLayout ll_emoji_send;
 
     //表情按钮
     @ViewInject(R.id.iv_emoji)
-    ImageView iv_emoji;
+    private ImageView iv_emoji;
 
     //礼物和背包 ViewPager
     @ViewInject(R.id.vp_dahsnag)

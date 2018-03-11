@@ -11,11 +11,14 @@ import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.AccountListAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.login.UserAccountInfo;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogQuitAccountStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -87,8 +90,14 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
         mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
-                startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
-                finish();
+                // TODO: 2018/3/11 MD5加密错误
+                CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (msg.isSuccess()) {
+                    startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    ToastUtils.showToast(msg.getMsg());
+                }
             }
 
             @Override
@@ -131,14 +140,17 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
     public void clickConfirmQuit() {
 
         if (mKeys.size() > 1) {
+            //删除第一个账号
             mKeys.remove(0);
             SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
 //            adapter.setKeys(mKeys);
             changeAccount(mKeys.get(0), -1);
-        }else {
+        } else {
+            //删除sp中的所有数据
             mKeys.remove(0);
-            SpUtil.getSp().edit().clear().commit();
-            startActivity(new Intent(this,MainActivity.class));
+            SpUtil.setParam(SpConstant.SIGN, "null");
+//            SpUtil.getSp().edit().clear().commit();
+            startActivity(new Intent(this, MainActivity.class));
         }
 
     }

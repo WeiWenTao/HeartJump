@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_height="200dp"
+    android:layout_height="180dp"
     android:background="@drawable/shape_publish_dialog_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -75,47 +75,29 @@
             />
     </RadioGroup>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        android:text="榜单第一名就是心跳APP启动画面哟！"
-        android:textColor="@color/color_999"
-        android:textSize="11sp"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_5"
-        android:text="快来给Ta冲榜吧！"
-        android:textColor="@color/color_999"
-        android:textSize="11sp"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_15"
-        android:gravity="center_horizontal"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         >
 
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dp_40"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:text="取消"
             android:textColor="#999"
             android:textSize="@dimen/sp_18"
             />
 
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:text="打榜"
             android:textColor="@color/xtred"
             android:textSize="@dimen/sp_18"

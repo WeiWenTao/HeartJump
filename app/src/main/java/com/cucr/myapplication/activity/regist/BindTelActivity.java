@@ -228,7 +228,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_RUN, false)) {
+            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_LOAD, false)) {
                 MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
@@ -242,7 +242,6 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
-            SpUtil.setParam(SpConstant.IS_FIRST_RUN, true);  //登录之后保存登录数据  下次登录判断是否第一次登录
         } else {
             //success = false 密码错误
             // 显示服务器返回的错误信息

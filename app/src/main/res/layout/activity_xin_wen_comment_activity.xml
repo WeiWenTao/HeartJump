@@ -1,65 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/activity_news"
+<RelativeLayout
+    android:id="@+id/rootview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.news.NewsActivity"
+    tools:context="com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry"
     >
 
-    <RelativeLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/blue_black"
-        >
-
-        <ImageView
-            android:id="@+id/iv_base_back"
-            style="@style/IconBackStyle"
-            />
-
-        <ImageView
-            android:layout_width="31dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginRight="@dimen/dp_10"
-            android:paddingLeft="10dp"
-            android:src="@drawable/share"
-            />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
         >
 
+        <include layout="@layout/activity_base_title"/>
 
-        <ScrollView
+        <com.cucr.myapplication.widget.refresh.RefreshLayout
+            android:id="@+id/ref"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_50"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white"
             >
 
-            <WebView
-                android:id="@+id/web_content"
+            <ListView
+                android:id="@+id/lv_ft_catgory"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 />
 
-        </ScrollView>
-
+        </com.cucr.myapplication.widget.refresh.RefreshLayout>
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center_vertical"
@@ -67,6 +41,8 @@
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
             >
+          <!--  android:layout_alignParentBottom="true"
+            android:focusableInTouchMode="true"-->
 
             <com.vanniktech.emoji.EmojiEditText
                 android:id="@+id/et_comment"
@@ -186,5 +162,14 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

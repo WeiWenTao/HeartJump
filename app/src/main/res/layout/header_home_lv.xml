@@ -1,150 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:background="@color/white"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+    >
 
-    <!--<ImageView-->
-        <!--android:scaleType="fitXY"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="180dp"-->
-        <!--android:src="@drawable/banner1"-->
-        <!--android:id="@+id/imageView"-->
-        <!--/>-->
-    <!--<itheima9.lib_arl.AutoRollLayout-->
-        <!--android:id="@+id/arl_home"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="180dp"-->
-        <!--/>-->
     <com.bigkoo.convenientbanner.ConvenientBanner
+        android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:id="@+id/convenientBanner"
-        app:canLoop="true"/>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--&gt;-->
+        app:canLoop="true"
+        />
 
-        <!--&lt;!&ndash;活动&ndash;&gt;-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/ll_active"-->
-            <!--android:paddingBottom="@dimen/dp_5"-->
-            <!--android:paddingTop="@dimen/dp_5"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_height="match_parent"-->
-            <!--&gt;-->
-            <!--<ImageView-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:src="@drawable/active_icon"-->
-                <!--/>-->
-            <!--<TextView-->
-                <!--android:textColor="#666"-->
-                <!--android:textSize="@dimen/sp_13"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="活动"-->
-                <!--/>-->
-        <!--</LinearLayout>-->
-
-        <!--&lt;!&ndash;福利&ndash;&gt;-->
-        <!--<LinearLayout-->
-            <!--android:paddingBottom="@dimen/dp_5"-->
-            <!--android:paddingTop="@dimen/dp_5"-->
-            <!--android:id="@+id/ll_fuli"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_height="match_parent"-->
-            <!--&gt;-->
-
-            <!--<ImageView-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:src="@drawable/star_icon"-->
-                <!--android:id="@+id/imageView4"-->
-                <!--/>-->
-
-            <!--<TextView-->
-                <!--android:textColor="#666"-->
-                <!--android:textSize="@dimen/sp_13"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="福利"-->
-                <!--/>-->
-        <!--</LinearLayout>-->
-
-        <!--&lt;!&ndash;签到&ndash;&gt;-->
-        <!--<LinearLayout-->
-            <!--android:paddingBottom="@dimen/dp_5"-->
-            <!--android:paddingTop="@dimen/dp_5"-->
-            <!--android:id="@+id/ll_sign_in"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_height="match_parent"-->
-            <!--&gt;-->
-            <!--<ImageView-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:src="@drawable/sign_icon"-->
-                <!--/>-->
-
-            <!--<TextView-->
-                <!--android:textColor="#666"-->
-                <!--android:textSize="@dimen/sp_13"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="签到"-->
-                <!--android:id="@+id/textView2"-->
-                <!--/>-->
-        <!--</LinearLayout>-->
-
-        <!--&lt;!&ndash;任务&ndash;&gt;-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/ll_fentuan"-->
-            <!--android:paddingBottom="@dimen/dp_5"-->
-            <!--android:paddingTop="@dimen/dp_5"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_height="match_parent"-->
-            <!--&gt;-->
-            <!--<ImageView-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:src="@drawable/task_icon"-->
-                <!--/>-->
-            <!--<TextView-->
-                <!--android:textColor="#666"-->
-                <!--android:textSize="@dimen/sp_13"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="粉团"-->
-                <!--/>-->
-        <!--</LinearLayout>-->
-
-    <!--</LinearLayout>-->
 </LinearLayout>
