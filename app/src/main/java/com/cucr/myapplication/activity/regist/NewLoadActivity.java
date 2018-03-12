@@ -180,7 +180,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         }
         mUserName = mEt_accunt.getText().toString();
         mPassWord = mEt_psw.getText().toString();
-        //TODO 输入判断
 
         mLoginCore.login(mUserName, mPassWord, this);
     }

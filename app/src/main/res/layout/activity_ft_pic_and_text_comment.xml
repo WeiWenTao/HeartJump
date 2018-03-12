@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry"
+    tools:context="com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry"
     >
 
     <include layout="@layout/activity_base_title"/>

@@ -1,4 +1,4 @@
-package com.cucr.myapplication.activity.fenTuan;
+package com.cucr.myapplication.activity.comment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
+import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -578,7 +580,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 mAdapter.notifyDataSetChanged();
             } else {
                 allRows.remove(position);
-                allRows.add(position,mRowsBean);
+                allRows.add(position, mRowsBean);
                 mAdapter.setData(allRows);
 //                rowsBean.setCommentCount(mRowsBean.getCommentCount());
             }
@@ -744,7 +746,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //加载
     @Override
     public void onLoad() {
-        if (mRefreshLayout.isRefreshing()){
+        if (mRefreshLayout.isRefreshing()) {
             return;
         }
         page++;

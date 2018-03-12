@@ -1,32 +1,31 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.R;
-
-import java.util.List;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.widget.photoView.PhotoView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by hackware on 2016/9/10.
  */
 
-public class HomePhotoPagerAdapter extends PagerAdapter {
-    private Context mContext;
-    private List<String> mDataList;
+public class HomePhotoPagerAdapter extends PagerAdapter implements View.OnClickListener {
+    private QueryFtInfos.RowsBean rowsBean;
 
-    public HomePhotoPagerAdapter(List<String> dataList, Context context) {
-        mDataList = dataList;
-        this.mContext = context;
+    public HomePhotoPagerAdapter(QueryFtInfos.RowsBean rowsBean) {
+        this.rowsBean = rowsBean;
     }
 
     @Override
     public int getCount() {
-        return mDataList == null ? 0 : mDataList.size();
+        return rowsBean.getAttrFileList() == null ? 0 : rowsBean.getAttrFileList().size();
     }
 
     @Override
@@ -36,16 +35,21 @@ public class HomePhotoPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = null;
 
-        if (itemView == null){
-            itemView = View.inflate(mContext, R.layout.item_pager_home_photo,null);
-            ImageView iv_home_photo = (ImageView) itemView.findViewById(R.id.iv_home_photo);
-            iv_home_photo.setImageResource(R.drawable.pic1_tv);
-        }
+        PhotoView iv_home_photo = new PhotoView(container.getContext());
 
-        container.addView(itemView);
-        return itemView;
+        //开启缩放
+        iv_home_photo.enable();
+        iv_home_photo.setBackgroundColor(Color.BLACK);
+        //开启旋转
+//        view.enableRotate();
+
+        iv_home_photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        iv_home_photo.setOnClickListener(this);
+        ImageLoader.getInstance().displayImage(rowsBean.getAttrFileList().get(position).getFileUrl(),
+                iv_home_photo, MyApplication.getImageLoaderOptions());
+        container.addView(iv_home_photo);
+        return iv_home_photo;
     }
 
     @Override
@@ -57,7 +61,7 @@ public class HomePhotoPagerAdapter extends PagerAdapter {
     public int getItemPosition(Object object) {
         TextView textView = (TextView) object;
         String text = textView.getText().toString();
-        int index = mDataList.indexOf(text);
+        int index = rowsBean.getAttrFileList().indexOf(text);
         if (index >= 0) {
             return index;
         }
@@ -65,7 +69,19 @@ public class HomePhotoPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public CharSequence getPageTitle(int position) {
-        return mDataList.get(position);
+    public void onClick(View v) {
+        if (mOnItemClick != null) {
+            mOnItemClick.clickIyem();
+        }
+    }
+
+    private OnItemClick mOnItemClick;
+
+    public void setOnItemClick(OnItemClick onItemClick) {
+        mOnItemClick = onItemClick;
+    }
+
+    public interface OnItemClick {
+        void clickIyem();
     }
 }

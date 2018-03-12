@@ -51,7 +51,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void addData(List<QueryFtInfos.RowsBean> newData) {
-        notifyItemInserted(rows.size() + 1);
+        notifyItemInserted(rows.size() /*+ 1*/);
         rows.addAll(newData);
 //        notifyDataSetChanged();
     }
@@ -151,7 +151,6 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Tp4_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp4_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             initStar(((Tp4_Holder) holder).ll_mystar, 2);
-
             //非空判断
             if (rowsBean.getAttrFileList().size() <= 0) {
                 return;

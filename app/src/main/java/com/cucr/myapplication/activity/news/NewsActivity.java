@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -14,13 +16,17 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
-import com.cucr.myapplication.activity.fenTuan.XingWenCommentActivity;
+import com.cucr.myapplication.activity.comment.XingWenCommentActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.vanniktech.emoji.EmojiEditText;
@@ -74,13 +80,13 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     @ViewInject(R.id.tv_givecount)
     private TextView tv_givecount;
 
-
     private Intent mIntent;
     //emoji表情
     private EmojiPopup emojiPopup;
     private QueryFtInfos.RowsBean rowsBean;
     private Integer giveNum;
     private QueryFtInfoCore queryCore;
+    private DialogShareStyle mDialog;
 
     @Override
     protected void initChild() {
@@ -101,6 +107,11 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         mIntent.putExtra("rowsBean", rowsBean);
         et_comment.clearFocus();
         et_comment.setOnFocusChangeListener(this);
+
+        mDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
         setUpEmojiPopup();
         //封装头文件 根据屏幕缩放图片比例
         String sHead = "<html><head><meta name=\"viewport\" content=\"width=device-width, " +
@@ -204,5 +215,43 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         tv_givecount.setText(rowsBean.getGiveUpCount() + "");
         iv_zan.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_comment_count.setText(rowsBean.getCommentCount() + "");
+    }
+
+    //返回操作
+    @Override
+    protected void onBackBefore() {
+        if (emojiPopup != null && emojiPopup.isShowing()) {
+            emojiPopup.dismiss();
+        }
+    }
+
+    //发送按钮
+    @OnClick(R.id.tv_send)
+    public void clickSend(View view) {
+        //一级评论传-1
+        queryCore.toComment(rowsBean.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (commonRebackMsg.isSuccess()) {
+                    ToastUtils.showToast("评论成功!");
+                    //查询一遍
+                    et_comment.setText("");
+                    emojiPopup.dismiss();
+                    CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
+                    et_comment.clearFocus();
+                    rowsBean.setCommentCount(rowsBean.getCommentCount() + 1);
+                    upDataInfo();
+                } else {
+                    ToastUtils.showToast(commonRebackMsg.getMsg());
+                }
+            }
+        });
+    }
+
+    @OnClick(R.id.iv_share)
+    public void shareNews(View view) {
+        ShareEntity entity = new ShareEntity(rowsBean.getTitle(), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), "");
+        mDialog.setData(entity);
     }
 }

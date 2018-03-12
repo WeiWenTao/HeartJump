@@ -27,7 +27,7 @@ public class TestWebViewActivity extends BaseActivity {
     protected void initChild() {
         initTitle("详情");
         String url = getIntent().getStringExtra("url");
-        url = "https://weibo.com/yangmiblog?topnav=1&wvr=6&topsug=1&is_hot=1";
+//        url = "https://weibo.com/yangmiblog?topnav=1&wvr=6&topsug=1&is_hot=1";
         MyLogger.jLog().i("url:" + url);
         WebSettings settings = wv.getSettings();
 

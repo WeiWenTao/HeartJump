@@ -28,20 +28,16 @@ public class DialogProgress extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_progress);
-
         initView();
-
     }
 
     private void initView() {
         //设置点击外部消失
         setCanceledOnTouchOutside(false);
         setCancelable(false);
-
         mPb = (ProgressBar) findViewById(R.id.pb);
         mTv_title = (TextView) findViewById(R.id.tv_title);
         mTv_progress = (TextView) findViewById(R.id.tv_progress);
-
     }
 
     public void setTitle(String title){

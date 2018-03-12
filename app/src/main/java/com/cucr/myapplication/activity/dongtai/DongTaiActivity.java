@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
-import com.cucr.myapplication.activity.fenTuan.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;

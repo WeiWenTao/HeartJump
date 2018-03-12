@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.adapter.LvAdapter.FtListAdapter;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.widget.alphaHead.GradationScrollView;

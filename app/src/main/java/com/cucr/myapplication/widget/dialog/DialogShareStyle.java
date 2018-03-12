@@ -6,6 +6,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,6 @@ import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
@@ -29,7 +30,8 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
-/**亲，您的这个问题需要我们技术进一步单独为您排查，请您直接发送邮件至support@umeng.com。
+/**
+ * 亲，您的这个问题需要我们技术进一步单独为您排查，请您直接发送邮件至support@umeng.com。
  * 为提高问题解决效率，请您在邮件内提供
  * 1、咨询的是那个产品。
  * 2、对应的【友盟+】账号、出现异常的appkey、使用的产品的sdk的版本号。
@@ -43,16 +45,29 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     private Activity mActivity;
     private ShareEntity entity;
     private final WaitDialog mDialog;
+    private UMWeb mWeb;
 
     //粉团的分享
     public void setData(ShareEntity entity) {
         this.entity = entity;
+        mWeb = new UMWeb(entity.getLink());
+        if (!TextUtils.isEmpty(entity.getImgURL())) {
+            mWeb.setThumb(new UMImage(context, entity.getImgURL()));
+        }
+        mWeb.setDescription(entity.getDescribe());
+        mWeb.setTitle(entity.getTitle());
         show();
     }
 
     //邀请有礼的分享
     public void setData2(ShareEntity entity) {
         this.entity = entity;
+        mWeb = new UMWeb(entity.getLink());
+        if (!TextUtils.isEmpty(entity.getImgURL())) {
+            mWeb.setThumb(new UMImage(context, entity.getImgURL()));
+        }
+        mWeb.setDescription(Html.fromHtml(entity.getDescribe()).toString());
+        mWeb.setTitle(entity.getTitle());
         show();
     }
 
@@ -69,7 +84,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         // 一定要重新设置, 才能生效
         window.setAttributes(attributes);
 
-        mDialog = new WaitDialog(mActivity,"正在跳转微博...");
+        mDialog = new WaitDialog(mActivity, "正在跳转微博...");
     }
 
     @Override
@@ -177,14 +192,9 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
 
     //分享到新浪微博
     private void sharToSina() {
-        UMWeb web = new UMWeb(entity.getLink());
-        web.setThumb(new UMImage(context, HttpContans.IMAGE_HOST +"/static/yuanshi_image/6847824d-d77d-441d-b48d-5658629aaf83.png"));
-        web.setDescription("测试描述111");
-        web.setTitle("测试标题222");
 
         new ShareAction(mActivity)
-//                .withMedia(new UMWeb(entity.getLink())).
-                .withMedia(web).
+                .withMedia(mWeb).
                 setPlatform(SHARE_MEDIA.SINA).
                 setCallback(listener).
                 share();
@@ -198,7 +208,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
 //        web.setTitle("测试标题222");
 
         new ShareAction(mActivity)
-                .withMedia(new UMWeb(entity.getLink())).
+                .withMedia(mWeb).
                 setPlatform(SHARE_MEDIA.QZONE).
                 setCallback(listener).
                 share();
@@ -207,7 +217,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     //分享到qq好友
     private void sharToQqhy() {
         new ShareAction(mActivity)
-                .withMedia(new UMWeb(entity.getLink())).
+                .withMedia(mWeb).
                 setPlatform(SHARE_MEDIA.QQ).
                 setCallback(listener).
                 share();
@@ -216,7 +226,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     //分享到朋友圈
     private void sharToPyq() {
         new ShareAction(mActivity)
-                .withMedia(new UMWeb(entity.getLink())).
+                .withMedia(mWeb).
                 setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).
                 setCallback(listener).
                 share();
@@ -225,7 +235,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     //分享到微信好友
     private void sharToWxhy() {
         new ShareAction(mActivity)
-                .withMedia(new UMWeb(entity.getLink())).
+                .withMedia(mWeb).
                 setPlatform(SHARE_MEDIA.WEIXIN).
                 setCallback(listener).
                 share();
@@ -234,7 +244,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     private UMShareListener listener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA share_media) {
-            if (share_media == SHARE_MEDIA.SINA){
+            if (share_media == SHARE_MEDIA.SINA) {
                 mDialog.show();
             }
         }

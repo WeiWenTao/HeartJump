@@ -93,6 +93,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case Constans.TYPE_ALBUM:
                 return new Tp4_Holder(mLayoutInflater.inflate(R.layout.item_xw_type03, parent, false));
 
+            //轮播图
             case 100:
                 return new head_Holder(mLayoutInflater.inflate(R.layout.header_home_lv, parent, false));
 

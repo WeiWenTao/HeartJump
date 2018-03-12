@@ -84,7 +84,6 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
 
     //切换账号
     private void changeAccount(String getKey, int position) {
-
         String string = SpUtil.getAccountSp().getString(getKey, "");
         UserAccountInfo accountInfo = mGson.fromJson(string, UserAccountInfo.class);
         mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new RequersCallBackListener() {

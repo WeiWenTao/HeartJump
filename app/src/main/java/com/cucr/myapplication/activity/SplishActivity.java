@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.view.WindowManager;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
@@ -18,7 +19,6 @@ import com.cucr.myapplication.utils.ZipUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.zackratos.ultimatebar.UltimateBar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,13 +34,25 @@ public class SplishActivity extends Activity {
         setContentView(R.layout.activity_splish);
 
         EventBus.getDefault().register(this);
-        UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
+//        UltimateBar ultimateBar = new UltimateBar(this);
+//        ultimateBar.setImmersionBar();
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initData();
 
         timmer();
     }
+
+    //隐藏状态栏和导航栏
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if (hasFocus) {
+//            UltimateBar ultimateBar = new UltimateBar(this);
+//            ultimateBar.setHintBar();
+//        }
+//    }
 
     private void timmer() {
 //        mTimmer = (TextView) findViewById(R.id.tv_timmer);

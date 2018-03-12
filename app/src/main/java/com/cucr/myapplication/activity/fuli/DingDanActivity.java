@@ -89,7 +89,7 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void initChild() {
-        
+
         goodsNum = 1;
         mDialogDingDanStyle = new DialogDingDanStyle(this, R.style.BirthdayStyleTheme);
         mCore = new DingDanCore();
@@ -202,12 +202,10 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
-
                 if (loadUserInfo.isSuccess()) {
-                    //TODO 跳转票务界面
-
+                    ToastUtils.showToast("兑换成功");
                 } else {
-                    ToastUtils.showToast(DingDanActivity.this, loadUserInfo.getMsg());
+                    ToastUtils.showToast(loadUserInfo.getMsg());
                 }
             }
         });

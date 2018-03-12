@@ -23,6 +23,7 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
 
     private MyActivesAdapter mAdapter;
     private FuLiCore mCore;
+    private MyActives mMyActives;
 
     @Override
     protected void initChild() {
@@ -44,20 +45,20 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        MyActives myActives = mGson.fromJson(response.get(), MyActives.class);
-        if (myActives.isSuccess()) {
+        mMyActives = mGson.fromJson(response.get(), MyActives.class);
+        if (mMyActives.isSuccess()) {
             if (isRefresh) {
-                mAdapter.setData(myActives.getRows());
+                mAdapter.setData(mMyActives.getRows());
             } else {
-                mAdapter.addData(myActives.getRows());
+                mAdapter.addData(mMyActives.getRows());
             }
-            if (myActives.getTotal() <= page * rows) {
+            if (mMyActives.getTotal() <= page * rows) {
                 rlv.onNoMore("没有更多了");
             } else {
                 rlv.complete();
             }
         } else {
-            ToastUtils.showToast(myActives.getErrorMsg());
+            ToastUtils.showToast(mMyActives.getErrorMsg());
         }
     }
 

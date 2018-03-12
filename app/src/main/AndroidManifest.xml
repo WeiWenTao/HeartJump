@@ -251,11 +251,14 @@
             android:screenOrientation="sensor"
             >
         </activity>
-        <activity android:name=".activity.photos.PhotoActivity">
+        <activity
+            android:name=".activity.photos.PhotoActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            >
         </activity>
         <activity android:name=".activity.fenTuan.FenTuanListActivity">
         </activity>
-        <activity android:name=".activity.fenTuan.FenTuanCatgoryActiviry">
+        <activity android:name=".activity.comment.FenTuanCatgoryActiviry">
         </activity>
         <activity
             android:name=".activity.yuyue.YuYueCatgoryActivity"
@@ -323,7 +326,7 @@
         </activity>
         <activity android:name=".activity.star.StarListForAddActivity">
         </activity>
-        <activity android:name=".activity.fenTuan.FtSecondCommentActivity">
+        <activity android:name=".activity.comment.FtSecondCommentActivity">
         </activity>
         <activity android:name=".activity.setting.InvateActivity">
         </activity>
@@ -447,7 +450,7 @@
         </activity>
         <activity android:name=".activity.GuideActivity">
         </activity>
-        <activity android:name=".activity.fenTuan.XingWenCommentActivity">
+        <activity android:name=".activity.comment.XingWenCommentActivity">
         </activity>
     </application>
 

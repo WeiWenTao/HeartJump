@@ -70,9 +70,10 @@ public class FtPublishCore implements FenTuanInterf {
                 .add("content", content);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
 
-        //图片
+        //文字
         if (type == 0) {
             mQueue.add(Constans.TYPE_ONE, request, callback);
+        //图片
         } else if (type == 1) {
             files.clear();
             for (int i = 0; i < mData.size(); i++) {
@@ -113,7 +114,7 @@ public class FtPublishCore implements FenTuanInterf {
             MyLogger.jLog().i("UploadonStart");
             if (what == 10) {
                 dialog_progress.show();
-                dialog_progress.setProgress(0);
+//                dialog_progress.setProgress(0);
             }
 
         }
@@ -124,8 +125,8 @@ public class FtPublishCore implements FenTuanInterf {
         }
 
         @Override
-        public void onProgress(int what, int progress) {// 这个文件的上传进度发生边耍
-                dialog_progress.setProgress(progress);
+        public void onProgress(int what, int progress) {// 这个文件的上传进度发生边刷
+//                dialog_progress.setProgress(progress);
                 MyLogger.jLog().i("Uploadonvideo" + progress);
         }
 

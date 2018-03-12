@@ -75,7 +75,7 @@ public class HomeFocusFragment extends LazyFragment implements SwipeRecyclerView
             rlv_focus_news.getSwipeRefreshLayout().setRefreshing(true);
         }
 
-        mDataCore.queryFtInfo(true,-1, 0, -1, false, page, rows, new OnCommonListener() {
+        mDataCore.queryFtInfo(true, -1, 0, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -97,9 +97,10 @@ public class HomeFocusFragment extends LazyFragment implements SwipeRecyclerView
 
     @Override
     public void onLoadMore() {
+        rlv_focus_news.onLoadingMore();
         page++;
         MyLogger.jLog().i("page = " + page);
-        mDataCore.queryFtInfo(true,-1, 0, -1, false, page, rows, new OnCommonListener() {
+        mDataCore.queryFtInfo(true, -1, 0, -1, false, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
