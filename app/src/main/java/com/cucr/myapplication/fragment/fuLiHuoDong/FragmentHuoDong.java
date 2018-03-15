@@ -16,13 +16,12 @@ import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.ActivitysAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
-import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.fragment.LazyFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.google.gson.Gson;
@@ -30,17 +29,13 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.List;
 
 /**
  * Created by cucr on 2017/9/8.
  */
 
-public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.OnLoadListener, ActivitysAdapter.ClickListener {
+public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.OnLoadListener, ActivitysAdapter.ClickListener, RequersCallBackListener {
 
     //活动列表
     @ViewInject(R.id.rlv_actives)
@@ -57,23 +52,18 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
     private Integer giveNum;
     private int position;
     private List<QiYeHuoDongInfo.RowsBean> mRowBeans;
+    private boolean isRefresh;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
-        MyLogger.jLog().i("111注册");
-
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_huo_dong, container, false);
             ViewUtils.inject(this, mView);
-
         }
         return mView;
     }
 
-    //    startActivity(new Intent(mContext, HuoDongCatgoryActivity.class));
-//    new HuoDongTaiAdapter(mContext)
     private void initRLV() {
         mContext = MyApplication.getInstance();
         mCore = new HuoDongCore();
@@ -82,7 +72,7 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         page = 1;
         rows = 3;
-
+        isRefresh = true;
         mAdapter = new ActivitysAdapter();
         mAdapter.setOnClickListener(this);
         rlv_actives.getRecyclerView().setLayoutManager(new LinearLayoutManager(mContext));
@@ -93,68 +83,25 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-        MyLogger.jLog().i("111注销");
         if (mCore != null) { //判断是否初始化
             mCore.stop();
         }
     }
 
-    //请求完成  如果还在加载  就停止加载(无网络情况)
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onFinish(EventRequestFinish event) {
-        if (rlv_actives.isRefreshing()) {
-            rlv_actives.setRefreshing(false);
-        }
-    }
-
     @Override
     public void onRefresh() {
-
+        isRefresh = true;
         page = 1;
-        //dataId  查询单条  传-1查所有
-        mCore.queryActive(false, -1, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                QiYeHuoDongInfo info = mGson.fromJson(response.get(), QiYeHuoDongInfo.class);
-                if (info.isSuccess()) {
-                    mRowBeans = info.getRows();
-                    mAdapter.setData(mRowBeans);
-                    if (rows > mRowBeans.size()) {
-                        rlv_actives.onNoMore("");
-                    } else {
-                        rlv_actives.complete();
-                    }
-                } else {
-                    ToastUtils.showToast(info.getErrorMsg());
-                }
-            }
-        });
+        rlv_actives.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.queryActive(false, -1, page, rows, this);
     }
 
     @Override
     public void onLoadMore() {
+        isRefresh = false;
         page++;
         rlv_actives.onLoadingMore();
-        //dataId  查询单条  传-1查所有
-        mCore.queryActive(false, -1, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                QiYeHuoDongInfo info = mGson.fromJson(response.get(), QiYeHuoDongInfo.class);
-                if (info.isSuccess()) {
-                    List<QiYeHuoDongInfo.RowsBean> rowBeans = info.getRows();
-                    mAdapter.addData(rowBeans);
-                    if (rows > rowBeans.size()) {
-                        rlv_actives.onNoMore("");
-                    } else {
-                        rlv_actives.complete();
-                    }
-                    MyLogger.jLog().i("onLoadMore" + mRowBeans.size());
-                } else {
-                    ToastUtils.showToast(info.getErrorMsg());
-                }
-            }
-        });
+        mCore.queryActive(false, -1, page, rows, this);
     }
 
     @Override
@@ -165,7 +112,6 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
 
     @Override
     public void onClickGoods(int position, final QiYeHuoDongInfo.RowsBean rowsBean) {
-        MyLogger.jLog().i("onClickGoods");
         mCore.activeGiveUp(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -222,4 +168,45 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
         }
     }
 
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_TWO) {
+            QiYeHuoDongInfo info = mGson.fromJson(response.get(), QiYeHuoDongInfo.class);
+            if (info.isSuccess()) {
+                if (isRefresh) {
+                    mRowBeans = info.getRows();
+                    mAdapter.setData(info.getRows());
+                } else {
+                    mRowBeans.addAll(info.getRows());
+                    mAdapter.addData(info.getRows());
+                }
+                if (info.getTotal() <= page * rows) {
+                    rlv_actives.onNoMore("没有更多了");
+                } else {
+                    rlv_actives.complete();
+                }
+            } else {
+                ToastUtils.showToast(info.getErrorMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_TWO) {
+            if (rlv_actives.isRefreshing()) {
+                rlv_actives.getSwipeRefreshLayout().setRefreshing(false);
+            }
+        }
+    }
 }

@@ -23,7 +23,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dp_17"
         android:layout_toRightOf="@id/iv_sel"
-        android:src="@drawable/star1"
         />
 
     <TextView

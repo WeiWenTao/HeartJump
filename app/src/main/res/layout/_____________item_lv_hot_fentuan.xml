@@ -8,7 +8,6 @@
 
     <com.joooonho.SelectableRoundedImageView
         android:id="@+id/image"
-        android:src="@drawable/star3_new"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:sriv_left_bottom_corner_radius="@dimen/dp_8"

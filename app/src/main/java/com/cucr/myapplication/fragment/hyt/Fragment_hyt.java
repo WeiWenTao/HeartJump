@@ -22,7 +22,6 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -47,7 +46,7 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems, S
     private HytAdapter mAdapter;
     private int page;
     private int rows;
-    private MyWaitDialog mMyWaitDialog;
+//    private MyWaitDialog mMyWaitDialog;
     private SwipeRecyclerView mRlv_hyt;
     private boolean isRefresh;
 
@@ -74,7 +73,7 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems, S
         rows = 15;
         mGson = MyApplication.getGson();
         mCore = new HytCore();
-        mMyWaitDialog = new MyWaitDialog(rootView.getContext(), R.style.MyWaitDialog);
+//        mMyWaitDialog = new MyWaitDialog(rootView.getContext(), R.style.MyWaitDialog);
         mIntent = new Intent(MyApplication.getInstance(), CreatHytActivity.class);
         mIntent.putExtra("starId", startId);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -107,11 +106,16 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems, S
 
     //点击加入
     @Override
-    public void onClickJoin(final int hytId, final String name, boolean isjoin) {
+    public void onClickJoin(final int hytId, final String name, boolean isjoin,int creatId) {
         final Conversation.ConversationType conversationType = Conversation.ConversationType.GROUP;
         if (isjoin) {
-//            RongIM.getInstance().startConversation(MyApplication.getInstance(), Conversation.ConversationType.GROUP, hytId + "", name);
-            Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().processName).buildUpon().appendPath("conversation").appendPath(conversationType.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", hytId + "").appendQueryParameter("title", name).build();
+//          RongIM.getInstance().startConversation(MyApplication.getInstance(), Conversation.ConversationType.GROUP, hytId + "", name);
+            Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().processName).buildUpon().appendPath("conversation")
+                    .appendPath(conversationType.getName().toLowerCase(Locale.US))
+                    .appendQueryParameter("targetId", hytId + "")
+                    .appendQueryParameter("title", name)
+                    .appendQueryParameter("ctretId", creatId+"").build();
+
             startActivityForResult(new Intent("android.intent.action.VIEW", uri), 2);
             return;
         }
@@ -135,12 +139,17 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems, S
 
             @Override
             public void onRequestStar(int what) {
-                mMyWaitDialog.show();
+//                mMyWaitDialog.show();
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
             }
 
             @Override
             public void onRequestFinish(int what) {
-                mMyWaitDialog.dismiss();
+//                mMyWaitDialog.dismiss();
             }
         });
     }
@@ -184,6 +193,11 @@ public class Fragment_hyt extends Fragment implements HytAdapter.OnClickItems, S
 
     @Override
     public void onRequestStar(int what) {
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
     }
 
     @Override

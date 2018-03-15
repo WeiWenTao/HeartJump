@@ -3,12 +3,13 @@ package com.cucr.myapplication.core.fuLi;
 import android.content.Context;
 
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.fuli.HuoDongInterf;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
@@ -31,7 +32,7 @@ public class HuoDongCore implements HuoDongInterf {
 
     private Context mContext;
     private OnCommonListener publishListener;   //活动发布
-    private OnCommonListener queryListener;     //活动查询
+    private RequersCallBackListener queryListener;     //活动查询
     private OnCommonListener giveUpListener;    //活动点赞
     private OnCommonListener commentListener;   //活动评论
     private OnCommonListener commentQueryListener;   //活动评论查询
@@ -76,11 +77,11 @@ public class HuoDongCore implements HuoDongInterf {
 
     //活动查询
     @Override
-    public void queryActive(boolean byMe, int dataId, int page, int rows, OnCommonListener onCommonListener) {
+    public void queryActive(boolean byMe, int dataId, int page, int rows, RequersCallBackListener onCommonListener) {
         this.queryListener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_ACTIVE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
-                .add("byMe", byMe)
+                .add("queryMine", byMe)
                 .add("page", page)
                 .add("rows", rows);
         if (dataId != -1) {
@@ -152,7 +153,9 @@ public class HuoDongCore implements HuoDongInterf {
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+            if (what == Constans.TYPE_TWO){
+                queryListener.onRequestStar(what);
+            }
         }
 
         @Override
@@ -164,7 +167,7 @@ public class HuoDongCore implements HuoDongInterf {
                     break;
 
                 case Constans.TYPE_TWO:
-                    queryListener.onRequestSuccess(response);
+                    queryListener.onRequestSuccess(what,response);
                     break;
 
                 case Constans.TYPE_THREE:
@@ -190,12 +193,19 @@ public class HuoDongCore implements HuoDongInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, mContext);
+            switch (what) {
+                case Constans.TYPE_TWO:
+                    queryListener.onRequestError(what,response);
+                    break;
+            }
         }
 
         @Override
         public void onFinish(int what) {
             switch (what) {
                 case Constans.TYPE_TWO:
+                    queryListener.onRequestFinish(what);
+                    break;
                 case Constans.TYPE_FIVE:
                     //用来区分是哪个接口请求
                     EventBus.getDefault().post(new EventRequestFinish(HttpContans.ADDRESS_ACTIVE_COMMENT_QUERY));

@@ -23,7 +23,6 @@
         android:layout_marginLeft="@dimen/dp_25"
         >
         <ImageView
-            android:src="@drawable/star3_new"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"

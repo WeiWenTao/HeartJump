@@ -169,6 +169,8 @@ public class RegistCore implements Regist {
                 if (registListener != null) {
                     registListener.onRegistFailed();
                 }
+            }else if ( what == Constans.TYPE_TWO){
+                thirdLinstener.onRequestError(what,response);
             }
         }
 

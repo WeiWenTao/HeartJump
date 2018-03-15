@@ -17,7 +17,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="@dimen/dp_10"
-            android:src="@drawable/pic1"
             />
 
         <LinearLayout
@@ -138,7 +137,6 @@
                 android:layout_height="115dp"
                 android:layout_marginRight="@dimen/dp_5"
                 android:layout_weight="1"
-                android:src="@drawable/img1"
                 />
 
             <ImageView
@@ -146,14 +144,12 @@
                 android:layout_height="115dp"
                 android:layout_marginRight="@dimen/dp_5"
                 android:layout_weight="1"
-                android:src="@drawable/img1"
                 />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="115dp"
                 android:layout_weight="1"
-                android:src="@drawable/img1"
                 />
         </LinearLayout>
 
@@ -175,6 +171,5 @@
         android:textSize="@dimen/sp_12"
         android:textColor="@color/color_666"
         />
-
 
 </LinearLayout>

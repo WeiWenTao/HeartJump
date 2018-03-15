@@ -24,18 +24,12 @@ public class DialogCanaleFocusStyle extends Dialog implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_cancle_focus);
-
         initView();
-//        initTitle("黄晓明");
     }
 
     public void initTitle(String text) {
-
         mTv_title.setText("取消关注 "+text +" 吗？");
-
-
     }
-
 
     @Override
     public void show() {

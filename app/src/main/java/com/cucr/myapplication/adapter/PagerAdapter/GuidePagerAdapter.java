@@ -1,7 +1,6 @@
 package com.cucr.myapplication.adapter.PagerAdapter;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.utils.SpUtil;
 
 import java.util.List;
 
@@ -38,8 +35,6 @@ public class GuidePagerAdapter extends PagerAdapter {
                 @Override
                 public void onClick(View v) {
                     MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
-                    SharedPreferences.Editor edit = SpUtil.getNewSp().edit();
-                    edit.putBoolean(SpConstant.IS_FIRST_RUN, true).commit();
                 }
             });
         }

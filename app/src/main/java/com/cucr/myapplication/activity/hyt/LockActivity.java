@@ -76,6 +76,11 @@ public class LockActivity extends BaseActivity implements HytLockAdapter.OnClick
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_THIRTEEN) {
             if (rlv_list.isRefreshing()) {

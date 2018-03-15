@@ -43,7 +43,6 @@ public class Fragment_star_shuju extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -55,7 +54,7 @@ public class Fragment_star_shuju extends Fragment {
             ViewUtils.inject(this, view);
             initViews();
         }
-
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -109,8 +108,8 @@ public class Fragment_star_shuju extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
 }

@@ -18,6 +18,7 @@ import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
 import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
@@ -25,6 +26,7 @@ import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
+import com.cucr.myapplication.listener.LoadChatServer;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
@@ -40,14 +42,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, OnCommonListener {
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, OnCommonListener, LoadChatServer {
 
     private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
     private QueryPersonalMsgCore qucryCore;
     private UserInfo mUserInfo;
+    private ChatCore mChatCore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +76,24 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     }
 
     private void initIM() {
+        mChatCore = new ChatCore();
+        String param = (String) SpUtil.getParam(SpConstant.TOKEN, "");
+        mChatCore.connect(param, this);
         RongIM.setUserInfoProvider(this, true);
     }
+
+    //============================聊天服务器回调=======================
+    @Override
+    public void onLoadSuccess(String userid) {
+        MyLogger.jLog().i("登录聊天服务器成功 userId =" + userid);
+    }
+
+    @Override
+    public void onLoadFial(RongIMClient.ErrorCode errorCode) {
+        MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
+    }
+    //================================================================
+
 
     private void findView() {
         RadioButton rb_1 = (RadioButton) findViewById(R.id.rb_1);

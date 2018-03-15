@@ -46,7 +46,6 @@
             android:layout_marginRight="@dimen/dp_10"
             android:paddingBottom="14dp"
             android:paddingLeft="10dp"
-            android:src="@drawable/icon_add_ft"
             />
 
     </RelativeLayout>

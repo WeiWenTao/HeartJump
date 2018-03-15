@@ -121,7 +121,6 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:id="@+id/imageView2"
-            android:src="@drawable/test_xw_222"
             />
         <!--android:src="@drawable/img1"-->
 
@@ -131,7 +130,6 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/dp_5"
-            android:src="@drawable/test_xw_333"
             />
 
         <ImageView
@@ -139,7 +137,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:src="@drawable/test_xw_444"
             />
     </LinearLayout>
 

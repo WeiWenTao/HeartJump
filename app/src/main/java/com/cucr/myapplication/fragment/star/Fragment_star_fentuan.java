@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
 import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
@@ -43,16 +44,19 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,7 +69,7 @@ import toan.android.floatingactionmenu.FloatingActionsMenu;
 /**
  * Created by 911 on 2017/6/24.
  */
-public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt {
+public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt, RequersCallBackListener {
 
     //礼物
     @ViewInject(R.id.tv_gift)
@@ -79,6 +83,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @ViewInject(R.id.vp_dahsnag)
     private NoScrollPager vp_dahsnag;
 
+    //填充布局
+    private MultiStateView multiStateView;
     private PayCenterCore mPayCenterCore;
     private View view;
     private Context mContext;
@@ -92,8 +98,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private int rows = 15;
     private int dataType = 1; //dataType: 0 星闻,1 粉团文章.
     private SwipeRecyclerView rlv_fentuan;  //这不是RecyclerView  而是RecyclerView + swipeRefreshLayout
+    private RecyclerView rlv_test;
     private QueryFtInfos mQueryFtInfos;
-    private QueryFtInfos mQueryFtInfoss;
     private FtAdapter mAdapter;
     private Integer giveNum;
     private int position = -1;
@@ -102,6 +108,8 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     private DaShangPagerAdapter mDaShangPagerAdapter;
     private DialogShareStyle mDialog;
     private Intent mIntent;
+    private boolean isRefresh;
+    private boolean needShowLoading;
 
     @SuppressLint("ValidFragment")
     public Fragment_star_fentuan(int id) {
@@ -115,6 +123,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);//订阅
+        needShowLoading = true;  //进入页面的时候显示(仅一次)
         mContext = MyApplication.getInstance();
         this.layoutInflater = inflater;
         queryCore = new QueryFtInfoCore();
@@ -131,6 +140,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 
         //如果是企业用户  进页面的时候就查一遍
         if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+            starId = qYStarId;
             onRefresh();
         }
 
@@ -163,9 +173,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
                 }
             }
         });
-
         queryBackpack();
-
     }
 
     private void queryBackpack() {
@@ -198,33 +206,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
 //        queryFtInfo();
 //    }
 
-
-    private void queryFtInfo() {
-        // TODO: 2017/11/3
-        //如果是企业用户
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
-            starId = qYStarId;
-        }
-        MyLogger.jLog().i("粉团参数 starId=" + starId + ",page=" + page + ",rows=" + rows);
-        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
-                if (mQueryFtInfos.isSuccess()) {
-                    mAdapter.setData(mQueryFtInfos);
-                    rlv_fentuan.complete();
-                    if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {
-                        rlv_fentuan.onNoMore("木有了");
-                    }
-                    rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
-                } else {
-                    ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
-                }
-            }
-        });
-    }
-
-
     //切换明星的时候
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
@@ -235,7 +216,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         if (queryCore == null) {
             queryCore = new QueryFtInfoCore();
         }
-        queryFtInfo();
+        onRefresh();
     }
 
     //查询第一个明星
@@ -246,7 +227,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         if (queryCore == null) {
             queryCore = new QueryFtInfoCore();
         }
-        queryFtInfo();
+        onRefresh();
     }
 
     private void initRlV() {
@@ -257,15 +238,13 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         rlv_fentuan.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
 
+        rlv_test.setLayoutManager(new LinearLayoutManager(mContext));
+        rlv_test.setAdapter(mAdapter);
 
         mDialog = new DialogShareStyle(getActivity(), R.style.MyDialogStyle);
         Window window = mDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
-
-//        TextView textView = new TextView(mContext);
-//        textView.setText("empty view");
-//        rlv_fentuan.setEmptyView(textView);
     }
 
     //打赏成功后打赏人数增加
@@ -277,10 +256,11 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     }
 
     private void initView() {
-//        rlv_fentuan = (RecyclerView) view.findViewById(R.id.rlv_fentuan);
+        rlv_test = (RecyclerView) view.findViewById(R.id.rlv_test);
 //        rlv_fentuan.setItemAnimator(new DefaultItemAnimator());
 
         rlv_fentuan = (SwipeRecyclerView) view.findViewById(R.id.rlv_fentuan);
+        multiStateView = (MultiStateView) view.findViewById(R.id.multiStateView);
 //        rlv_fentuan.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
         rlv_fentuan.setOnLoadListener(this);
 
@@ -364,37 +344,18 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     //刷新的时候查询最新数据 page = 1
     @Override
     public void onRefresh() {
-        if (!rlv_fentuan.getSwipeRefreshLayout().isRefreshing()) {
-            rlv_fentuan.getSwipeRefreshLayout().setRefreshing(true);
-        }
+        isRefresh = true;
         page = 1;
-        queryFtInfo();
+        rlv_fentuan.getSwipeRefreshLayout().setRefreshing(true);
+        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, this);
     }
-
 
     @Override
     public void onLoadMore() {
+        isRefresh = false;
         page++;
         rlv_fentuan.onLoadingMore();
-        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
-                if (mQueryFtInfoss.isSuccess()) {
-//                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
-                    mAdapter.addData(mQueryFtInfoss.getRows());
-                    //判断是否还有数据
-                    if (mQueryFtInfoss.getTotal() <= page * rows) {
-                        rlv_fentuan.onNoMore("没有更多了");
-                    } else {
-                        rlv_fentuan.complete();
-                    }
-                } else {
-                    ToastUtils.showToast(mQueryFtInfoss.getErrorMsg());
-                }
-
-            }
-        });
+        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, this);
     }
 
     //打赏框
@@ -412,7 +373,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         mDaShangPagerAdapter = new DaShangPagerAdapter();
         vp_dahsnag.setAdapter(mDaShangPagerAdapter);
     }
-
 
     //礼物
     @OnClick(R.id.tv_gift)
@@ -472,7 +432,6 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
 
-
     //分享
     @Override
     public void onClickshare(int dataId) {
@@ -509,11 +468,66 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         startActivity(mIntent);
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);//解除订阅
         EventBus.getDefault().removeAllStickyEvents(); //移除所有粘性事件
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_ONE) {
+            QueryFtInfos infos = mGson.fromJson(response.get(), QueryFtInfos.class);
+            if (infos.isSuccess()) {
+                if (isRefresh) {
+                    if (infos.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        mQueryFtInfos = infos;
+                        mAdapter.setData(infos);
+                        rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
+                } else {
+                    mQueryFtInfos.getRows().addAll(infos.getRows());
+                    mAdapter.addData(infos.getRows());
+                }
+                if (infos.getTotal() <= page * rows) {
+                    rlv_fentuan.onNoMore("没有更多了");
+                } else {
+                    rlv_fentuan.complete();
+                }
+            } else {
+                ToastUtils.showToast(infos.getErrorMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_ONE) {
+            if (rlv_fentuan.isRefreshing()) {
+                rlv_fentuan.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (rlv_fentuan.isLoadingMore()) {
+                rlv_fentuan.stopLoadingMore();
+            }
+        }
     }
 }

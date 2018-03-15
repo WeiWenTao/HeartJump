@@ -24,6 +24,7 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
     private MyActivesAdapter mAdapter;
     private FuLiCore mCore;
     private MyActives mMyActives;
+    private DialogErWeiMa mDialog;
 
     @Override
     protected void initChild() {
@@ -35,6 +36,7 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
         rlv.setAdapter(mAdapter);
         rlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         rlv.setOnLoadListener(this);
+        mDialog = new DialogErWeiMa(this, R.style.MyWaitDialog);
         onRefresh();
     }
 
@@ -68,6 +70,11 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (rlv.isRefreshing()) {
             rlv.getSwipeRefreshLayout().setRefreshing(false);
@@ -76,10 +83,8 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
 
     @Override
     public void onItemClick(ErWeiMaInfo info) {
-        // TODO: 2018/3/2 每次弹窗都会new一个对象
-        DialogErWeiMa dialog = new DialogErWeiMa(this, R.style.MyWaitDialog);
-        dialog.setDate(info);
-        dialog.show();
+        mDialog.show();
+        mDialog.setDate(info);
     }
 
     @Override

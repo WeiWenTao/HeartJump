@@ -141,6 +141,11 @@ public class Fragment_yyhd extends LazyFragment_app implements YyhdAdapter.OnCli
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
 //        mMyWaitDialog.dismiss();
         if (mRlv_yyhd.getSwipeRefreshLayout().isRefreshing()) {

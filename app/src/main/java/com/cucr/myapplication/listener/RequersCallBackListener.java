@@ -9,5 +9,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 public interface RequersCallBackListener {
     void onRequestSuccess(int what,Response<String> response);
     void onRequestStar(int what);
+    void onRequestError(int what,Response<String> response);
     void onRequestFinish(int what);
 }

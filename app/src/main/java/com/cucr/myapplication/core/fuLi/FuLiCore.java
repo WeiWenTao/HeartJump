@@ -96,6 +96,7 @@ public class FuLiCore implements QueryFuLi {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, mContext);
+            listener.onRequestError(what,response);
         }
 
         @Override

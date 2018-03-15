@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.HomeSearchActivity;
+import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.HomeNewsPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -72,7 +72,7 @@ public class FragmentHotAndFocusNews extends BaseFragment {
 
     @OnClick(R.id.iv_search)
     public void toSearch(View view) {
-        startActivity(new Intent(MyApplication.getInstance(), HomeSearchActivity.class));
+        startActivity(new Intent(MyApplication.getInstance(), StarSearchActivity.class));
     }
 
 

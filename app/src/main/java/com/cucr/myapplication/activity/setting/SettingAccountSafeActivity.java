@@ -83,6 +83,11 @@ public class SettingAccountSafeActivity extends BaseActivity implements DialogCh
             }
 
             @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
             public void onRequestFinish(int what) {
                 if (mWaitDialog.isShowing()) {
                     mWaitDialog.dismiss();

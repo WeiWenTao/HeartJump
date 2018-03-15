@@ -56,6 +56,7 @@ public class AccountCore implements AccountCenterInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+            mListener.onRequestError(what,response);
         }
 
         @Override

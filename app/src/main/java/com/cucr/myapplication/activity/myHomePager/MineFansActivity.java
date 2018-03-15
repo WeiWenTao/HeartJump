@@ -69,6 +69,11 @@ public class MineFansActivity extends BaseActivity implements RequersCallBackLis
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_THREE) {
             if (rlv.isRefreshing()) {

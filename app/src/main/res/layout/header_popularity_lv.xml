@@ -26,7 +26,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0.5dp"
                 android:layout_marginLeft="0.5dp"
-                android:src="@drawable/pic2_live"
                 />
 
             <LinearLayout
@@ -62,7 +61,6 @@
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="38dp"
-                android:background="@drawable/btn_bg_nor"
                 android:gravity="center"
                 android:text="加关注"
                 android:textColor="@color/white"
@@ -97,7 +95,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0.5dp"
                 android:layout_marginLeft="0.5dp"
-                android:src="@drawable/pic3_live"
                 />
 
             <LinearLayout
@@ -133,7 +130,6 @@
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="38dp"
-                android:background="@drawable/btn_bg_sel"
                 android:gravity="center"
                 android:text="已关注"
                 android:textColor="@color/pink"
@@ -168,7 +164,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0.5dp"
                 android:layout_marginLeft="0.5dp"
-                android:src="@drawable/pic4_live"
                 />
 
             <LinearLayout
@@ -204,7 +199,6 @@
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="38dp"
-                android:background="@drawable/btn_bg_sel"
                 android:gravity="center"
                 android:text="已关注"
                 android:textColor="@color/pink"
@@ -217,7 +211,5 @@
             android:layout_height="@dimen/dp_10"
             android:background="@color/lvbg"
             />
-
-
 
 </LinearLayout>

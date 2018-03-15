@@ -15,7 +15,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.HomeSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
@@ -104,12 +103,6 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     @Override
     public int getContentLayoutRes() {
         return R.layout.fragment_fuli_huodong;
-    }
-
-    //跳转搜索界面
-    @OnClick(R.id.iv_search)
-    public void goSearch(View view) {
-        startActivity(new Intent(mContext, HomeSearchActivity.class));
     }
 
     //跳转消息界面

@@ -1,6 +1,10 @@
 package com.cucr.myapplication.activity.setting;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -137,6 +141,10 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         //将editText光标放置末尾
         et_my_sign.setSelection(et_my_sign.getText().length());
         et_nickname.setSelection(et_nickname.getText().length());
+
+        if (obj == null) {
+            return;
+        }
         //头像回显
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + obj.getUserHeadPortrait(), iv_head);
         mTemppath = obj.getUserHeadPortrait();
@@ -156,7 +164,6 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         et_my_sign.setText(obj.getSignName());
         //生日回显
         birthdayMsg = obj.getBirthday().substring(0, 10);
-        MyLogger.jLog().i("saved:" + birthdayMsg);
     }
 
     //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
@@ -229,7 +236,6 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         mDialog.show();
 //        dialog.setDate(new ErWeiMaInfo("123","aaa","qewqewqe"));
 //        dialog.show();
-
     }
 
     /**
@@ -312,9 +318,23 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     }
 
     //打开相册
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void clickAlbum() {
-        openCameraOrAblum(false);
+        requestPermissions(new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        boolean writeAccepted = false;
+        switch (requestCode) {
+            case 1:
+                writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
+                    openCameraOrAblum(false);
+                }
+                break;
+        }
     }
 
     //打开相册或相机

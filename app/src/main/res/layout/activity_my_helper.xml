@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cucr.myapplication.activity.setting.MyHelperActivity"
     >
 
     <include layout="@layout/activity_base_title"/>
@@ -22,7 +21,6 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
-            android:src="@drawable/icon_help"
             />
         <TextView
             android:layout_marginLeft="@dimen/dp_5"
@@ -61,7 +59,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
         <View
@@ -97,7 +95,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
         <View
@@ -133,7 +131,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
         <View
@@ -169,7 +167,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
         <View
@@ -205,7 +203,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_width="8dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_more_e"
+            android:src="@drawable/icon_more"
             />
 
     </RelativeLayout>

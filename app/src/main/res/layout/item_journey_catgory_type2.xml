@@ -15,7 +15,6 @@
             android:layout_margin="@dimen/dp_10"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/pic3_journey"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,7 +103,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="115dp"
-            android:src="@drawable/img6"
             android:id="@+id/imageView2"
             />
 
@@ -112,14 +110,12 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="115dp"
-            android:src="@drawable/img7"
             android:layout_marginRight="@dimen/dp_5"
             />
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="115dp"
-            android:src="@drawable/img5"
             />
     </LinearLayout>
 

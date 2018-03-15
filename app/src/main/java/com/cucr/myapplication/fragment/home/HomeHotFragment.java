@@ -15,6 +15,7 @@ import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
@@ -163,9 +164,9 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
             mRlv_home.getSwipeRefreshLayout().setRefreshing(true);
         }
 
-        mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new OnCommonListener() {
+        mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what,Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     mAdapter.setData(mQueryFtInfos);
@@ -180,6 +181,21 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
                 }
                 mRlv_home.setRefreshing(false);
             }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
+            }
         });
     }
 
@@ -187,9 +203,9 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
     public void onLoadMore() {
         page++;
         MyLogger.jLog().i("page = " + page);
-        mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new OnCommonListener() {
+        mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what,Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     if (mQueryFtInfos.getRows().size() != 0) {
@@ -204,6 +220,21 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }

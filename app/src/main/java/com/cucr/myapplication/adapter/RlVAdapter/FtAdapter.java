@@ -53,8 +53,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void addData(List<QueryFtInfos.RowsBean> newData) {
-        rows.addAll(newData);
-        notifyDataSetChanged();
+        if (newData != null && newData.size() > 0) {
+            notifyItemInserted(this.rows.size()+1);
+            this.rows.addAll(newData);
+        }
     }
 
     @Override
@@ -102,13 +104,13 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());
             //视频封面
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video_pic);
-            ((Tp1_Holder) holder).iv_tag.setVisibility(isStar?View.VISIBLE:View.INVISIBLE);
+            ((Tp1_Holder) holder).iv_tag.setVisibility(isStar ? View.VISIBLE : View.INVISIBLE);
             ((Tp1_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp1_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp1_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
             if (TextUtils.isEmpty(rowsBean.getContent())) {                 //文字内容
                 ((Tp1_Holder) holder).tv_content.setVisibility(View.GONE);
-            }else {
+            } else {
                 ((Tp1_Holder) holder).tv_content.setText(rowsBean.getContent());
             }
 
@@ -174,7 +176,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickDaShang(rowsBean.getId(),position);
+                        mOnClickBt.onClickDaShang(rowsBean.getId(), position);
                     }
                 }
             });
@@ -194,7 +196,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }
             });
@@ -203,7 +205,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }
             });
@@ -214,7 +216,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp2_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
-            ((Tp2_Holder) holder).iv_tag.setVisibility(isStar?View.VISIBLE:View.INVISIBLE);
+            ((Tp2_Holder) holder).iv_tag.setVisibility(isStar ? View.VISIBLE : View.INVISIBLE);
             ((Tp2_Holder) holder).image_layout.loadImage(rowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
                 @Override
                 public void layoutFinish(List<ImageView> images) {
@@ -299,7 +301,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickDaShang(rowsBean.getId(),position);
+                        mOnClickBt.onClickDaShang(rowsBean.getId(), position);
                     }
                 }
             });
@@ -319,7 +321,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }
             });
@@ -328,7 +330,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }
             });
@@ -343,7 +345,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp3_Holder) holder).tv_favorite.setText(rowsBean.getGiveUpCount() + "");    //点赞数量
             ((Tp3_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
             ((Tp3_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
-            ((Tp3_Holder) holder).iv_tag.setVisibility(isStar?View.VISIBLE:View.INVISIBLE);
+            ((Tp3_Holder) holder).iv_tag.setVisibility(isStar ? View.VISIBLE : View.INVISIBLE);
             //点击分享
             ((Tp3_Holder) holder).rl_share.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -389,7 +391,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickDaShang(rowsBean.getId(),position);
+                        mOnClickBt.onClickDaShang(rowsBean.getId(), position);
                     }
                 }
             });
@@ -420,7 +422,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if (mOnClickBt != null) {
                         boolean b = rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR;
                         MyLogger.jLog().i("isstar:" + b + ",rolaid:" + rowsBean.getCreateUserRoleId());
-                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(),rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                        mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
                     }
                 }
             });
@@ -672,11 +674,11 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onClickshare(int dataId);
 
-        void onClickDaShang(int contentId,int position);
+        void onClickDaShang(int contentId, int position);
 
         void onClickDsRecored(int contentId);
 
-        void onClickUser(int userId,boolean isStar);
+        void onClickUser(int userId, boolean isStar);
 
     }
 }

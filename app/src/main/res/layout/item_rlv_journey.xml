@@ -27,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_toRightOf="@id/iv_drop"
-        android:text="5-28 星期日"
         android:textColor="#666"
         android:textSize="@dimen/sp_13"
         />
@@ -47,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_15"
             android:layout_marginTop="23dp"
-            android:text="电影《绣春刀修罗战场》发布会"
             android:textColor="#666"
             android:textSize="@dimen/sp_13"
             />
@@ -69,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/iv_landmark"
             android:layout_toRightOf="@id/iv_landmark"
-            android:text="北京"
             android:textColor="#666"
             android:textSize="@dimen/sp_12"
             />

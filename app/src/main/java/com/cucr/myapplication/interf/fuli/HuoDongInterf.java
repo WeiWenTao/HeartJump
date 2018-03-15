@@ -1,6 +1,7 @@
 package com.cucr.myapplication.interf.fuli;
 
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 
 /**
  * Created by cucr on 2017/12/6.
@@ -14,7 +15,7 @@ public interface HuoDongInterf {
                        String picurl, OnCommonListener onCommonListener);
 
     //查询活动
-    void queryActive(boolean byMe, int dataId, int page, int rows, OnCommonListener onCommonListener);
+    void queryActive(boolean byMe, int dataId, int page, int rows, RequersCallBackListener onCommonListener);
 
     //活动点赞
     void activeGiveUp(int dataId, OnCommonListener onCommonListener);

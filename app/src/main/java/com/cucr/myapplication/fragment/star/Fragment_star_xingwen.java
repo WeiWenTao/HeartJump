@@ -6,21 +6,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventStarId;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -38,6 +40,12 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
 
     @ViewInject(R.id.rlv_xingwen)
     private SwipeRecyclerView rlv_xingwen;
+
+    @ViewInject(R.id.rlv_test)
+    private RecyclerView rlv_test;
+
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     private View view;
     private QueryFtInfoCore mCore;
@@ -85,10 +93,11 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
         rlv_xingwen.getRecyclerView().addItemDecoration(decor);
         rlv_xingwen.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         rlv_xingwen.setAdapter(mAdapter);
+        rlv_test.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        rlv_test.setAdapter(mAdapter);
         rlv_xingwen.setOnLoadListener(this);
         rlv_xingwen.onLoadingMore();
     }
-
 
     //切换明星的时候
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -121,12 +130,15 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
             rlv_xingwen.getSwipeRefreshLayout().setRefreshing(true);
         }
 
-        mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
+        mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what,Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-
+                    if (mQueryFtInfos.getTotal()==0){
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                        return;
+                    }
                     mAdapter.setData(mQueryFtInfos);
                     rlv_xingwen.getRecyclerView().smoothScrollToPosition(0);
                     if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {
@@ -139,6 +151,21 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
                 }
                 rlv_xingwen.setRefreshing(false);
             }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
+            }
         });
     }
 
@@ -146,10 +173,9 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     public void onLoadMore() {
 
         page++;
-        MyLogger.jLog().i("page = " + page);
-        mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new OnCommonListener() {
+        mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what,Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     if (mQueryFtInfos.getRows().size() != 0) {
@@ -164,6 +190,21 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }

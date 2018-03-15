@@ -13,7 +13,6 @@
         android:layout_marginTop="@dimen/dp_25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="活动名称活动名称"
         android:textSize="17sp"
         android:textColor="@color/color_333"
         />
@@ -24,7 +23,6 @@
         android:textColor="@color/color_999"
         android:textSize="@dimen/sp_12"
         android:layout_marginTop="@dimen/dp_4"
-        android:text="请向工作人员出示进行活动签到"
         />
 
     <ImageView
@@ -38,7 +36,6 @@
         android:id="@+id/tv_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="券号: 205545645536455"
         android:layout_marginTop="@dimen/dp_25"
         android:textSize="@dimen/sp_16"
         android:textColor="@color/color_333"

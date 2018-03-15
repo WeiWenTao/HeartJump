@@ -189,16 +189,16 @@ public class YuYueCatgoryActivity extends FragmentActivity {
     //室内
     @OnClick(R.id.ll_shinei)
     public void shiNei(View view) {
-        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
-        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_nor));
+        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pc_sel));
+        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pc_nor));
         scene = 0;
     }
 
     //室外
     @OnClick(R.id.ll_shiwai)
     public void shiWai(View view) {
-        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_nor));
-        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.dot_sel));
+        iv_shi_nei.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pc_nor));
+        iv_shi_wai.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pc_sel));
         scene = 1;
     }
 

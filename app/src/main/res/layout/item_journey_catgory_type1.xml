@@ -17,7 +17,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="@dimen/dp_10"
-            android:src="@drawable/pic4_journey"
             />
 
         <LinearLayout
@@ -108,7 +107,6 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="fitXY"
-            android:src="@drawable/video1"
             />
 
         <TextView

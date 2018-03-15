@@ -38,6 +38,9 @@ public class SpConstant {
     //用户密码
     public static final String PASSWORD = "passWord";
 
+    //聊天的token
+    public static final String TOKEN = "token";
+
     //身份id
     public static final String ROLEID = "roleId";
 

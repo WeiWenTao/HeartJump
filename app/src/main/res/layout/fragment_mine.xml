@@ -65,7 +65,6 @@
                     android:layout_height="70dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
-                    android:src="@drawable/pic_bg"
                     app:civ_border_color="#ffff"
                     app:civ_border_width="1dp"
                     />
@@ -441,14 +440,42 @@
                     <ImageView
                         android:id="@+id/iv_my_pics"
                         style="@style/My_iv"
-                        android:background="@color/color_999"
+                        android:src="@drawable/icon_mypic"
                         />
-                    <!--icon-learning-->
 
                     <TextView
                         style="@style/My_tv"
                         android:layout_toRightOf="@id/iv_my_pics"
                         android:text="我的图集"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
+                <!--我的活动-->
+                <RelativeLayout
+                    android:id="@+id/rl_my_actis"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_actis"
+                        style="@style/My_iv"
+                        android:src="@drawable/m_huodong"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_actis"
+                        android:text="我的活动"
                         />
 
                     <ImageView
@@ -512,9 +539,8 @@
                     <ImageView
                         android:id="@+id/iv_my_learning"
                         style="@style/My_iv"
-                        android:background="@color/color_999"
+                        android:src="@drawable/icon_learning"
                         />
-                    <!--icon-mypic-->
 
                     <TextView
                         style="@style/My_tv"
@@ -596,9 +622,8 @@
                     <ImageView
                         android:id="@+id/iv_my_rl_bp"
                         style="@style/My_iv"
-                        android:background="@color/color_999"
+                        android:src="@drawable/icon_pack"
                         />
-                    <!--icon-pack-->
 
                     <TextView
                         style="@style/My_tv"

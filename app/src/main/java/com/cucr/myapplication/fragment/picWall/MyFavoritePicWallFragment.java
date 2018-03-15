@@ -122,6 +122,11 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_FORE) {
             if (mRlv_my_pics.isRefreshing()) {

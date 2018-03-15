@@ -8,7 +8,6 @@ android:layout_height="wrap_content"
     android:scaleType="fitXY"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:src="@drawable/banner_discover"
     />
 <LinearLayout
     android:background="#f6f6f6"

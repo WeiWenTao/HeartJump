@@ -17,14 +17,19 @@ import com.cucr.myapplication.utils.QRCodeUtil;
 
 public class DialogErWeiMa extends Dialog {
 
-    private ErWeiMaInfo info;
+    private TextView mName;
+    private ImageView mIv_code;
+    private TextView mNumber;
 
     public DialogErWeiMa(Context context, int themeResId) {
         super(context, themeResId);
     }
 
     public void setDate(ErWeiMaInfo info) {
-        this.info = info;
+        mName.setText(info.getName());
+        Bitmap mBitmap = QRCodeUtil.createQRCodeBitmap(info.getNumber(), 480, 480);
+        mIv_code.setImageBitmap(mBitmap);
+        mNumber.setText("券号: " + info.getNumber());
     }
 
     @Override
@@ -33,14 +38,10 @@ public class DialogErWeiMa extends Dialog {
         setContentView(R.layout.dialog_er_wei_ma);
         //设置点击外部消失
         setCanceledOnTouchOutside(true);
-        TextView name = (TextView) findViewById(R.id.tv_active_name);
-        ImageView iv_code = (ImageView) findViewById(R.id.iv_code);
-        TextView number = (TextView) findViewById(R.id.tv_number);
+        mName = (TextView) findViewById(R.id.tv_active_name);
+        mIv_code = (ImageView) findViewById(R.id.iv_code);
+        mNumber = (TextView) findViewById(R.id.tv_number);
 
-        name.setText(info.getName());
-        Bitmap mBitmap = QRCodeUtil.createQRCodeBitmap(info.getNumber(), 480, 480);
-        iv_code.setImageBitmap(mBitmap);
-        number.setText("券号: " + info.getNumber());
     }
 
     @Override

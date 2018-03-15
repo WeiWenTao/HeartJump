@@ -285,6 +285,11 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
 
     }

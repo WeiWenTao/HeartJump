@@ -8,6 +8,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.funTuan.QueryFtInfoInterf;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
@@ -25,7 +26,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 public class QueryFtInfoCore implements QueryFtInfoInterf {
 
-    private OnCommonListener ftQuerylistener;
+    private RequersCallBackListener ftQuerylistener;
     private OnCommonListener ftGoodlistener;
     private OnCommonListener toCommentlistener;
     private OnCommonListener queryGiftListener;
@@ -46,7 +47,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     //查询粉团信息
     @Override
-    public void queryFtInfo(int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, OnCommonListener listener) {
+    public void queryFtInfo(int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener) {
         ftQuerylistener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
@@ -73,7 +74,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     //查询首页关注新闻 传focus查关注
     @Override
-    public void queryFtInfo(boolean focus,int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, OnCommonListener listener) {
+    public void queryFtInfo(boolean focus, int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener) {
         ftQuerylistener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
         // 添加普通参数。
@@ -155,7 +156,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     public void ftRead(int dataId) {
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FT_READ, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
-                .add("dataId",dataId)
+                .add("dataId", dataId)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
 
         //无参数
@@ -167,7 +168,11 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+            switch (what) {
+                case Constans.TYPE_ONE:
+                    ftQuerylistener.onRequestStar(what);
+                    break;
+            }
         }
 
         @Override
@@ -175,7 +180,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
             switch (what) {
                 case Constans.TYPE_ONE:
                     MyLogger.jLog().i("粉团文章查询成功，Cache?" + response.isFromCache());
-                    ftQuerylistener.onRequestSuccess(response);
+                    ftQuerylistener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_TWO:
@@ -209,7 +214,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
             HttpExceptionUtil.showTsByException(response, context);
             switch (what) {
                 case Constans.TYPE_ONE:
-                    MyLogger.jLog().i("粉团查询请求失败");
+                    ftQuerylistener.onRequestStar(what);
                     break;
 
                 case Constans.TYPE_TWO:
@@ -232,7 +237,11 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
         @Override
         public void onFinish(int what) {
-
+            switch (what) {
+                case Constans.TYPE_ONE:
+                    ftQuerylistener.onRequestFinish(what);
+                    break;
+            }
         }
     };
 

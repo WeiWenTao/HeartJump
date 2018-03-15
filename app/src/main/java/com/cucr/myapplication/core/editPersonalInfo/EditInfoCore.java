@@ -59,23 +59,25 @@ public class EditInfoCore implements SavePersonalInfo {
         request.add("cityName", personalInfo.getCityId());
         request.add("signName", personalInfo.getSignName());
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
-        File file = new File(head);
-        //如果头像路径为空 则不上传头像
-        if (file.exists()) {
-            // 上传文件需要实现NoHttp的Binary接口，NoHttp默认实现了FileBinary、InputStreamBinary、ByteArrayBitnary、BitmapBinary。
+        if (head != null) {
+            File file = new File(head);
+            //如果头像路径为空 则不上传头像
+            if (file.exists()) {
+                // 上传文件需要实现NoHttp的Binary接口，NoHttp默认实现了FileBinary、InputStreamBinary、ByteArrayBitnary、BitmapBinary。
 //            Bitmap imageByPath = CommonUtils.decodeBitmap(head);
-            FileBinary fileBinary0 = new FileBinary(file);
+                FileBinary fileBinary0 = new FileBinary(file);
 //            BitmapBinary fileBinary0 = new BitmapBinary(imageByPath,head.substring(head.lastIndexOf("/")));
 
-            /**
-             * 监听上传过程，如果不需要监听就不用设置。
-             * 第一个参数：what，what和handler的what一样，会在回调被调用的回调你开发者，作用是一个Listener可以监听多个文件的上传状态。
-             * 第二个参数： 监听器。
-             */
-            fileBinary0.setUploadListener(0, mOnUploadListener);
+                /**
+                 * 监听上传过程，如果不需要监听就不用设置。
+                 * 第一个参数：what，what和handler的what一样，会在回调被调用的回调你开发者，作用是一个Listener可以监听多个文件的上传状态。
+                 * 第二个参数： 监听器。
+                 */
+                fileBinary0.setUploadListener(0, mOnUploadListener);
 
-            request.add("file", fileBinary0);// 添加1个文件
+                request.add("file", fileBinary0);// 添加1个文件
 
+            }
         }
 
         mQueue.add(Constans.TYPE_ONE, request, responseListener);

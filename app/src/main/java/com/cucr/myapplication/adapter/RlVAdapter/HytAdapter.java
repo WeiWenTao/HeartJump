@@ -46,7 +46,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
-                    mOnClickItems.onClickItem(position);
+                        mOnClickItems.onClickItem(position);
                     }
                 }
             });
@@ -83,7 +83,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     if (mOnClickItems != null) {
                     }
-                    mOnClickItems.onClickJoin(rowsBean.getId(), rowsBean.getName(), rowsBean.getIsJoin() != 0);
+                    mOnClickItems.onClickJoin(rowsBean.getId(), rowsBean.getName(), rowsBean.getIsJoin() != 0, rowsBean.getCreateUser().getId());
                 }
             });
         }
@@ -146,6 +146,6 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnClickItems {
         void onClickItem(int position);
 
-        void onClickJoin(int hytId, String name, boolean isjoin);
+        void onClickJoin(int hytId, String name, boolean isjoin, int cretaId);
     }
 }

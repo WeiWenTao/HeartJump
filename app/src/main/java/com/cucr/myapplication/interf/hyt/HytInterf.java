@@ -49,6 +49,9 @@ public interface HytInterf {
     //退出后援团
     void leaveHyt(String hytId, RequersCallBackListener commonListener);
 
+    //解散后援团
+    void dissolveHyt(String hytId, RequersCallBackListener commonListener);
+
     //禁言
     void hytLock(int lockd, String hytId, int howlong, RequersCallBackListener commonListener);
 

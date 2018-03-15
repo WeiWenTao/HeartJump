@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/star1"
             />
 
     </RelativeLayout>
@@ -49,7 +48,6 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginRight="@dimen/dp_5"
-                android:src="@drawable/star1"
                 />
 
             <TextView

@@ -34,7 +34,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/active1"
                     app:sriv_left_top_corner_radius="@dimen/dp_8"
                     app:sriv_right_top_corner_radius="@dimen/dp_8"
                     />

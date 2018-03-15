@@ -9,6 +9,7 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.starList.StarListInfo;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
@@ -28,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class QueryStarListCore implements StarListInfo {
 
+    private RequersCallBackListener requestListener;
     private OnCommonListener onCommonListener;
     private OnCommonListener queryZdListener;
 
@@ -84,11 +86,30 @@ public class QueryStarListCore implements StarListInfo {
         mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
+    //模糊搜索
+    @Override
+    public void querStarByName(int row, int page, String code, RequersCallBackListener onCommonListener) {
+        this.requestListener = onCommonListener;
+
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
+        // 添加普通参数。
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("type", 2);
+        request.add("page", page);
+        request.add("rows", row);
+        request.add("code", code);
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+
+        mQueue.add(Constans.TYPE_THREE, request, responseListener);
+    }
+
 
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onStart(int what) {
-
+            if (what == Constans.TYPE_THREE) {
+                requestListener.onRequestStar(what);
+            }
         }
 
         @Override
@@ -102,17 +123,26 @@ public class QueryStarListCore implements StarListInfo {
                 case Constans.TYPE_TWO:
                     queryZdListener.onRequestSuccess(response);
                     break;
+
+                case Constans.TYPE_THREE:
+                    requestListener.onRequestSuccess(what, response);
+                    break;
             }
         }
 
         @Override
         public void onFailed(int what, Response response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
-
+            if (what == Constans.TYPE_THREE) {
+                requestListener.onRequestError(what,response);
+            }
         }
 
         @Override
         public void onFinish(int what) {
+            if (what == Constans.TYPE_THREE) {
+                requestListener.onRequestFinish(what);
+            }
             EventBus.getDefault().post(new EventRequestFinish(HttpContans.ADDRESS_QUERY_STAR));
         }
     };

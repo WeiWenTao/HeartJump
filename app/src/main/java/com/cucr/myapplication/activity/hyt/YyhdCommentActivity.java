@@ -132,6 +132,11 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
 
     }
@@ -160,6 +165,11 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
 
             @Override
             public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
 
             }
 

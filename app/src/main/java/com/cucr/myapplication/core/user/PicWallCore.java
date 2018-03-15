@@ -155,6 +155,14 @@ public class PicWallCore implements PicturesWall {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+            switch (what) {
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_TWO:
+                case Constans.TYPE_FORE:
+                case Constans.TYPE_FIVE:
+                    listener.onRequestError(what,response);
+                    break;
+            }
         }
 
         @Override

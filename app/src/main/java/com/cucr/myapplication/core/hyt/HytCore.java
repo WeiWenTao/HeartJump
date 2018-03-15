@@ -239,6 +239,17 @@ public class HytCore implements HytInterf {
         mQueue.add(Constans.TYPE_FOURTEEN, request, listener);
     }
 
+    //解散后援团
+    @Override
+    public void dissolveHyt(String hytId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYT_CANCLE, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("hytId", hytId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_EIGHTEEN, request, listener);
+    }
+
     //禁言
     @Override
     public void hytLock(int lockd, String hytId, int howlong, RequersCallBackListener commonListener) {
@@ -290,11 +301,13 @@ public class HytCore implements HytInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, null);
+            commonListener.onRequestError(what, response);
         }
 
         @Override
         public void onFinish(int what) {
             commonListener.onRequestFinish(what);
+
         }
     };
 }

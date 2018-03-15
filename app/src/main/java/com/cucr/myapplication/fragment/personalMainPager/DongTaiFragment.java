@@ -37,6 +37,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
@@ -206,9 +207,9 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     @Override
     public void onLoadMore() {
         page++;
-        queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what,Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
@@ -223,14 +224,29 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
                     ToastUtils.showToast(mQueryFtInfoss.getErrorMsg());
                 }
             }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
+            }
         });
     }
 
     private void queryFtInfo() {
         MyLogger.jLog().i("动态参数 userId=" + userId + ",page=" + page + ",rows=" + rows);
-        queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new OnCommonListener() {
+        queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what,Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
@@ -242,6 +258,21 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
                 } else {
                     ToastUtils.showToast(mQueryFtInfos.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }

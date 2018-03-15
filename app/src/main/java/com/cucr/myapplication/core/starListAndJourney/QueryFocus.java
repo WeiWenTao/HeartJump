@@ -111,6 +111,9 @@ public class QueryFocus implements MyFocusStars {
         @Override
         public void onFailed(int what, Response response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+            if (requersCallBackListener != null) {
+                requersCallBackListener.onRequestError(what,response);
+            }
         }
 
         @Override

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -44,13 +45,21 @@ public class HytMembersAdapter extends RecyclerView.Adapter<HytMembersAdapter.My
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        HytMembers.RowsBean rowsBean = rows.get(position);
+        final HytMembers.RowsBean rowsBean = rows.get(position);
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUser().getUserHeadPortrait(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         holder.tv_name.setText(rowsBean.getUser().getName());
         holder.tv_tip.setText(CommonUtils.getTip(rowsBean.getIntegral()));
         if (position == 0) {
             holder.tv_captain.setVisibility(View.VISIBLE);
         }
+        holder.rlv_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClick != null) {
+                    mOnItemClick.onClickItem(rowsBean.getUser().getId());
+                }
+            }
+        });
     }
 
     @Override
@@ -63,6 +72,7 @@ public class HytMembersAdapter extends RecyclerView.Adapter<HytMembersAdapter.My
         private TextView tv_name;
         private TextView tv_tip;
         private TextView tv_captain;
+        private RelativeLayout rlv_item;
 
         public MyHolder(View itemView) {
             super(itemView);
@@ -70,7 +80,18 @@ public class HytMembersAdapter extends RecyclerView.Adapter<HytMembersAdapter.My
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_tip = (TextView) itemView.findViewById(R.id.tv_tip);
             tv_captain = (TextView) itemView.findViewById(R.id.tv_captain);
+            rlv_item = (RelativeLayout) itemView.findViewById(R.id.rlv_item);
         }
+    }
+
+    private OnItemClick mOnItemClick;
+
+    public void setOnItemClick(OnItemClick onItemClick) {
+        mOnItemClick = onItemClick;
+    }
+
+    public interface OnItemClick{
+        void onClickItem(int id);
     }
 
 }

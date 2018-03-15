@@ -17,10 +17,9 @@ public class HttpContans {
 
 //    public static final String HOST = "http://192.168.1.130:8080";
 
-    public static final String HOST = "http://192.168.1.141:8080";
+    public static final String HOST = "http://192.168.1.147:8080";
 
 //    public static final String IMAGE_HOST =HOST+ "http://yin-wiki.51vip.biz";
-
 
     //服务协议
     public static final String HTTP_YHXY = HOST + "http://www.cucrxt.com/fwxy.html";
@@ -273,6 +272,9 @@ public class HttpContans {
 
     //退出后援团
     public static final String ADDRESS_HYT_EXIT = HOST + "/interface/mobileHelpTeamAction/quitTeam";
+
+    //解散后援团
+    public static final String ADDRESS_HYT_CANCLE = HOST + "/interface/mobileHelpTeamAction/cancelTeam";
 
     //后援团禁言
     public static final String ADDRESS_HYT_LOCK = HOST + "/interface/mobileHelpTeamAction/gag";

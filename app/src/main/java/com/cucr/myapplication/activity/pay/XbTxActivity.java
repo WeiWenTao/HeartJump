@@ -116,6 +116,11 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         mDialog.dismiss();
     }

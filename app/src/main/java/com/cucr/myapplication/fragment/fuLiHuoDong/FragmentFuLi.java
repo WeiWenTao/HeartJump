@@ -125,6 +125,11 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_TWO) {
             if (rlv_fuli.isRefreshing()) {

@@ -193,6 +193,9 @@ public class PayCenterCore implements PayCenterInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+            if (what == Constans.TYPE_SIX) {
+                commonListener.onRequestError(what,response);
+            }
         }
 
         @Override

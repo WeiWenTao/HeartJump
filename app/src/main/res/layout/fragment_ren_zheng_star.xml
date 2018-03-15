@@ -128,7 +128,7 @@
                     android:layout_height="75dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/ren_zheng_add"
+                    android:src="@drawable/add"
                     />
 
                 <TextView
@@ -173,7 +173,7 @@
                     android:layout_height="75dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/ren_zheng_add"
+                    android:src="@drawable/add"
                     />
 
                 <TextView

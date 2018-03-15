@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.HomeSearchActivity;
+import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
@@ -273,7 +273,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     //跳转搜索界面
     @OnClick(R.id.iv_search)
     public void goSearch(View view) {
-        startActivity(new Intent(mContext, HomeSearchActivity.class));
+        startActivity(new Intent(mContext, StarSearchActivity.class));
     }
 
     //跳转消息界面

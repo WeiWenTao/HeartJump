@@ -105,6 +105,11 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
             }
 
             @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
             public void onRequestFinish(int what) {
 
             }

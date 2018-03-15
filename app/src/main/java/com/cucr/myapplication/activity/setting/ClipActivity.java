@@ -40,22 +40,22 @@ public class ClipActivity extends Activity {
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
 
         //这步必须要加
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        loadingDialog=new ProgressDialog(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        loadingDialog = new ProgressDialog(this);
         loadingDialog.setTitle("请稍后...");
-        path=getIntent().getStringExtra("path");
-        if(TextUtils.isEmpty(path)||!(new File(path).exists())){
-            Toast.makeText(this, "图片加载失败",Toast.LENGTH_SHORT).show();
+        path = getIntent().getStringExtra("path");
+        if (TextUtils.isEmpty(path) || !(new File(path).exists())) {
+            Toast.makeText(this, "图片加载失败", Toast.LENGTH_SHORT).show();
             return;
         }
-        Bitmap bitmap= ImageTools.convertToBitmap(path, 600,600);
-        if(bitmap==null){
-            Toast.makeText(this, "图片加载失败",Toast.LENGTH_SHORT).show();
+        Bitmap bitmap = ImageTools.convertToBitmap(path, 600, 600);
+        if (bitmap == null) {
+            Toast.makeText(this, "图片加载失败", Toast.LENGTH_SHORT).show();
             return;
         }
         mClipImageLayout = (ClipImageLayout) findViewById(R.id.id_clipImageLayout);
         mClipImageLayout.setBitmap(bitmap);
-        ((TextView)findViewById(R.id.id_action_clip)).setOnClickListener(new View.OnClickListener() {
+        ((TextView) findViewById(R.id.id_action_clip)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 loadingDialog.show();
@@ -63,11 +63,12 @@ public class ClipActivity extends Activity {
                     @Override
                     public void run() {
                         Bitmap bitmap = mClipImageLayout.clip();
-                        String path= Environment.getExternalStorageDirectory()+"/ClipHeadPhoto/cache/"+System.currentTimeMillis()+ ".png";
-                        ImageTools.savePhotoToSDCard(bitmap,path);
+                        String path = Environment.getExternalStorageDirectory() + "/ClipHeadPhoto/cache/" + System.currentTimeMillis() + ".png";
+                        new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ClipHeadPhoto/cache/").mkdirs();
+                        ImageTools.savePhotoToSDCard(bitmap, path);
                         loadingDialog.dismiss();
                         Intent intent = new Intent();
-                        intent.putExtra("path",path);
+                        intent.putExtra("path", path);
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -77,8 +78,8 @@ public class ClipActivity extends Activity {
     }
 
     @OnClick(R.id.iv_adjust_pic_back)
-    public void clickBack(View view){
-       finish();
+    public void clickBack(View view) {
+        finish();
     }
 
 }

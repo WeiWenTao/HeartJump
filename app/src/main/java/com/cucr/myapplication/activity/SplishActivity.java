@@ -1,7 +1,9 @@
 package com.cucr.myapplication.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -38,10 +40,15 @@ public class SplishActivity extends Activity {
 //        ultimateBar.setImmersionBar();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        initPermission();
         initData();
-
         timmer();
+    }
+
+    private void initPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
     }
 
     //隐藏状态栏和导航栏

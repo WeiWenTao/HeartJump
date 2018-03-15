@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HytMembersAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.Hyt.HytMembers;
@@ -24,7 +25,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
-public class HytMemberListActivity extends BaseActivity implements DialogDelMembers.OnClickBt, RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
+public class HytMemberListActivity extends BaseActivity implements DialogDelMembers.OnClickBt, RequersCallBackListener, SwipeRecyclerView.OnLoadListener, HytMembersAdapter.OnItemClick {
 
     @ViewInject(R.id.iv_member)
     private ImageView iv_member;
@@ -45,6 +46,7 @@ public class HytMemberListActivity extends BaseActivity implements DialogDelMemb
         rlv_members.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mAdapter = new HytMembersAdapter();
         rlv_members.setAdapter(mAdapter);
+        mAdapter.setOnItemClick(this);
         mHytId = getIntent().getStringExtra("id");
         mCore = new HytCore();
         mIntent = new Intent();
@@ -111,10 +113,18 @@ public class HytMemberListActivity extends BaseActivity implements DialogDelMemb
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_THIRTEEN) {
             if (rlv_members.isRefreshing()) {
                 rlv_members.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (rlv_members.isLoadingMore()) {
+                rlv_members.stopLoadingMore();
             }
         }
     }
@@ -133,5 +143,12 @@ public class HytMemberListActivity extends BaseActivity implements DialogDelMemb
         page++;
         rlv_members.onLoadingMore();
         mCore.queryMembers(page, rows, mHytId, this);
+    }
+
+    @Override
+    public void onClickItem(int id) {
+        Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        intent.putExtra("userId", id);
+        startActivity(intent);
     }
 }

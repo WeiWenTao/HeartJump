@@ -238,6 +238,11 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_ONE) {
             if (rlv_picwall.isRefreshing()) {

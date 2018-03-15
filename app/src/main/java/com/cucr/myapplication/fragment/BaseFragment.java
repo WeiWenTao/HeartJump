@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.HomeSearchActivity;
+import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.google.gson.Gson;
@@ -115,7 +115,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_search:
-                startActivity(new Intent(mContext, HomeSearchActivity.class));
+                startActivity(new Intent(mContext, StarSearchActivity.class));
                 break;
 
             case R.id.iv_header_msg:

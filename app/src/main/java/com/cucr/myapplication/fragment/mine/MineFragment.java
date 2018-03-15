@@ -25,6 +25,7 @@ import com.cucr.myapplication.activity.pay.TxRecordActivity;
 import com.cucr.myapplication.activity.picWall.MyPicWallActivity;
 import com.cucr.myapplication.activity.setting.InvateActivity;
 import com.cucr.myapplication.activity.setting.LearnningActivity;
+import com.cucr.myapplication.activity.setting.MyActivesActivity;
 import com.cucr.myapplication.activity.setting.MyRequiresActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
@@ -94,26 +95,34 @@ public class MineFragment extends BaseFragment {
     @ViewInject(R.id.tv_sign)
     private TextView userSign;
 
+    //我的行程(明星)
+    @ViewInject(R.id.rl_my_journey)
+    private RelativeLayout rl_my_journey;
+
     //我的要求(明星)
     @ViewInject(R.id.rl_require)
     private RelativeLayout rl_require;
+
+    //我的活动(企业)
+    @ViewInject(R.id.rl_my_actis)
+    private RelativeLayout rl_my_actis;
 
     //我的预约(企业)
     @ViewInject(R.id.rl_my_yuyue)
     private RelativeLayout rl_my_yuyue;
 
-    //我的行程(明星)
-    @ViewInject(R.id.rl_my_journey)
-    private RelativeLayout rl_my_journey;
-
     private Intent mIntent;
-
     private PersonMessage.ObjBean mObj;
+    private UserCore mUserCore;
+    private QueryPersonalMsgCore mQucryCore;
 
     @Override
     protected void initView(View childView) {
         EventBus.getDefault().register(this);
         ViewUtils.inject(this, childView);
+        mUserCore = new UserCore();
+        mQucryCore = new QueryPersonalMsgCore();
+
         showAndHide();  //分配权限
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
@@ -138,8 +147,10 @@ public class MineFragment extends BaseFragment {
                 rl_require.setVisibility(View.VISIBLE);   //要求
                 rl_my_journey.setVisibility(View.VISIBLE);//行程
                 break;
+
             case Constans.STATUS_QIYE:    //企业
                 rl_my_yuyue.setVisibility(View.VISIBLE);  //预约
+                rl_my_actis.setVisibility(View.VISIBLE);  //我的活动
                 break;
             case Constans.STATUS_COMMON_USER://普通用户
 
@@ -162,10 +173,7 @@ public class MineFragment extends BaseFragment {
 
     //查询用户信息
     private void queryInfos() {
-        UserCore userCore = new UserCore();
-        QueryPersonalMsgCore qucryCore = new QueryPersonalMsgCore();
-
-        userCore.queryUserCenterInfo((int) SpUtil.getParam(SpConstant.USER_ID, -1), new OnCommonListener() {
+        mUserCore.queryUserCenterInfo((int) SpUtil.getParam(SpConstant.USER_ID, -1), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 UserCenterInfo userInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
@@ -178,7 +186,7 @@ public class MineFragment extends BaseFragment {
         });
 
 
-        qucryCore.queryPersonalInfo(new OnCommonListener() {
+        mQucryCore.queryPersonalInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
@@ -200,8 +208,14 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initViews() {
-        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mObj.getUserHeadPortrait(),
-                userPic, MyApplication.getImageLoaderOptions());
+        String userHeadPortrait = mObj.getUserHeadPortrait();
+        if (TextUtils.isEmpty(userHeadPortrait)){
+            userPic.setImageResource(R.drawable.empty_touxiang);
+        }else {
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + userHeadPortrait,
+                    userPic, MyApplication.getImageLoaderOptions());
+        }
+
         nickName.setText(mObj.getName());
         if (TextUtils.isEmpty(mObj.getSignName())) {
             userSign.setText("还木有设置签名哦!");
@@ -350,6 +364,13 @@ public class MineFragment extends BaseFragment {
     @OnClick(R.id.rl_require)
     public void goMyRequire(View view) {
         mIntent.setClass(mContext, MyRequiresActivity.class);
+        mContext.startActivity(mIntent);
+    }
+
+    //我的活动
+    @OnClick(R.id.rl_my_actis)
+    public void goMyActives(View view) {
+        mIntent.setClass(mContext, MyActivesActivity.class);
         mContext.startActivity(mIntent);
     }
 

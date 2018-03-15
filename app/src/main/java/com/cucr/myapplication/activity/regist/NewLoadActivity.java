@@ -24,10 +24,8 @@ import com.cucr.myapplication.bean.login.UserAccountInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.core.login.RegistCore;
-import com.cucr.myapplication.listener.LoadChatServer;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.runtimepermissions.PermissionsManager;
 import com.cucr.myapplication.runtimepermissions.PermissionsResultAction;
@@ -56,9 +54,8 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-import io.rong.imlib.RongIMClient;
 
-public class NewLoadActivity extends Activity implements RequersCallBackListener, LoadChatServer {
+public class NewLoadActivity extends Activity implements RequersCallBackListener {
 
     @ViewInject(R.id.et_accunt)
     private EditText mEt_accunt;
@@ -68,7 +65,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
 
     private LoginCore mLoginCore;
     private RegistCore mRegistCore;
-    private ChatCore mChatCore;
     private Gson mGson;
     private Intent mIntent;
     private boolean mIsAdd;
@@ -100,15 +96,13 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             }
         });
 
-
         mRegistCore = new RegistCore();
-        mChatCore = new ChatCore();
         bindIntent = new Intent(MyApplication.getInstance(), BindTelActivity.class);
         mDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mGson = MyApplication.getGson();
         mKeys = new ArrayList<>();
         tags = new HashSet<>();
-       /* if (Build.VERSION.SDK_INT >= 23) {
+      /*  if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.CALL_PHONE,
@@ -291,6 +285,8 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
                 CommonRebackMsg msg = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
                 MyLogger.jLog().i("aaa:" + msg);
                 if (msg.isSuccess()) {
+                    //三方登录手动把密码设置成空串
+                    mPassWord = "";
                     saveLoad(response);
                 } else {
                     //不成功 去绑定手机号
@@ -309,9 +305,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
 //                登录成功 保存密钥
         if (loadUserInfo.isSuccess()) {
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getObj(), LoadSuccess.class);
-            //登录融云
-            String token = loadSuccess.getToken();
-            mChatCore.connect(token, this);
+
             //这里保存的信息账号管理界面用-------------------------------------------------------
             UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), mPassWord,
                     HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
@@ -329,6 +323,8 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
             //---------------------------------------------------------------------------------
 
+            //保存融云token
+            SpUtil.setParam(SpConstant.TOKEN, loadSuccess.getToken());
             //保存头像
             SpUtil.setParam(SpConstant.SP_USERHEAD, loadSuccess.getUserHeadPortrait());
 
@@ -388,22 +384,14 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         mDialog.dismiss();
     }
-
-    //============================聊天服务器回调====================================
-    @Override
-    public void onLoadSuccess(String userid) {
-        MyLogger.jLog().i("登录聊天服务器成功 userId =" + userid);
-    }
-
-    @Override
-    public void onLoadFial(RongIMClient.ErrorCode errorCode) {
-        MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
-    }
-    //================================================================
-
 
     @Override
     protected void onDestroy() {

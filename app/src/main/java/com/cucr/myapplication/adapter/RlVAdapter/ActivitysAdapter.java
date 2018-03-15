@@ -1,6 +1,5 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -27,17 +26,15 @@ import java.util.List;
 public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.ActivesHolder> {
 
     private List<QiYeHuoDongInfo.RowsBean> rows;
-    private Context mContext;
 
     public void setData(List<QiYeHuoDongInfo.RowsBean> rows) {
         this.rows = rows;
-        mContext = MyApplication.getInstance();
         notifyDataSetChanged();
     }
 
     public void addData(List<QiYeHuoDongInfo.RowsBean> rows) {
+        notifyItemInserted(this.rows.size()+1);
         this.rows.addAll(rows);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -59,7 +56,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
         holder.tv_goods.setText(rowsBean.getGiveUpCount() + "");
         if (rowsBean.getIsSignUp() == 1) {
             holder.iv_zan.setImageResource(R.drawable.icon_good_sel);
-        }else {
+        } else {
             holder.iv_zan.setImageResource(R.drawable.icon_good_nor);
         }
 
@@ -68,7 +65,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
             @Override
             public void onClick(View v) {
                 if (onClickListener != null) {
-                    onClickListener.onClickCommends(position, rowsBean,false);
+                    onClickListener.onClickCommends(position, rowsBean, false);
                 }
             }
         });
@@ -77,7 +74,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
             @Override
             public void onClick(View v) {
                 if (onClickListener != null) {
-                    onClickListener.onClickCommends(position, rowsBean,true);
+                    onClickListener.onClickCommends(position, rowsBean, true);
                 }
             }
         });
@@ -153,7 +150,6 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
         @ViewInject(R.id.ll_persona)
         private LinearLayout ll_persona;
 
-
         public ActivesHolder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -169,7 +165,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
     public interface ClickListener {
         void onClickGoods(int position, QiYeHuoDongInfo.RowsBean rowsBean);
 
-        void onClickCommends(int position, QiYeHuoDongInfo.RowsBean rowsBean,boolean isFromComment);
+        void onClickCommends(int position, QiYeHuoDongInfo.RowsBean rowsBean, boolean isFromComment);
 
         void onClickPerson(int personId);
     }

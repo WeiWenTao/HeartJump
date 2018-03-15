@@ -178,20 +178,16 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".activity.HomeSearchActivity"
+            android:name=".activity.star.StarSearchActivity"
             android:windowSoftInputMode="adjustPan"
             >
         </activity>
         <activity android:name=".activity.fenTuan.PublishActivity">
         </activity>
-        <activity android:name=".activity.home.CommentAndLikeActivity">
-        </activity>
         <activity
             android:name=".activity.MessageActivity"
             android:launchMode="singleTask"
             >
-        </activity>
-        <activity android:name=".activity.yuyue.PersonalHomePageActivity_111">
         </activity>
         <activity
             android:name=".activity.setting.PersonalInfoActivity"
@@ -231,17 +227,7 @@
         </activity>
         <activity android:name=".activity.home.SignActivity">
         </activity>
-        <activity android:name=".activity.JourneyAndTopic.JourneyCatgoryActivity">
-        </activity>
-        <activity android:name=".activity.JourneyAndTopic.TopicCatgoryActivity">
-        </activity>
-        <activity android:name=".activity.JourneyAndTopic.TopicClassifyActivity">
-        </activity>
-        <activity android:name=".activity.fenTuan.FenTuanActivity">
-        </activity>
         <activity android:name=".activity.setting.RenZhengActivity">
-        </activity>
-        <activity android:name=".activity.huodong.HuoDongActivity">
         </activity>
         <activity android:name=".activity.news.NewsActivity">
         </activity>
@@ -256,8 +242,6 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             >
         </activity>
-        <activity android:name=".activity.fenTuan.FenTuanListActivity">
-        </activity>
         <activity android:name=".activity.comment.FenTuanCatgoryActiviry">
         </activity>
         <activity
@@ -268,11 +252,6 @@
         <activity android:name=".activity.local.LocalityQuActivity">
         </activity>
         <activity android:name=".activity.yuyue.MyYuYueActivity">
-        </activity>
-        <activity
-            android:name=".activity.fenTuan.CreatFtActivity"
-            android:windowSoftInputMode="adjustPan"
-            >
         </activity>
         <activity
             android:name=".activity.huodong.FaBuHuoDongActivity"
@@ -451,6 +430,8 @@
         <activity android:name=".activity.GuideActivity">
         </activity>
         <activity android:name=".activity.comment.XingWenCommentActivity">
+        </activity>
+        <activity android:name=".activity.setting.MyActivesActivity">
         </activity>
     </application>
 

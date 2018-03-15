@@ -217,6 +217,11 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
                     }
 
                     @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
                     public void onRequestFinish(int what) {
                         mDialog.dismiss();
                     }

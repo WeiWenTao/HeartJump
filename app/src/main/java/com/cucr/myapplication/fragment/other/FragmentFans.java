@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
@@ -30,7 +31,13 @@ import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
+import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
+import com.cucr.myapplication.bean.eventBus.EventStarId;
+import com.cucr.myapplication.bean.others.FragmentInfos;
 import com.cucr.myapplication.bean.starList.FocusInfo;
+import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -42,12 +49,6 @@ import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
-import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
-import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
-import com.cucr.myapplication.bean.eventBus.EventStarId;
-import com.cucr.myapplication.bean.others.FragmentInfos;
-import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
@@ -95,6 +96,10 @@ public class FragmentFans extends BaseFragment {
     //点击显示下拉菜单 旋转图标
     @ViewInject(R.id.iv_icon_unfold)
     private ImageView iv_icon_unfold;
+
+    //后援团 图集 预约等按钮 (加载完成后 才能显示并点击)
+    @ViewInject(R.id.rlv_click)
+    private RelativeLayout rlv_click;
 
     //下拉内容
     @ViewInject(R.id.drawer_rcv)
@@ -218,6 +223,8 @@ public class FragmentFans extends BaseFragment {
                 FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
                     iv_icon_unfold.setVisibility(View.VISIBLE);
+                    rlv_click.setVisibility(View.VISIBLE);
+
                     mRows = Info.getRows();
                     if (Constans.STATUS_STAR == ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1))) {
                         FocusInfo.RowsBean rowsBean = new FocusInfo.RowsBean(null, -1,
@@ -281,12 +288,13 @@ public class FragmentFans extends BaseFragment {
     private void initIndicator() {
 
         mDataList = new ArrayList<>();
-        //TODO
         mDataList.add(new FragmentInfos(new Fragment_star_xingwen(false), "星闻"));
+        //------------------------------------------------------------------------------------------
         if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR) {
             percent = 4.0f;
             mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
         }
+        //------------------------------------------------------------------------------------------
         //这里随便传个数 粉团的有参构造 StarPagerForQiYeActivity_111界面用
         mDataList.add(new FragmentInfos(new Fragment_star_fentuan(-1), "粉团"));
         mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
@@ -540,4 +548,11 @@ public class FragmentFans extends BaseFragment {
         mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
         startActivity(mIntent);
     }
+
+    //跳转搜索界面
+    @OnClick(R.id.iv_search)
+    public void goSearch(View view) {
+        startActivity(new Intent(mContext, StarSearchActivity.class));
+    }
+
 }

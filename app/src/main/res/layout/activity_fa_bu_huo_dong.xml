@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     >
 
-
     <LinearLayout
         android:id="@+id/activity_fa_bu_huo_dong"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -269,7 +268,6 @@
 
                     <include layout="@layout/horizontal_line_in_ll"/>
 
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -312,9 +310,7 @@
                             />
                     </LinearLayout>
 
-
                     <include layout="@layout/horizontal_line_in_ll"/>
-
 
                     <RelativeLayout
                         android:id="@+id/rl_fabu_huodong_pic"
@@ -359,7 +355,6 @@
                             app:sriv_right_bottom_corner_radius="@dimen/dp_5"
                             app:sriv_right_top_corner_radius="@dimen/dp_5"
                             />
-
 
                     </RelativeLayout>
 

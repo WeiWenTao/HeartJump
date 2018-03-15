@@ -242,6 +242,11 @@ public class YyhdActivity_2 extends BaseActivity implements DialogBirthdayStyle.
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         mDialog.dismiss();
     }

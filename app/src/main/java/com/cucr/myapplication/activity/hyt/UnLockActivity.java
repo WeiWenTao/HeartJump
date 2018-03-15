@@ -93,6 +93,11 @@ public class UnLockActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
 
     }

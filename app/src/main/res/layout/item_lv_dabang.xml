@@ -31,7 +31,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_toRightOf="@+id/tv_ranking"
-            android:src="@drawable/pic1_tv"
             />
 
         <RelativeLayout

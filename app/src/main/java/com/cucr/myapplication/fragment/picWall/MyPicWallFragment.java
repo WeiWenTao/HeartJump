@@ -151,6 +151,11 @@ public class MyPicWallFragment extends Fragment implements SwipeRecyclerView.OnL
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
         if (what == Constans.TYPE_ONE) {
             if (mRlv_my_pics.isRefreshing()) {

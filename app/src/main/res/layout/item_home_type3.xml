@@ -11,7 +11,6 @@
         android:layout_width="125dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/test_111"
         />
 
     <RelativeLayout
@@ -24,7 +23,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="冯轲首次还原2年前求婚真相 对张靓颖冷漠是因为一个电话"
             android:textSize="@dimen/sp_15"
             android:textColor="@color/color_333"
             android:lineSpacingExtra="@dimen/dp_3"
@@ -36,7 +34,6 @@
             android:textColor="@color/Color_92"
             android:layout_alignParentBottom="true"
             android:textSize="@dimen/sp_12"
-            android:text="星跳娱乐"
             />
 
         <LinearLayout
@@ -58,7 +55,6 @@
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6534"
                 android:textSize="@dimen/sp_12"
                 android:textColor="#929292"
                 />

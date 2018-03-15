@@ -9,7 +9,6 @@
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:src="@drawable/active1"
         android:id="@+id/imageView"
         />
 
@@ -39,7 +38,6 @@
                 android:id="@+id/iv_head"
                 android:layout_width="@dimen/dp_25"
                 android:layout_height="@dimen/dp_25"
-                android:src="@drawable/img3"
                 />
 
             <TextView

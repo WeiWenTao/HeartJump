@@ -10,6 +10,5 @@
         android:id="@+id/iv_item"
         android:layout_width="@dimen/dp_50"
         android:layout_height="@dimen/dp_50"
-        android:src="@drawable/star1"
         />
 </LinearLayout>

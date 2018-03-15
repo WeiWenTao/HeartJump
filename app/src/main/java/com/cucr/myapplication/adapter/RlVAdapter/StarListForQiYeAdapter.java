@@ -154,14 +154,12 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
 
                 if (isfollow == 0) {
                     EventBus.getDefault().post(new EventOnClickFocus());
-                    MyLogger.jLog().i("关注。。。");
                     mCore.toFocus(starId);
                     rowsBean.setIsfollow(1);
                 } else {
                     mDialogCanaleFocusStyle.show();
                     mDialogCanaleFocusStyle.initTitle(rows.get(position).getRealName());
                     newPosition = position;
-                    MyLogger.jLog().i("取消关注。。。");
 
 //                    mCore.cancaleFocus(starId);
 //                    rowsBean.setIsfollow(0);

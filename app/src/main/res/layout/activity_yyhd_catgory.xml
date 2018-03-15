@@ -60,7 +60,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/active2"
                 />
 
             <TextView
@@ -189,7 +188,6 @@
                     android:id="@+id/iv_head"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
-                    android:src="@drawable/star1"
                     />
 
                 <TextView
@@ -356,7 +354,6 @@
                     android:textSize="@dimen/sp_13"
                     />
             </LinearLayout>
-
 
         </LinearLayout>
 

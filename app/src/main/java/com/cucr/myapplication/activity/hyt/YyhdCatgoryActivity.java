@@ -243,6 +243,11 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
     }
 
     @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
     public void onRequestFinish(int what) {
 
     }

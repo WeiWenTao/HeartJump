@@ -108,8 +108,8 @@ public class Fragment_star_xingcheng extends Fragment {
                         queryJourneyByTime(0);
                     } else {
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                        return;
                     }
-                    MyLogger.jLog().i("size" + starScheduleLIst.getObj().size());
                 } else {
                     ToastUtils.showToast(mContext, starScheduleLIst.getMsg());
                 }
