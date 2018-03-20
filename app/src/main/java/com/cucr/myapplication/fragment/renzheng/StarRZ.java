@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -278,7 +279,8 @@ public class StarRZ extends Fragment {
                 photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
                 mOpenCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
+//                imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
+                imageUri = FileProvider.getUriForFile(MyApplication.getInstance(), MyApplication.getInstance().getPackageName() + ".provider", new File(photoSavePath, photoSaveName));
                 mOpenCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 mOpenCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 

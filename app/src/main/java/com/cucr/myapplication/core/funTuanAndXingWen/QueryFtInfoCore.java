@@ -72,6 +72,17 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
 
+    //查询单条粉团信息
+    @Override
+    public void querySignleFtInfo(String ftId, RequersCallBackListener listener) {
+        ftQuerylistener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_SIGNLE_FT_INFO, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("ftId", ftId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_SEVEN, request, callback);
+    }
+
     //查询首页关注新闻 传focus查关注
     @Override
     public void queryFtInfo(boolean focus, int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener) {
@@ -138,7 +149,6 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         mQueue.add(Constans.TYPE_FORE, request, callback);
     }
 
-
     //背包
     @Override
     public void queryBackpackInfo(OnCommonListener listener) {
@@ -153,7 +163,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     //阅读量
     @Override
-    public void ftRead(int dataId) {
+    public void ftRead(String dataId) {
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FT_READ, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("dataId", dataId)
@@ -205,6 +215,10 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                 case Constans.TYPE_SIX:
                     MyLogger.jLog().i("阅读量:" + response);
                     break;
+
+                case Constans.TYPE_SEVEN:
+                    ftQuerylistener.onRequestSuccess(what, response);
+                    break;
             }
 
         }
@@ -239,6 +253,10 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         public void onFinish(int what) {
             switch (what) {
                 case Constans.TYPE_ONE:
+                    ftQuerylistener.onRequestFinish(what);
+                    break;
+
+                case Constans.TYPE_SEVEN:
                     ftQuerylistener.onRequestFinish(what);
                     break;
             }

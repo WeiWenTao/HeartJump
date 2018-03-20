@@ -11,18 +11,13 @@ import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.AccountListAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.login.UserAccountInfo;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
-import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
-import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogQuitAccountStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;
 
@@ -86,10 +81,14 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
     private void changeAccount(String getKey, int position) {
         String string = SpUtil.getAccountSp().getString(getKey, "");
         UserAccountInfo accountInfo = mGson.fromJson(string, UserAccountInfo.class);
-        mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new RequersCallBackListener() {
+        SpUtil.setParam(SpConstant.USER_ID, accountInfo.getUserId());
+        SpUtil.setParam(SpConstant.SIGN, accountInfo.getSign());
+        startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
+        adapter.setSelect(position);
+        finish();
+    /*    mLoginCore.login(accountInfo.getUserName(), accountInfo.getPassWord(), new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
-                // TODO: 2018/3/11 MD5加密错误
                 CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (msg.isSuccess()) {
                     startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
@@ -120,8 +119,8 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
         //如果没有网
         if (!CommonUtils.isNetworkConnected(MyApplication.getInstance()) || position == -1) {
             return;
-        }
-        adapter.setSelect(position);
+        }*/
+
 
     }
 

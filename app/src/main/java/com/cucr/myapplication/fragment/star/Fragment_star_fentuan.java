@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -36,17 +35,17 @@ import com.cucr.myapplication.bean.eventBus.EventStarId;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
+import com.cucr.myapplication.fragment.LazyFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
-import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
@@ -69,7 +68,7 @@ import toan.android.floatingactionmenu.FloatingActionsMenu;
 /**
  * Created by 911 on 2017/6/24.
  */
-public class Fragment_star_fentuan extends Fragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt, RequersCallBackListener {
+public class Fragment_star_fentuan extends LazyFragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt, RequersCallBackListener {
 
     //礼物
     @ViewInject(R.id.tv_gift)
@@ -119,6 +118,21 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
     public Fragment_star_fentuan() {
     }
 
+    @Override
+    protected void onFragmentFirstVisible() {
+        initView();
+        initRlV();
+        inipopWindow();
+        initInfos();
+
+
+        //如果是企业用户  进页面的时候就查一遍
+//        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
+//            starId = qYStarId;
+        onRefresh();
+//        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,18 +146,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
-            initView();
-            initRlV();
-            inipopWindow();
-            initInfos();
         }
-
-        //如果是企业用户  进页面的时候就查一遍
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
-            starId = qYStarId;
-            onRefresh();
-        }
-
         return view;
     }
 
@@ -325,7 +328,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
-            QueryFtInfos.RowsBean mRowsBean = (QueryFtInfos.RowsBean) data.getSerializableExtra("rowsBean");
+            SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
             final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
             rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
             rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
@@ -427,7 +430,7 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
         this.position = position;
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
-        intent.putExtra("rowsBean", rowsBean);
+        intent.putExtra("dataId", rowsBean.getId() + "");
         intent.putExtra("isFormConmmomd", isFormConmmomd);
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
@@ -482,8 +485,10 @@ public class Fragment_star_fentuan extends Fragment implements View.OnClickListe
             if (infos.isSuccess()) {
                 if (isRefresh) {
                     if (infos.getTotal() == 0) {
+                        rlv_test.setVisibility(View.VISIBLE);
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                     } else {
+                        rlv_test.setVisibility(View.GONE);
                         mQueryFtInfos = infos;
                         mAdapter.setData(infos);
                         rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);

@@ -22,11 +22,12 @@ import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.setting.BirthdayDate;
 import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.editPersonalInfo.EditInfoCore;
 import com.cucr.myapplication.dao.CityDao;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
@@ -34,6 +35,7 @@ import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
 import com.cucr.myapplication.widget.dialog.DialogGender;
 import com.cucr.myapplication.widget.dialog.DialogPhoto;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.luck.picture.lib.PictureSelectionModel;
@@ -54,7 +56,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 
 
-public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.OnClickBt, DialogGender.OnClickBt {
+public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.OnClickBt, DialogGender.OnClickBt, RequersCallBackListener {
 
     //选择生日
     @ViewInject(R.id.tv_birthday_edit)
@@ -99,6 +101,8 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     private DialogPhoto mDialog;
     private DialogGender mGenderDialog;
     private PictureSelectionModel mModel;
+    private MyWaitDialog mWaitDialog;
+    private Intent mIntent;
 
     @Override
     protected void initChild() {
@@ -107,7 +111,8 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         //用户编辑
         mCore = new EditInfoCore();
         //查询
-        obj = (PersonMessage.ObjBean) getIntent().getSerializableExtra("data");
+        mIntent = getIntent();
+        obj = (PersonMessage.ObjBean) mIntent.getSerializableExtra("data");
         //初始化对话框
         mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, true);
 
@@ -115,8 +120,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     }
 
     private void initDialog() {
-//        dialog = new DialogErWeiMa(this, R.style.MyDialogStyle);
-
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mDialog = new DialogPhoto(this, R.style.MyDialogStyle);
         Window dialogWindow = mDialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
@@ -290,19 +294,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
         String singName = et_my_sign.getText().toString();
         int sex = tv_gender.getText().equals("男") ? 0 : 1;
 
-        mCore.save(MyApplication.getInstance(), new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath), new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                ReBackMsg msg = mGson.fromJson(response.get(), ReBackMsg.class);
-                if (msg.isSuccess()) {
-                    ToastUtils.showToast("保存成功!");
-                    EventBus.getDefault().post(new EventQueryPersonalInfo());
-                    finish();
-                } else {
-                    ToastUtils.showToast(msg.getMsg());
-                }
-            }
-        });
+        mCore.save(MyApplication.getInstance(), new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath), this);
     }
 
     @Override
@@ -321,7 +313,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void clickAlbum() {
-        requestPermissions(new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
     }
 
     @Override
@@ -371,5 +363,40 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     @Override
     public void clickWoman() {
         tv_gender.setText("女");
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_ONE) {
+            ReBackMsg msg = mGson.fromJson(response.get(), ReBackMsg.class);
+            if (msg.isSuccess()) {
+                ToastUtils.showToast("保存成功!");
+                EventBus.getDefault().post(new EventQueryPersonalInfo());
+                setResult(111);
+                finish();
+            } else {
+                ToastUtils.showToast(msg.getMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        mWaitDialog.show();
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mWaitDialog.dismiss();
     }
 }

@@ -21,20 +21,14 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
-import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
+import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
-import com.cucr.myapplication.core.pay.PayCenterCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
@@ -44,8 +38,15 @@ import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
-import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -79,7 +80,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener {
 
     //根布局
     @ViewInject(R.id.rootview)
@@ -140,7 +141,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private DialogDaShangStyle daShangStyle;
     private boolean mHasPicture;
     private boolean mIsFormConmmomd;
-    private QueryFtInfos.RowsBean mRowsBean;
+    private SignleFtInfo.ObjBean mRowsBean;
     private FtCommentCore mCommentCore;
     private Integer page;
     private Integer rows;
@@ -168,16 +169,21 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
         initData();
+        queryHeadInfo();
         //阅读量
-        queryCore.ftRead(mRowsBean.getId());
-        initGiftAndBackPack();
         setUpEmojiPopup();
-        initLV();
-        onRefresh();
+        initGiftAndBackPack();
+
+    }
+
+    private void queryHeadInfo() {
+        String dataId = getIntent().getStringExtra("dataId");
+        queryCore.querySignleFtInfo(dataId, this);
     }
 
     //查询道具信息
     private void initGiftAndBackPack() {
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
         mPayCenterCore = new PayCenterCore();
         //查询用户余额
         mPayCenterCore.queryUserMoney(new OnCommonListener() {
@@ -228,14 +234,13 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //获取传过来的数据
     private void initData() {
         mIntent = getIntent();
-        mHasPicture = mIntent.getBooleanExtra("hasPicture", false);
-        mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);//是否是点击评论跳转过来的
-        mRowsBean = (QueryFtInfos.RowsBean) mIntent.getSerializableExtra("rowsBean");
         mCommentCore = new FtCommentCore();
-        upDataInfo();
+        mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);//是否是点击评论跳转过来的
+//        upDataInfo();
         queryCore = new QueryFtInfoCore();
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setOnLoadListener(this);
+
     }
 
     //更新数据
@@ -275,7 +280,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         popWindow.setOutsideTouchable(true);
         popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mDaShangPagerAdapter = new DaShangPagerAdapter();
         vp_dahsnag.setAdapter(mDaShangPagerAdapter);
     }
 
@@ -340,9 +344,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         image_layout.setOnItemClick(new FlowImageLayout.OnItemClick() {
             @Override
             public void onItemClickListener(View view, int position) {
-                Log.i("position", position + "");
                 Intent intent = new Intent(MyApplication.getInstance(), ImagePagerActivity.class);
-                List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList = mRowsBean.getAttrFileList();
+                List<SignleFtInfo.ObjBean.AttrFileListBean> attrFileList = mRowsBean.getAttrFileList();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("imgs", (Serializable) attrFileList);//序列化,要注意转化(Serializable)
                 intent.putExtras(bundle);//发送数据
@@ -565,27 +568,21 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
 
-            final FtCommentInfo.RowsBean mRowsBean = (FtCommentInfo.RowsBean) data.getSerializableExtra("rowsBean");
-
-//            final FtCommentInfo.RowsBean rowsBean = allRows.get(position);
-
-//            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
-//            rowsBean.setIsGiveUp(mRowsBean.getIsGiveUp());
+            final FtCommentInfo.RowsBean rowsBean = (FtCommentInfo.RowsBean) data.getSerializableExtra("rowsBean");
 
             //=============================================================================
 //            如果在secondComment页面评论了  就再查一遍(如果评论从无到有)
-            if (mRowsBean.getCommentCount() == 1) { //如果只有一条评论就再查一遍 评论了之后不退出页面在进行二级评论时bug
+            if (rowsBean.getCommentCount() == 1) { //如果只有一条评论就再查一遍 评论了之后不退出页面在进行二级评论时bug
                 // TODO: 2017/12/12  有问题 待解决 在适配器中会报空指针 原因是 评论数量改变了 却没有评论数据
                 onRefresh();
                 mAdapter.notifyDataSetChanged();
             } else {
                 allRows.remove(position);
-                allRows.add(position, mRowsBean);
+                allRows.add(position, rowsBean);
                 mAdapter.setData(allRows);
 //                rowsBean.setCommentCount(mRowsBean.getCommentCount());
             }
             //=============================================================================
-
 
         }
     }
@@ -774,4 +771,35 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         }
     }
 
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_SEVEN) {
+            SignleFtInfo signleFtInfo = mGson.fromJson(response.get(), SignleFtInfo.class);
+            if (signleFtInfo.isSuccess()) {
+                mRowsBean = signleFtInfo.getObj();
+                mHasPicture = mRowsBean.getAttrFileList().size() > 0;
+                upDataInfo();
+                initLV();
+                queryCore.ftRead(mRowsBean.getId()+"");
+                onRefresh();
+            } else {
+                ToastUtils.showToast(signleFtInfo.getMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
+    }
 }

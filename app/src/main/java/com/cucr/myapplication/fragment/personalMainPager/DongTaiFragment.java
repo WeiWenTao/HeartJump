@@ -18,8 +18,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -30,6 +30,7 @@ import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.Constans;
@@ -324,7 +325,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         MyLogger.jLog().i("Commendposition:" + position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
-        intent.putExtra("rowsBean", rowsBean);
+        intent.putExtra("dataId", rowsBean.getId()+"");
         intent.putExtra("isFormConmmomd", formCommond);
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
@@ -364,7 +365,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
-                QueryFtInfos.RowsBean mRowsBean = (QueryFtInfos.RowsBean) data.getSerializableExtra("rowsBean");
+                SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
                 final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
                 rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
                 rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());

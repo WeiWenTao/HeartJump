@@ -11,6 +11,9 @@ public interface QueryFtInfoInterf {
     //查询粉团(新闻)文章
     void queryFtInfo(int strId,int dataType,int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
 
+    //查询单条粉团(新闻)文章
+    void querySignleFtInfo(String ftId, RequersCallBackListener listener);
+
     //查询新闻关注文章
     void queryFtInfo(boolean focus,int strId,int dataType,int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
 
@@ -22,6 +25,6 @@ public interface QueryFtInfoInterf {
 
     void queryBackpackInfo(OnCommonListener listener);
 
-    void ftRead(int dataId);
+    void ftRead(String dataId);
 
 }

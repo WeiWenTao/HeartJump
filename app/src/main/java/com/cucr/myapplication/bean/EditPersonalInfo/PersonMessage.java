@@ -8,6 +8,15 @@ import java.io.Serializable;
 
 public class PersonMessage implements Serializable {
 
+    @Override
+    public String toString() {
+        return "PersonMessage{" +
+                "msg='" + msg + '\'' +
+                ", obj='" + obj + '\'' +
+                ", success=" + success +
+                '}';
+    }
+
     /**
      * msg :
      * obj : {"age":0,"areaId":3,"areaName":"","cityId":2,"cityName":"","createdatetime":null,"driverId":"","id":2,"loginname":"18672342353","name":"wiki","otherloginname":"","password":"e10adc3949ba59abbe56e057f20f883e","phone":"18672342353","provinceId":1,"provinceName":"","roleIds":"2","roleNames":"明星用户","sex":1,"sign":"abddcf08-1fd0-45ee-82c9-40f236cfe35a","signName":"???????????","userHeadPortrait":"/static/yuanshi_image/dee25aee-94bc-485b-92e6-fca0d8907ca9.jpg","userPicCover":""}
@@ -332,12 +341,4 @@ public class PersonMessage implements Serializable {
         }
     }
 
-    @Override
-    public String toString() {
-        return "PersonMessage{" +
-                "msg='" + msg + '\'' +
-                ", obj=" + obj +
-                ", success=" + success +
-                '}';
-    }
 }

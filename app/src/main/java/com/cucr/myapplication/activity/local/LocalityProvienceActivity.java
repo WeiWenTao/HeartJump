@@ -32,7 +32,7 @@ public class LocalityProvienceActivity extends BaseActivity {
 
     @Override
     protected void initChild() {
-
+        initTitle("所在地");
         actives = new HashMap<>();
         //个人中心
         actives.put("PersonalInfoActivity", PersonalInfoActivity.class);

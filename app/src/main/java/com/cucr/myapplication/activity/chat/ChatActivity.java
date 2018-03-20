@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.hyt.HytMemberListActivity;
@@ -25,6 +26,10 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
+import java.util.Locale;
+
+import io.rong.imlib.model.Conversation;
+
 public class ChatActivity extends FragmentActivity implements DialogHytMembers.OnClickBt, DialogExitHyt.OnClickConfirm, RequersCallBackListener, DialogDissolveHyt.OnClickConfirm {
 
     private DialogHytMembers mDialog;
@@ -35,6 +40,7 @@ public class ChatActivity extends FragmentActivity implements DialogHytMembers.O
     private HytCore mCore;
     private Gson mGson;
     private boolean mIsCaptain;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +56,27 @@ public class ChatActivity extends FragmentActivity implements DialogHytMembers.O
     private void initTitle() {
 //        targetId  title
 //        Uri data = getIntent().getData();
+
+
         mIntent = new Intent(MyApplication.getInstance(), HytMemberListActivity.class);
         mHytId = getIntent().getData().getQueryParameter("targetId");
+        title = getIntent().getData().getQueryParameter("title");
         String ctretId = getIntent().getData().getQueryParameter("ctretId");
-        mIsCaptain = Integer.parseInt(ctretId) == ((int) SpUtil.getParam(SpConstant.USER_ID, -1));
+
+        TextView tv_title = (TextView) findViewById(R.id.tv_title);
+        tv_title.setText(title);
+        Conversation.ConversationType conversationType = Conversation.ConversationType.valueOf(getIntent().getData()
+                .getLastPathSegment().toUpperCase(Locale.US));
+
+        if (conversationType == Conversation.ConversationType.GROUP) {
+            findViewById(R.id.iv_member).setVisibility(View.VISIBLE);
+        }
+
+        if (ctretId != null) {
+            mIsCaptain = Integer.parseInt(ctretId) == ((int) SpUtil.getParam(SpConstant.USER_ID, -1));
+        }
 
         mIntent.putExtra("id", mHytId);
-//        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-//            @Override
-//            public UserInfo getUserInfo(String s) {
-//                return null;
-//            }
-//        }, true);
         mDialog = new DialogHytMembers(this, R.style.MyDialogStyle);
         mExitHyt = new DialogExitHyt(this, R.style.BirthdayStyleTheme);
         mDissloveHyt = new DialogDissolveHyt(this, R.style.BirthdayStyleTheme);
@@ -112,26 +127,21 @@ public class ChatActivity extends FragmentActivity implements DialogHytMembers.O
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        if (what == Constans.TYPE_FOURTEEN) {
-            CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-            if (msg.isSuccess()) {
+        CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+        if (msg.isSuccess()) {
+            if (what == Constans.TYPE_FOURTEEN) {
                 Intent need = getIntent().putExtra("need", true);
                 setResult(1, need);
                 finish();
                 ToastUtils.showToast("退出成功!");
-            } else {
-                ToastUtils.showToast(msg.getMsg());
-            }
-        }else if(what == Constans.TYPE_EIGHTEEN) {
-            CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-            if (msg.isSuccess()) {
+            } else if (what == Constans.TYPE_EIGHTEEN) {
                 Intent need = getIntent().putExtra("need", true);
                 setResult(1, need);
                 finish();
                 ToastUtils.showToast("已解散该后援团");
-            } else {
-                ToastUtils.showToast(msg.getMsg());
             }
+        } else {
+            ToastUtils.showToast(msg.getMsg());
         }
     }
 

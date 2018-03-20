@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.EditPersonalInfo.IMHytInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMPersonalInfo;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
@@ -27,7 +28,7 @@ import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
 import com.cucr.myapplication.listener.LoadChatServer;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
@@ -42,16 +43,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imkit.model.GroupUserInfo;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, OnCommonListener, LoadChatServer {
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, LoadChatServer, RongIM.GroupInfoProvider, RequersCallBackListener, RongIM.GroupUserInfoProvider {
 
     private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
     private QueryPersonalMsgCore qucryCore;
     private UserInfo mUserInfo;
+    private Group mGroupInfo;
+    private GroupUserInfo mGroupUserInfo;
     private ChatCore mChatCore;
+    private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         String param = (String) SpUtil.getParam(SpConstant.TOKEN, "");
         mChatCore.connect(param, this);
         RongIM.setUserInfoProvider(this, true);
+        RongIM.setGroupInfoProvider(this, true);
+        RongIM.setGroupUserInfoProvider(this, true);
     }
 
     //============================聊天服务器回调=======================
@@ -209,21 +217,75 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         UMShareAPI.get(this).release();
     }
 
+
     //获取用户信息返回给融云
     @Override
     public UserInfo getUserInfo(String userId) {
+        MyLogger.jLog().i("userId:" + userId);
         qucryCore.queryPersonalById(userId, this);
         return mUserInfo;
     }
 
+    //获取群组信息返回给融云
     @Override
-    public void onRequestSuccess(Response<String> response) {
-        IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
-        if (info.isSuccess()) {
-            IMPersonalInfo.ObjBean obj = info.getObj();
-            mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.IMAGE_HOST + obj.getUserHeadPortrait()));
-        } else {
-            ToastUtils.showToast(info.getMsg());
-        }
+    public Group getGroupInfo(String id) {
+        MyLogger.jLog().i("id:" + id);
+        qucryCore.queryHytInfoById(id, this);
+        return mGroupInfo;
     }
+
+    @Override
+    public GroupUserInfo getGroupUserInfo(String groupId, String userId) {
+        mId = userId;
+        qucryCore.queryHytInfoById(groupId, this);
+        return mGroupUserInfo;
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        switch (what) {
+            case Constans.TYPE_TWO:
+                IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
+                if (info.isSuccess()) {
+                    IMPersonalInfo.ObjBean obj = info.getObj();
+                    if (obj != null) {
+                        mUserInfo = new UserInfo(obj.getId() + "", obj.getName(), Uri.parse(HttpContans.IMAGE_HOST + obj.getUserHeadPortrait()));
+                    }
+                } else {
+                    ToastUtils.showToast(info.getMsg());
+                }
+                break;
+
+            case Constans.TYPE_THREE:
+                IMHytInfo groupInfo = MyApplication.getGson().fromJson(response.get().toString(), IMHytInfo.class);
+                if (groupInfo.isSuccess()) {
+                    IMHytInfo.ObjBean objBean = groupInfo.getObj();
+                    if (objBean != null) {
+                        mGroupInfo = new Group(objBean.getHytId() + "", objBean.getName(), Uri.parse(HttpContans.IMAGE_HOST + objBean.getPicUrl()));
+                        mGroupUserInfo = new GroupUserInfo(objBean.getHytId() + "", mId, objBean.getName());
+                    }
+                } else {
+                    ToastUtils.showToast(groupInfo.getMsg());
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
+    }
+
+
 }

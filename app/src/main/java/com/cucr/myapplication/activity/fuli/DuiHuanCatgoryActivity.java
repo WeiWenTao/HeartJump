@@ -41,7 +41,7 @@ public class DuiHuanCatgoryActivity extends Activity {
     //    private int[] mImgs ={R.mipmap.test1,R.mipmap.test2,R.mipmap.test3,R.mipmap.test4,R.mipmap.test5,R.mipmap.test6,R.mipmap.test7
 //            ,R.mipmap.test8,R.mipmap.test9,R.mipmap.test10,R.mipmap.test11,R.mipmap.test12,R.mipmap.test13,R.mipmap.test14,R.mipmap.test15
 //            ,R.mipmap.test16,R.mipmap.test17,R.mipmap.test18,R.mipmap.test19,R.mipmap.test20,R.mipmap.test21,R.mipmap.test22,R.mipmap.test23};
-    private int[] mImgs = new int[20];
+//    private int[] mImgs = new int[20];
     private Intent mIntent;
     private List<DuiHuanGoosInfo.RowsBean> mDatas;
 
@@ -118,7 +118,7 @@ public class DuiHuanCatgoryActivity extends Activity {
         mGalleryRecyclerView.setOnViewSelectedListener(new GalleryRecyclerView.OnViewSelectedListener() {
             @Override
             public void onSelected(View view, final int position) {
-                if (position == mImgs.length - 1)
+                if (position == mDatas.size() - 1)
                     ToastUtils.showToast(DuiHuanCatgoryActivity.this, "到最后了哦");
             }
         });

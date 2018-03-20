@@ -94,11 +94,12 @@ public class SplishActivity extends Activity {
         //实例化文件对象 判断文件是否存在
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
         file.mkdir();
-        if (!file.exists() || file.listFiles() == null) {
+        if (!file.exists() || file.listFiles() == null||file.listFiles().length == 0) {
             //解压文件
             initZip();
         }
     }
+
 
     private void initZip() {
         ThreadUtils.getInstance().execute(new Runnable() {

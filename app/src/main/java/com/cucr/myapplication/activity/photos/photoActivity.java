@@ -23,8 +23,6 @@ import com.cucr.myapplication.adapter.PagerAdapter.HomePhotoPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
-import com.cucr.myapplication.bean.share.ShareEntity;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -342,9 +340,4 @@ public class PhotoActivity extends BaseActivity implements ViewPager.OnPageChang
         isShow = !isShow;
     }
 
-
-    @OnClick(R.id.iv_share)
-    public void shareNews(View view){
-        mDialog.setData(new ShareEntity(photos.getTitle(), photos.getContent(), HttpContans.ADDRESS_FT_SHARE + photos.getId(), ""));
-    }
 }

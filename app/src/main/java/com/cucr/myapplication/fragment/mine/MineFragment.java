@@ -1,8 +1,13 @@
 package com.cucr.myapplication.fragment.mine;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +37,7 @@ import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.AppInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
@@ -39,6 +45,7 @@ import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.BaseFragment;
@@ -56,6 +63,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.zackratos.ultimatebar.UltimateBar;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.rong.imlib.model.Conversation;
 
 /**
  * Created by 911 on 2017/4/10.
@@ -111,6 +123,10 @@ public class MineFragment extends BaseFragment {
     @ViewInject(R.id.rl_my_yuyue)
     private RelativeLayout rl_my_yuyue;
 
+    //新手教程(明星没有)
+    @ViewInject(R.id.rl_learning)
+    private RelativeLayout rl_learning;
+
     private Intent mIntent;
     private PersonMessage.ObjBean mObj;
     private UserCore mUserCore;
@@ -122,7 +138,9 @@ public class MineFragment extends BaseFragment {
         ViewUtils.inject(this, childView);
         mUserCore = new UserCore();
         mQucryCore = new QueryPersonalMsgCore();
-
+        map = new HashMap<>();
+        map.put(Conversation.ConversationType.PRIVATE.getName(), false);
+        map.put(Conversation.ConversationType.GROUP.getName(), false);
         showAndHide();  //分配权限
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
@@ -146,6 +164,8 @@ public class MineFragment extends BaseFragment {
             case Constans.STATUS_STAR:    //明星
                 rl_require.setVisibility(View.VISIBLE);   //要求
                 rl_my_journey.setVisibility(View.VISIBLE);//行程
+                rl_learning.setVisibility(View.GONE);     //新手教程
+
                 break;
 
             case Constans.STATUS_QIYE:    //企业
@@ -192,6 +212,7 @@ public class MineFragment extends BaseFragment {
                 PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
                 if (personMessage.isSuccess()) {
                     mObj = mGson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
+
                     initViews();
                 } else {
                     ToastUtils.showToast(personMessage.getMsg());
@@ -209,9 +230,9 @@ public class MineFragment extends BaseFragment {
 
     private void initViews() {
         String userHeadPortrait = mObj.getUserHeadPortrait();
-        if (TextUtils.isEmpty(userHeadPortrait)){
+        if (TextUtils.isEmpty(userHeadPortrait)) {
             userPic.setImageResource(R.drawable.empty_touxiang);
-        }else {
+        } else {
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + userHeadPortrait,
                     userPic, MyApplication.getImageLoaderOptions());
         }
@@ -265,7 +286,7 @@ public class MineFragment extends BaseFragment {
     public void goPersonalInfo(View view) {
         mIntent.setClass(mContext, PersonalInfoActivity.class);
         mIntent.putExtra("data", mObj);
-        mContext.startActivity(mIntent);
+        startActivity(mIntent);
     }
 
     //关注
@@ -301,6 +322,16 @@ public class MineFragment extends BaseFragment {
     public void goPayCenter(View view) {
         mIntent.setClass(mContext, PayCenterActivity_new.class);
         mContext.startActivity(mIntent);
+    }
+
+    private Map<String, Boolean> map;
+
+    //私信
+    @OnClick(R.id.rl_private)
+    public void goPrivate(View view) {
+//        RongIM.getInstance().startConversationList(MyApplication.getInstance(), map);
+
+        CheckUpData();
     }
 
     //认证
@@ -389,5 +420,57 @@ public class MineFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+    }
+
+
+    private void CheckUpData() {
+        AppCore core = new AppCore();
+        core.queryCode(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                AppInfo appInfo = mGson.fromJson(response.get(), AppInfo.class);
+                normalUpdate(getActivity(), "心跳互娱", appInfo);
+            }
+        });
+    }
+
+    private void normalUpdate(Context context, String text, final AppInfo appInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("心跳互娱有新版本了 V" + appInfo.getKeyFild());
+        builder.setMessage(appInfo.getRemark());
+        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!canDownloadState()) {
+                    showDownloadSetting();
+                    return;
+                }
+                //      DownLoadApk.download(MainActivity.this,downUrl,updateinfo,appName);
+//                DownLoadApk.download(getActivity(), appInfo.getValueFild(), "正在下载", "心跳互娱");
+            }
+        }).setCancelable(false).create().show();
+    }
+
+    private void showDownloadSetting() {
+        String packageName = "com.android.providers.downloads";
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + packageName));
+        startActivity(intent);
+    }
+
+    private boolean canDownloadState() {
+        try {
+            int state = MyApplication.getInstance().getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
+            if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

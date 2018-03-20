@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
-import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
@@ -27,6 +27,7 @@ import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.Constans;
@@ -202,7 +203,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         page++;
         queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
@@ -239,7 +240,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         MyLogger.jLog().i("动态参数 userId=" + userId + ",page=" + page + ",rows=" + rows);
         queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
@@ -317,7 +318,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         MyLogger.jLog().i("Commendposition:" + position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
-        intent.putExtra("rowsBean", rowsBean);
+        intent.putExtra("dataId", rowsBean.getId() + "");
         intent.putExtra("isFormConmmomd", formCommond);
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
@@ -354,14 +355,14 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-            if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
-                QueryFtInfos.RowsBean mRowsBean = (QueryFtInfos.RowsBean) data.getSerializableExtra("rowsBean");
-                final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
-                rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
-                rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
-                rowsBean.setCommentCount(mRowsBean.getCommentCount());
-                mAdapter.notifyDataSetChanged();
-            }
+        if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
+            SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
+            final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
+            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
+            rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
+            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     //礼物

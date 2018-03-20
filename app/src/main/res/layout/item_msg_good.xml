@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/lvbg"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_star_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@color/color_333"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/tv_neckname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="胡歌"
+                android:textColor="@color/name_color"
+                android:textSize="@dimen/sp_16"
+                />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_neckname"
+                android:text="1月27日 17：28 来自微博"
+                android:textColor="#929292"
+                android:textSize="@dimen/sp_12"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/light_gray"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:src="@drawable/icon_sixin"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp_8"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="用户昵称"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <com.vanniktech.emoji.EmojiTextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_3"
+                android:ellipsize="middle"
+                android:maxLines="2"
+                android:text="原文内容..."
+                android:textColor="@color/color_666"
+                android:textSize="@dimen/sp_12"
+                app:emojiSize="@dimen/sp_15"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

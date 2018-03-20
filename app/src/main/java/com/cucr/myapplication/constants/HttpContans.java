@@ -114,6 +114,9 @@ public class HttpContans {
     //查询粉团信息
     public static final String ADDRESS_QUERY_FT_INFO = HOST + "/interface/mobileContentAction/queryInfo";
 
+    //查询单条粉团信息
+    public static final String ADDRESS_QUERY_SIGNLE_FT_INFO = HOST + "/interface/mobileContentAction/queryFtPhoto";
+
     //支付宝支付接口
     public static final String ADDRESS_ALIPAY_PAY = HOST + "/interface/pay/alipaySign";
 
@@ -293,4 +296,10 @@ public class HttpContans {
 
     //根据id查用户(融云IM)
     public static final String ADDRESS_USERINFO_BYID = HOST + "/interface/user/queryUserInfo";
+
+    //根据id查后援团群组(融云IM)
+    public static final String ADDRESS_HYTINFO_BYID = HOST + "/interface/mobileHelpTeamAction/queryHytPhoto";
+
+    //查询消息信息
+    public static final String ADDRESS_MSGINFO = HOST + "/interface/mobileMessageQueryAction/queryMessage";
 }

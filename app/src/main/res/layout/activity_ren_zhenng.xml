@@ -28,8 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="@dimen/dp_55"
-            android:layout_marginRight="@dimen/dp_55"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
             app:tabBackground="@null"
             app:tabGravity="fill"
             app:tabIndicatorHeight="0dp"
@@ -38,7 +38,7 @@
             app:tabSelectedTextColor="@color/pink"
             app:tabTextAppearance="@style/TabLayoutText"
             app:tabTextColor="@color/zongse"
-            ></android.support.design.widget.TabLayout>
+            />
 
     </RelativeLayout>
 

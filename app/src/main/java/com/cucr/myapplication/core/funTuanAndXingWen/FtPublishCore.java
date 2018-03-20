@@ -114,7 +114,7 @@ public class FtPublishCore implements FenTuanInterf {
             MyLogger.jLog().i("UploadonStart");
             if (what == 10) {
                 dialog_progress.show();
-//                dialog_progress.setProgress(0);
+                dialog_progress.setProgress(0);
             }
 
         }
@@ -126,13 +126,20 @@ public class FtPublishCore implements FenTuanInterf {
 
         @Override
         public void onProgress(int what, int progress) {// 这个文件的上传进度发生边刷
-//                dialog_progress.setProgress(progress);
+            if (what == 10) {
+                dialog_progress.setProgress(progress);
                 MyLogger.jLog().i("Uploadonvideo" + progress);
+            }
+
         }
 
         @Override
         public void onFinish(int what) {// 文件上传完成
             MyLogger.jLog().i("UploadonFinish");
+            if (what == 10) {
+                dialog_progress.dismiss();
+            }
+
         }
 
         @Override

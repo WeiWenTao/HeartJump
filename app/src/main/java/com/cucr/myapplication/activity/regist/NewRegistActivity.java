@@ -199,7 +199,6 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
 
     //登录请求
     private void logRequest() {
-        //TODO 输入判断
         new LoginCore().login(mPhoneNum, mSetPsw, this);
     }
 

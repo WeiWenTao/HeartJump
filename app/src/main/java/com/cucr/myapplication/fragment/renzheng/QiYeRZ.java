@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,16 +28,16 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.RZ.RzResult;
+import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.renZheng.CommitQiYeRzCore;
 import com.cucr.myapplication.core.renZheng.QueryRzResult;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.RZ.RzResult;
-import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
@@ -331,7 +332,8 @@ public class QiYeRZ extends Fragment {
                 photoSaveName = String.valueOf(System.currentTimeMillis()) + ".png";
                 Uri imageUri = null;
                 mOpenCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
+                //                imageUri = Uri.fromFile(new File(photoSavePath, photoSaveName));
+                imageUri = FileProvider.getUriForFile(MyApplication.getInstance(), MyApplication.getInstance().getPackageName() + ".provider", new File(photoSavePath, photoSaveName));
                 mOpenCameraIntent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 mOpenCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 

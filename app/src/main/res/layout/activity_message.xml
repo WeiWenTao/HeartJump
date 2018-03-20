@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-
     android:id="@+id/activity_message"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,153 +7,73 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.MessageActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <include layout="@layout/activity_base_title"/>
-
     <RelativeLayout
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
         >
 
         <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
 
-            android:id="@+id/iv_inform"
-            android:layout_width="19dp"
-            android:layout_height="18dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/dp_10"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            app:tabBackground="@null"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabPadding="@dimen/dp_10"
+            app:tabSelectedTextColor="@color/pink"
+            app:tabTextAppearance="@style/TabLayoutText"
+            app:tabTextColor="@color/zongse"
+            />
+
+    </RelativeLayout>
+
+    <!--我的私信-->
+    <RelativeLayout
+        android:onClick="kefu"
+        android:id="@+id/rl_kefu"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#fff"
+        >
+
+        <ImageView
+            android:id="@+id/iv_my_private"
+            style="@style/My_iv"
             android:src="@drawable/icon_inform"
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_inform"
-            android:text="系统通知"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_15"
+            style="@style/My_tv"
+            android:layout_toRightOf="@id/iv_my_private"
+            android:text="客服咨询"
             />
 
         <ImageView
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
+            style="@style/My_Arrow"
             />
-
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#f6f6f6"
-        />
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_msg"
         android:background="@color/white"
-        >
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="评论"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_15"
-            />
-
-        <ImageView
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
-            />
-
-
-    </RelativeLayout>
-
-    <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#ccc"
-        />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        >
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="赞"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_15"
-            />
-
-        <ImageView
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
-            />
-
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#f6f6f6"
-        />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        >
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="客服"
-            android:textColor="#666"
-            android:textSize="@dimen/sp_15"
-            />
-
-        <ImageView
-            android:layout_width="8dp"
-            android:layout_height="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_more"
-            />
-
-
-    </RelativeLayout>
-
+        android:layout_height="match_parent"
+        ></android.support.v4.view.ViewPager>
 
 </LinearLayout>

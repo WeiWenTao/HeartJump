@@ -28,6 +28,7 @@ import static com.cucr.myapplication.alipay.OrderInfoUtil2_0.getOutTradeNo;
 
 public class PayCenterCore implements PayCenterInterf {
 
+    private Context context;
     private RequestQueue mQueue;
     private OnCommonListener aliPayListener;
     private OnCommonListener wxPayListener;
@@ -35,7 +36,6 @@ public class PayCenterCore implements PayCenterInterf {
     private OnCommonListener userMoneyListener;
     private OnCommonListener TxRecordListener;
     private RequersCallBackListener commonListener;
-    private Context context;
 
     public PayCenterCore() {
         this.context = MyApplication.getInstance();

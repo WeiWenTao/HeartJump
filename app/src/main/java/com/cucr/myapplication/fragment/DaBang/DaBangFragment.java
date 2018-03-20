@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.DaBangAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -66,6 +67,12 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     @Override
     protected void initView(View childView) {
         dialogContext = childView.getContext();
+        childView.findViewById(R.id.iv_header_msg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, MessageActivity.class));
+            }
+        });
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         //如果是企业用户
@@ -285,4 +292,5 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 }

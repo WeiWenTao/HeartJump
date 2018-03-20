@@ -48,7 +48,7 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
     }
 
     public void addDate(List<FocusInfo.RowsBean> rows) {
-        if (rows == null) {
+        if (this.rows == null) {
             return;
         }
         notifyItemInserted(this.rows.size() + 1);

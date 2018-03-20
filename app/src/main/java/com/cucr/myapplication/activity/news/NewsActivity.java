@@ -20,8 +20,6 @@ import com.cucr.myapplication.activity.comment.XingWenCommentActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
-import com.cucr.myapplication.bean.share.ShareEntity;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -247,11 +245,5 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
                 }
             }
         });
-    }
-
-    @OnClick(R.id.iv_share)
-    public void shareNews(View view) {
-        ShareEntity entity = new ShareEntity(rowsBean.getTitle(), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), "");
-        mDialog.setData(entity);
     }
 }

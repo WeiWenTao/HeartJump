@@ -150,7 +150,8 @@ public class FtCatgoryAadapter extends BaseAdapter {
         iv_good.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
         tv_good_value.setText(mRowsBean.getGiveUpCount() + "");
         tv_username.setText(mRowsBean.getUser().getName());
-        tv_comment_content.setText(CommonUtils.unicode2String(mRowsBean.getComment()));
+        String comment = mRowsBean.getComment();
+        tv_comment_content.setText(CommonUtils.unicode2String(comment));
         return cvh.convertView;
     }
 

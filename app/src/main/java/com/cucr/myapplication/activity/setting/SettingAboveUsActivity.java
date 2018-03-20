@@ -32,7 +32,6 @@ public class SettingAboveUsActivity extends BaseActivity {
     }
 
     private void initData() {
-
         mCore.queryCode(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {

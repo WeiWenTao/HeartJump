@@ -5,7 +5,7 @@
               android:layout_height="wrap_content">
 
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -56,10 +56,10 @@
             android:textSize="@dimen/sp_15"
             />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_10"
+        android:layout_height="1px"
         android:background="@color/lvbg"/>
 </LinearLayout>

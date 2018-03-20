@@ -115,7 +115,7 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
         mRows = new ArrayList<>();
         initData();
         //阅读量
-        queryCore.ftRead(mRowsBean.getId());
+        queryCore.ftRead(mRowsBean.getId()+"");
         setUpEmojiPopup();
         initLV();
         onRefresh();

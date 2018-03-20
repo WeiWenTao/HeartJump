@@ -130,7 +130,7 @@ public class LoginCore implements LoadByPsw {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, context);
-            loginListener.onRequestError(what,response);
+            loginListener.onRequestError(what, response);
         }
 
         @Override
@@ -147,7 +147,7 @@ public class LoginCore implements LoadByPsw {
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
-            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), mPassWord,
+            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getUserId(), loadSuccess.getSign(), loadSuccess.getPhone(), mPassWord,
                     HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
             SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
             edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();

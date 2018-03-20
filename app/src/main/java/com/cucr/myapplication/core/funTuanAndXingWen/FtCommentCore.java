@@ -38,6 +38,7 @@ public class FtCommentCore implements FenTuanComment {
         mQueue = NoHttp.newRequestQueue();
     }
 
+    //粉团评论查询
     @Override
     public void queryFtComment(Integer dataId, Integer parentId, Integer page, Integer rows, OnCommonListener listener) {
         queryCommentListener = listener;

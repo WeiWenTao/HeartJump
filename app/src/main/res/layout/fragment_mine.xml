@@ -283,6 +283,34 @@
                 android:orientation="vertical"
                 >
 
+                <!--我的私信-->
+                <RelativeLayout
+                    android:id="@+id/rl_private"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_private"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_sixin"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_private"
+                        android:text="我的私信"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
                 <!--认证-->
                 <RelativeLayout
                     android:id="@+id/rl_ren_zheng"
@@ -339,36 +367,6 @@
                     <include layout="@layout/horizontal_line"
                         />
 
-                </RelativeLayout>
-
-                <!--预约-->
-                <RelativeLayout
-                    android:id="@+id/rl_my_yuyue"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:visibility="gone"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_yuyue"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_appoinment"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_yuyue"
-                        android:text="我的预约"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
                 </RelativeLayout>
 
                 <!--行程-->
@@ -429,24 +427,26 @@
                         />
                 </RelativeLayout>
 
-                <!--我的图集-->
+                <!--预约-->
                 <RelativeLayout
-                    android:id="@+id/rl_my_pics"
+                    android:id="@+id/rl_my_yuyue"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="#fff"
+                    android:clickable="true"
+                    android:visibility="gone"
                     >
 
                     <ImageView
-                        android:id="@+id/iv_my_pics"
+                        android:id="@+id/iv_my_yuyue"
                         style="@style/My_iv"
-                        android:src="@drawable/icon_mypic"
+                        android:src="@drawable/m_appoinment"
                         />
 
                     <TextView
                         style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_pics"
-                        android:text="我的图集"
+                        android:layout_toRightOf="@id/iv_my_yuyue"
+                        android:text="我的预约"
                         />
 
                     <ImageView
@@ -476,6 +476,34 @@
                         style="@style/My_tv"
                         android:layout_toRightOf="@id/iv_my_actis"
                         android:text="我的活动"
+                        />
+
+                    <ImageView
+                        style="@style/My_Arrow"
+                        />
+
+                    <include layout="@layout/horizontal_line"
+                        />
+                </RelativeLayout>
+
+                <!--我的图集-->
+                <RelativeLayout
+                    android:id="@+id/rl_my_pics"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#fff"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_my_pics"
+                        style="@style/My_iv"
+                        android:src="@drawable/icon_mypic"
+                        />
+
+                    <TextView
+                        style="@style/My_tv"
+                        android:layout_toRightOf="@id/iv_my_pics"
+                        android:text="我的图集"
                         />
 
                     <ImageView

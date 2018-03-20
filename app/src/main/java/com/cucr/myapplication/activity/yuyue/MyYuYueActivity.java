@@ -1,5 +1,6 @@
 package com.cucr.myapplication.activity.yuyue;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ import com.cucr.myapplication.widget.recyclerView.LoadMoreWrapper;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
 
-public class MyYuYueActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MyYuYueActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, MyYuYueAdapter.OnClickItem {
 
 
     @ViewInject(R.id.rlv_my_yuyue)
@@ -49,6 +50,7 @@ public class MyYuYueActivity extends BaseActivity implements SwipeRefreshLayout.
     private void init() {
         mCore = new YuYueCore();
         mAdapter = new MyYuYueAdapter();
+        mAdapter.setItem(this);
         rlv_my_yuyue.setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         rlv_my_yuyue.addItemDecoration(new SpacesItemDecoration(10));
         mWapper = new LoadMoreWrapper(mAdapter);
@@ -98,5 +100,12 @@ public class MyYuYueActivity extends BaseActivity implements SwipeRefreshLayout.
                 }
             }
         });
+    }
+
+    @Override
+    public void onItemClick(QiYeHuoDongInfo.RowsBean rowsBean) {
+        Intent intent = new Intent(MyApplication.getInstance(), YuYueResultCatgoryActivity.class);
+        intent.putExtra("date",rowsBean);
+        startActivity(intent);
     }
 }

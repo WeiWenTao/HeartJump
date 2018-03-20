@@ -51,25 +51,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:clickable="true"
-        android:id="@+id/rl_message_setting"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        >
-
-        <TextView
-            style="@style/Setting_tv"
-            android:text="消息设置"
-            />
-        <ImageView
-            style="@style/My_Arrow"
-            android:src="@drawable/icon_more"
-            />
-        <include layout="@layout/horizontal_line_for10dp"/>
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_above_us"
         android:background="@color/white"
         android:layout_width="match_parent"

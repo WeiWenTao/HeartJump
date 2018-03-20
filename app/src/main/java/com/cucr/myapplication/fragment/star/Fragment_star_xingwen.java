@@ -65,7 +65,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);//订阅
+
         MyLogger.jLog().i("注册");
         mCore = new QueryFtInfoCore();
         mGson = new Gson();
@@ -83,6 +83,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
                 onRefresh();
             }
         }
+        EventBus.getDefault().register(this);//订阅
         return view;
     }
 
@@ -136,9 +137,11 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     if (mQueryFtInfos.getTotal()==0){
+                        rlv_test.setVisibility(View.VISIBLE);
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         return;
                     }
+                    rlv_test.setVisibility(View.GONE);
                     mAdapter.setData(mQueryFtInfos);
                     rlv_xingwen.getRecyclerView().smoothScrollToPosition(0);
                     if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {

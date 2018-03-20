@@ -3,12 +3,12 @@ package com.cucr.myapplication.core.editPersonalInfo;
 import android.content.Context;
 
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.EditPersonalInfo.PersonalInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.personalinfo.SavePersonalInfo;
-import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.EditPersonalInfo.PersonalInfo;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
@@ -29,21 +29,19 @@ import java.io.File;
 
 public class EditInfoCore implements SavePersonalInfo {
 
-    private OnCommonListener commonListener;
+    private RequersCallBackListener commonListener;
 
     /**
      * 请求队列。
      */
     private RequestQueue mQueue;
-    private Context mContext;
 
     public EditInfoCore() {
-        mContext = MyApplication.getInstance();
         mQueue = NoHttp.newRequestQueue();
     }
 
     @Override
-    public void save(Context context, PersonalInfo personalInfo, final OnCommonListener commonListener) {
+    public void save(Context context, PersonalInfo personalInfo, final RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
         //用户头像
         String head = personalInfo.getuserHeadPortrait();
@@ -86,26 +84,23 @@ public class EditInfoCore implements SavePersonalInfo {
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onStart(int what) {
-
+            commonListener.onRequestStar(what);
         }
 
         @Override
         public void onSucceed(int what, Response response) {
-            switch (what) {
-                case Constans.TYPE_ONE:
-                    commonListener.onRequestSuccess(response);
-                    break;
-            }
+            commonListener.onRequestSuccess(what, response);
         }
 
         @Override
         public void onFailed(int what, Response response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+            commonListener.onRequestError(what, response);
         }
 
         @Override
         public void onFinish(int what) {
-
+            commonListener.onRequestFinish(what);
         }
     };
 

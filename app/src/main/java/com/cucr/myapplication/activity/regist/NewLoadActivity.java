@@ -102,19 +102,19 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         mGson = MyApplication.getGson();
         mKeys = new ArrayList<>();
         tags = new HashSet<>();
-      /*  if (Build.VERSION.SDK_INT >= 23) {
-            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_LOGS,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.SET_DEBUG_APP,
-                    Manifest.permission.SYSTEM_ALERT_WINDOW,
-                    Manifest.permission.GET_ACCOUNTS,
-                    Manifest.permission.WRITE_APN_SETTINGS};
-            requestPermissions(mPermissionList, 123);
-        }*/
+//      if (Build.VERSION.SDK_INT >= 23) {
+//            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.ACCESS_FINE_LOCATION,
+//                    Manifest.permission.CALL_PHONE,
+//                    Manifest.permission.READ_LOGS,
+//                    Manifest.permission.READ_PHONE_STATE,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE,
+//                    Manifest.permission.SET_DEBUG_APP,
+//                    Manifest.permission.SYSTEM_ALERT_WINDOW,
+//                    Manifest.permission.GET_ACCOUNTS,
+//                    Manifest.permission.WRITE_APN_SETTINGS};
+//            requestPermissions(mPermissionList, 123);
+//        }
         initViews();
     }
 
@@ -307,8 +307,9 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getObj(), LoadSuccess.class);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
-            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getPhone(), mPassWord,
+            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getUserId(), loadSuccess.getSign(), loadSuccess.getPhone(), mPassWord,
                     HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
+
             SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
             edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
             //两个容器 类似于联表查询效果

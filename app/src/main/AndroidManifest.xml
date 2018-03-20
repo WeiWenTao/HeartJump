@@ -177,6 +177,27 @@
             <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             <!-- </intent-filter> -->
         </activity>
+
+        <!--会话列表-->
+        <activity
+            android:name="com.cucr.myapplication.activity.chat.ConversationListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:host="com.cucr.myapplication"
+                    android:pathPrefix="/conversationlist"
+                    android:scheme="rong"
+                    />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".activity.star.StarSearchActivity"
             android:windowSoftInputMode="adjustPan"
@@ -186,9 +207,7 @@
         </activity>
         <activity
             android:name=".activity.MessageActivity"
-            android:launchMode="singleTask"
-            >
-        </activity>
+            />
         <activity
             android:name=".activity.setting.PersonalInfoActivity"
             android:launchMode="singleTask"
@@ -210,8 +229,6 @@
         <activity android:name=".activity.pay.TxRecordActivity">
         </activity>
         <activity android:name=".activity.pay.PayCenterActivity_new">
-        </activity>
-        <activity android:name=".activity.setting.SettingMessageActivity">
         </activity>
         <activity android:name=".activity.setting.SettingAboveUsActivity">
         </activity>
@@ -433,6 +450,14 @@
         </activity>
         <activity android:name=".activity.setting.MyActivesActivity">
         </activity>
+        <activity android:name=".activity.yuyue.YuYueResultCatgoryActivity">
+        </activity>
+
+        <receiver android:name=".utils.myUp.ApkInstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

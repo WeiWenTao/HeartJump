@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:paddingBottom="@dimen/dp_10"
-                android:paddingLeft="43dp"
-                android:paddingRight="43dp"
     >
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         >
 
         <RelativeLayout
+            android:layout_centerHorizontal="true"
             android:id="@+id/rl_second"
             android:layout_width="70dp"
             android:layout_height="93dp"
@@ -50,7 +50,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 />
-
 
 
         </RelativeLayout>
@@ -112,9 +111,9 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         >
@@ -215,9 +214,9 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         >
@@ -226,6 +225,7 @@
             android:id="@+id/rl_third"
             android:layout_width="70dp"
             android:layout_height="93dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="29dp"
             >
 
@@ -235,7 +235,6 @@
                 android:layout_height="88dp"
                 android:src="@drawable/king3"
                 />
-
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_head3"
@@ -263,7 +262,6 @@
 
         </RelativeLayout>
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -278,6 +276,9 @@
                 android:id="@+id/tv_name3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxEms="5"
+                android:singleLine="true"
                 android:textColor="@color/color_333"
                 android:textSize="@dimen/sp_15"
                 />
@@ -320,4 +321,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

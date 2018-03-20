@@ -59,6 +59,8 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.RongIM;
+
 public class PersonalMainPagerActivity extends Activity {
 
     //指示器
@@ -117,6 +119,7 @@ public class PersonalMainPagerActivity extends Activity {
     private FocusCore mFocusCore;
     private int mUserId;
     private int mFssl;
+    private UserCenterInfo mUserInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,11 +147,11 @@ public class PersonalMainPagerActivity extends Activity {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 String json = response.get();
-                UserCenterInfo userInfo = MyApplication.getGson().fromJson(json, UserCenterInfo.class);
-                if (userInfo.isSuccess()) {
-                    setData(userInfo.getObj());
+                mUserInfo = MyApplication.getGson().fromJson(json, UserCenterInfo.class);
+                if (mUserInfo.isSuccess()) {
+                    setData();
                 } else {
-                    ToastUtils.showToast(userInfo.getMsg());
+                    ToastUtils.showToast(mUserInfo.getMsg());
                 }
             }
         });
@@ -156,7 +159,8 @@ public class PersonalMainPagerActivity extends Activity {
 
 
     //将获取到的信息设置到控件上
-    private void setData(UserCenterInfo.ObjBean obj) {
+    private void setData() {
+        UserCenterInfo.ObjBean obj = mUserInfo.getObj();
         mDataList.add("动态 " + obj.getDtsl());
         mDataList.add("明星 " + obj.getGzmxsl());
         initIndicator();
@@ -180,7 +184,6 @@ public class PersonalMainPagerActivity extends Activity {
         fragmentList.add(new StarFragment(mUserId));
         mViewPager.setAdapter(new PersonalMainPagerAdapter(getFragmentManager(), fragmentList));
     }
-
 
 
     //初始化标签栏
@@ -273,7 +276,7 @@ public class PersonalMainPagerActivity extends Activity {
     //点击liao
     @OnClick(R.id.ll_liao)
     public void liao(View view) {
-
+        RongIM.getInstance().startPrivateChat(this, mUserId + "", mUserInfo.getObj().getYhnc());
     }
 
     //打赏动画

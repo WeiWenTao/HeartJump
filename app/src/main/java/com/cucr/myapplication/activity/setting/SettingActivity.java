@@ -30,13 +30,6 @@ public class SettingActivity extends BaseActivity {
         return R.layout.activity_setting;
     }
 
-
-    //消息设置
-    @OnClick(R.id.rl_message_setting)
-    public void msgSetting(View view) {
-        startActivity(new Intent(MyApplication.getInstance(), SettingMessageActivity.class));
-    }
-
     //关于我们
     @OnClick(R.id.rl_above_us)
     public void aboveUs(View view) {
