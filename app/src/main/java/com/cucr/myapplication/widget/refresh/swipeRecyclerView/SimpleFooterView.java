@@ -58,7 +58,7 @@ public class SimpleFooterView extends BaseFooterView{
     @Override
     public void onNoMore(CharSequence message) {
         showText();
-        mText.setText("-- the end --");
+        mText.setText("没有更多了哦");
     }
 
     @Override

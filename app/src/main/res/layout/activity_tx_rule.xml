@@ -1,41 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.pay.TxRuleActivity"
     >
 
     <include layout="@layout/activity_base_title"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="@dimen/dp_30"
-        android:layout_marginRight="@dimen/dp_30"
-        android:text="1)提现只能提到支付宝账户,请确保输入正确的支付宝账号,如有账户填写错误,由本人承担责任;"
-        android:textColor="@color/color_333"
-        android:textSize="@dimen/sp_15"
-        android:lineSpacingExtra="@dimen/dp_3"
-        />
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginLeft="@dimen/dp_30"
-        android:layout_marginRight="@dimen/dp_30"
-        android:text="2)提现只能提到支付宝账户,请确保输入正确的支付宝账号,如有账户填写错误,由本人承担责任;"
-        android:textColor="@color/color_333"
-        android:textSize="@dimen/sp_15"
-        android:lineSpacingExtra="@dimen/dp_3"
-        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_marginTop="20dp"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="1）提现只能提到支付宝账户，请确保输入正确的支付宝账号，如有账户填写错误，由本人承担责任；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="2）提现以后，财务人员将在5个工作日之内支付到提现时输入的支付宝账号，请耐心等待，如有问题，可以跟客服人员反馈问题；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="3）提现星币兑换比例与充值星币比例保持一致，1元兑换10星币；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="4）提现星币最小数值为10星币；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="5）提现金&lt;600元，提现分成为五成，提现>=600元，提现分成为六成，例如：提现5000星币，实际所得金额为￥250，提现6000星币，实际所得金额为￥360，以此类推；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                ></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:text="6）当单笔提现金额>8000星币时，征税机关将扣除20%个人所得税；"
+                android:textColor="@color/color_333"
+                android:textSize="@dimen/sp_15"
+                ></TextView>
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

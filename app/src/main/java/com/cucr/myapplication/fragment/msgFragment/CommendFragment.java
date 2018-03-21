@@ -27,6 +27,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -41,6 +42,7 @@ import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
 import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
@@ -50,7 +52,6 @@ import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
  */
 
 public class CommendFragment extends Fragment implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener, MsgCommendAdapter.OnClickRelpay {
-
 
     //底部回复
     @ViewInject(R.id.ll_foot)
@@ -64,6 +65,11 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     @ViewInject(R.id.et_comment)
     private EmojiEditText et_comment;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
+
     private View rootView;
     private Gson mGson;
     private MsgCommendAdapter mAdapter;
@@ -76,6 +82,7 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     //emoji表情
     private EmojiPopup emojiPopup;
     private int dataId;
+    private int commonId;
 
     @Nullable
     @Override
@@ -150,7 +157,12 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
         MsgInfo msgInfo = mGson.fromJson(response.get(), MsgInfo.class);
         if (msgInfo.isSuccess()) {
             if (isRefresh) {
-                mAdapter.setDate(msgInfo.getRows());
+                if (msgInfo.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    mAdapter.setDate(msgInfo.getRows());
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
             } else {
                 mAdapter.addDate(msgInfo.getRows());
             }
@@ -171,7 +183,9 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -203,14 +217,14 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     }
 
     @Override
-    public void clickReplay(int dataId) {
+    public void clickReplay(int dataId, String commonId) {
         this.dataId = dataId;
+        this.commonId = Integer.parseInt(commonId);
         ll_foot.setVisibility(View.VISIBLE);
         et_comment.setFocusable(true);
         et_comment.setFocusableInTouchMode(true);
         et_comment.requestFocus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
     }
 
     //emoji表情
@@ -231,7 +245,7 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(dataId, -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
+        queryCore.toComment(dataId, commonId, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);

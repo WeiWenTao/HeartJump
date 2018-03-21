@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
@@ -397,5 +398,13 @@ public class StarPagerActivity extends FragmentActivity implements OnCommonListe
         } else {
             ToastUtils.showToast(starInfos.getErrorMsg());
         }
+    }
+
+
+    @OnClick(R.id.iv_weib)
+    public void click(View iv_weib) {
+        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
+        intent.putExtra("url", mData.getWeiboUrl());
+        startActivity(intent);
     }
 }

@@ -155,6 +155,16 @@
 
                         </LinearLayout>
 
+                        <ImageView
+                            android:id="@+id/iv_weib"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_alignBottom="@+id/ll_hyt"
+                            android:layout_marginLeft="@dimen/dp_20"
+                            android:layout_toRightOf="@+id/ll_hyt"
+                            android:src="@drawable/weibo"
+                            />
+
                     </RelativeLayout>
 
                 </RelativeLayout>

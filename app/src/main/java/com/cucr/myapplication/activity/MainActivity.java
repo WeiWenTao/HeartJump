@@ -1,24 +1,30 @@
 package com.cucr.myapplication.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.AppInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMHytInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMPersonalInfo;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
@@ -28,11 +34,13 @@ import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
 import com.cucr.myapplication.listener.LoadChatServer;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.upDataUtils.DownLoadApk;
 import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -72,6 +80,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         initView();
         initFragment(0);
         initRadioGroup();
+//        CheckUpData();    检查更新
         //TODO: 2017/4/28 Splash界面完成
         DisplayMetrics dm = new DisplayMetrics();
         // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
@@ -79,6 +88,57 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);
+    }
+
+    private void CheckUpData() {
+        AppCore core = new AppCore();
+        core.queryCode(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                AppInfo appInfo = MyApplication.getGson().fromJson(response.get(), AppInfo.class);
+                normalUpdate(MainActivity.this, "心跳互娱", appInfo);
+            }
+        });
+    }
+
+    private void normalUpdate(Context context, String text, final AppInfo appInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("心跳互娱有新版本了 V" + appInfo.getKeyFild());
+        builder.setMessage(appInfo.getRemark());
+        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!canDownloadState()) {
+                    showDownloadSetting();
+                    return;
+                }
+                ToastUtils.showToast("已开始后台下载");
+                DownLoadApk.download(MainActivity.this, appInfo.getValueFild(), "正在下载", "心跳互娱");
+            }
+        }).setCancelable(appInfo.getGroupFild() == 0).create().show();
+    }
+
+    private void showDownloadSetting() {
+        String packageName = "com.android.providers.downloads";
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + packageName));
+        startActivity(intent);
+    }
+
+    private boolean canDownloadState() {
+        try {
+            int state = MyApplication.getInstance().getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
+            if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private void initIM() {

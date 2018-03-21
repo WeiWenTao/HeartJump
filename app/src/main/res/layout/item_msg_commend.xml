@@ -102,7 +102,6 @@
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_5"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_sixin"
             />
 
         <LinearLayout

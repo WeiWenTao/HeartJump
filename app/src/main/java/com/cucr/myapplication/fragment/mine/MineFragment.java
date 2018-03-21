@@ -1,13 +1,8 @@
 package com.cucr.myapplication.fragment.mine;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -37,7 +32,6 @@ import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.AppInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
@@ -45,7 +39,6 @@ import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.BaseFragment;
@@ -67,6 +60,7 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
 
 /**
@@ -256,7 +250,6 @@ public class MineFragment extends BaseFragment {
             head.requestLayout();
         }
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getActivity().getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -329,9 +322,7 @@ public class MineFragment extends BaseFragment {
     //私信
     @OnClick(R.id.rl_private)
     public void goPrivate(View view) {
-//        RongIM.getInstance().startConversationList(MyApplication.getInstance(), map);
-
-        CheckUpData();
+        RongIM.getInstance().startConversationList(MyApplication.getInstance(), map);
     }
 
     //认证
@@ -423,54 +414,5 @@ public class MineFragment extends BaseFragment {
     }
 
 
-    private void CheckUpData() {
-        AppCore core = new AppCore();
-        core.queryCode(new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                AppInfo appInfo = mGson.fromJson(response.get(), AppInfo.class);
-                normalUpdate(getActivity(), "心跳互娱", appInfo);
-            }
-        });
-    }
 
-    private void normalUpdate(Context context, String text, final AppInfo appInfo) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("心跳互娱有新版本了 V" + appInfo.getKeyFild());
-        builder.setMessage(appInfo.getRemark());
-        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (!canDownloadState()) {
-                    showDownloadSetting();
-                    return;
-                }
-                //      DownLoadApk.download(MainActivity.this,downUrl,updateinfo,appName);
-//                DownLoadApk.download(getActivity(), appInfo.getValueFild(), "正在下载", "心跳互娱");
-            }
-        }).setCancelable(false).create().show();
-    }
-
-    private void showDownloadSetting() {
-        String packageName = "com.android.providers.downloads";
-        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + packageName));
-        startActivity(intent);
-    }
-
-    private boolean canDownloadState() {
-        try {
-            int state = MyApplication.getInstance().getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
-            if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
-                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED) {
-                return false;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 }

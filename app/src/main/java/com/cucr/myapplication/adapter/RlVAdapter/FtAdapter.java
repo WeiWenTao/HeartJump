@@ -13,13 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
-import com.cucr.myapplication.activity.video.VideoActivity;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.widget.picture.FlowImageLayout;
@@ -54,7 +54,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addData(List<QueryFtInfos.RowsBean> newData) {
         if (newData != null && newData.size() > 0) {
-            notifyItemInserted(this.rows.size()+1);
+            notifyItemInserted(this.rows.size() + 1);
             this.rows.addAll(newData);
         }
     }
@@ -94,11 +94,9 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof Tp1_Holder) {  //视频
 
             //跳转信息
-            final Intent intent = new Intent(context, VideoActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("rowsBean", rowsBean);//序列化,要注意转化(Serializable)
+            final Intent intent = new Intent(context, FenTuanVideoCatgoryActiviry.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtras(bundle);//发送数据
+            intent.putExtra("dataId", rowsBean.getId()+"");//发送数据
 
             //头像
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());
@@ -250,6 +248,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList = rowsBean.getAttrFileList();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("imgs", (Serializable) attrFileList);//序列化,要注意转化(Serializable)
+                    bundle.putBoolean("formCatgory", false);//序列化,要注意转化(Serializable)
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mIntent.putExtras(bundle);//发送数据
                     mIntent.putExtra("position", position);

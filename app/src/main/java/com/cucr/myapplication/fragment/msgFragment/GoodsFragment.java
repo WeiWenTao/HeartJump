@@ -17,7 +17,9 @@ import com.cucr.myapplication.fragment.LazyFragment;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 /**
@@ -33,6 +35,8 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
     private boolean isRefresh;
     private SwipeRecyclerView mSrlv;
     private MsgCore mCore;
+    private MultiStateView multiStateView;
+    boolean needShowLoading;
 
     @Nullable
     @Override
@@ -45,6 +49,7 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
         return rootView;
     }
 
+
     @Override
     protected void onFragmentFirstVisible() {
         onRefresh();
@@ -52,9 +57,11 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
 
     private void initView() {
         rows = 10;
+        needShowLoading = true;
         mGson = MyApplication.getGson();
         mCore = new MsgCore();
         mSrlv = (SwipeRecyclerView) rootView.findViewById(R.id.srlv);
+        multiStateView = (MultiStateView) rootView.findViewById(R.id.multiStateView);
         mAdapter = new MsgGoodAdapter();
         mSrlv.getRecyclerView().setAdapter(mAdapter);
         mSrlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
@@ -66,7 +73,12 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
         MsgInfo msgInfo = mGson.fromJson(response.get(), MsgInfo.class);
         if (msgInfo.isSuccess()) {
             if (isRefresh) {
-                mAdapter.setDate(msgInfo.getRows());
+                if (msgInfo.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    mAdapter.setDate(msgInfo.getRows());
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
             } else {
                 mAdapter.addDate(msgInfo.getRows());
             }
@@ -82,12 +94,17 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
 
     @Override
     public void onRequestStar(int what) {
-
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override

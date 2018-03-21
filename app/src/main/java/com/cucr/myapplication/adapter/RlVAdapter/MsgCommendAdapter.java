@@ -71,14 +71,15 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
                     holder.iv_cover, MyApplication.getImageLoaderOptions());
         }
 
-        ImageLoader.getInstance().displayImage( rowsBean.getPhotoUrl(), //评论人头像
+        ImageLoader.getInstance().displayImage(sendUser.getUserHeadPortrait(), //评论人头像
                 holder.iv_pic, MyApplication.getImageLoaderOptions());
 
         Map map = mGson.fromJson(rowsBean.getExtras(), Map.class);
         final String DateId = (String) map.get("dataId");
+        final String commentParentId = (String) map.get("commentParentId");
         holder.tv_commend.setText(((String) map.get("info")));  //评论内容
-        holder.tv_name.setText(sendUser.getName());             //原文作者姓名
-        holder.tv_neckname.setText(receiverUser.getName());     //评论人姓名
+        holder.tv_name.setText(receiverUser.getName());             //原文作者姓名
+        holder.tv_neckname.setText(sendUser.getName());     //评论人姓名
         holder.tv_time.setText(rowsBean.getCreateTime());       //创建时间
         holder.tv_content.setText(((String) map.get("title")));         //原文内容
 
@@ -88,7 +89,7 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, FenTuanCatgoryActiviry.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("dataId",DateId);
+                intent.putExtra("dataId", DateId);
                 mContext.startActivity(intent);
             }
         });
@@ -97,8 +98,8 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
         holder.tv_reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickRelpay!=null){
-                    mOnClickRelpay.clickReplay(Integer.parseInt(DateId));
+                if (mOnClickRelpay != null) {
+                    mOnClickRelpay.clickReplay(Integer.parseInt(DateId), commentParentId);
                 }
             }
         });
@@ -110,8 +111,8 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
         mOnClickRelpay = onClickRelpay;
     }
 
-    public interface OnClickRelpay{
-        void clickReplay(int dataId);
+    public interface OnClickRelpay {
+        void clickReplay(int dataId, String commonId);
     }
 
     @Override

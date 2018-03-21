@@ -18,7 +18,6 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.coverflow.GalleryRecyclerView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -118,8 +117,8 @@ public class DuiHuanCatgoryActivity extends Activity {
         mGalleryRecyclerView.setOnViewSelectedListener(new GalleryRecyclerView.OnViewSelectedListener() {
             @Override
             public void onSelected(View view, final int position) {
-                if (position == mDatas.size() - 1)
-                    ToastUtils.showToast(DuiHuanCatgoryActivity.this, "到最后了哦");
+                if (position == mDatas.size() - 1){}
+//                    ToastUtils.showToast(DuiHuanCatgoryActivity.this, "到最后了哦");
             }
         });
 

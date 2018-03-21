@@ -15,7 +15,11 @@
         android:orientation="vertical"
         >
 
-        <include layout="@layout/activity_base_title"/>
+        <include
+            layout="@layout/giraffe_player"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            />
 
         <com.cucr.myapplication.widget.refresh.RefreshLayout
             android:id="@+id/ref"
@@ -33,26 +37,16 @@
 
         </com.cucr.myapplication.widget.refresh.RefreshLayout>
 
-        <ImageView
-            android:id="@+id/iv_empty"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:src="@drawable/empty_neirong"
-            />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
             >
-          <!--  android:layout_alignParentBottom="true"
-            android:focusableInTouchMode="true"-->
 
             <com.vanniktech.emoji.EmojiEditText
                 android:id="@+id/et_comment"

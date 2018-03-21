@@ -54,6 +54,7 @@
             android:id="@+id/lv_dabang"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:dividerHeight="1px"
             ></ListView>
 
     </com.cucr.myapplication.widget.refresh.RefreshLayout>

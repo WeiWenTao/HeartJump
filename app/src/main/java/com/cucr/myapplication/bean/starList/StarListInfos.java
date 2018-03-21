@@ -69,6 +69,15 @@ public class StarListInfos implements Serializable {
         private String userPicCover;
         private int isfollow;
         private int startCost;
+        private String weiboUrl;
+
+        public String getWeiboUrl() {
+            return weiboUrl;
+        }
+
+        public void setWeiboUrl(String weiboUrl) {
+            this.weiboUrl = weiboUrl;
+        }
 
         public int getStartCost() {
             return startCost;

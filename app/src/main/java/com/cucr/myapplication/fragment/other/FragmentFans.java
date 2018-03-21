@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
@@ -151,6 +152,7 @@ public class FragmentFans extends BaseFragment {
     private float percent;//占屏比
     private Intent mIntent;
     private int mStarId;
+    private StarListInfos.RowsBean mRowsBean;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -187,11 +189,11 @@ public class FragmentFans extends BaseFragment {
             public void onRequestSuccess(Response<String> response) {
                 StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starInfos.isSuccess()) {
-                    StarListInfos.RowsBean rowsBean = starInfos.getRows().get(0);
-                    tv_fans.setText("粉丝 " + rowsBean.getFansCount());
-                    tv_starname.setText(rowsBean.getRealName());
-                    tv_star_title.setText(rowsBean.getRealName());
-                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                    mRowsBean = starInfos.getRows().get(0);
+                    tv_fans.setText("粉丝 " + mRowsBean.getFansCount());
+                    tv_starname.setText(mRowsBean.getRealName());
+                    tv_star_title.setText(mRowsBean.getRealName());
+                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
                 }
@@ -232,6 +234,7 @@ public class FragmentFans extends BaseFragment {
                                         (String) SpUtil.getParam(SpConstant.SP_USERHEAD, "")));
                         mRows.add(0, rowsBean);
                     }
+
                     mAdapter.setData(mRows);
                     if (mRows == null || mRows.size() == 0) {
                         return;
@@ -553,6 +556,13 @@ public class FragmentFans extends BaseFragment {
     @OnClick(R.id.iv_search)
     public void goSearch(View view) {
         startActivity(new Intent(mContext, StarSearchActivity.class));
+    }
+
+    @OnClick(R.id.iv_weib)
+    public void click(View iv_weib) {
+        Intent intent = new Intent(mContext, TestWebViewActivity.class);
+        intent.putExtra("url", mRowsBean.getWeiboUrl());
+        startActivity(intent);
     }
 
 }

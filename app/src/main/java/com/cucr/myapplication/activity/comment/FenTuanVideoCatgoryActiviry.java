@@ -2,15 +2,17 @@ package com.cucr.myapplication.activity.comment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +24,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.BaseActivity;
-import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
-import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.CommonRebackMsg;
-import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
@@ -51,9 +49,11 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaShangStyle;
-import com.cucr.myapplication.widget.picture.FlowImageLayout;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
+import com.danikula.videocache.CacheListener;
+import com.danikula.videocache.HttpProxyCacheServer;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -73,14 +73,18 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.zackratos.ultimatebar.UltimateBar;
 
-import java.io.Serializable;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import tcking.github.com.giraffeplayer.GiraffePlayer;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener {
+public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener {
 
     //根布局
     @ViewInject(R.id.rootview)
@@ -138,6 +142,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @ViewInject(R.id.ref)
     private RefreshLayout mRefreshLayout;
 
+    //播放器
+    private GiraffePlayer player;
+
     private DialogDaShangStyle daShangStyle;
     private boolean mHasPicture;
     private boolean mIsFormConmmomd;
@@ -160,20 +167,86 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private PopupWindow popWindow;
     private DaShangPagerAdapter mDaShangPagerAdapter;
     private PayCenterCore mPayCenterCore;
+    private Gson mGson;
+    private HttpProxyCacheServer mProxy;
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fen_tuan_video_catgory_activiry);
+        ViewUtils.inject(this);
+        initChild();
+    }
+
     protected void initChild() {
+        mGson = MyApplication.getGson();
         EventBus.getDefault().register(this);
-        initTitle("详情");
         rows = 5;
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
         initData();
+        initVideo();
         queryHeadInfo();
         //阅读量
         setUpEmojiPopup();
         initGiftAndBackPack();
+    }
 
+    private void initVideo() {
+        player = new GiraffePlayer(this);
+        player.onControlPanelVisibilityChang(new GiraffePlayer.OnControlPanelVisibilityChangeListener() {
+            @Override
+            public void change(boolean isShowing) {
+                if (player.isPlaying()) {
+                    lv_ft_catgory.setSystemUiVisibility(isShowing ? View.VISIBLE : View.INVISIBLE);
+                }
+            }
+        });
+
+
+
+
+        player.setDefaultRetryTime(5 * 1000);
+
+        //视频缓存
+        mProxy = MyApplication.getProxy(MyApplication.getInstance());
+
+        player.onComplete(new Runnable() {
+            @Override
+            public void run() {
+                //callback when video is finish
+//                Toast.makeText(getApplicationContext(), "video play completed", Toast.LENGTH_SHORT).show();
+            }
+        }).onInfo(new GiraffePlayer.OnInfoListener() {
+            @Override
+            public void onInfo(int what, int extra) {
+                switch (what) {
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        Log.i("test", "buffering start" + extra);
+                        //do something when buffering start
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        //do something when buffering end
+                        Log.i("test", "buffering end");
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
+                        //download speed
+                        Log.i("test", "download speed");
+//                        ((TextView) findViewById(R.id.tv_speed)).setText(Formatter.formatFileSize(getApplicationContext(),extra)+"/s");
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                        //do something when video rendering
+                        Log.i("test", "video rendering");
+//                        findViewById(R.id.tv_speed).setVisibility(View.GONE);
+                        break;
+                }
+            }
+        }).onError(new GiraffePlayer.OnErrorListener() {
+            @Override
+            public void onError(int what, int extra) {
+//                Toast.makeText(getApplicationContext(), "video play error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void queryHeadInfo() {
@@ -233,6 +306,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     //获取传过来的数据
     private void initData() {
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
         mIntent = getIntent();
         mCommentCore = new FtCommentCore();
         mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);//是否是点击评论跳转过来的
@@ -250,19 +325,15 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         tv_comment_count.setText(mRowsBean.getCommentCount() + "");
     }
 
-    @Override
-    protected int getChildRes() {
-        return R.layout.activity_fen_tuan_catgory_activiry;
-    }
-
     private void initLV() {
         View lvHead = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
         initPopWindow();
-        initLvHeader(lvHead);
-        lv_ft_catgory.addHeaderView(lvHead, null, true);
-        lv_ft_catgory.setHeaderDividersEnabled(false);
         mAdapter = new FtCatgoryAadapter(MyApplication.getInstance());
         mAdapter.setClickGoodsListener(this);
+        View inflate = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
+        mTv_all_comment = (TextView) inflate.findViewById(R.id.tv_all_comment);
+        lv_ft_catgory.addHeaderView(inflate, null, true);
+        lv_ft_catgory.setHeaderDividersEnabled(false);
         lv_ft_catgory.setAdapter(mAdapter);
         et_comment.setOnFocusChangeListener(this);
     }
@@ -281,79 +352,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         vp_dahsnag.setAdapter(mDaShangPagerAdapter);
-    }
-
-
-    private void initLvHeader(final View lvHead) {
-        //头像
-        ImageView iv_pic = (ImageView) lvHead.findViewById(R.id.iv_pic);
-        //昵称
-        TextView tv_neckname = (TextView) lvHead.findViewById(R.id.tv_neckname);
-        //时间来源
-        TextView tv_time_form = (TextView) lvHead.findViewById(R.id.tv_time_form);
-        //浏览量
-        TextView tv_lookcount = (TextView) lvHead.findViewById(R.id.tv_lookcount);
-        //评论内容
-        TextView tv_content = (TextView) lvHead.findViewById(R.id.tv_content);
-        //评论内容
-        mTv_all_comment = (TextView) lvHead.findViewById(R.id.tv_all_comment);
-        //打赏人数
-        tv_dashang = (TextView) lvHead.findViewById(R.id.tv_dashang);
-        //打赏
-        lvHead.findViewById(R.id.iv_dashang).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popWindow.showAtLocation(lvHead, Gravity.BOTTOM, 0, 0);
-                EventBus.getDefault().postSticky(new EventContentId(mRowsBean.getId(), 0));
-            }
-        });
-
-        //设置数据
-        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
-        tv_neckname.setText(mRowsBean.getCreateUserName());
-        tv_time_form.setText(mRowsBean.getCreaetTime());
-        tv_lookcount.setText(mRowsBean.getReadCount() + "");
-        tv_content.setText(mRowsBean.getContent());
-        mTv_all_comment.setText(mRowsBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
-        tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
-        tv_dashang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyApplication.getInstance(), DaShangCatgoryActivity.class);
-                intent.putExtra("contentId", mRowsBean.getId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
-        iv_pic.setOnClickListener(this);
-        tv_neckname.setOnClickListener(this);
-
-        FlowImageLayout image_layout = (FlowImageLayout) lvHead.findViewById(R.id.image_layout);
-        image_layout.setVisibility(mHasPicture ? View.VISIBLE : View.GONE);
-        image_layout.setHorizontalSpacing(2);
-        image_layout.setVerticalSpacing(2);
-        image_layout.setSingleImageSize(640, 400);
-        image_layout.loadImage(mRowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
-            @Override
-            public void layoutFinish(List<ImageView> images) {
-                for (int i = 0; i < mRowsBean.getAttrFileList().size(); i++) {
-                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
-                }
-            }
-        });
-        image_layout.setOnItemClick(new FlowImageLayout.OnItemClick() {
-            @Override
-            public void onItemClickListener(View view, int position) {
-                Intent intent = new Intent(MyApplication.getInstance(), ImagePagerActivity.class);
-                List<SignleFtInfo.ObjBean.AttrFileListBean> attrFileList = mRowsBean.getAttrFileList();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("imgs", (Serializable) attrFileList);//序列化,要注意转化(Serializable)
-                bundle.putBoolean("formCatgory", true);
-                intent.putExtras(bundle);//发送数据
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });
     }
 
     //点击评论时
@@ -437,21 +435,22 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         super.onStop();
     }
 
-    //返回操作
-    @Override
-    protected void onBackBefore() {
+    @OnClick(R.id.app_video_finish)
+    public void click(View view) {
         if (emojiPopup != null && emojiPopup.isShowing()) {
             emojiPopup.dismiss();
-        } else {
-            setData();
         }
-
+        setData();
+        finish();
     }
 
     @Override
     public void onBackPressed() {
         setData();
         finish();
+        if (player != null && player.onBackPressed()) {
+            return;
+        }
     }
 
     //根据状态改变发送栏
@@ -602,11 +601,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
     //点击lv头部的用户时  直接跳转个人主页
     @Override
@@ -728,6 +722,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
                 if (ftCommentInfo.isSuccess()) {
                     mRows = ftCommentInfo.getRows();
+                    mTv_all_comment.setText(ftCommentInfo.getTotal() == 0 ? "暂无评论" : "全部评论");
                     allRows.clear();
                     allRows.addAll(mRows);
                     mAdapter.setData(mRows);
@@ -779,6 +774,17 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             SignleFtInfo signleFtInfo = mGson.fromJson(response.get(), SignleFtInfo.class);
             if (signleFtInfo.isSuccess()) {
                 mRowsBean = signleFtInfo.getObj();
+
+                //        mProxy.registerCacheListener(cacheListener, url);
+                //如果缓存过了就设置缓存100%
+                if (mProxy.isCached(mRowsBean.getAttrFileList().get(0).getFileUrl())) {
+                    player.setSecondPro(100);
+                }
+
+                String proxyUrl = mProxy.getProxyUrl(mRowsBean.getAttrFileList().get(0).getFileUrl());
+                player.play(proxyUrl);
+                player.setShowNavIcon(true);
+
                 mHasPicture = mRowsBean.getAttrFileList().size() > 0;
                 upDataInfo();
                 initLV();
@@ -804,4 +810,49 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     public void onRequestFinish(int what) {
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (player != null) {
+            player.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player != null) {
+            player.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (player != null) {
+            player.onDestroy();
+        }
+        //取消监听
+        mProxy.unregisterCacheListener(cacheListener);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (player != null) {
+            player.onConfigurationChanged(newConfig);
+        }
+    }
+
+    //缓存监听
+    private CacheListener cacheListener = new CacheListener() {
+        @Override
+        public void onCacheAvailable(File cacheFile, String url, int percentsAvailable) {
+            MyLogger.jLog().i("percentsAvailable:" + percentsAvailable);
+            //设置缓存进度
+            player.setSecondPro(percentsAvailable);
+        }
+    };
 }

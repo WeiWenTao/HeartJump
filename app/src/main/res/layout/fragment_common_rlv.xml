@@ -6,12 +6,25 @@
     android:orientation="vertical"
     >
 
-    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
-        android:id="@+id/srlv"
+    <com.cucr.myapplication.widget.stateLayout.MultiStateView
+        android:id="@+id/multiStateView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:msv_animateViewChanges="true"
+        app:msv_emptyView="@layout/empty_common"
+        app:msv_errorView="@layout/error_view"
+        app:msv_loadingView="@layout/loading_view"
+        >
+        <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+            android:id="@+id/srlv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+    </com.cucr.myapplication.widget.stateLayout.MultiStateView>
 
     <LinearLayout
         android:id="@+id/ll_foot"
@@ -30,11 +43,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_weight="1"
+            android:focusable="true"
             android:hint="我要吐槽"
             android:imeOptions="actionSend|flagNoExtractUi"
             android:textColorHint="#ababab"
             android:textSize="@dimen/sp_13"
-            android:focusable="true"
             android:theme="@style/MyEditText"
             />
 

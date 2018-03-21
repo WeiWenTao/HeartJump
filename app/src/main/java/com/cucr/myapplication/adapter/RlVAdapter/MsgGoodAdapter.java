@@ -71,13 +71,13 @@ public class MsgGoodAdapter extends RecyclerView.Adapter<MsgGoodAdapter.MyHolder
                     holder.iv_cover, MyApplication.getImageLoaderOptions());
         }
 
-        ImageLoader.getInstance().displayImage(rowsBean.getPhotoUrl(), //评论人头像
+        ImageLoader.getInstance().displayImage(sendUser.getUserHeadPortrait(), //评论人头像
                 holder.iv_pic, MyApplication.getImageLoaderOptions());
 
         Map map = mGson.fromJson(rowsBean.getExtras(), Map.class);
         final String DateId = (String) map.get("dataId");
-        holder.tv_name.setText(sendUser.getName());             //原文作者姓名
-        holder.tv_neckname.setText(receiverUser.getName() + " 赞了你");     //点赞人姓名
+        holder.tv_name.setText(receiverUser.getName());             //原文作者姓名
+        holder.tv_neckname.setText(sendUser.getName() + " 赞了你");     //点赞人姓名
         holder.tv_time.setText(rowsBean.getCreateTime());       //创建时间
         holder.tv_content.setText(((String) map.get("title")));         //原文内容
 

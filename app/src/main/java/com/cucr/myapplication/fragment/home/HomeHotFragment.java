@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.home;
 
+import android.content.Intent;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HomeXingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.Home.HomeBannerInfo;
@@ -243,5 +245,8 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
     @Override
     public void onBannerClick(int position) {
         HomeBannerInfo.ObjBean objBean = mHomeBannerInfo.getObj().get(position);
+        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
+        intent.putExtra("url",objBean.getLocationUrl());
+        startActivity(intent);
     }
 }

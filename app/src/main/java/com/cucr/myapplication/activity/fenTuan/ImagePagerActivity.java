@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.ImgPagerAdapter;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
@@ -19,6 +20,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
     private ViewPager mPager;
     private TextView mTv_marks;
     private List<QueryFtInfos.RowsBean.AttrFileListBean> attrFileList;
+    private List<SignleFtInfo.ObjBean.AttrFileListBean> attrFileList_sign;
     private int mPosition;
 
     @Override
@@ -31,13 +33,17 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
     private void initData() {
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(Color.BLACK, 100);
-
-        attrFileList = (List<QueryFtInfos.RowsBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
+        boolean formCatgory = getIntent().getBooleanExtra("formCatgory", false);
+        if (formCatgory) {
+            attrFileList_sign = (List<SignleFtInfo.ObjBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
+        } else {
+            attrFileList = (List<QueryFtInfos.RowsBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
+        }
         mPosition = getIntent().getIntExtra("position", -1);
         mPager = (ViewPager) findViewById(R.id.pager);
         mTv_marks = (TextView) findViewById(R.id.marks);
         mPager.addOnPageChangeListener(this);
-        mPager.setAdapter(new ImgPagerAdapter(this,attrFileList));
+        mPager.setAdapter(new ImgPagerAdapter(this, attrFileList));
         mPager.setCurrentItem(mPosition);
     }
 

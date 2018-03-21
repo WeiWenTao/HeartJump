@@ -92,6 +92,11 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
     @ViewInject(R.id.ref)
     private RefreshLayout mRefreshLayout;
 
+    //状态布局
+    @ViewInject(R.id.iv_empty)
+    private ImageView iv_empty;
+
+
     private boolean mIsFormConmmomd;
     private QueryFtInfos.RowsBean mRowsBean;
     private FtCommentCore mCommentCore;
@@ -115,7 +120,7 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
         mRows = new ArrayList<>();
         initData();
         //阅读量
-        queryCore.ftRead(mRowsBean.getId()+"");
+        queryCore.ftRead(mRowsBean.getId() + "");
         setUpEmojiPopup();
         initLV();
         onRefresh();
@@ -353,6 +358,13 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
                 if (ftCommentInfo.isSuccess()) {
+                    if (ftCommentInfo.getTotal() == 0) {
+                        iv_empty.setVisibility(View.VISIBLE);
+                        mRefreshLayout.setVisibility(View.GONE);
+                    } else {
+                        iv_empty.setVisibility(View.GONE);
+                        mRefreshLayout.setVisibility(View.VISIBLE);
+                    }
                     mRows = ftCommentInfo.getRows();
                     allRows.addAll(mRows);
                     mAdapter.setData(mRows);

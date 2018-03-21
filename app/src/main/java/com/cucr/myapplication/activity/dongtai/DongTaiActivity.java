@@ -42,6 +42,7 @@ import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -75,6 +76,11 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     //动态列表
     @ViewInject(R.id.activity_dong_tai)
     private View mView;
+
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
 
     private int page;
     private int rows;
@@ -237,14 +243,17 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     }
 
     private void queryFtInfo() {
-        MyLogger.jLog().i("动态参数 userId=" + userId + ",page=" + page + ",rows=" + rows);
         queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-                    MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
-                    mAdapter.setData(mQueryFtInfos);
+                    if (mQueryFtInfos.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        mAdapter.setData(mQueryFtInfos);
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
                     rlv_dongtai.complete();
                     if (mQueryFtInfos.getTotal() == mQueryFtInfos.getRows().size()) {
                         rlv_dongtai.onNoMore("木有了");

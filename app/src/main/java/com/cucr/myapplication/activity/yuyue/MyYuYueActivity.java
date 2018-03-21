@@ -21,7 +21,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 public class MyYuYueActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, MyYuYueAdapter.OnClickItem {
 
-
     @ViewInject(R.id.rlv_my_yuyue)
     private RecyclerView rlv_my_yuyue;
 
@@ -38,7 +37,7 @@ public class MyYuYueActivity extends BaseActivity implements SwipeRefreshLayout.
     protected void initChild() {
         initTitle("我的预约");
         page = 1;
-        rows = 15;
+        rows = 5;
         init();
     }
 

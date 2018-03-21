@@ -261,6 +261,8 @@
         </activity>
         <activity android:name=".activity.comment.FenTuanCatgoryActiviry">
         </activity>
+        <activity android:name=".activity.comment.FenTuanVideoCatgoryActiviry">
+        </activity>
         <activity
             android:name=".activity.yuyue.YuYueCatgoryActivity"
             android:launchMode="singleTask"
@@ -453,7 +455,7 @@
         <activity android:name=".activity.yuyue.YuYueResultCatgoryActivity">
         </activity>
 
-        <receiver android:name=".utils.myUp.ApkInstallReceiver">
+        <receiver android:name=".utils.upDataUtils.ApkInstallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>

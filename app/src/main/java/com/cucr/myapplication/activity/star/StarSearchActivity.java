@@ -49,6 +49,7 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     @ViewInject(R.id.edit_search)
     private EditText edit_search;
 
+    //状态布局
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
 

@@ -7,7 +7,6 @@
                 android:orientation="vertical"
     >
 
-
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,12 +47,12 @@
 
                 <RelativeLayout
                     android:id="@+id/rlv_click"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="@dimen/dp_5"
                     android:layout_marginLeft="@dimen/dp_25"
+                    android:visibility="gone"
                     >
 
                     <TextView
@@ -120,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_fans"
-                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_20"
                         android:layout_toRightOf="@id/ll_photos"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -143,6 +142,15 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:id="@+id/iv_weib"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_alignBottom="@+id/ll_hyt"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:layout_toRightOf="@+id/ll_hyt"
+                        android:src="@drawable/weibo"
+                        />
 
                 </RelativeLayout>
 
@@ -212,13 +220,13 @@
                 />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_icon_unfold"
                 android:layout_width="15dp"
                 android:layout_height="6dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_3"
                 android:src="@drawable/sjx"
+                android:visibility="gone"
                 />
         </LinearLayout>
 
