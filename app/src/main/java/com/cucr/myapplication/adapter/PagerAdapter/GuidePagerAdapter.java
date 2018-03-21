@@ -34,7 +34,9 @@ public class GuidePagerAdapter extends PagerAdapter {
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+                    Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MyApplication.getInstance().startActivity(intent);
                 }
             });
         }

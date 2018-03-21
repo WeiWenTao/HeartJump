@@ -21,7 +21,7 @@ import com.cucr.myapplication.alipay.PayResult;
 import com.cucr.myapplication.alipay.PayResultInfo;
 import com.cucr.myapplication.alipay.WxPayInfo;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventIsSuccess;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.constants.Constans;

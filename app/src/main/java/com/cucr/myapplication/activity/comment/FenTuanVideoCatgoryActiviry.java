@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,7 +29,7 @@ import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
@@ -89,6 +90,10 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     //根布局
     @ViewInject(R.id.rootview)
     private ViewGroup rootview;
+
+    //评论栏
+    @ViewInject(R.id.ll_common_bar)
+    private LinearLayout ll_common_bar;
 
     //评论列表
     @ViewInject(R.id.lv_ft_catgory)
@@ -184,12 +189,28 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
         rows = 5;
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
+        initBar();
         initData();
         initVideo();
         queryHeadInfo();
         //阅读量
         setUpEmojiPopup();
         initGiftAndBackPack();
+    }
+
+    private void initBar() {
+
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
+        //设置导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance())) {
+            boolean b = CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance());
+            MyLogger.jLog().i("hasNB?" + b);
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) ll_common_bar.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(MyApplication.getInstance()));
+            ll_common_bar.setLayoutParams(layoutParams);
+        }
     }
 
     private void initVideo() {
@@ -202,9 +223,6 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
                 }
             }
         });
-
-
-
 
         player.setDefaultRetryTime(5 * 1000);
 
@@ -306,8 +324,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     //获取传过来的数据
     private void initData() {
-        UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
+
         mIntent = getIntent();
         mCommentCore = new FtCommentCore();
         mIsFormConmmomd = mIntent.getBooleanExtra("isFormConmmomd", false);//是否是点击评论跳转过来的
@@ -326,11 +343,10 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     }
 
     private void initLV() {
-        View lvHead = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
         initPopWindow();
         mAdapter = new FtCatgoryAadapter(MyApplication.getInstance());
         mAdapter.setClickGoodsListener(this);
-        View inflate = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
+        View inflate = View.inflate(MyApplication.getInstance(), R.layout.item_ft_video_catgory_header, null);
         mTv_all_comment = (TextView) inflate.findViewById(R.id.tv_all_comment);
         lv_ft_catgory.addHeaderView(inflate, null, true);
         lv_ft_catgory.setHeaderDividersEnabled(false);
@@ -363,21 +379,22 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     //点赞时
     @OnClick(R.id.ll_goods)
     public void zan(View view) {
+        if (mRowsBean.isIsGiveUp()) {
+            giveNum = mRowsBean.getGiveUpCount() - 1;
+            mRowsBean.setIsGiveUp(false);
+            mRowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = mRowsBean.getGiveUpCount() + 1;
+            mRowsBean.setIsGiveUp(true);
+            mRowsBean.setGiveUpCount(giveNum);
+        }
+        upDataInfo();
+
         queryCore.ftGoods(mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (mRowsBean.isIsGiveUp()) {
-                        giveNum = mRowsBean.getGiveUpCount() - 1;
-                        mRowsBean.setIsGiveUp(false);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = mRowsBean.getGiveUpCount() + 1;
-                        mRowsBean.setIsGiveUp(true);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    }
-                    upDataInfo();
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }

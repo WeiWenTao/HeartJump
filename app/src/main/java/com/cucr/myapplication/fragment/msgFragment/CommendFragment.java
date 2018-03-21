@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.MsgCommendAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.MsgBean.MsgInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
@@ -83,6 +83,7 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     private EmojiPopup emojiPopup;
     private int dataId;
     private int commonId;
+    boolean needShowLoading;
 
     @Nullable
     @Override
@@ -140,6 +141,7 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
 
     private void initView() {
         rows = 10;
+        needShowLoading = true;
         mGson = MyApplication.getGson();
         mCore = new MsgCore();
         queryCore = new QueryFtInfoCore();
@@ -179,6 +181,10 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     @Override
     public void onRequestStar(int what) {
 
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override

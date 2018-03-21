@@ -80,8 +80,6 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
                             EventBus.getDefault().post(new EventNotifyStarInfo());
                             EventBus.getDefault().post(new EventOnClickCancleFocus());
                             notifyDataSetChanged();
-
-
                         } else {
                             ToastUtils.showToast(mContext, reBackMsg.getMsg());
                         }
@@ -99,14 +97,14 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
 
     public void setData(List<StarListInfos.RowsBean> rows) {
         this.rows = rows;
-        MyLogger.jLog().i("starlist——setData");
         notifyDataSetChanged();
     }
 
     public void addData(List<StarListInfos.RowsBean> rows) {
-        this.rows.addAll(rows);
-        MyLogger.jLog().i("starlist——addData");
-        notifyDataSetChanged();
+        if (this.rows != null && rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
     }
 
     @Override

@@ -11,15 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
-import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.bean.eventBus.EventOnClickFocus;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.starList.StarListInfos;
+import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.recyclerView.EndlessRecyclerOnScrollListener;
 import com.cucr.myapplication.widget.recyclerView.LoadMoreWrapper;
@@ -100,9 +100,9 @@ public class RecommendStarListFragemnt extends Fragment {
             public void onLoadMore() {
                 wapper.setLoadState(wapper.LOADING);
                 page++;
-                mCore.queryStar(1, page, rows, -1, null, null, new OnCommonListener() {
+                mCore.queryStar(1, page, rows, -1, null, null, new RequersCallBackListener() {
                     @Override
-                    public void onRequestSuccess(Response<String> response) {
+                    public void onRequestSuccess(int what, Response<String> response) {
                         StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                         if (starListInfos.isSuccess()) {
                             List<StarListInfos.RowsBean> rowsBeanLists = starListInfos.getRows();
@@ -119,6 +119,21 @@ public class RecommendStarListFragemnt extends Fragment {
                             ToastUtils.showToast(starListInfos.getErrorMsg());
                         }
                     }
+
+                    @Override
+                    public void onRequestStar(int what) {
+
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+
+                    }
                 });
             }
         });
@@ -130,9 +145,9 @@ public class RecommendStarListFragemnt extends Fragment {
             swipe_refresh_layout.setRefreshing(true);
         }
         page = 1;
-        mCore.queryStar(1, page, rows, -1, null, null, new OnCommonListener() {
+        mCore.queryStar(1, page, rows, -1, null, null, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
                     List<StarListInfos.RowsBean> rows = starListInfos.getRows();
@@ -141,6 +156,21 @@ public class RecommendStarListFragemnt extends Fragment {
                 } else {
                     ToastUtils.showToast(starListInfos.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }

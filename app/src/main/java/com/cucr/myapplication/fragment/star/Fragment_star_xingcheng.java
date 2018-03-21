@@ -60,7 +60,6 @@ public class Fragment_star_xingcheng extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MyLogger.jLog().i("onCreateView");
         mContext = MyApplication.getInstance();
         mCore = new QueryJourneyList();
         mGson = new Gson();
@@ -73,7 +72,6 @@ public class Fragment_star_xingcheng extends Fragment {
             queryJourney();
             queryJourneyByTime(0);
         }
-
         return view;
     }
 
@@ -94,7 +92,6 @@ public class Fragment_star_xingcheng extends Fragment {
         queryJourney();
         queryJourneyByTime(0);
     }
-
 
     private void queryJourney() {
         mCore.queryJourneySchedule(starId, new OnCommonListener() {
@@ -130,7 +127,6 @@ public class Fragment_star_xingcheng extends Fragment {
         mWheelview.setAdditionCenterMark(" ");
         initWheelView();
     }
-
 
     //初始化日期滚轮控件 和 recyclerView
     private void initWheelView() {

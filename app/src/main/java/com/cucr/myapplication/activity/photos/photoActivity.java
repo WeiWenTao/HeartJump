@@ -21,7 +21,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.comment.XingWenCommentActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.HomePhotoPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;

@@ -58,6 +58,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         if (queryUserId != -1) {
             request.add("queryUserId", queryUserId);
         }
+
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
 //                .add("startId", starId)
                 .add("dataType", dataType)

@@ -17,9 +17,9 @@ import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.AppInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMHytInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMPersonalInfo;
+import com.cucr.myapplication.bean.app.AppInfo;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -34,7 +34,6 @@ import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
 import com.cucr.myapplication.listener.LoadChatServer;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
@@ -80,7 +79,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         initView();
         initFragment(0);
         initRadioGroup();
-//        CheckUpData();    检查更新
+//        CheckUpData();    //检查更新
         //TODO: 2017/4/28 Splash界面完成
         DisplayMetrics dm = new DisplayMetrics();
         // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
@@ -92,13 +91,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     private void CheckUpData() {
         AppCore core = new AppCore();
-        core.queryCode(new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                AppInfo appInfo = MyApplication.getGson().fromJson(response.get(), AppInfo.class);
-                normalUpdate(MainActivity.this, "心跳互娱", appInfo);
-            }
-        });
+        core.queryCode(this);
     }
 
     private void normalUpdate(Context context, String text, final AppInfo appInfo) {
@@ -262,6 +255,15 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             EventBus.getDefault().postSticky(new EventChageAccount());
+
+
+            //实现只在冷启动时显示启动页，即点击返回键与点击HOME键退出效果一致
+        /*        Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);*/
+
+
         }
     }
 
@@ -294,6 +296,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         return mGroupInfo;
     }
 
+    //群组用户信息
     @Override
     public GroupUserInfo getGroupUserInfo(String groupId, String userId) {
         mId = userId;
@@ -304,6 +307,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
         switch (what) {
+
+            case Constans.TYPE_ONE:
+                AppInfo appInfo = MyApplication.getGson().fromJson(response.get(), AppInfo.class);
+                normalUpdate(MainActivity.this, "心跳互娱", appInfo);
+                break;
             case Constans.TYPE_TWO:
                 IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
                 if (info.isSuccess()) {
@@ -322,7 +330,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                     IMHytInfo.ObjBean objBean = groupInfo.getObj();
                     if (objBean != null) {
                         mGroupInfo = new Group(objBean.getHytId() + "", objBean.getName(), Uri.parse(HttpContans.IMAGE_HOST + objBean.getPicUrl()));
-                        mGroupUserInfo = new GroupUserInfo(objBean.getHytId() + "", mId, objBean.getName());
+                        mGroupUserInfo = new GroupUserInfo(objBean.getHytId() + "", mId, "后援团成员");
                     }
                 } else {
                     ToastUtils.showToast(groupInfo.getMsg());

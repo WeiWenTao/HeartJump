@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/xtred</item>
     </style>
 
+    <style name="StartTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splish</item>
+    </style>
+
 
     <!--“发现”-->
     <style name="BaseTextView">

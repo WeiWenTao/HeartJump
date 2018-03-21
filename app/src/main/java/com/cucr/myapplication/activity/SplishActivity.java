@@ -8,15 +8,22 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.SplishInfo;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.AppCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ThreadUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.ZipUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,8 +32,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Date;
 
-public class SplishActivity extends Activity {
+public class SplishActivity extends Activity implements RequersCallBackListener {
+
+    private ImageView mIv_bg;
 
 //    private TextView mTimmer;
 
@@ -34,15 +45,27 @@ public class SplishActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splish);
-
         EventBus.getDefault().register(this);
 //        UltimateBar ultimateBar = new UltimateBar(this);
 //        ultimateBar.setImmersionBar();
 
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        initViews();
         initPermission();
         initData();
         timmer();
+    }
+
+    private void initViews() {
+
+        Date now = new Date();
+        DateFormat df1 = DateFormat.getDateInstance(); //格式化后的时间格式：2016-2-19
+        String str1 = df1.format(now);
+
+        mIv_bg = (ImageView) findViewById(R.id.iv_bg);
+        AppCore core = new AppCore();
+        core.querySplish(str1, this);
     }
 
     private void initPermission() {
@@ -94,7 +117,7 @@ public class SplishActivity extends Activity {
         //实例化文件对象 判断文件是否存在
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
         file.mkdir();
-        if (!file.exists() || file.listFiles() == null||file.listFiles().length == 0) {
+        if (!file.exists() || file.listFiles() == null || file.listFiles().length == 0) {
             //解压文件
             initZip();
         }
@@ -132,10 +155,49 @@ public class SplishActivity extends Activity {
             EventBus.getDefault().removeStickyEvent(event);
         }
     }
+    private long firstTime;
+    private long secondTime;
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        downTimer.cancel();
+        secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) {
+            ToastUtils.showToast("再按一次就要退出啦");
+            firstTime = secondTime;
+        } else {
+            downTimer.cancel();
+            Intent intent = new Intent(MyApplication.getInstance(), SplishActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            EventBus.getDefault().postSticky(new EventChageAccount());
+        }
+    }
+
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+//        boolean fromCache = response.isFromCache();
+        SplishInfo splishInfo = MyApplication.getGson().fromJson(response.get(), SplishInfo.class);
+        if (splishInfo.isSuccess()) {
+            ImageLoader.getInstance().displayImage(splishInfo.getObj().getFileUrl(), mIv_bg, MyApplication.getImageLoaderOptions());
+//            ToastUtils.showToast("获取到了图片:" + fromCache);
+        } else {
+            ToastUtils.showToast(splishInfo.getMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+//        ToastUtils.showToast("请求开始啦");
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
     }
 }

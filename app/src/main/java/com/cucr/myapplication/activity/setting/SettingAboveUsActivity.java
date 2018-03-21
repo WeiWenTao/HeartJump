@@ -7,15 +7,15 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.AppInfo;
+import com.cucr.myapplication.bean.app.AppInfo;
 import com.cucr.myapplication.core.AppCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
-public class SettingAboveUsActivity extends BaseActivity {
+public class SettingAboveUsActivity extends BaseActivity implements RequersCallBackListener {
 
     @ViewInject(R.id.tv_code)
     private TextView tv_code;
@@ -32,15 +32,7 @@ public class SettingAboveUsActivity extends BaseActivity {
     }
 
     private void initData() {
-        mCore.queryCode(new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                AppInfo appInfo = mGson.fromJson(response.get(), AppInfo.class);
-                String keyFild = appInfo.getKeyFild();      //版本号
-                String valueFild = appInfo.getValueFild();  //下载地址
-                tv_code.setText(keyFild);
-            }
-        });
+        mCore.queryCode(this);
     }
 
     @Override
@@ -52,5 +44,28 @@ public class SettingAboveUsActivity extends BaseActivity {
     @OnClick(R.id.rl_feedback)
     public void feedback(View view) {
         startActivity(new Intent(MyApplication.getInstance(), FeedbackActivity.class));
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        AppInfo appInfo = mGson.fromJson(response.get(), AppInfo.class);
+        String keyFild = appInfo.getKeyFild();      //版本号
+        String valueFild = appInfo.getValueFild();  //下载地址
+        tv_code.setText(keyFild);
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
     }
 }

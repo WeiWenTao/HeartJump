@@ -15,7 +15,7 @@ import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.DaBangAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.dabang.BangDanInfo;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;

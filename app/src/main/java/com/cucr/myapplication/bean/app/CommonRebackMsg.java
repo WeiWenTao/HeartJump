@@ -1,4 +1,4 @@
-package com.cucr.myapplication.bean;
+package com.cucr.myapplication.bean.app;
 
 /**
  * Created by 911 on 2017/8/14.

@@ -23,9 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.TestWebViewActivity;
-import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
@@ -50,6 +49,7 @@ import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
@@ -184,9 +184,9 @@ public class FragmentFans extends BaseFragment {
     //初始化明星封面数据
     private void initDatas(int starId) {
         MyLogger.jLog().i("starId" + starId);
-        mStarCore.queryStar(type, page, rows, starId, null, null, new OnCommonListener() {
+        mStarCore.queryStar(type, page, rows, starId, null, null, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starInfos.isSuccess()) {
                     mRowsBean = starInfos.getRows().get(0);
@@ -197,6 +197,21 @@ public class FragmentFans extends BaseFragment {
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }
@@ -552,12 +567,7 @@ public class FragmentFans extends BaseFragment {
         startActivity(mIntent);
     }
 
-    //跳转搜索界面
-    @OnClick(R.id.iv_search)
-    public void goSearch(View view) {
-        startActivity(new Intent(mContext, StarSearchActivity.class));
-    }
-
+    //跳转微博
     @OnClick(R.id.iv_weib)
     public void click(View iv_weib) {
         Intent intent = new Intent(mContext, TestWebViewActivity.class);

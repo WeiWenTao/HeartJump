@@ -27,6 +27,7 @@ import com.cucr.myapplication.constants.SpConstant;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -602,5 +603,45 @@ public class CommonUtils {
             return "死忠粉";
         }
         return "新水粉";
+    }
+
+    //判断手机是否有导航栏的方法
+    public static boolean checkDeviceHasNavigationBar(Context context) {
+        boolean hasNavigationBar = false;
+        Resources rs = context.getResources();
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            hasNavigationBar = rs.getBoolean(id);
+        }
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+            if ("1".equals(navBarOverride)) {
+                hasNavigationBar = false;
+            } else if ("0".equals(navBarOverride)) {
+                hasNavigationBar = true;
+            }
+        } catch (Exception e) {
+
+        }
+        return hasNavigationBar;
+    }
+
+    //判断小星星数目
+
+    public static int getStarCount(Integer i) {
+        if (i <= 12) {
+            i = 1;
+        } else if (i > 12 && i <= 20) {
+            i = 2;
+        } else if (i > 20 && i <= 28) {
+            i = 3;
+        } else if (i > 28 && i <= 37) {
+            i = 4;
+        } else {
+            i = 5;
+        }
+        return i;
     }
 }

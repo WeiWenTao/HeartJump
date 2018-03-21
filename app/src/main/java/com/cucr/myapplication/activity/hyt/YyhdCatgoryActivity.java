@@ -16,7 +16,7 @@ import com.cucr.myapplication.activity.pay.YyhdPayActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.YyhdSupprotAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.Hyt.YyhdInfos;
 import com.cucr.myapplication.bean.Hyt.YyhdSupports;
 import com.cucr.myapplication.constants.Constans;

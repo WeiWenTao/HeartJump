@@ -124,7 +124,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((Tp1_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             // TODO: 2018/3/8 获取不到视频时长
             ((Tp1_Holder) holder).tv_time.setText("");     //视频时长
-            initStar(((Tp1_Holder) holder).ll_mystar, 2);
+            initStar(((Tp1_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getVideoPagePic(), ((Tp1_Holder) holder).iv_video, MyApplication.getImageLoaderOptions());
             ((Tp1_Holder) holder).ll_item_video.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,7 +143,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (rowsBean.getAttrFileList().size() > 0) {
                 ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), ((Tp2_Holder) holder).iv_pic1, MyApplication.getImageLoaderOptions());
             }
-            initStar(((Tp2_Holder) holder).ll_mystar, 2);
+            initStar(((Tp2_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             ((Tp2_Holder) holder).ll_item_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -159,7 +159,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((Tp3_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp3_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             ((Tp3_Holder) holder).tv_content.setText(Html.fromHtml(rowsBean.getContent()));     //内容
-            initStar(((Tp3_Holder) holder).ll_mystar, 2);
+            initStar(((Tp3_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             ((Tp3_Holder) holder).ll_item_text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -175,7 +175,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             final QueryFtInfos.RowsBean rowsBean = rows.get(position - 1);
             ((Tp4_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp4_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
-            initStar(((Tp4_Holder) holder).ll_mystar, 2);
+            initStar(((Tp4_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             //非空判断
             if (rowsBean.getAttrFileList().size() <= 0) {
                 return;
@@ -224,6 +224,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //小星星初始化
     private void initStar(LinearLayout ll_mystar, int i) {
+        i = CommonUtils.getStarCount(CommonUtils.getStarCount(i));
         ll_mystar.removeAllViews();
         for (int count = 0; count < i; count++) {
             ImageView starView = new ImageView(context);

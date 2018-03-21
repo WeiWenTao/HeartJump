@@ -23,7 +23,7 @@ import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;

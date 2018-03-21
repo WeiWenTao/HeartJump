@@ -21,6 +21,9 @@ public class HttpContans {
 
 //    public static final String IMAGE_HOST =HOST+ "http://yin-wiki.51vip.biz";
 
+    //splish
+    public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";
+
     //服务协议
     public static final String HTTP_YHXY = HOST + "http://www.cucrxt.com/fwxy.html";
 
@@ -212,6 +215,9 @@ public class HttpContans {
 
     //应用更新
     public static final String ADDRESS_APP_UPDATA = HOST + "/interface/MobileVersionCheck/versionCheck";
+
+    //意见反馈
+    public static final String ADDRESS_APP_ADVICE = HOST + "/interface/user/addIdea";
 
     //图集上传
     public static final String ADDRESS_PIC_UPLOAD = HOST + "/interface/mobileStartAtlasAction/upAtlas";

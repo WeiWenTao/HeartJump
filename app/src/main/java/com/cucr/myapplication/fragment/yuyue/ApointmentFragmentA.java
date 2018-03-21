@@ -3,45 +3,38 @@ package com.cucr.myapplication.fragment.yuyue;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.star.StarPagerActivity;
+import com.cucr.myapplication.activity.star.StarSearchActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.adapter.SpinnerAdapter.MySp1Adapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.bean.eventBus.EventOnClickFocus;
-import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.bean.starList.StarListKey;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.recyclerView.EndlessRecyclerOnScrollListener;
-import com.cucr.myapplication.widget.recyclerView.LoadMoreWrapper;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +49,7 @@ import java.util.List;
  * Created by 911 on 2017/4/10.
  */
 
-public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemSelectedListener, OnCommonListener {
+public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemSelectedListener, OnCommonListener, SwipeRecyclerView.OnLoadListener, RequersCallBackListener {
 
     //sp1
     @ViewInject(R.id.sp_1)
@@ -70,20 +63,15 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     @ViewInject(R.id.sp_3)
     private Spinner sp3;
 
-    //头部
-    @ViewInject(R.id.head)
-    private RelativeLayout head;
-
-    //刷新控件
-    @ViewInject(R.id.swipe_refresh_layout)
-    private SwipeRefreshLayout swipe_refresh_layout;
-
     //列表
     @ViewInject(R.id.rlv_starlist)
-    private RecyclerView rlv_starlist;
+    private SwipeRecyclerView srlv;
+
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     private QueryStarListCore mCore;
-    private List<StarListInfos.RowsBean> mRows;
     private List<StarListInfos.RowsBean> allRows;
     private List<StarListKey.RowsBean> userTypes;     //明星类型
     private List<StarListKey.RowsBean> userCoasts;    //明星价格
@@ -100,14 +88,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     private int finalPosition;
     private StarListForQiYeAdapter mAdapter;
     private Context mContext;
-    private LoadMoreWrapper wapper;
     private Intent mIntent;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,7 +105,8 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         mCore = new QueryStarListCore();
         mAdapter = new StarListForQiYeAdapter(getActivity());
         allRows = new ArrayList<>();
-        if (mIntent == null){
+        needShowLoading = true;
+        if (mIntent == null) {
             mIntent = new Intent(mContext, StarPagerActivity.class);
         }
         rows = 16;
@@ -136,16 +118,12 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
         queryKey();
 
-//        initHead();
-
-
     }
 
     private void initRlv() {
-        rlv_starlist.setLayoutManager(new GridLayoutManager(mContext, 2));
-        wapper = new LoadMoreWrapper(mAdapter);
-        rlv_starlist.setAdapter(wapper);
-        initLoad();
+        srlv.getRecyclerView().setLayoutManager(new GridLayoutManager(mContext, 2));
+        srlv.setAdapter(mAdapter);
+        srlv.setOnLoadListener(this);
 
         mAdapter.setOnItemClickListener(new StarListForQiYeAdapter.OnItemClickListener() {
             @Override
@@ -168,7 +146,6 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         allRows.remove(finalPosition);
         allRows.add(finalPosition, mData);
         mAdapter.setData(allRows);
-        wapper.notifyDataSetChanged();
     }
 
     //查询列表字段
@@ -186,13 +163,13 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
     //点击关注时
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickfocus(EventOnClickFocus event) {
-        wapper.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     //点击取消关注时 刷新页面
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickCanclefocus(EventOnClickCancleFocus event) {
-        wapper.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
 
@@ -210,53 +187,6 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         sp1.setOnItemSelectedListener(this);
         sp2.setOnItemSelectedListener(this);
         sp3.setOnItemSelectedListener(this);
-    }
-
-    //刷新的时候调用
-    private void queryStar(int type, String userCost, String userType) {
-
-        page = 1;
-        if (!swipe_refresh_layout.isRefreshing()) {
-            swipe_refresh_layout.setRefreshing(true);
-        }
-        //企业用户查询的是整页明星  所以不需要starId
-        mCore.queryStar(type, page, rows, -1, userCost, userType, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
-                if (starListInfos.isSuccess()) {
-                    mRows = starListInfos.getRows();
-                    allRows.clear();
-                    allRows.addAll(mRows);
-                    mAdapter.setData(allRows);
-                    MyLogger.jLog().i("starList:" + mRows + ",isCache:" + response.isFromCache());
-                    wapper.notifyDataSetChanged();
-                } else {
-                    ToastUtils.showToast(starListInfos.getErrorMsg());
-                }
-            }
-        });
-    }
-
-    //沉浸栏
-    private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(mContext, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getActivity().getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
     }
 
     @Override
@@ -357,60 +287,81 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
         //进入页面时每个sp都会调用   用计数器做限制
         if (refresh >= 3) {
             MyLogger.jLog().i("type:" + type + ", userCost:" + userCost + ", userType:" + userType);
-            queryStar(type, userCost, userType);
+            needShowLoading = true;
+            onRefresh();
         }
     }
 
-    //请求完成  如果还在加载  就停止加载(无网络情况)
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onFinish(EventRequestFinish event) {
-        if (swipe_refresh_layout.isRefreshing()) {
-            swipe_refresh_layout.setRefreshing(false);
-        }
 
-        if (wapper.getLoadState() == wapper.LOADING) {
-            wapper.setLoadState(wapper.LOADING_COMPLETE);
-        }
-
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        srlv.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.queryStar(type, page, rows, -1, userCost, userType, this);
     }
 
-    private void initLoad() {
-        //刷新监听
-        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                queryStar(type, userCost, userType);
-            }
-        });
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        srlv.onLoadingMore();
+        mCore.queryStar(type, page, rows, -1, userCost, userType, this);
+    }
 
-        //上拉监听
-        rlv_starlist.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                wapper.setLoadState(wapper.LOADING);
-                //企业用户查询的是整页明星  所以不需要starId
-                mCore.queryStar(type, page, rows, -1, userCost, userType, new OnCommonListener() {
-                    @Override
-                    public void onRequestSuccess(Response<String> response) {
-                        StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
-                        if (starListInfos.isSuccess()) {
-                            mRows = starListInfos.getRows();
-                            if (starListInfos.getTotal() < rows) {
-                                ToastUtils.showEnd();
-                                wapper.setLoadState(wapper.LOADING_END);
-                            } else {
-                                wapper.setLoadState(wapper.LOADING_COMPLETE);
-                            }
-                            mAdapter.addData(mRows);
-                            allRows.addAll(mRows);
-                            wapper.notifyDataSetChanged();
-                        } else {
-                            ToastUtils.showToast(starListInfos.getErrorMsg());
-                        }
-                    }
-                });
+    private boolean needShowLoading;
+    private boolean isRefresh;
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        StarListInfos starList = mGson.fromJson(response.get(), StarListInfos.class);
+        if (starList.isSuccess()) {
+            if (isRefresh) {
+                if (starList.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    allRows.clear();
+                    mAdapter.setData(starList.getRows());
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
+            } else {
+                mAdapter.addData(starList.getRows());
             }
-        });
+            allRows.addAll(starList.getRows());
+            if (starList.getTotal() <= page * rows) {
+                srlv.onNoMore("没有更多了");
+            } else {
+                srlv.complete();
+            }
+        } else {
+            ToastUtils.showToast(starList.getErrorMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_ONE) {
+            if (srlv.isRefreshing()) {
+                srlv.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (srlv.isLoadingMore()) {
+                srlv.stopLoadingMore();
+            }
+        }
     }
 }

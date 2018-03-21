@@ -25,7 +25,7 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.yuyue.YuYueCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.utils.CommonUtils;

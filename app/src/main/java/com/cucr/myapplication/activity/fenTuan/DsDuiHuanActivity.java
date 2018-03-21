@@ -9,7 +9,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.BackPackDuiHuanAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;

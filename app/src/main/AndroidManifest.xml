@@ -261,7 +261,12 @@
         </activity>
         <activity android:name=".activity.comment.FenTuanCatgoryActiviry">
         </activity>
-        <activity android:name=".activity.comment.FenTuanVideoCatgoryActiviry">
+        <activity
+            android:name=".activity.comment.FenTuanVideoCatgoryActiviry"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            >
         </activity>
         <activity
             android:name=".activity.yuyue.YuYueCatgoryActivity"
@@ -366,6 +371,7 @@
         <activity
             android:name=".activity.SplishActivity"
             android:launchMode="singleTop"
+            android:theme="@style/StartTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -15,7 +15,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.daShang.DaShangCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;

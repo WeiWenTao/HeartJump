@@ -16,7 +16,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HytAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.Hyt.HytListInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;

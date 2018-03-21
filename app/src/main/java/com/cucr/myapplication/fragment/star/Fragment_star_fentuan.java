@@ -26,7 +26,7 @@ import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
@@ -213,6 +213,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
         starId = event.getStarId();
+        needShowLoading = true;
         page = 1;
         rlv_fentuan.onLoadingMore();
         MyLogger.jLog().i("EventStarId：" + starId);
@@ -401,22 +402,23 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     //点赞
     @Override
     public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
+        if (rowsBean.isIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
 
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.isIsGiveUp()) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsGiveUp(false);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsGiveUp(true);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
+
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }

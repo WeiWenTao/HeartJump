@@ -35,6 +35,7 @@ import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
@@ -65,7 +66,7 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarPagerActivity extends FragmentActivity implements OnCommonListener {
+public class StarPagerActivity extends FragmentActivity implements RequersCallBackListener {
 
     //ViewPager
     @ViewInject(R.id.viewpager)
@@ -381,11 +382,19 @@ public class StarPagerActivity extends FragmentActivity implements OnCommonListe
         UMShareAPI.get(this).release();
         mDataList.clear();
         mDataList = null;
+
+    }
+
+    @OnClick(R.id.iv_weib)
+    public void click(View iv_weib) {
+        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
+        intent.putExtra("url", mData.getWeiboUrl());
+        startActivity(intent);
     }
 
     //查询明星信息回调
     @Override
-    public void onRequestSuccess(Response<String> response) {
+    public void onRequestSuccess(int what, Response<String> response) {
         StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
         if (starInfos.isSuccess()) {
             mData = starInfos.getRows().get(0);
@@ -400,11 +409,18 @@ public class StarPagerActivity extends FragmentActivity implements OnCommonListe
         }
     }
 
+    @Override
+    public void onRequestStar(int what) {
 
-    @OnClick(R.id.iv_weib)
-    public void click(View iv_weib) {
-        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
-        intent.putExtra("url", mData.getWeiboUrl());
-        startActivity(intent);
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
     }
 }

@@ -15,7 +15,7 @@ import com.cucr.myapplication.activity.MainActivity;
 import com.cucr.myapplication.activity.SplishActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.bean.login.LoadSuccess;
 import com.cucr.myapplication.bean.login.ThirdLoadInfo;

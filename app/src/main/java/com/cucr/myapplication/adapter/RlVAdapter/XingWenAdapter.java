@@ -96,7 +96,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 // -------------------------------------------------------------------------------------------------
         if (holder instanceof Tp1_Holder) {  //视频
-            initStar(((Tp1_Holder) holder).ll_mystar, 2);
+            initStar(((Tp1_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             ((Tp1_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp1_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
 //            ((Tp1_Holder) holder).tv_reads.setText(rowsBean.getReadCount() + "");     //阅读量
@@ -116,7 +116,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (holder instanceof Tp2_Holder) {//图片
             ((Tp2_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp2_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
-            initStar(((Tp2_Holder) holder).ll_mystar, 2);
+            initStar(((Tp2_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), ((Tp2_Holder) holder).iv_pic1, MyApplication.getImageLoaderOptions());
 
             ((Tp2_Holder) holder).ll_item_pic.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +132,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (holder instanceof Tp3_Holder) { //文字
             ((Tp3_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp3_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
-            initStar(((Tp3_Holder) holder).ll_mystar, 2);
+            initStar(((Tp3_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
 
             ((Tp3_Holder) holder).tv_content.setText(Html.fromHtml(rowsBean.getContent()));     //内容
 
@@ -150,7 +150,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (holder instanceof Tp4_Holder) {
             ((Tp4_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp4_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
-            initStar(((Tp4_Holder) holder).ll_mystar, 2);
+            initStar(((Tp4_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
             //非空判断
             if (rowsBean.getAttrFileList().size() <= 0) {
                 return;

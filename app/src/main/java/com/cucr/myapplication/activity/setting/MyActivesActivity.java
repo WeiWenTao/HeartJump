@@ -10,7 +10,7 @@ import com.cucr.myapplication.activity.huodong.HuoDongCatgoryActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.ActivitysAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;

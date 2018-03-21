@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.Config;
@@ -74,7 +73,7 @@ public class MyApplication extends Application {
         mMsgApi.registerApp("wxbe72c16183cf70da");
 //-----------------------------
         //内存泄漏框架
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
         //极光推送初始化
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);

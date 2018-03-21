@@ -66,6 +66,7 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
         mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
 
+    //根据id查后援团
     @Override
     public void queryHytInfoById(String hytId, RequersCallBackListener onCommonListener) {
         this.mListener = onCommonListener;

@@ -17,7 +17,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;

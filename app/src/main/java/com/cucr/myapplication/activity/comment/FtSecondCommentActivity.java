@@ -21,7 +21,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;

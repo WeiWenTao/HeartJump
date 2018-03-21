@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.hyt.HytMemberListActivity;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.hyt.HytCore;

@@ -20,7 +20,7 @@ import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
@@ -297,22 +297,23 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
 
     @Override
     public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
-        MyLogger.jLog().i("onClickGoods");
+        if (rowsBean.isIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.isIsGiveUp()) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsGiveUp(false);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsGiveUp(true);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
+
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }

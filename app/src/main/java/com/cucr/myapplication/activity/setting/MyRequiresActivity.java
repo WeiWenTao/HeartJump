@@ -12,7 +12,7 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.StarRequireCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.starList.StarRequires;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;

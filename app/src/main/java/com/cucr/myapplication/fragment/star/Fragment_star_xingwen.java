@@ -133,14 +133,15 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
 
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
-                    if (mQueryFtInfos.getTotal()==0){
+                    if (mQueryFtInfos.getTotal() == 0) {
                         rlv_test.setVisibility(View.VISIBLE);
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         return;
                     }
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                     rlv_test.setVisibility(View.GONE);
                     mAdapter.setData(mQueryFtInfos);
                     rlv_xingwen.getRecyclerView().smoothScrollToPosition(0);
@@ -178,7 +179,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
         page++;
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     if (mQueryFtInfos.getRows().size() != 0) {

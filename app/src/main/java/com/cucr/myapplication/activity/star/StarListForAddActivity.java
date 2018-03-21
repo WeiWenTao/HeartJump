@@ -25,6 +25,7 @@ import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
 import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarListForAddActivity extends Activity {
+public class StarListForAddActivity extends Activity implements StarListForQiYeAdapter.OnItemClickListener {
 
     //明星pager
     @ViewInject(R.id.vp_star_pager)
@@ -76,11 +77,11 @@ public class StarListForAddActivity extends Activity {
         mFragmentslist = new ArrayList<>();
         tytles = new ArrayList<>();
         mAdapter = new StarListForQiYeAdapter(this);
+        mAdapter.setOnItemClickListener(this);
         mFocusCore = new QueryFocus();
         initView();
 //        queryData();
     }
-
 
     private void initView() {
         tv_enter.setVisibility((getIntent().getBooleanExtra("formLoad", false)) ? View.VISIBLE : View.GONE);
@@ -108,9 +109,9 @@ public class StarListForAddActivity extends Activity {
         rows = 10;
         page = 1;
         //参数: 2:查全部
-        mCore.queryStar(2, page, rows, -1, null, null, new OnCommonListener() {
+        mCore.queryStar(2, page, rows, -1, null, null, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starListInfos.isSuccess()) {
                     mRows = starListInfos.getRows();
@@ -118,6 +119,21 @@ public class StarListForAddActivity extends Activity {
                 } else {
                     ToastUtils.showToast(starListInfos.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }
@@ -157,5 +173,18 @@ public class StarListForAddActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mFragmentslist.clear();
+    }
+
+    //跳转搜索界面
+    @OnClick(R.id.iv_search)
+    public void goSearch(View view) {
+        startActivity(new Intent(MyApplication.getInstance(), StarSearchActivity.class));
+    }
+
+    @Override
+    public void onClickItems(int id) {
+        Intent intent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
+        intent.putExtra("starId", id);
+        startActivity(intent);
     }
 }

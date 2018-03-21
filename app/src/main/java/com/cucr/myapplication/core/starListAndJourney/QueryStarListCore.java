@@ -3,19 +3,18 @@ package com.cucr.myapplication.core.starListAndJourney;
 import android.content.Context;
 
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.starList.StarListInfo;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
@@ -45,8 +44,8 @@ public class QueryStarListCore implements StarListInfo {
     }
 
     @Override
-    public void queryStar(int type, int page, int row, int startId, String userCost, String userType, final OnCommonListener onCommonListener) {
-        this.onCommonListener = onCommonListener;
+    public void queryStar(int type, int page, int row, int startId, String userCost, String userType, RequersCallBackListener listener) {
+        this.requestListener = listener;
 
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_STAR, RequestMethod.POST);
         // 添加普通参数。
@@ -78,10 +77,10 @@ public class QueryStarListCore implements StarListInfo {
         // 添加普通参数。
         request.add("actionCode", actionCode);
 
-        //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
+/*      //缓存主键 默认URL  保证全局唯一  否则会被其他相同数据覆盖
         request.setCacheKey(HttpContans.ADDRESS_STAR_KEY + actionCode);
         //没网的时候请求缓存
-        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
+        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);*/
 
         mQueue.add(Constans.TYPE_TWO, request, responseListener);
     }
@@ -109,6 +108,8 @@ public class QueryStarListCore implements StarListInfo {
         public void onStart(int what) {
             if (what == Constans.TYPE_THREE) {
                 requestListener.onRequestStar(what);
+            } else if (what == Constans.TYPE_ONE) {
+                requestListener.onRequestStar(what);
             }
         }
 
@@ -117,7 +118,7 @@ public class QueryStarListCore implements StarListInfo {
 
             switch (what) {
                 case Constans.TYPE_ONE:
-                    onCommonListener.onRequestSuccess(response);
+                    requestListener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_TWO:
@@ -133,14 +134,14 @@ public class QueryStarListCore implements StarListInfo {
         @Override
         public void onFailed(int what, Response response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
-            if (what == Constans.TYPE_THREE) {
-                requestListener.onRequestError(what,response);
+            if (what == Constans.TYPE_ONE || what == Constans.TYPE_THREE) {
+                requestListener.onRequestError(what, response);
             }
         }
 
         @Override
         public void onFinish(int what) {
-            if (what == Constans.TYPE_THREE) {
+            if (what == Constans.TYPE_THREE || what == Constans.TYPE_ONE) {
                 requestListener.onRequestFinish(what);
             }
             EventBus.getDefault().post(new EventRequestFinish(HttpContans.ADDRESS_QUERY_STAR));

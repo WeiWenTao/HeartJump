@@ -38,6 +38,7 @@
         </com.cucr.myapplication.widget.refresh.RefreshLayout>
 
         <LinearLayout
+            android:id="@+id/ll_common_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:focusable="true"

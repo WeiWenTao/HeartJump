@@ -54,8 +54,10 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         if (!TextUtils.isEmpty(entity.getImgURL())) {
             mWeb.setThumb(new UMImage(context, entity.getImgURL()));
         }
-        mWeb.setDescription(entity.getDescribe());
-        mWeb.setTitle(entity.getTitle());
+//        mWeb.setDescription(entity.getDescribe());
+//        mWeb.setTitle(entity.getTitle());
+        mWeb.setDescription("追爱豆，领红包! 更多精彩等你来玩");
+        mWeb.setTitle("下载心跳互娱");
         show();
     }
 

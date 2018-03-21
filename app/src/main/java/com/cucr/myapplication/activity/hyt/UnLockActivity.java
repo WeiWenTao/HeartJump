@@ -10,7 +10,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HytUnlockAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.Hyt.HytLockList;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;

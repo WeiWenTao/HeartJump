@@ -62,7 +62,9 @@ public class ToastUtils {
 
     public static void showToast(String message) {
         if (message.equals("签名错误")) {
-            MyApplication.getInstance().startActivity(new Intent(MyApplication.getInstance(), NewLoadActivity.class));
+            Intent intent = new Intent(MyApplication.getInstance(), NewLoadActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            MyApplication.getInstance().startActivity(intent);
             return;
         }
         if (toast == null) {

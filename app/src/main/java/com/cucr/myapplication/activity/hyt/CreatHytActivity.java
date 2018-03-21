@@ -13,7 +13,7 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.bean.CommonRebackMsg;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;

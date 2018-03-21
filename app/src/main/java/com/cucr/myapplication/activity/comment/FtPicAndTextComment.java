@@ -36,7 +36,7 @@ public class FtPicAndTextComment extends BaseActivity {
             }
         });
 
-        View lvHead = View.inflate(this, R.layout.item_ft_catgory_header, null);
+        View lvHead = View.inflate(this, R.layout.item_ft_video_catgory_header, null);
         lvHead.findViewById(R.id.tv_dashang).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

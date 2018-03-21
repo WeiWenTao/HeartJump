@@ -38,6 +38,16 @@
             style="@style/IconBackStyle"
             />
 
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="41dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_20"
+            android:src="@drawable/icon_search"
+            />
+
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager
