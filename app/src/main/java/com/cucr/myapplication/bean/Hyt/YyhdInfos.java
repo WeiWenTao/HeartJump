@@ -96,7 +96,7 @@ public class YyhdInfos implements Serializable {
         private String info;
         private int isGiveUp;
         private String picUrl;
-        private int signUpAmount;
+        private double signUpAmount;
         private int statu;
         private SysHytActiveBigpadBean sysHytActiveBigpad;
         private SysHytActiveOpenscreenBean sysHytActiveOpenscreen;
@@ -238,11 +238,11 @@ public class YyhdInfos implements Serializable {
             this.picUrl = picUrl;
         }
 
-        public int getSignUpAmount() {
+        public double getSignUpAmount() {
             return signUpAmount;
         }
 
-        public void setSignUpAmount(int signUpAmount) {
+        public void setSignUpAmount(double signUpAmount) {
             this.signUpAmount = signUpAmount;
         }
 
@@ -753,7 +753,7 @@ public class YyhdInfos implements Serializable {
 
             private Object activeId;
             private int id;
-            private int yyje;
+            private double yyje;
             private String yzsm;
             private List<BigpadsBean> bigpads;
 
@@ -773,11 +773,11 @@ public class YyhdInfos implements Serializable {
                 this.id = id;
             }
 
-            public int getYyje() {
+            public double getYyje() {
                 return yyje;
             }
 
-            public void setYyje(int yyje) {
+            public void setYyje(double yyje) {
                 this.yyje = yyje;
             }
 
@@ -908,7 +908,7 @@ public class YyhdInfos implements Serializable {
              */
 
             private Object activeId;
-            private int amount;
+            private double amount;
             private int id;
 
             public Object getActiveId() {
@@ -919,11 +919,11 @@ public class YyhdInfos implements Serializable {
                 this.activeId = activeId;
             }
 
-            public int getAmount() {
+            public double getAmount() {
                 return amount;
             }
 
-            public void setAmount(int amount) {
+            public void setAmount(double amount) {
                 this.amount = amount;
             }
 
@@ -947,7 +947,7 @@ public class YyhdInfos implements Serializable {
              */
 
             private Object activeId;
-            private int amount;
+            private double amount;
             private String city;
             private String explains;
             private int id;
@@ -961,11 +961,11 @@ public class YyhdInfos implements Serializable {
                 this.activeId = activeId;
             }
 
-            public int getAmount() {
+            public double getAmount() {
                 return amount;
             }
 
-            public void setAmount(int amount) {
+            public void setAmount(double amount) {
                 this.amount = amount;
             }
 

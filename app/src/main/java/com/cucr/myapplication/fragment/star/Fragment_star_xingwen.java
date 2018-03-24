@@ -56,17 +56,10 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     private QueryFtInfos mQueryFtInfos;
     private Gson mGson;
     private XingWenAdapter mAdapter;
-    private boolean from;
-
-    public Fragment_star_xingwen(boolean from) {
-        this.from = from;
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        MyLogger.jLog().i("注册");
         mCore = new QueryFtInfoCore();
         mGson = new Gson();
         mAdapter = new XingWenAdapter();
@@ -79,9 +72,6 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
             ViewUtils.inject(this, view);
             initRlV();
             //如果是从粉丝主页跳转过来的 就自动刷新一遍
-            if (from) {
-                onRefresh();
-            }
         }
         EventBus.getDefault().register(this);//订阅
         return view;
@@ -103,6 +93,9 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     //切换明星的时候
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(EventStarId event) {
+        if (event.getStarId() == 0) {
+            return;
+        }
         starId = event.getStarId();
         if (mCore == null) {
             mCore = new QueryFtInfoCore();
@@ -113,8 +106,10 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     //查询第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onEvent(EventFIrstStarId event) {
-        starId = event.getFirstId();
-        onRefresh();
+        if (starId != event.getFirstId() && event.getFirstId() != 0) {
+            starId = event.getFirstId();
+            onRefresh();
+        }
     }
 
     @Override
@@ -131,6 +126,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
             rlv_xingwen.getSwipeRefreshLayout().setRefreshing(true);
         }
 
+        MyLogger.jLog().i("starId------:" + starId);
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {

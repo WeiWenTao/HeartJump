@@ -11,19 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtAllCommentAadapter;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
+import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
-import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
-import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -105,7 +106,6 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     private FtCommentCore mCommentCore;
     private FtAllCommentAadapter mAdapter;
 
-
     @Override
     protected void initChild() {
         EventBus.getDefault().register(this);
@@ -170,7 +170,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
 
     @OnClick(R.id.ll_goods)
     public void clickGoods(View view) {
-        mCommentCore.ftCommentGoods(mRowsBean.getContentId(),mRowsBean.getId(), new OnCommonListener() {
+        mCommentCore.ftCommentGoods(mRowsBean.getContentId(), mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
@@ -259,25 +259,41 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(mRowsBean.getContentId(), mRowsBean.getId(), CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                if (commonRebackMsg.isSuccess()) {
-                    ToastUtils.showToast("评论成功!");
-                    //查询一遍
-                    onRefresh();
-                    et_comment.setText("");
-                    emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(FtSecondCommentActivity.this, root_view, true);
-                    et_comment.clearFocus();
-                    upDataInfo();
-                    mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
-                } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
-                }
-            }
-        });
+        queryCore.toComment(mRowsBean.getContentId(), mRowsBean.getId(), CommonUtils.string2Unicode(et_comment.getText().toString().trim()),
+                new RequersCallBackListener() {
+                    @Override
+                    public void onRequestSuccess(int what, Response<String> response) {
+                        CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                        if (commonRebackMsg.isSuccess()) {
+                            ToastUtils.showToast("评论成功!");
+                            //查询一遍
+                            onRefresh();
+                            et_comment.setText("");
+                            emojiPopup.dismiss();
+                            CommonUtils.hideKeyBorad(FtSecondCommentActivity.this, root_view, true);
+                            et_comment.clearFocus();
+                            upDataInfo();
+                            mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
+                        } else {
+                            ToastUtils.showToast(commonRebackMsg.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+                        waitDialog.show();
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        waitDialog.dismiss();
+                    }
+                });
     }
 
     //点赞
@@ -335,7 +351,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         Intent intent = getIntent();
         intent.putExtra("rowsBean", mRowsBean);
         setResult(Constans.RESULT_CODE, intent);
-        MyLogger.jLog().i("rowsBean:"+ mRowsBean);
+        MyLogger.jLog().i("rowsBean:" + mRowsBean);
     }
 
     @Override
@@ -378,9 +394,9 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     @Override
     public void onLoad() {
         if (ref.isRefreshing()) {
-           return;
+            return;
         }
-        page ++;
+        page++;
         mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -398,7 +414,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     //请求完成  如果还在加载  就停止加载(包括无网络情况)
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onFinish(EventRequestFinish event) {
-        if (event.getWhat().equals(HttpContans.ADDRESS_FT_COMMENT_QUERY)){
+        if (event.getWhat().equals(HttpContans.ADDRESS_FT_COMMENT_QUERY)) {
             ref.setRefreshing(false);
             ref.setLoading(false);
         }

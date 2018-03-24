@@ -6,17 +6,24 @@ package com.cucr.myapplication.bean.app;
 
 public class AppInfo {
 
+
     /**
      * actionCode : azUp
-     * groupFild : 0
-     * id : 21
-     * keyFild : 1.0
-     * remark : app更新 键为最新版本号 值为下载地址 分组为是否强制更新 排序老版本数字小
-     * sort : 0
-     * valueFild : 下载地址
+     * extra1 : 1       版本号
+     * extra2 : 2
+     * extra3 : 3
+     * groupFild : 1
+     * id : 41
+     * keyFild : 1.0.1
+     * remark : 1.一一一\ \n2.二二二3.三三三
+     * sort : 2
+     * valueFild : http://192.168.1.147:8080/download/xingtiao.apk
      */
 
     private String actionCode;
+    private int extra1;
+    private String extra2;
+    private String extra3;
     private int groupFild;
     private int id;
     private String keyFild;
@@ -30,6 +37,30 @@ public class AppInfo {
 
     public void setActionCode(String actionCode) {
         this.actionCode = actionCode;
+    }
+
+    public int getExtra1() {
+        return extra1;
+    }
+
+    public void setExtra1(int extra1) {
+        this.extra1 = extra1;
+    }
+
+    public String getExtra2() {
+        return extra2;
+    }
+
+    public void setExtra2(String extra2) {
+        this.extra2 = extra2;
+    }
+
+    public String getExtra3() {
+        return extra3;
+    }
+
+    public void setExtra3(String extra3) {
+        this.extra3 = extra3;
     }
 
     public int getGroupFild() {

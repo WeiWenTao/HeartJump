@@ -30,7 +30,7 @@ import java.util.List;
 public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<YyhdInfos.RowsBean> rows;
-    private int mAmount;
+    private double mAmount;
     private int mProgress;
 
     @Override
@@ -48,7 +48,8 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.rows = rows;
         notifyDataSetChanged();
     }
- public void addData(List<YyhdInfos.RowsBean> rows) {
+
+    public void addData(List<YyhdInfos.RowsBean> rows) {
         this.rows.addAll(rows);
         notifyDataSetChanged();
     }
@@ -118,11 +119,11 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     break;
 
             }
-            int signUpAmount = rowsBean.getSignUpAmount();//当前金额
+            double signUpAmount = rowsBean.getSignUpAmount();//当前金额
             if (signUpAmount == 0) {
                 mProgress = 0;
             } else {
-                mProgress = signUpAmount / mAmount * 100;
+                mProgress = (int) (signUpAmount / mAmount * 100);
             }
 
             ((YyhdItemHolder) holder).pb_yhhd_progress.setProgress(mProgress);
@@ -192,6 +193,7 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnClickItems {
         void onClickItem(YyhdInfos.RowsBean rowsBean);
+
         void OnCLickHeader();
     }
 }

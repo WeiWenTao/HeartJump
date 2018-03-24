@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
@@ -80,7 +81,6 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     //状态布局
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
-
 
     private int page;
     private int rows;
@@ -207,7 +207,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     @Override
     public void onLoadMore() {
         page++;
-        queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
+        queryCore.queryFtInfo(-1, 1, userId, true, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -243,7 +243,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     }
 
     private void queryFtInfo() {
-        queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
+        queryCore.queryFtInfo(-1, 1, userId, true, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -323,21 +323,22 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
 
     @Override
     public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
-        MyLogger.jLog().i("onClickCommends");
         this.position = position;
-        MyLogger.jLog().i("Commendposition:" + position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
         intent.putExtra("dataId", rowsBean.getId() + "");
         intent.putExtra("isFormConmmomd", formCommond);
+        intent.putExtra("showMore", true);      //显示删除功能
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
 
+    //点击分享
     @Override
     public void onClickshare(int id) {
         mDialog.setData(new ShareEntity("this is title", " this is describe", HttpContans.ADDRESS_FT_SHARE + id, ""));
     }
 
+    //点击打赏
     @Override
     public void onClickDaShang(int contentId, int position) {
         popWindow.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
@@ -345,6 +346,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         EventBus.getDefault().postSticky(new EventContentId(contentId, position));
     }
 
+    //点击打赏记录
     @Override
     public void onClickDsRecored(int contentId) {
         Intent intent = new Intent(MyApplication.getInstance(), DaShangCatgoryActivity.class);
@@ -362,6 +364,17 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     }
 
     @Override
+    public void onClickVideoCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanVideoCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        intent.putExtra("showMore", true);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
@@ -372,6 +385,12 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
             rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
             rowsBean.setCommentCount(mRowsBean.getCommentCount());
             mAdapter.notifyDataSetChanged();
+        } else if (requestCode == Constans.REQUEST_CODE && resultCode == 999) {
+            boolean delete = data.getBooleanExtra("delete", false);
+            if (delete) {
+//                mAdapter.delData(position);
+                onRefresh();
+            }
         }
     }
 

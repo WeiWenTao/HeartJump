@@ -109,7 +109,7 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
     private int rows;
     private Gson mGson;
     private YyhdSupprotAdapter mAdapter;
-    private int totalMoney;
+    private double totalMoney;
     private Intent mIntent;
     private int mId;
     private boolean mIsgood;
@@ -135,12 +135,12 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        mCore.querySupport(page, rows, mId, this);
         initPager();
     }
 
     //页面初始化
     private void initPager() {
+        mCore.querySupport(page, rows, mId, this);
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getPicUrl(),
                 iv_yy_pic, MyApplication.getImageLoaderOptions());
         tv_hd_catgory.setText(mRowsBean.getActiveName());
@@ -167,24 +167,23 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
                 totalMoney = mRowsBean.getSysHytActiveZc().getAmount();
                 break;
         }
-        int progress = (mRowsBean.getSignUpAmount() / totalMoney);
-        //----------------------------------避免 0<金额<1%  金额为0的情况
-        if (mRowsBean.getSignUpAmount() != 0) {
-            progress = progress + 1;
-            if (progress > 100) {
-                progress = 100;
-            }
-            tv_percent.setText(progress + "%");
-        } else {
-            tv_percent.setText(progress + "%");
-        }
-        //----------------------------------
-        tv_total_progress.setText("/¥" + totalMoney);
+        double signUpAmount = mRowsBean.getSignUpAmount();
+        double progress;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            pb_yhhd_progress.setProgress(progress, true);
+        if (signUpAmount == 0) {
+            progress = 0;
         } else {
-            pb_yhhd_progress.setProgress(progress);
+            progress = signUpAmount * 100.0 / totalMoney;
+        }
+        tv_total_progress.setText("/¥" + totalMoney);
+        tv_percent.setText(progress + "%");
+        if (progress > 0 && progress < 1.0) {
+            progress = 1;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pb_yhhd_progress.setProgress((int) progress, true);
+        } else {
+            pb_yhhd_progress.setProgress((int) progress);
         }
         //后援团信息
         YyhdInfos.RowsBean.HytInfoBean hytInfo = mRowsBean.getHytInfo();
@@ -223,17 +222,6 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
                 ToastUtils.showToast(msg.getMsg());
                 return;
             }
-            int giveUpCount = mRowsBean.getGiveUpCount();
-            if (mIsgood) {
-                giveUpCount = giveUpCount - 1;
-                iv_give_up.setImageResource(R.drawable.icon_good_nor);
-            } else {
-                iv_give_up.setImageResource(R.drawable.icon_good_sel);
-                giveUpCount = giveUpCount + 1;
-            }
-            mRowsBean.setGiveUpCount(giveUpCount);
-            mIsgood = !mIsgood;
-            tv_give_count.setText(giveUpCount + "");
         }
     }
 
@@ -264,8 +252,8 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
     @OnClick(R.id.tv_support)
     public void click2(View view) {
         mIntent.setClass(MyApplication.getInstance(), YyhdPayActivity.class);
-        startActivity(mIntent);
-
+        mIntent.putExtra("activeId", mRowsBean.getId());
+        startActivityForResult(mIntent, 999);
     }
 
     @Override
@@ -275,6 +263,9 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
             int count = data.getIntExtra("count", -1);
             mRowsBean.setGiveUpCount(count);
             tv_comments.setText(count + "");
+        } else if (requestCode == 999 && resultCode == 999) {
+            mRowsBean.setSignUpAmount(mRowsBean.getSignUpAmount() + data.getDoubleExtra("result", 0.0));
+            initPager();
         }
     }
 
@@ -297,6 +288,17 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
     //点赞
     @OnClick(R.id.iv_give_up)
     public void clickGiveUp(View view) {
+        int giveUpCount = mRowsBean.getGiveUpCount();
+        if (mIsgood) {
+            giveUpCount = giveUpCount - 1;
+            iv_give_up.setImageResource(R.drawable.icon_good_nor);
+        } else {
+            iv_give_up.setImageResource(R.drawable.icon_good_sel);
+            giveUpCount = giveUpCount + 1;
+        }
+        mRowsBean.setGiveUpCount(giveUpCount);
+        mIsgood = !mIsgood;
+        tv_give_count.setText(giveUpCount + "");
         mCore.YyhdGood(mId, this);
     }
 

@@ -3,7 +3,6 @@ package com.cucr.myapplication.activity.star;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
-import com.cucr.myapplication.adapter.GvAdapter.StarRecommendAdapter;
 import com.cucr.myapplication.adapter.PagerAdapter.StarListPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -24,7 +22,6 @@ import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
 import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -39,7 +36,7 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarListForAddActivity extends Activity implements StarListForQiYeAdapter.OnItemClickListener {
+public class StarListForAddActivity extends Activity {
 
     //明星pager
     @ViewInject(R.id.vp_star_pager)
@@ -63,7 +60,6 @@ public class StarListForAddActivity extends Activity implements StarListForQiYeA
     private int rows;   //每页显示数目
     private int page;   //页数
     private List<StarListInfos.RowsBean> mRows;
-    private StarRecommendAdapter mGvAdapter;
     private List<Fragment> mFragmentslist;
     private List<String> tytles;
     private StarListForQiYeAdapter mAdapter;
@@ -76,11 +72,8 @@ public class StarListForAddActivity extends Activity implements StarListForQiYeA
         ViewUtils.inject(this);
         mFragmentslist = new ArrayList<>();
         tytles = new ArrayList<>();
-        mAdapter = new StarListForQiYeAdapter(this);
-        mAdapter.setOnItemClickListener(this);
         mFocusCore = new QueryFocus();
         initView();
-//        queryData();
     }
 
     private void initView() {
@@ -102,22 +95,30 @@ public class StarListForAddActivity extends Activity implements StarListForQiYeA
         vp_star_pager.setAdapter(new StarListPagerAdapter(getFragmentManager(), mFragmentslist, tytles));
     }
 
+    //返回
+    @OnClick(R.id.iv_base_back)
+    public void back(View view) {
+        finish();
+    }
 
-    //    查询数据
-    private void queryData() {
-        type = 2;
-        rows = 10;
-        page = 1;
-        //参数: 2:查全部
-        mCore.queryStar(2, page, rows, -1, null, null, new RequersCallBackListener() {
+    //跳转主界面
+    @OnClick(R.id.tv_enter)
+    public void enterApp(View view) {
+        mFocusCore.queryMyFocusStars(-1, 1, 10, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
-                StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
-                if (starListInfos.isSuccess()) {
-                    mRows = starListInfos.getRows();
-                    mAdapter.setData(mRows);
+                FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
+                if (Info.isSuccess()) {
+                    if (Info.getRows().size() > 0) {     //有关注明星
+                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
+                        //登录之后保存登录数据  下次登录判断是否第一次登录
+                        SpUtil.setParam(SpConstant.HAS_LOAD, true);
+                        finish();
+                    } else {
+                        ToastUtils.showToast("至少要关注一位明星哦");
+                    }
                 } else {
-                    ToastUtils.showToast(starListInfos.getErrorMsg());
+                    ToastUtils.showToast(Info.getErrorMsg());
                 }
             }
 
@@ -136,36 +137,6 @@ public class StarListForAddActivity extends Activity implements StarListForQiYeA
 
             }
         });
-    }
-
-    //返回
-    @OnClick(R.id.iv_base_back)
-    public void back(View view) {
-        finish();
-    }
-
-    //跳转主界面
-    @OnClick(R.id.tv_enter)
-    public void enterApp(View view) {
-        mFocusCore.queryMyFocusStars(-1, 1, 10, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
-                if (Info.isSuccess()) {
-                    if (Info.getRows().size() > 0) {     //有关注明星
-                        startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
-                        //登录之后保存登录数据  下次登录判断是否第一次登录
-                        SharedPreferences.Editor edit = SpUtil.getNewSp().edit();
-                        edit.putBoolean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)) + "", true).commit();
-                        finish();
-                    } else {
-                        ToastUtils.showToast("至少要关注一位明星哦");
-                    }
-                } else {
-                    ToastUtils.showToast(Info.getErrorMsg());
-                }
-            }
-        });
 
     }
 
@@ -181,10 +152,4 @@ public class StarListForAddActivity extends Activity implements StarListForQiYeA
         startActivity(new Intent(MyApplication.getInstance(), StarSearchActivity.class));
     }
 
-    @Override
-    public void onClickItems(int id) {
-        Intent intent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
-        intent.putExtra("starId", id);
-        startActivity(intent);
-    }
 }

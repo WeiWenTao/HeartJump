@@ -10,9 +10,9 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 
 public interface PayCenterInterf {
 
-    void aliPay(double howMuch, String subject, int type, int activeId, OnCommonListener listener);
+    void aliPay(double howMuch, String subject, int type, int activeId, RequersCallBackListener listener);
 
-    void wxPay(int total_fee, String body, int type, int activeId, OnCommonListener listener);
+    void wxPay(int total_fee, String body, int type, int activeId, RequersCallBackListener listener);
 
     void queryResult(String order, PayLisntener listener);
 

@@ -1,6 +1,7 @@
 package com.cucr.myapplication.activity.pay;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -28,14 +29,15 @@ import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventIsSuccess;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.pay.PayCenterCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.cucr.myapplication.widget.dialog.DialogPerfirmPayResult;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -52,7 +54,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 import java.util.Map;
 
-public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, DialogPayStyle.OnClickPay {
+public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, DialogPayStyle.OnClickPay, DialogPerfirmPayResult.OnClickYes {
 
     @ViewInject(R.id.rg1)
     private RadioGroup rg1;
@@ -94,6 +96,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
     private PayCenterCore payCore;
     private DialogPerfirmPayResult mPerfirmPayResulterfirmDialog;
     private boolean isWXpay;
+    private MyWaitDialog mWaitDialog;
 
 
     private Handler mHandler = new Handler() {
@@ -128,6 +131,8 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
             }
         }
     };
+    private int mActiveId;
+    private double mAmount;
 
     private void getPayResult(String orderNo) {
         payCore.queryResult(orderNo, new PayLisntener() {
@@ -135,12 +140,13 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
             public void onSuccess(Response<String> response) {
                 CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 MyLogger.jLog().i("reBackMsg" + reBackMsg);
-                if (reBackMsg.isSuccess()) {
+//                if (reBackMsg.isSuccess()) {
                     mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
-                } else {
-                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
-                    ToastUtils.showToast(reBackMsg.getMsg());
-                }
+//                } else {
+//                    mAmount = 0.0;
+//                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
+//                    ToastUtils.showToast(reBackMsg.getMsg());
+//                }
             }
 
             @Override
@@ -156,11 +162,12 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
     protected void initChild() {
         EventBus.getDefault().register(this);
         initTitle("充值中心");
-
+        mActiveId = getIntent().getIntExtra("activeId", -1);
         moneys = new HashMap<>();
-
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mDailogPayStyle = new DialogPayStyle(this, R.style.ShowAddressStyleTheme);
-        mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.ShowAddressStyleTheme);
+        mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.MyWaitDialog);
+        mPerfirmPayResulterfirmDialog.setOnClickYes(this);
         mDailogPayStyle.setOnClickPay(this);
         payCore = new PayCenterCore();
 
@@ -365,9 +372,10 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
     //支付宝支付
 
     public void OnCLickAliPay() {
-        payCore.aliPay(money, "心跳充值", Constans.TYPE_ONE, 21, new OnCommonListener() {
+        mAmount = money;
+        payCore.aliPay(money, "心跳充值", Constans.TYPE_ONE, mActiveId, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 final PayInfo payInfo = mGson.fromJson(response.get(), PayInfo.class);
                 final String orderInfo = payInfo.getMsg();
 
@@ -380,7 +388,6 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                             MyLogger.jLog().i("123:" + orderInfo);
                             Map<String, String> result = alipay.payV2(orderInfo, true);
                             Log.i("msp", result.toString());
-
                             Message msg = new Message();
                             msg.what = 1;
                             msg.obj = result;
@@ -390,6 +397,21 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                 } else {
                     ToastUtils.showToast(orderInfo);
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+                mWaitDialog.dismiss();
             }
         });
     }
@@ -403,35 +425,51 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
         //初始化微信api
         mIwxapi = WXAPIFactory.createWXAPI(MyApplication.getInstance(), "wxbe72c161183cf70da");
         mIwxapi.registerApp("wxbe72c16183cf70da"); //注册appid  appid可以在开发平台获取
-
-        payCore.wxPay((int) (money * 100), "微信充值", 0, -1, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
-                MyLogger.jLog().i("payInfo:" + payInfo);
-                orderNo = payInfo.getObj().getMsg().getOrderNo();
-                if (payInfo.isSuccess()) {
-                    //开启线程支付
-                    ThreadUtils.getInstance().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            PayReq request = new PayReq(); //调起微信APP的对象
-                            //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
-                            request.appId = payInfo.getObj().getMsg().getAppid();
-                            request.partnerId = payInfo.getObj().getMsg().getPartnerid();
-                            request.prepayId = payInfo.getObj().getMsg().getPrepayid();
-                            request.packageValue = "Sign=WXPay";
-                            request.nonceStr = payInfo.getObj().getMsg().getNoncestr();
-                            request.timeStamp = payInfo.getObj().getMsg().getTimestamp() + "";
-                            request.sign = payInfo.getObj().getMsg().getSign();
-                            mIwxapi.sendReq(request);//发送调起微信的请求
+        mAmount = money;
+        payCore.wxPay((int) (money * 100), "微信充值", Constans.TYPE_ONE, mActiveId,
+                new RequersCallBackListener() {
+                    @Override
+                    public void onRequestSuccess(int what, Response<String> response) {
+                        final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
+                        MyLogger.jLog().i("payInfo:" + payInfo);
+                        orderNo = payInfo.getObj().getMsg().getOrderNo();
+                        if (payInfo.isSuccess()) {
+                            //开启线程支付
+                            ThreadUtils.getInstance().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PayReq request = new PayReq(); //调起微信APP的对象
+                                    //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
+                                    request.appId = payInfo.getObj().getMsg().getAppid();
+                                    request.partnerId = payInfo.getObj().getMsg().getPartnerid();
+                                    request.prepayId = payInfo.getObj().getMsg().getPrepayid();
+                                    request.packageValue = "Sign=WXPay";
+                                    request.nonceStr = payInfo.getObj().getMsg().getNoncestr();
+                                    request.timeStamp = payInfo.getObj().getMsg().getTimestamp() + "";
+                                    request.sign = payInfo.getObj().getMsg().getSign();
+                                    mIwxapi.sendReq(request);//发送调起微信的请求
+                                }
+                            });
+                        } else {
+                            ToastUtils.showToast(payInfo.getMsg());
                         }
-                    });
-                } else {
-                    ToastUtils.showToast(payInfo.getMsg());
-                }
-            }
-        });
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        mWaitDialog.dismiss();
+                    }
+                });
 
     }
 
@@ -445,9 +483,10 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
         super.onRestart();
     }
 
+    //点击充值
     @OnClick(R.id.tv_pay_now)
     public void goToPay(View view) {
-
+        mWaitDialog.show();
         if (isWXpay) {
             OnClickWxPay();
         } else {
@@ -476,5 +515,14 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         UMShareAPI.get(this).release();
+    }
+
+    @Override
+    public void clickYes() {
+        mPerfirmPayResulterfirmDialog.dismiss();
+        Intent intent = getIntent();
+        intent.putExtra("result", mAmount);
+        setResult(999, intent);
+        finish();
     }
 }

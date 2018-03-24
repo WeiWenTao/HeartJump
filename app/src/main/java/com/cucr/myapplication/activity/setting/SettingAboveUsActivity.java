@@ -1,6 +1,9 @@
 package com.cucr.myapplication.activity.setting;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +13,9 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.AppInfo;
 import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.utils.AppUtils;
+import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.upDataUtils.DownLoadApk;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -32,7 +38,8 @@ public class SettingAboveUsActivity extends BaseActivity implements RequersCallB
     }
 
     private void initData() {
-        mCore.queryCode(this);
+        String verName = AppUtils.getVerName(MyApplication.getInstance());
+        tv_code.setText("版本 " + verName);
     }
 
     @Override
@@ -46,12 +53,54 @@ public class SettingAboveUsActivity extends BaseActivity implements RequersCallB
         startActivity(new Intent(MyApplication.getInstance(), FeedbackActivity.class));
     }
 
+    //意见反馈
+    @OnClick(R.id.rlv_upData)
+    public void checkVersion(View view) {
+        mCore.queryCode(this);
+    }
+
+    private void normalUpdate(String text, final AppInfo appInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(text + appInfo.getKeyFild());
+        builder.setMessage(appInfo.getRemark());
+        AlertDialog.Builder builder1 = builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!AppUtils.canDownloadState()) {
+                    showDownloadSetting();
+                    return;
+                }
+                ToastUtils.showToast("已开始后台下载");
+                DownLoadApk.download(SettingAboveUsActivity.this, appInfo.getValueFild(), "正在下载", "心跳互娱");
+            }
+        }).setCancelable(appInfo.getGroupFild() == 0);
+        if (appInfo.getGroupFild() == 0) {
+            //非强制更新
+            builder1.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        builder1.create().show();
+    }
+
+    private void showDownloadSetting() {
+        String packageName = "com.android.providers.downloads";
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + packageName));
+        startActivity(intent);
+    }
+
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        AppInfo appInfo = mGson.fromJson(response.get(), AppInfo.class);
-        String keyFild = appInfo.getKeyFild();      //版本号
-        String valueFild = appInfo.getValueFild();  //下载地址
-        tv_code.setText(keyFild);
+        AppInfo appInfo = MyApplication.getGson().fromJson(response.get(), AppInfo.class);
+        if (AppUtils.getVersionCode(MyApplication.getInstance()) < appInfo.getExtra1()) {
+            normalUpdate("心跳互娱有新版本了 V", appInfo);
+        } else {
+            ToastUtils.showToast("已经是最新版本啦");
+        }
     }
 
     @Override

@@ -10,7 +10,6 @@
     tools:context="com.cucr.myapplication.activity.pay.YyhdPayActivity"
     >
 
-
     <include layout="@layout/activity_base_title"/>
 
 

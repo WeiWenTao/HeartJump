@@ -19,7 +19,7 @@ public interface QueryFtInfoInterf {
 
     void ftGoods(int contentId, OnCommonListener listener);
 
-    void toComment(int contentId,int commentId,String content, OnCommonListener listener);
+    void toComment(int contentId,int commentId,String content, RequersCallBackListener listener);
 
     void queryGift(OnCommonListener listener);
 

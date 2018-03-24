@@ -9,6 +9,7 @@
     >
 
     <ProgressBar
+        android:theme="@style/AppTheme"
         android:id="@+id/pb"
         android:layout_width="35dp"
         android:layout_height="35dp"

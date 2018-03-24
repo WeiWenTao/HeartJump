@@ -3,7 +3,6 @@ package com.cucr.myapplication.adapter.RlVAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
-import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -109,7 +107,6 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     mIntent.setClass(context, TestWebViewActivity.class);
                     mIntent.putExtra("url", rowsBean.getLocationUrl());
                     context.startActivity(mIntent);
-                    ToastUtils.showToast("dateId:" + rowsBean.getId());
                 }
             });
 // -------------------------------------------------------------------------------------------------
@@ -125,7 +122,6 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     mIntent.setClass(context, NewsActivity.class);
                     mIntent.putExtra("date", rowsBean);
                     context.startActivity(mIntent);
-                    ToastUtils.showToast("dateId:" + rowsBean.getId());
                 }
             });
 // -------------------------------------------------------------------------------------------------
@@ -134,7 +130,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Tp3_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             initStar(((Tp3_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
 
-            ((Tp3_Holder) holder).tv_content.setText(Html.fromHtml(rowsBean.getContent()));     //内容
+            ((Tp3_Holder) holder).tv_content.setText(rowsBean.getSummary());     //内容
 
             ((Tp3_Holder) holder).ll_item_text.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -142,7 +138,6 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     mIntent.setClass(context, NewsActivity.class);
                     mIntent.putExtra("date", rowsBean);
                     context.startActivity(mIntent);
-                    ToastUtils.showToast("dateId:" + rowsBean.getId());
                 }
             });
 
@@ -171,7 +166,6 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     mIntent.setClass(context, PhotoActivity.class);
                     mIntent.putExtra("date", rowsBean);
                     context.startActivity(mIntent);
-                    ToastUtils.showToast("dateId:" + rowsBean.getId());
                 }
             });
         }
@@ -190,6 +184,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     //小星星初始化
     private void initStar(LinearLayout ll_mystar, int i) {
+        i = CommonUtils.getStarCount(i);
         ll_mystar.removeAllViews();
         for (int count = 0; count < i; count++) {
             ImageView starView = new ImageView(context);

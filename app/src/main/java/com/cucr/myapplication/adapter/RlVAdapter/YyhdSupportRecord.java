@@ -54,6 +54,15 @@ public class YyhdSupportRecord extends RecyclerView.Adapter<YyhdSupportRecord.Re
         notifyDataSetChanged();
     }
 
+
+    public void addData(List<YyhdSupports.RowsBean> rows) {
+        if (this.rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
+    }
+
+
     public class RecordHolder extends RecyclerView.ViewHolder {
 
         @ViewInject(R.id.iv_headpic)

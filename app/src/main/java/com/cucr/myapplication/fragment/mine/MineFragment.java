@@ -33,7 +33,6 @@ import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
-import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.bean.user.UserCenterInfo;
 import com.cucr.myapplication.constants.Constans;
@@ -178,11 +177,10 @@ public class MineFragment extends BaseFragment {
         queryInfos();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) //取消关注了  更新关注数量
-    public void onDataSynEvent(CommentEvent event) {
-        if (event.getFlag() == 999) {
-            queryInfos();
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        queryInfos();
     }
 
     //查询用户信息
@@ -412,7 +410,6 @@ public class MineFragment extends BaseFragment {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
-
 
 
 }

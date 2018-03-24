@@ -1,6 +1,5 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.bean.login.UserAccountInfo;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.user.LoadUserInfos;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
-import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,27 +26,12 @@ import java.util.List;
 
 public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.AccountHolder> {
 
-    private List<String> keys;
-    private SharedPreferences sp;
-    private Gson mGson;
+    private List<LoadUserInfos> infos;
 
-    public void setSelect(int position) {
-        String s = keys.get(position);
-        keys.remove(position);
-        keys.add(0, s);
-        SpUtil.setParam("keys", MyApplication.getGson().toJson(keys).toString());
-//        notifyDataSetChanged();
-    }
 
-    public AccountListAdapter() {
-        String getKey = (String) SpUtil.getParam("keys", "");
-        keys = MyApplication.getGson().fromJson(getKey, List.class);
-        sp = SpUtil.getAccountSp();
-        mGson = MyApplication.getGson();
-    }
-
-    public void setKeys(List<String> keys) {
-        this.keys = keys;
+    public void setData(List<LoadUserInfos> infos) {
+        this.infos = infos;
+        MyLogger.jLog().i("LoadInfos:" + infos);
         notifyDataSetChanged();
     }
 
@@ -57,17 +42,21 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(AccountHolder holder, final int position) {
-        holder.mark.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
-        String string = sp.getString(keys.get(position), "");
-        UserAccountInfo accountInfo = mGson.fromJson(string, UserAccountInfo.class);
-        holder.name.setText(accountInfo.getNickName());
-        ImageLoader.getInstance().displayImage(accountInfo.getUserAddress(), holder.userHead, MyApplication.getImageLoaderOptions());
+    public void onBindViewHolder(AccountHolder holder, int position) {
+        final LoadUserInfos loadUserInfos = infos.get(position);
+        if (loadUserInfos.getUserId() == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
+            holder.mark.setVisibility(View.VISIBLE);
+        } else {
+            holder.mark.setVisibility(View.GONE);
+        }
+        holder.name.setText(loadUserInfos.getName());
+        ImageLoader.getInstance().displayImage(loadUserInfos.getUserHeadPortrait(), holder.userHead,
+                MyApplication.getImageLoaderOptions());
         holder.item_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickItem != null && keys.size() > 1) {
-                    mOnClickItem.onClickItem(v, keys.get(position), position);
+                if (mOnClickItem != null) {
+                    mOnClickItem.onClickItem(loadUserInfos);
                 }
             }
         });
@@ -75,7 +64,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
     @Override
     public int getItemCount() {
-        return keys == null ? 0 : keys.size();
+        return infos == null ? 0 : infos.size();
     }
 
     public class AccountHolder extends RecyclerView.ViewHolder {
@@ -105,6 +94,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     }
 
     public interface OnClickItem {
-        void onClickItem(View view, String keys, int position);
+        void onClickItem(LoadUserInfos loadUserInfos);
     }
 }

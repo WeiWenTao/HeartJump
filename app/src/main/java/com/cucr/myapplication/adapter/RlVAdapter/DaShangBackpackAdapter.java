@@ -10,16 +10,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.core.daShang.DaShangCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.daShang.DaShangCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -98,9 +98,9 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
                 final EventContentId event = EventBus.getDefault().getStickyEvent(EventContentId.class);
 
                 mCore.reward(event.getContentId(), listBean.getUserAccountType().getId(), listBean.getUserAccountType().getId(), 1, //rewardMoney 打赏数量
-                        new OnCommonListener() {
+                        new RequersCallBackListener() {
                             @Override
-                            public void onRequestSuccess(Response<String> response) {
+                            public void onRequestSuccess(int what, Response<String> response) {
                                 CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                                 if (msg.isSuccess()) {
                                     giftCount++;
@@ -116,6 +116,21 @@ public class DaShangBackpackAdapter extends RecyclerView.Adapter<DaShangBackpack
                                 } else {
                                     ToastUtils.showToast(msg.getMsg());
                                 }
+                            }
+
+                            @Override
+                            public void onRequestStar(int what) {
+
+                            }
+
+                            @Override
+                            public void onRequestError(int what, Response<String> response) {
+
+                            }
+
+                            @Override
+                            public void onRequestFinish(int what) {
+
                             }
                         });
 

@@ -268,8 +268,9 @@
         android:paddingTop="35dp"
         >
 
+            <!--android:id="@+id/app_video_finish"-->
         <ImageView
-            android:id="@+id/app_video_finish"
+            android:visibility="gone"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginLeft="@dimen/dp_10"

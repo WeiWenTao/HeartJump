@@ -21,7 +21,7 @@ public class SpConstant {
     public static final String SP_NEW = "new_config";
 
     //是否首次登录
-    public static final String IS_FIRST_LOAD = "is_first_load";
+    public static final String HAS_LOAD = "is_first_load";
 
     //是否首次运行
     public static final String IS_FIRST_RUN = "is_first_run";

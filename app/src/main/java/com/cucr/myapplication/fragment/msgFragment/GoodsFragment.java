@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.msgFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.MsgGoodAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.MsgBean.MsgInfo;
@@ -26,7 +28,7 @@ import com.yanzhenjie.nohttp.rest.Response;
  * Created by cucr on 2018/3/16.
  */
 
-public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnLoadListener, RequersCallBackListener {
+public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnLoadListener, RequersCallBackListener, MsgGoodAdapter.OnClickUser {
     private View rootView;
     private Gson mGson;
     private MsgGoodAdapter mAdapter;
@@ -63,6 +65,7 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
         mSrlv = (SwipeRecyclerView) rootView.findViewById(R.id.srlv);
         multiStateView = (MultiStateView) rootView.findViewById(R.id.multiStateView);
         mAdapter = new MsgGoodAdapter();
+        mAdapter.setOnClickUser(this);
         mSrlv.getRecyclerView().setAdapter(mAdapter);
         mSrlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mSrlv.setOnLoadListener(this);
@@ -133,5 +136,12 @@ public class GoodsFragment extends LazyFragment implements SwipeRecyclerView.OnL
         page++;
         mSrlv.onLoadingMore();
         mCore.queryMsgInfo(page, rows, 5, this);
+    }
+
+    @Override
+    public void clickUser(int userId) {
+        Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
     }
 }

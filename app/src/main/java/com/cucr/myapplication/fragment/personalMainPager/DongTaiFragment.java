@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
@@ -104,9 +105,9 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         this.layoutInflater = inflater;
-        if (mView == null){
-            mView = inflater.inflate(R.layout.fragment_dong_tai,null);
-            ViewUtils.inject(this,mView);
+        if (mView == null) {
+            mView = inflater.inflate(R.layout.fragment_dong_tai, null);
+            ViewUtils.inject(this, mView);
             initView();
             inipopWindow();
             initInfos();
@@ -198,7 +199,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
 
     @Override
     public void onRefresh() {
-        if (!rlv_dongtai.getSwipeRefreshLayout().isRefreshing()){
+        if (!rlv_dongtai.getSwipeRefreshLayout().isRefreshing()) {
             rlv_dongtai.getSwipeRefreshLayout().setRefreshing(true);
         }
         page = 1;
@@ -210,7 +211,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         page++;
         queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfoss = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfoss.isSuccess()) {
 //                    mQueryFtInfos.getRows().addAll(mQueryFtInfoss.getRows());
@@ -247,7 +248,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         MyLogger.jLog().i("动态参数 userId=" + userId + ",page=" + page + ",rows=" + rows);
         queryCore.queryFtInfo(-1, 1, userId, false, page, rows, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     MyLogger.jLog().i("mQueryFtInfos:" + mQueryFtInfos);
@@ -295,22 +296,22 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
 
     @Override
     public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
-        MyLogger.jLog().i("onClickGoods");
+        if (rowsBean.isIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.isIsGiveUp()) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsGiveUp(false);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsGiveUp(true);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
+
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
@@ -325,7 +326,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         MyLogger.jLog().i("Commendposition:" + position);
         Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
         intent.putExtra("hasPicture", hasPicture);
-        intent.putExtra("dataId", rowsBean.getId()+"");
+        intent.putExtra("dataId", rowsBean.getId() + "");
         intent.putExtra("isFormConmmomd", formCommond);
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
@@ -352,12 +353,22 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
 
     //点击用户头像
     @Override
-    public void onClickUser(int userId,boolean isStar) {
+    public void onClickUser(int userId, boolean isStar) {
         ToastUtils.showToast("已经是Ta的主页了哦");
 //        Intent intent = new Intent(mContext, PersonalMainPagerActivity.class);
 //        intent.putExtra("userId", userId);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        startActivity(intent);
+    }
+
+    @Override
+    public void onClickVideoCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanVideoCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
     }
 
     @Override

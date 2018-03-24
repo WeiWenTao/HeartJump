@@ -5,15 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cucr.myapplication.activity.SplishActivity"
     android:background="@drawable/splish"
     android:gravity="right"
+    tools:context="com.cucr.myapplication.activity.SplishActivity"
     >
 
     <ImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         />
 
 </LinearLayout>

@@ -60,4 +60,7 @@ public interface HytInterf {
 
     //获取禁言列表
     void hytLockList(String hytId, RequersCallBackListener commonListener);
+/*
+    //应援活动支持
+    void yyhdSupport(String amount, String activeId, RequersCallBackListener commonListener);*/
 }

@@ -1,7 +1,6 @@
 package com.cucr.myapplication.fragment.personalMainPager;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,10 +16,15 @@ import com.cucr.myapplication.adapter.RlVAdapter.RLVStarAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.starList.FocusInfo;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.fragment.LazyFragment_app;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
+import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,7 +34,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 @SuppressLint("ValidFragment")
-public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadListener {
+public class StarFragment extends LazyFragment_app implements SwipeRecyclerView.OnLoadListener, RequersCallBackListener {
 
     private View mView;
     private int userId;
@@ -40,6 +44,10 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
     private int rows;
     private SwipeRecyclerView mRlv_starlist;
     private Intent mIntent;
+    private Gson mGson;
+    private MultiStateView multiStateView;
+    private boolean needShowLoading;
+    private boolean isRefresh;
 
     public StarFragment(int userId) {
         this.userId = userId;
@@ -50,16 +58,24 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_star, null);
-            initView();
         }
         return mView;
     }
 
+    @Override
+    protected void onFragmentFirstVisible() {
+        super.onFragmentFirstVisible();
+        initView();
+    }
+
     private void initView() {
         page = 1;
-        rows = 5;
+        rows = 10;
+        needShowLoading = true;
         mCore = new QueryFocus();
+        mGson = MyApplication.getGson();
         mRlv_starlist = (SwipeRecyclerView) mView.findViewById(R.id.rlv_his_starlist);
+        multiStateView = (MultiStateView) mView.findViewById(R.id.multiStateView);
         mRlv_starlist.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mRlv_starlist.setOnLoadListener(this);
         mAdapter = new RLVStarAdapter();
@@ -68,7 +84,6 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
         decor.setDrawable(getResources().getDrawable(R.drawable.divider_bg));
         mRlv_starlist.getRecyclerView().addItemDecoration(decor);
         mRlv_starlist.setAdapter(mAdapter);
-        mRlv_starlist.onLoadingMore();
         //跳转企业用户看的明星主页
         mIntent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
         mAdapter.setOnItemClick(new RLVStarAdapter.OnItemClick() {
@@ -86,50 +101,79 @@ public class StarFragment extends Fragment implements SwipeRecyclerView.OnLoadLi
 
 
     @Override
-    public void onRefresh() {
-        if (!mRlv_starlist.getSwipeRefreshLayout().isRefreshing()) {
-            mRlv_starlist.getSwipeRefreshLayout().setRefreshing(true);
-        }
-
-        page = 1;
-        //查询ta的关注明星
-        mCore.queryMyFocusStars(userId, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                FocusInfo starInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
-                if (starInfo.isSuccess()) {
-                    mAdapter.setData(starInfo.getRows());
-                    if (starInfo.getTotal() == starInfo.getRows().size()) {
-                        mRlv_starlist.onNoMore("木有了");
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_ONE) {
+            FocusInfo starList = mGson.fromJson(response.get(), FocusInfo.class);
+            if (starList.isSuccess()) {
+                if (isRefresh) {
+                    if (starList.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        mAdapter.setData(starList.getRows());
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                     }
                 } else {
-                    ToastUtils.showToast(response.get());
+                    mAdapter.addData(starList.getRows());
                 }
-                mRlv_starlist.setRefreshing(false);
+                if (starList.getTotal() <= page * rows) {
+                    mRlv_starlist.onNoMore("没有更多了");
+                } else {
+                    mRlv_starlist.complete();
+                }
+            } else {
+                ToastUtils.showToast(starList.getErrorMsg());
             }
-        });
+
+        }
+    }
+
+
+    @Override
+    public void onRequestStar(int what) {
+        if (what == Constans.TYPE_ONE) {
+            if (needShowLoading) {
+                multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+                needShowLoading = false;
+            }
+        }
     }
 
     @Override
-    public void onLoadMore() {
-
-        page++;
-        mCore.queryMyFocusStars(userId, page, rows, new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                FocusInfo starInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
-                if (starInfo.isSuccess()) {
-                    mAdapter.addData(starInfo.getRows());
-                    //判断是否还有数据
-                    if (starInfo.getTotal() <= page * rows) {
-                        mRlv_starlist.onNoMore("没有更多了");
-                    } else {
-                        mRlv_starlist.complete();
-                    }
-                } else {
-                    ToastUtils.showToast(starInfo.getErrorMsg());
-                }
+    public void onRequestError(int what, Response<String> response) {
+        if (what == Constans.TYPE_ONE) {
+            if (isRefresh && response.getException() instanceof NetworkError) {
+                multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
             }
-        });
+        }
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_ONE) {
+            if (mRlv_starlist.isRefreshing()) {
+                mRlv_starlist.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (mRlv_starlist.isLoadingMore()) {
+                mRlv_starlist.stopLoadingMore();
+            }
+        }
+    }
+
+    //刷新
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        mRlv_starlist.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.queryMyFocusStars(userId, page, rows, this);
+    }
+
+    //加载
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        mRlv_starlist.onLoadingMore();
+        mCore.queryMyFocusStars(userId, page, rows, this);
     }
 }

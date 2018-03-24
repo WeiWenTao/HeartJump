@@ -1,6 +1,5 @@
 package com.cucr.myapplication.interf.starList;
 
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 
 /**
@@ -8,7 +7,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
  */
 
 public interface MyFocusStars {
-    void queryMyFocusStars(int queryUserId, int page, int rows, OnCommonListener onCommonListener);
+    void queryMyFocusStars(int queryUserId, int page, int rows, RequersCallBackListener onCommonListener);
 
     void queryMyFocusOthers(int page, int rows, RequersCallBackListener requersCallBackListener);
 

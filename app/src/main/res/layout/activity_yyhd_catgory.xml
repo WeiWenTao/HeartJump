@@ -144,6 +144,7 @@
                     android:id="@+id/cv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     app:isHideTimeBackground="true"
                     app:isShowDay="true"
                     app:isShowHour="true"
@@ -155,7 +156,7 @@
                     app:suffixMinute=" : "
                     app:suffixSecond=" "
                     app:suffixTextColor="@color/xtred"
-                    app:suffixTextSize="13sp"
+                    app:suffixTextSize="12sp"
                     app:timeTextColor="@color/xtred"
                     app:timeTextSize="15sp"
                     />
@@ -324,7 +325,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
-                    android:text="78911"
                     android:textColor="#929292"
                     android:textSize="@dimen/sp_13"
                     />
@@ -349,7 +349,6 @@
                     android:id="@+id/tv_give_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="78911"
                     android:textColor="#929292"
                     android:textSize="@dimen/sp_13"
                     />

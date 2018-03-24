@@ -2,7 +2,6 @@ package com.cucr.myapplication.core.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.cucr.myapplication.activity.MainActivity;
@@ -10,10 +9,12 @@ import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.login.LoadSuccess;
 import com.cucr.myapplication.bean.login.LoadUserInfo;
-import com.cucr.myapplication.bean.login.UserAccountInfo;
+import com.cucr.myapplication.bean.user.LoadUserInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.dao.DaoCore;
+import com.cucr.myapplication.gen.LoadUserInfosDao;
 import com.cucr.myapplication.interf.load.LoadByPsw;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -29,9 +30,7 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -61,8 +60,8 @@ public class LoginCore implements LoadByPsw {
     private Object flag;
     private String mPassWord;
     private Gson mGson;
-    private List<String> mKeys;//这是存放账户信息的另一个容器  账号管理界面要用
     private Set<String> tags;//极光标签
+    private LoadUserInfosDao mUserDao;
 
     public LoginCore() {
         mQueue = NoHttp.newRequestQueue();
@@ -70,7 +69,8 @@ public class LoginCore implements LoadByPsw {
         mGson = MyApplication.getGson();
         context = MyApplication.getInstance();
         tags = new HashSet<>();
-        mKeys = new ArrayList<>();
+        //数据库
+        mUserDao = DaoCore.getInstance().getUserDao();
     }
 
     @Override
@@ -147,21 +147,23 @@ public class LoginCore implements LoadByPsw {
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getMsg(), LoadSuccess.class);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
-            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getUserId(), loadSuccess.getSign(), loadSuccess.getPhone(), mPassWord,
-                    HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
-            SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
-            edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
-            //两个容器 类似于联表查询效果
-            String keys = (String) SpUtil.getParam("keys", "");
-            if (!TextUtils.isEmpty(keys)) {
-                mKeys = MyApplication.getGson().fromJson(keys, List.class);
+            LoadUserInfos loadUserInfos = new LoadUserInfos(null, loadSuccess.getUserId(), loadSuccess.getRoleId(),
+                    loadSuccess.getLoginStatu(), loadSuccess.getPhone(), loadSuccess.getSign(),
+                    loadSuccess.getName(), loadSuccess.getUserHeadPortrait(),
+                    loadSuccess.getToken(), loadSuccess.getCompanyName(), loadSuccess.getCompanyConcat(), mPassWord);
+
+            //先去数据库查询 用户id 唯一标识
+            LoadUserInfos unique = mUserDao.queryBuilder()
+                    .where(LoadUserInfosDao.Properties.UserId.eq(loadSuccess.getUserId())).build().unique();
+
+            //如果没有查到
+            if (unique == null) {
+                mUserDao.insert(loadUserInfos);
+            } else {//如果有这条数据  就更新这条数据
+                loadUserInfos.setId(unique.getId());    //修改时 主键不能为空
+                mUserDao.update(loadUserInfos);
             }
 
-            if (!mKeys.contains(loadSuccess.getPhone())) {
-                mKeys.add(0, loadSuccess.getPhone());
-            }
-
-            SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
             //---------------------------------------------------------------------------------
             //保存融云token
             SpUtil.setParam(SpConstant.TOKEN, loadSuccess.getToken());
@@ -172,7 +174,6 @@ public class LoginCore implements LoadByPsw {
             SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
 //                      保存头像
             SpUtil.setParam(SpConstant.SP_USERHEAD, loadSuccess.getUserHeadPortrait());
-
 //                    保存用户id
             SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存身份信息
@@ -196,7 +197,7 @@ public class LoginCore implements LoadByPsw {
             });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_LOAD, false)) {
+            if (!(boolean) SpUtil.getParam(SpConstant.HAS_LOAD, false)) {
                 MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);

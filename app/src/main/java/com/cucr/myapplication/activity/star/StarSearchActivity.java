@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.SearchStarAdapter;
 import com.cucr.myapplication.app.MyApplication;
@@ -54,10 +55,10 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     private MultiStateView multiStateView;
 
     private boolean needShowLoading;
-    private QueryStarListCore mCore;
-    private int page;
-    private int rows;
     private boolean isRefresh;
+    private int rows;
+    private int page;
+    private QueryStarListCore mCore;
     private String mCode;
     private Gson mGson;
     private SearchStarAdapter mAdapter;

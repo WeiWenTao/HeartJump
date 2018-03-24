@@ -22,6 +22,7 @@ import com.cucr.myapplication.alipay.PayResultInfo;
 import com.cucr.myapplication.alipay.WxPayInfo;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.eventBus.EventIsSuccess;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.constants.Constans;
@@ -29,12 +30,13 @@ import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.Pay.PayLisntener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.DialogPayStyle;
 import com.cucr.myapplication.widget.dialog.DialogPerfirmPayResult;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -51,7 +53,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PayCenterActivity_new extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class PayCenterActivity_new extends BaseActivity implements RadioGroup.OnCheckedChangeListener, DialogPerfirmPayResult.OnClickYes {
 
     @ViewInject(R.id.rg1)
     private RadioGroup rg1;
@@ -84,7 +86,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
     //记录支付方式默认支付宝支付  1:支付宝 , 2:微信
     private int payStyle = 1;
     private Map<Integer, Integer> moneys;
-    private DialogPayStyle mDailogPayStyle;
+    private MyWaitDialog mWaitDialog;
 
     //上一个rb
     private RadioButton mPreRB;
@@ -118,13 +120,15 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                             public void onSuccess(Response<String> response) {
                                 CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                                 MyLogger.jLog().i("reBackMsg" + reBackMsg);
-                                if (reBackMsg.isSuccess()) {
-                                    mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
-                                    queryMoney();
-                                } else {
-                                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
-                                    ToastUtils.showToast(reBackMsg.getMsg());
-                                }
+                                // TODO: 2018/3/23
+//--------------------------------------------------------------------------------------------------------
+//                                if (reBackMsg.isSuccess()) {
+                                //暂时以支付宝后台为准   以后再调
+                                mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
+//                                } else {
+//                                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
+//                                    ToastUtils.showToast(reBackMsg.getMsg());
+//                                }
                             }
 
                             @Override
@@ -135,6 +139,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        ToastUtils.showToast("支付成功");
                         //去服务器查询结果
+//--------------------------------------------------------------------------------------------------------
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         ToastUtils.showToast("支付失败");
@@ -155,10 +160,11 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
 
         moneys = new HashMap<>();
         EventBus.getDefault().register(this);
-        mDailogPayStyle = new DialogPayStyle(this, R.style.ShowAddressStyleTheme);
-        mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.ShowAddressStyleTheme);
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
+        mPerfirmPayResulterfirmDialog = new DialogPerfirmPayResult(this, R.style.MyWaitDialog);
         payCore = new PayCenterCore();
         queryMoney();
+        mPerfirmPayResulterfirmDialog.setOnClickYes(this);
         tv_account.setText(SpUtil.getParam(SpConstant.USER_NAEM, "") + "");
         findRG();
         initRBS();
@@ -238,6 +244,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
             return;
         }
         finalMoney = money / 10.0f;
+        mWaitDialog.show();
         switch (payStyle) {
             case 1://支付宝
                 alipay();
@@ -281,9 +288,9 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
     //支付宝支付逻辑
     public void alipay() {
         MyLogger.jLog().i("finalMoney:" + finalMoney);
-        payCore.aliPay(finalMoney, "心跳充值", Constans.TYPE_ZERO, -1, new OnCommonListener() {
+        payCore.aliPay(finalMoney, "心跳充值", Constans.TYPE_ZERO, -1, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 final PayInfo payInfo = mGson.fromJson(response.get(), PayInfo.class);
                 final String orderInfo = payInfo.getMsg();
                 if (payInfo.isSuccess()) {
@@ -306,6 +313,21 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                     ToastUtils.showToast(PayCenterActivity_new.this, orderInfo);
                 }
             }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+                mWaitDialog.dismiss();
+            }
         });
     }
 
@@ -322,9 +344,9 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
         mIwxapi = WXAPIFactory.createWXAPI(MyApplication.getInstance(), "wxbe72c161183cf70da");
         mIwxapi.registerApp("wxbe72c16183cf70da"); //注册appid  appid可以在开发平台获取
 
-        payCore.wxPay((int) (money * 10), "微信充值", 0, -1, new OnCommonListener() {
+        payCore.wxPay((int) (money * 10), "微信充值", 0, -1, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 final WxPayInfo payInfo = mGson.fromJson(response.get(), WxPayInfo.class);
                 MyLogger.jLog().i("payInfo:" + payInfo);
                 orderNo = payInfo.getObj().getMsg().getOrderNo();
@@ -349,11 +371,26 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                     ToastUtils.showToast(payInfo.getMsg());
                 }
             }
-        });
 
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+                mWaitDialog.dismiss();
+            }
+        });
     }
 
-
+    //--------------------------------------------------------------------------------------------------------
+    //微信的回调
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPayResult(EventIsSuccess event) {
         getPayResult(orderNo);
@@ -364,13 +401,14 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
             @Override
             public void onSuccess(Response<String> response) {
                 CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                MyLogger.jLog().i("reBackMsg" + reBackMsg);
-                if (reBackMsg.isSuccess()) {
-                    mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
-                } else {
-                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
-                    ToastUtils.showToast(reBackMsg.getMsg());
-                }
+//                if (reBackMsg.isSuccess()) {
+                mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
+                EventBus.getDefault().post(new CommentEvent(999));
+
+//                } else {
+//                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
+//                    ToastUtils.showToast(reBackMsg.getMsg());
+//                }
             }
 
             @Override
@@ -378,5 +416,12 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                 mPerfirmPayResulterfirmDialog.show();
             }
         });
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    @Override
+    public void clickYes() {
+        mPerfirmPayResulterfirmDialog.dismiss();
+        finish();
     }
 }

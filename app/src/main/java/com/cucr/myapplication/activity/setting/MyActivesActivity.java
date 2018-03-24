@@ -11,6 +11,7 @@ import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.ActivitysAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
@@ -19,9 +20,13 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -31,6 +36,11 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
     @ViewInject(R.id.rlv_actives)
     private SwipeRecyclerView rlv_actives;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
+    private boolean needShowLoading;
     private Context mContext;
     private HuoDongCore mCore;
     private int page;
@@ -51,6 +61,7 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
     }
 
     private void initRLV() {
+        needShowLoading = true;
         mContext = MyApplication.getInstance();
         mCore = new HuoDongCore();
         mGson = MyApplication.getGson();
@@ -119,6 +130,7 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
         this.position = position;
         Intent intent = new Intent(MyApplication.getInstance(), HuoDongCatgoryActivity.class);
         intent.putExtra("data", rowsBean);
+        intent.putExtra("showMore", true);
         intent.putExtra("isFromComment", isFromComment);
         startActivityForResult(intent, Constans.REQUEST_CODE);
     }
@@ -143,6 +155,13 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
             rowsBean.setIsSignUp(rowBeans.getIsSignUp());
             rowsBean.setCommentCount(rowBeans.getCommentCount());
             mAdapter.notifyDataSetChanged();
+        } else if (requestCode == Constans.REQUEST_CODE && resultCode == 999) {
+            boolean delete = data.getBooleanExtra("delete", false);
+            if (delete) {
+//                mAdapter.delData(position);
+                onRefresh();
+                EventBus.getDefault().post(new CommentEvent(999));
+            }
         }
     }
 
@@ -151,8 +170,13 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
         QiYeHuoDongInfo info = mGson.fromJson(response.get(), QiYeHuoDongInfo.class);
         if (info.isSuccess()) {
             if (isRefresh) {
-                mRowBeans = info.getRows();
-                mAdapter.setData(info.getRows());
+                if (info.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    mRowBeans = info.getRows();
+                    mAdapter.setData(info.getRows());
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
             } else {
                 mRowBeans.addAll(info.getRows());
                 mAdapter.addData(info.getRows());
@@ -169,12 +193,17 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
 
     @Override
     public void onRequestStar(int what) {
-
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -183,6 +212,15 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
             if (rlv_actives.isRefreshing()) {
                 rlv_actives.getSwipeRefreshLayout().setRefreshing(false);
             }
+            if (rlv_actives.isLoadingMore()) {
+                rlv_actives.stopLoadingMore();
+            }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 }

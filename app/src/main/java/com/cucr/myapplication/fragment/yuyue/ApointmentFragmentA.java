@@ -127,7 +127,7 @@ public class ApointmentFragmentA extends BaseFragment implements Spinner.OnItemS
 
         mAdapter.setOnItemClickListener(new StarListForQiYeAdapter.OnItemClickListener() {
             @Override
-            public void onClickItems(int position) {
+            public void onClickItems(int position, StarListInfos.RowsBean rowsBean1) {
                 final StarListInfos.RowsBean rowsBean = allRows.get(position);
                 mIntent.putExtra("starId", rowsBean.getId());
                 finalPosition = position;

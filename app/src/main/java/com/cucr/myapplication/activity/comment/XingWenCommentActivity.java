@@ -25,6 +25,7 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -110,6 +111,7 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
     private EmojiPopup emojiPopup;
     private List<FtCommentInfo.RowsBean> mRows;
     private List<FtCommentInfo.RowsBean> allRows;
+
 
     @Override
     protected void initChild() {
@@ -201,28 +203,44 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(mRowsBean.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                if (commonRebackMsg.isSuccess()) {
-                    ToastUtils.showToast("评论成功!");
-                    //查询一遍
-                    onRefresh();
-                    et_comment.setText("");
-                    emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
-                    et_comment.clearFocus();
-                    mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
-                    upDataInfo();
-                    //评论成功后滚动到最顶部
+        queryCore.toComment(mRowsBean.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()),
+                new RequersCallBackListener() {
+                    @Override
+                    public void onRequestSuccess(int what, Response<String> response) {
+                        CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                        if (commonRebackMsg.isSuccess()) {
+                            ToastUtils.showToast("评论成功!");
+                            //查询一遍
+                            onRefresh();
+                            et_comment.setText("");
+                            emojiPopup.dismiss();
+                            CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
+                            et_comment.clearFocus();
+                            mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
+                            upDataInfo();
+                            //评论成功后滚动到最顶部
 //                    lv_ft_catgory.smoothScrollToPositionFromTop(0, 0, 300);
-                    lv_ft_catgory.setSelection(0);
-                } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
-                }
-            }
-        });
+                            lv_ft_catgory.setSelection(0);
+                        } else {
+                            ToastUtils.showToast(commonRebackMsg.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+                        waitDialog.show();
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        waitDialog.dismiss();
+                    }
+                });
     }
 
 

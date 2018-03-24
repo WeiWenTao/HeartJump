@@ -17,10 +17,10 @@ import android.widget.EditText;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.GridImageAdapter;
+import com.cucr.myapplication.bean.RZ.RzResult;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtPublishCore;
 import com.cucr.myapplication.listener.OnUpLoadListener;
-import com.cucr.myapplication.bean.RZ.RzResult;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogPublishStyle;
@@ -396,6 +396,5 @@ public class PublishActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         core.stopRequest();
-
     }
 }

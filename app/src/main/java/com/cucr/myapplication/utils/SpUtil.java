@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.cucr.myapplication.BuildConfig;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -21,8 +20,6 @@ public class SpUtil {
     //sp实例
     private static SharedPreferences sp;
     private static SharedPreferences sp_new;
-    //账号管理专用sp
-    private static SharedPreferences accountSp;
 
     public static SharedPreferences getSp() {
         if (sp == null) {
@@ -36,13 +33,6 @@ public class SpUtil {
             sp_new = MyApplication.getInstance().getSharedPreferences(SpConstant.SP_NEW, Context.MODE_PRIVATE);
         }
         return sp_new;
-    }
-
-    public static SharedPreferences getAccountSp() {
-        if (accountSp == null) {
-            accountSp = MyApplication.getInstance().getSharedPreferences(Constans.ACCOUNTS, Context.MODE_PRIVATE);
-        }
-        return accountSp;
     }
 
 
@@ -90,16 +80,16 @@ public class SpUtil {
 
     public static void writeFirstRun(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, MODE_PRIVATE);
-        sp.edit().putInt(SpConstant.IS_FIRST_LOAD, BuildConfig.VERSION_CODE).commit();
+        sp.edit().putInt(SpConstant.HAS_LOAD, BuildConfig.VERSION_CODE).commit();
     }
 
     public static boolean readNeedUpdata(Context context) {
         return context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
-                .getInt(SpConstant.IS_FIRST_LOAD, 0) < BuildConfig.VERSION_CODE;
+                .getInt(SpConstant.HAS_LOAD, 0) < BuildConfig.VERSION_CODE;
     }
 
 //    public static boolean isFirstRun(Context context) {
 //        return context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
-//                .getInt(SpConstant.IS_FIRST_LOAD, -1) == -1;
+//                .getInt(SpConstant.HAS_LOAD, -1) == -1;
 //    }
 }

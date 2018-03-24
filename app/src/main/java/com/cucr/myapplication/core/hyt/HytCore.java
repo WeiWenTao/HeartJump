@@ -81,6 +81,7 @@ public class HytCore implements HytInterf {
         mQueue.add(Constans.TYPE_THREE, request, listener);
     }
 
+    //查询应援金额
     @Override
     public void querYyhdJE(String actionCode, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
@@ -286,6 +287,18 @@ public class HytCore implements HytInterf {
         mQueue.add(Constans.TYPE_SEVENTEEN, request, listener);
     }
 
+  /*  //后援团报名
+    @Override
+    public void yyhdSupport(String amount, String activeId, RequersCallBackListener commonListener) {
+        this.commonListener = commonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HYHD_SUPPORT, RequestMethod.POST);
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("amount", amount)
+                .add("activeId", activeId)
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_NINETEEN, request, listener);
+    }
+*/
 
     private OnResponseListener<String> listener = new OnResponseListener<String>() {
         @Override

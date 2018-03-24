@@ -15,11 +15,13 @@ public class HttpContans {
 
     public static final String IMAGE_HOST = "";
 
-//    public static final String HOST = "http://192.168.1.130:8080";
+//    public static final String HOST = "http://101.132.96.199";
+
+//    public static final String HOST = "http://www.cucrxt.com";
 
     public static final String HOST = "http://192.168.1.147:8080";
 
-//    public static final String IMAGE_HOST =HOST+ "http://yin-wiki.51vip.biz";
+//    public static final String HOST = "http://192.168.1.130:8080";
 
     //splish
     public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";
@@ -29,6 +31,9 @@ public class HttpContans {
 
     //注册
     public static final String ADDRESS_REGIST = HOST + "/interface/user/regist";
+
+    //重新获取token
+    public static final String ADDRESS_GET_TOKEN = HOST + "/interface/user/reloadToken";
 
     //验证码
     public static final String ADDRESS_YZM = HOST + "/interface/checkCode/getCheckCode";
@@ -236,6 +241,12 @@ public class HttpContans {
 
     //粉团分享
     public static final String ADDRESS_FT_SHARE = HOST + "/interface/newsShare/page?fansNewsContentId=";
+
+    //粉团删除
+    public static final String ADDRESS_FT_DELETE = HOST + "/interface/mobileContentAction/del";
+
+    //活动删除
+    public static final String ADDRESS_ACTIVE_DELETE = HOST + "/interface/mobileStartAppointment/deleteActive";
 
     //我的预约
     public static final String ADDRESS_MY_APOINMENT = HOST + "/interface/mobileStartAppointment/myAppointment";

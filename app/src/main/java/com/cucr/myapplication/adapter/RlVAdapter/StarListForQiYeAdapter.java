@@ -15,14 +15,14 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.core.focus.FocusCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.bean.eventBus.EventOnClickFocus;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.starList.StarListInfos;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.focus.FocusCore;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -170,7 +170,7 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onClickItems(position);
+                    mOnItemClickListener.onClickItems(position,rowsBean);
                 }
             }
         });
@@ -178,7 +178,6 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
 
     @Override
     public int getItemCount() {
-        MyLogger.jLog().i("starlist——size:" + (rows == null ? 0 : rows.size()));
         return rows == null ? 0 : rows.size();
     }
 
@@ -217,7 +216,7 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
-        void onClickItems(int position);
+        void onClickItems(int position,StarListInfos.RowsBean rowsBean);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

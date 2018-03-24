@@ -1,9 +1,7 @@
 package com.cucr.myapplication.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +18,7 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMHytInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMPersonalInfo;
 import com.cucr.myapplication.bean.app.AppInfo;
+import com.cucr.myapplication.bean.app.TokenMsg;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
@@ -34,7 +33,9 @@ import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
 import com.cucr.myapplication.listener.LoadChatServer;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.utils.AppUtils;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
@@ -55,7 +56,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, LoadChatServer, RongIM.GroupInfoProvider, RequersCallBackListener, RongIM.GroupUserInfoProvider {
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, RongIM.UserInfoProvider, LoadChatServer, RongIM.GroupInfoProvider, RequersCallBackListener, RongIM.GroupUserInfoProvider, OnCommonListener {
 
     private List<Fragment> mFragments;
     private RadioGroup mRg_mian_fragments;
@@ -79,8 +80,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         initView();
         initFragment(0);
         initRadioGroup();
-//        CheckUpData();    //检查更新
-        //TODO: 2017/4/28 Splash界面完成
+        CheckUpData();    //检查更新
         DisplayMetrics dm = new DisplayMetrics();
         // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
         // MI 6        :DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
@@ -94,21 +94,31 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         core.queryCode(this);
     }
 
-    private void normalUpdate(Context context, String text, final AppInfo appInfo) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("心跳互娱有新版本了 V" + appInfo.getKeyFild());
+    private void normalUpdate(String text, final AppInfo appInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(text + appInfo.getKeyFild());
         builder.setMessage(appInfo.getRemark());
-        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder1 = builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!canDownloadState()) {
+                if (!AppUtils.canDownloadState()) {
                     showDownloadSetting();
                     return;
                 }
                 ToastUtils.showToast("已开始后台下载");
                 DownLoadApk.download(MainActivity.this, appInfo.getValueFild(), "正在下载", "心跳互娱");
             }
-        }).setCancelable(appInfo.getGroupFild() == 0).create().show();
+        }).setCancelable(appInfo.getGroupFild() == 0);
+        if (appInfo.getGroupFild() == 0) {
+            //非强制更新
+            builder1.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        builder1.create().show();
     }
 
     private void showDownloadSetting() {
@@ -118,21 +128,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         startActivity(intent);
     }
 
-    private boolean canDownloadState() {
-        try {
-            int state = MyApplication.getInstance().getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
-            if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
-                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED) {
-                return false;
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 
     private void initIM() {
         mChatCore = new ChatCore();
@@ -152,6 +148,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     public void onLoadFial(RongIMClient.ErrorCode errorCode) {
         MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
+    }
+
+    @Override
+    public void onTokenIncorrect() {
+        mChatCore.reLoad(this);
     }
     //================================================================
 
@@ -181,7 +182,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     private void initRadioGroup() {
         mRg_mian_fragments.setOnCheckedChangeListener(this);
-
     }
 
     //根据常过来的索引切换fragment
@@ -307,10 +307,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
         switch (what) {
-
             case Constans.TYPE_ONE:
                 AppInfo appInfo = MyApplication.getGson().fromJson(response.get(), AppInfo.class);
-                normalUpdate(MainActivity.this, "心跳互娱", appInfo);
+                if (AppUtils.getVersionCode(MyApplication.getInstance()) < appInfo.getExtra1()) {
+                    normalUpdate("心跳互娱有新版本了 V", appInfo);
+                }
                 break;
             case Constans.TYPE_TWO:
                 IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
@@ -356,4 +357,15 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     }
 
 
+    //重新获取Token监听
+    @Override
+    public void onRequestSuccess(Response<String> response) {
+        TokenMsg commonRebackMsg = MyApplication.getGson().fromJson(response.get(), TokenMsg.class);
+        if (commonRebackMsg.isSuccess()) {
+            SpUtil.setParam(SpConstant.TOKEN, commonRebackMsg.getErrorMsg());
+            mChatCore.connect(commonRebackMsg.getErrorMsg(), this);
+        } else {
+            ToastUtils.showToast(commonRebackMsg.getErrorMsg());
+        }
+    }
 }

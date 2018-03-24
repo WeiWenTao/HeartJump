@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.fenTuan.PublishActivity;
 import com.cucr.myapplication.activity.star.StarPagerActivity;
@@ -27,6 +28,7 @@ import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
@@ -120,6 +122,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
 
     @Override
     protected void onFragmentFirstVisible() {
+
         initView();
         initRlV();
         inipopWindow();
@@ -151,6 +154,9 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     }
 
     private void initInfos() {
+        if (mDaShangPagerAdapter == null){
+            mDaShangPagerAdapter = new DaShangPagerAdapter();
+        }
         //查询用户余额
         mPayCenterCore.queryUserMoney(new OnCommonListener() {
             @Override
@@ -197,7 +203,9 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void eventData(EventDuiHuanSuccess event) {
-        MyLogger.jLog().i("queryBackpack");
+        if (mDaShangPagerAdapter == null){
+            mDaShangPagerAdapter = new DaShangPagerAdapter();
+        }
         queryBackpack();
     }
 
@@ -235,7 +243,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     }
 
     private void initRlV() {
-
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
         mAdapter = new FtAdapter();
@@ -335,6 +342,12 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
             rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
             rowsBean.setCommentCount(mRowsBean.getCommentCount());
             mAdapter.notifyDataSetChanged();
+        } else if (requestCode == Constans.REQUEST_CODE && resultCode == 999) {
+            boolean delete = data.getBooleanExtra("delete", false);
+            if (delete) {
+//                mAdapter.delData(position);
+                onRefresh();
+            }
         }
     }
 
@@ -348,6 +361,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     //刷新的时候查询最新数据 page = 1
     @Override
     public void onRefresh() {
+        initInfos();//背包信息初始化
         isRefresh = true;
         page = 1;
         rlv_fentuan.getSwipeRefreshLayout().setRefreshing(true);
@@ -363,6 +377,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     }
 
     //打赏框
+
     private void inipopWindow() {
         if (popWindow == null) {
             View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
@@ -374,7 +389,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         popWindow.setOutsideTouchable(true);
         popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mDaShangPagerAdapter = new DaShangPagerAdapter();
         vp_dahsnag.setAdapter(mDaShangPagerAdapter);
     }
 
@@ -471,6 +485,23 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         }
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mIntent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //删除了动态 刷新
+    public void onDataSynEvent(CommentEvent event) {
+        if (event.getFlag() == 999) {
+            onRefresh();
+        }
+    }
+
+    @Override
+    public void onClickVideoCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanVideoCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
     }
 
     @Override

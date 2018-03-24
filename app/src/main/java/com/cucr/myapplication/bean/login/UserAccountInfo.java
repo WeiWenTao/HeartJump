@@ -11,6 +11,15 @@ public class UserAccountInfo {
     private String nickName;
     private int userId;
     private String sign;
+    private int roleId;
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
     public String getNickName() {
         return nickName;
@@ -20,13 +29,14 @@ public class UserAccountInfo {
         this.nickName = nickName;
     }
 
-    public UserAccountInfo(int userId, String sign, String userName, String passWord, String userAddress, String nickName) {
+    public UserAccountInfo(int userId, String sign, String userName, String passWord, String userAddress, String nickName, int roleId) {
         this.userName = userName;
         this.passWord = passWord;
         this.userAddress = userAddress;
         this.nickName = nickName;
         this.userId = userId;
         this.sign = sign;
+        this.roleId = roleId;
     }
 
     public int getUserId() {

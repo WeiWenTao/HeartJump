@@ -1,5 +1,6 @@
 package com.cucr.myapplication.fragment.msgFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,17 +16,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.MsgCommendAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.MsgBean.MsgInfo;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.msg.MsgCore;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
@@ -84,6 +86,7 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     private int dataId;
     private int commonId;
     boolean needShowLoading;
+    private MyWaitDialog mWaitDialog;
 
     @Nullable
     @Override
@@ -142,6 +145,7 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     private void initView() {
         rows = 10;
         needShowLoading = true;
+        mWaitDialog = new MyWaitDialog(getActivity(), R.style.MyWaitDialog);
         mGson = MyApplication.getGson();
         mCore = new MsgCore();
         queryCore = new QueryFtInfoCore();
@@ -233,6 +237,13 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
+    @Override
+    public void clickUser(int userId) {
+        Intent intent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+    }
+
     //emoji表情
     @OnClick(R.id.iv_emoji)
     public void clickEmoji(View view) {
@@ -251,24 +262,40 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(dataId, commonId, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                if (commonRebackMsg.isSuccess()) {
-                    ToastUtils.showToast("评论成功!");
-                    //查询一遍
-                    onRefresh();
-                    et_comment.setText("");
-                    emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootView, true);
-                    et_comment.clearFocus();
-                    ll_foot.setVisibility(View.GONE);
-                } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
-                }
-            }
-        });
+        queryCore.toComment(dataId, commonId, CommonUtils.string2Unicode(et_comment.getText().toString().trim()),
+                new RequersCallBackListener() {
+                    @Override
+                    public void onRequestSuccess(int what, Response<String> response) {
+                        CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                        if (commonRebackMsg.isSuccess()) {
+                            ToastUtils.showToast("评论成功!");
+                            //查询一遍
+                            onRefresh();
+                            et_comment.setText("");
+                            emojiPopup.dismiss();
+                            CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootView, true);
+                            et_comment.clearFocus();
+                            ll_foot.setVisibility(View.GONE);
+                        } else {
+                            ToastUtils.showToast(commonRebackMsg.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+                        mWaitDialog.show();
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        mWaitDialog.dismiss();
+                    }
+                });
     }
 
 }

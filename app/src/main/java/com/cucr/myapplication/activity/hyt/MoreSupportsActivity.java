@@ -7,38 +7,48 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.YyhdSupportRecord;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.Hyt.YyhdSupports;
-import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpaceItemDecoration;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import java.util.List;
-
-public class MoreSupportsActivity extends BaseActivity implements RequersCallBackListener {
+public class MoreSupportsActivity extends BaseActivity implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
 
     @ViewInject(R.id.rlv_record)
     private SwipeRecyclerView srlv;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
+
     private int page;
     private int rows;
     private YyhdSupportRecord mAdapter;
+    private HytCore mCore;
+    private boolean needShowLoading;
+    private boolean isRefresh;
+    private int mActiveId;
 
     @Override
     protected void initChild() {
         page = 1;
         rows = 10;
-        int activeId = getIntent().getIntExtra("activeId", -1);
+        needShowLoading = true;
+        mActiveId = getIntent().getIntExtra("activeId", -1);
+        mCore = new HytCore();
         srlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mAdapter = new YyhdSupportRecord();
-        srlv.getRecyclerView().setAdapter(mAdapter);
+        srlv.setAdapter(mAdapter);
         srlv.getRecyclerView().addItemDecoration(new SpaceItemDecoration(CommonUtils.dip2px(MyApplication.getInstance(), 10)));
-        HytCore core = new HytCore();
-        core.querySupport(page, rows, activeId, this);
+        srlv.setOnLoadListener(this);
+        onRefresh();
     }
 
     @Override
@@ -48,29 +58,68 @@ public class MoreSupportsActivity extends BaseActivity implements RequersCallBac
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        if (what == Constans.TYPE_EIGHT) {
-            YyhdSupports yyhdSupports = mGson.fromJson(response.get(), YyhdSupports.class);
-            if (yyhdSupports.isSuccess()) {
-                List<YyhdSupports.RowsBean> rows = yyhdSupports.getRows();
-                mAdapter.setData(rows);
+
+        YyhdSupports starList = mGson.fromJson(response.get(), YyhdSupports.class);
+        if (starList.isSuccess()) {
+            if (isRefresh) {
+                if (starList.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    mAdapter.setData(starList.getRows());
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
             } else {
-                ToastUtils.showToast(yyhdSupports.getErrorMsg());
+                mAdapter.addData(starList.getRows());
             }
+            if (starList.getTotal() <= page * rows) {
+                srlv.onNoMore("没有更多了");
+            } else {
+                srlv.complete();
+            }
+        } else {
+            ToastUtils.showToast(starList.getErrorMsg());
         }
     }
 
     @Override
-    public void onRequestStar(int what) {
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        srlv.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.querySupport(page, rows, mActiveId, this);
+    }
 
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        srlv.onLoadingMore();
+        mCore.querySupport(page, rows, mActiveId, this);
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
     public void onRequestFinish(int what) {
-
+        if (srlv.isRefreshing()) {
+            srlv.getSwipeRefreshLayout().setRefreshing(false);
+        }
+        if (srlv.isLoadingMore()) {
+            srlv.stopLoadingMore();
+        }
     }
+
 }

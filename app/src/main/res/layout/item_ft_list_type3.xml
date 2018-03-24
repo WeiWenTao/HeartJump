@@ -240,6 +240,7 @@
         >
 
         <ImageView
+            android:id="@+id/iv_ds"
             android:layout_width="@dimen/dp_16"
             android:layout_height="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_10"

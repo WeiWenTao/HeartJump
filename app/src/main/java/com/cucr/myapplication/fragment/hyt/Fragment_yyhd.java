@@ -56,6 +56,9 @@ public class Fragment_yyhd extends LazyFragment_app implements YyhdAdapter.OnCli
         this.starId = starId;
     }
 
+    public Fragment_yyhd() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -137,7 +140,7 @@ public class Fragment_yyhd extends LazyFragment_app implements YyhdAdapter.OnCli
 
     @Override
     public void onRequestStar(int what) {
-//        mMyWaitDialog.show();
+
     }
 
     @Override
@@ -147,7 +150,7 @@ public class Fragment_yyhd extends LazyFragment_app implements YyhdAdapter.OnCli
 
     @Override
     public void onRequestFinish(int what) {
-//        mMyWaitDialog.dismiss();
+
         if (mRlv_yyhd.getSwipeRefreshLayout().isRefreshing()) {
             mRlv_yyhd.getSwipeRefreshLayout().setRefreshing(false);
         }

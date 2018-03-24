@@ -200,7 +200,6 @@ public class MyApplication extends Application {
         return glideOptions;
     }
 
-
     public static Gson getGson() {
         if (mGson == null) {
             mGson = new Gson();

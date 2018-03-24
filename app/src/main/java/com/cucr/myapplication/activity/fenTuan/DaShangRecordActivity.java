@@ -24,7 +24,7 @@ public class DaShangRecordActivity extends FragmentActivity {
 
     //导航栏
     @ViewInject(R.id.tablayout)
-    TabLayout tablayout;
+    private TabLayout tablayout;
 
     //ViewPager
     @ViewInject(R.id.vp_ds_record)
@@ -58,7 +58,6 @@ public class DaShangRecordActivity extends FragmentActivity {
         tablayout.addTab(tablayout.newTab().setText("我打赏的"));
         tablayout.setupWithViewPager(vp_ds_record);//将导航栏和viewpager进行关联
         vp_ds_record.setAdapter(new RewardPagerAdapter(getSupportFragmentManager(), mFragments, tytles));
-
     }
 
     @OnClick(R.id.iv_base_back)

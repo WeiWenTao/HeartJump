@@ -25,6 +25,7 @@ import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
@@ -269,24 +270,40 @@ public class PhotoActivity extends BaseActivity implements ViewPager.OnPageChang
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(photos.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                if (commonRebackMsg.isSuccess()) {
-                    ToastUtils.showToast("评论成功!");
-                    //查询一遍
-                    et_comment.setText("");
-                    emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
-                    et_comment.clearFocus();
-                    photos.setCommentCount(photos.getCommentCount() + 1);
-                    upDataInfo();
-                } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
-                }
-            }
-        });
+        queryCore.toComment(photos.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()),
+                new RequersCallBackListener() {
+                    @Override
+                    public void onRequestSuccess(int what, Response<String> response) {
+                        CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                        if (commonRebackMsg.isSuccess()) {
+                            ToastUtils.showToast("评论成功!");
+                            //查询一遍
+                            et_comment.setText("");
+                            emojiPopup.dismiss();
+                            CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
+                            et_comment.clearFocus();
+                            photos.setCommentCount(photos.getCommentCount() + 1);
+                            upDataInfo();
+                        } else {
+                            ToastUtils.showToast(commonRebackMsg.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+                        waitDialog.show();
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        waitDialog.dismiss();
+                    }
+                });
     }
 
     private void initAni() {

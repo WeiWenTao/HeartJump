@@ -59,7 +59,7 @@ public class MsgGoodAdapter extends RecyclerView.Adapter<MsgGoodAdapter.MyHolder
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        MsgInfo.RowsBean rowsBean = rows.get(position);
+        final MsgInfo.RowsBean rowsBean = rows.get(position);
         MsgInfo.RowsBean.ReceiverUserBean receiverUser = rowsBean.getReceiverUser();    //原文作者
         MsgInfo.RowsBean.SendUserBean sendUser = rowsBean.getSendUser();                //评论人
 
@@ -92,6 +92,33 @@ public class MsgGoodAdapter extends RecyclerView.Adapter<MsgGoodAdapter.MyHolder
             }
         });
 
+        holder.iv_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickRelpay != null) {
+                    mOnClickRelpay.clickUser(rowsBean.getSendUser().getId());
+                }
+            }
+        });
+        holder.tv_neckname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickRelpay != null) {
+                    mOnClickRelpay.clickUser(rowsBean.getSendUser().getId());
+                }
+            }
+        });
+
+    }
+
+    private OnClickUser mOnClickRelpay;
+
+    public void setOnClickUser(OnClickUser onClickRelpay) {
+        mOnClickRelpay = onClickRelpay;
+    }
+
+    public interface OnClickUser {
+        void clickUser(int userId);
     }
 
     @Override

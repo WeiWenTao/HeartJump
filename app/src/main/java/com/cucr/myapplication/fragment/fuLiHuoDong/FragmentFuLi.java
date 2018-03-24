@@ -24,9 +24,11 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;
@@ -40,7 +42,13 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
     @ViewInject(R.id.rlv_fuli)
     private SwipeRecyclerView rlv_fuli;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
     private View view;
+    private boolean hasActive;
+    private boolean hasGoods;
     private Gson mGson;
     private FuLiCore mCore;
     private int page;
@@ -53,7 +61,7 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         page = 1;
-        rows = 2;
+        rows = 10;
         mGson = new Gson();
         mIntent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         mCore = new FuLiCore();
@@ -96,6 +104,9 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
             ActiveInfo infos = mGson.fromJson(response.get(), ActiveInfo.class);
             if (infos.isSuccess()) {
                 if (isRefresh) {
+                    if (infos.getTotal() > 0) {
+                        hasActive = true;
+                    }
                     activeAdapter.setDate(infos.getRows());
                 } else {
                     activeAdapter.addDate(infos.getRows());
@@ -111,6 +122,9 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
             if (duiHuanGoosInfo.isSuccess()) {
                 //兑换查询结果
                 List<DuiHuanGoosInfo.RowsBean> goodInfos = duiHuanGoosInfo.getRows();
+                if (duiHuanGoosInfo.getTotal() > 0) {
+                    hasGoods = true;
+                }
                 //更新数据
                 activeAdapter.setDuiHuan(goodInfos);
             } else {
@@ -126,7 +140,9 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -136,6 +152,13 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
                 rlv_fuli.getSwipeRefreshLayout().setRefreshing(false);
             }
         }
+        if (!hasGoods && !hasActive) {   //只有当两者都为空时
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        } else {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }
+
+
     }
 
     //查询福利活动

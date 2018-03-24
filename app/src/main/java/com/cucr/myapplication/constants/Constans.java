@@ -21,6 +21,8 @@ public class Constans {
     public static final int TYPE_ITEM = 2;   //条目
     public static final int TYPE_FOOTER = 3;   //脚部
 
+    public static final int TYPE_999 = 999;
+    public static final int TYPE_998 = 998;
     public static final int TYPE_ZERO = 0;
     public static final int TYPE_ONE = 1;
     public static final int TYPE_TWO = 2;
@@ -79,7 +81,7 @@ public class Constans {
     public static final String TABLENAME_DISTRICT = "district";
 
     //电话号码正则
-    public static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+    public static final String PHONE_REGEX = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
 
     //用户名正则
     public static final String USERNAME_REGEX = "[~!/@#$%^&*()\\\\-_=+\\\\|[{}];:\\'\\\",<.>/?]+";

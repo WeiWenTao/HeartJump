@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -100,6 +101,10 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
 
+    //微博图标
+    @ViewInject(R.id.iv_weib)
+    private ImageView iv_weib;
+
     //企业看的
     @ViewInject(R.id.ll_qiye_look)
     private LinearLayout ll_qiye_look;
@@ -145,7 +150,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
 
         mDataList = new ArrayList<>();
 
-        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(true), "星闻"));
+        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(), "星闻"));
         //企业和明星用户才能看到数据信息
         if (CommonUtils.isStar() || CommonUtils.isQiYe()) {
             mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
@@ -403,6 +408,9 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
             tv_starname.setText(mData.getRealName());
             tv_base_title.setText(mData.getRealName());
             tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
+            if (TextUtils.isEmpty(mData.getWeiboUrl())) {
+                iv_weib.setVisibility(View.GONE);
+            }
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
         } else {
             ToastUtils.showToast(starInfos.getErrorMsg());

@@ -60,7 +60,7 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        MsgInfo.RowsBean rowsBean = rows.get(position);
+        final MsgInfo.RowsBean rowsBean = rows.get(position);
         MsgInfo.RowsBean.ReceiverUserBean receiverUser = rowsBean.getReceiverUser();    //原文作者
         MsgInfo.RowsBean.SendUserBean sendUser = rowsBean.getSendUser();                //评论人
 
@@ -90,7 +90,7 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
             @Override
             public void onClick(View v) {
                 Intent intent;
-                if (flag.equals("1")) {
+                if (flag != null && flag.equals("1")) {
                     intent = new Intent(mContext, FenTuanVideoCatgoryActiviry.class);
                 } else {
                     intent = new Intent(mContext, FenTuanCatgoryActiviry.class);
@@ -110,6 +110,23 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
                 }
             }
         });
+
+        holder.iv_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickRelpay != null) {
+                    mOnClickRelpay.clickUser(rowsBean.getSendUser().getId());
+                }
+            }
+        });
+        holder.tv_neckname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickRelpay != null) {
+                    mOnClickRelpay.clickUser(rowsBean.getSendUser().getId());
+                }
+            }
+        });
     }
 
     private OnClickRelpay mOnClickRelpay;
@@ -120,6 +137,8 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
 
     public interface OnClickRelpay {
         void clickReplay(int dataId, String commonId);
+
+        void clickUser(int userId);
     }
 
     @Override

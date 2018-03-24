@@ -3,7 +3,6 @@ package com.cucr.myapplication.activity.regist;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,12 +19,13 @@ import com.cucr.myapplication.bean.eventBus.EventChageAccount;
 import com.cucr.myapplication.bean.login.LoadSuccess;
 import com.cucr.myapplication.bean.login.ThirdLoadInfo;
 import com.cucr.myapplication.bean.login.ThirdPlaformInfo;
-import com.cucr.myapplication.bean.login.UserAccountInfo;
+import com.cucr.myapplication.bean.user.LoadUserInfos;
 import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
 import com.cucr.myapplication.core.login.RegistCore;
+import com.cucr.myapplication.dao.DaoCore;
+import com.cucr.myapplication.gen.LoadUserInfosDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.runtimepermissions.PermissionsManager;
 import com.cucr.myapplication.runtimepermissions.PermissionsResultAction;
@@ -46,9 +46,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,12 +66,12 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
     private Gson mGson;
     private Intent mIntent;
     private boolean mIsAdd;
-    private List<String> mKeys;//这是存放账户信息的另一个容器  账号管理界面要用
     private Set<String> tags;//极光标签
     private String mUserName;
     private String mPassWord;
     private Intent bindIntent;
     private Dialog mDialog;
+    private LoadUserInfosDao mUserDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +98,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         bindIntent = new Intent(MyApplication.getInstance(), BindTelActivity.class);
         mDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mGson = MyApplication.getGson();
-        mKeys = new ArrayList<>();
         tags = new HashSet<>();
 //      if (Build.VERSION.SDK_INT >= 23) {
 //            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -127,7 +124,8 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
 
     private void initViews() {
         mIntent = new Intent(MyApplication.getInstance(), NewRegistActivity.class);
-        //控制层
+        //数据库
+        mUserDao = DaoCore.getInstance().getUserDao();
         mLoginCore = new LoginCore();
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setImmersionBar();
@@ -301,29 +299,28 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
 
     private void saveLoad(Response<String> response) {
         ThirdLoadInfo loadUserInfo = mGson.fromJson(response.get(), ThirdLoadInfo.class);
-        MyLogger.jLog().i("loadUserInfo:" + loadUserInfo);
 //                登录成功 保存密钥
         if (loadUserInfo.isSuccess()) {
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getObj(), LoadSuccess.class);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
-            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getUserId(), loadSuccess.getSign(), loadSuccess.getPhone(), mPassWord,
-                    HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
+            LoadUserInfos loadUserInfos = new LoadUserInfos(null, loadSuccess.getUserId(), loadSuccess.getRoleId(),
+                    loadSuccess.getLoginStatu(), loadSuccess.getPhone(), loadSuccess.getSign(),
+                    loadSuccess.getName(), loadSuccess.getUserHeadPortrait(),
+                    loadSuccess.getToken(), loadSuccess.getCompanyName(), loadSuccess.getCompanyConcat(), mPassWord);
 
-            SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
-            edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
-            //两个容器 类似于联表查询效果
-            String keys = (String) SpUtil.getParam("keys", "");
-            if (!TextUtils.isEmpty(keys)) {
-                mKeys = MyApplication.getGson().fromJson(keys, List.class);
+            //先去数据库查询 用户id 唯一标识
+            LoadUserInfos unique = mUserDao.queryBuilder()
+                    .where(LoadUserInfosDao.Properties.UserId.eq(loadSuccess.getUserId())).build().unique();
+
+            //如果没有查到
+            if (unique == null) {
+                mUserDao.insert(loadUserInfos);
+            } else {//如果有这条数据  就更新这条数据
+                mUserDao.update(loadUserInfos);
             }
 
-            if (!mKeys.contains(loadSuccess.getPhone())) {
-                mKeys.add(0, loadSuccess.getPhone());
-            }
-            SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
             //---------------------------------------------------------------------------------
-
             //保存融云token
             SpUtil.setParam(SpConstant.TOKEN, loadSuccess.getToken());
             //保存头像
@@ -355,19 +352,18 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
                 }
             });
 
-//                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!(SpUtil.getNewSp().getBoolean(loadSuccess.getUserId() + "", false))) {
-                MyLogger.jLog().i("isFirst_是第一次登录");
-//                        跳转关注界面
-                Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
-                intent.putExtra("formLoad", true);
+//                  是否是第一次登录
+            if ((boolean) SpUtil.getParam(SpConstant.HAS_LOAD, false)) {
+                //                        跳转到主界面
+                Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 UMShareAPI.get(this).release();
+
             } else {
-                MyLogger.jLog().i("isFirst_不是第一次登录");
-//                        跳转到主界面
-                Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
+//                        跳转关注界面
+                Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
+                intent.putExtra("formLoad", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 UMShareAPI.get(this).release();

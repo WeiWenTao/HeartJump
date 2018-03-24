@@ -5,31 +5,37 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.core.fuLi.HuoDongCore;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventNotifyDataSetChange;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.fuLi.HuoDongCore;
+import com.cucr.myapplication.core.funTuanAndXingWen.DeleteCore;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogDelPics;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -55,7 +61,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocusChangeListener, RefreshLayout.OnLoadListener, SwipeRefreshLayout.OnRefreshListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener {
+public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocusChangeListener, RefreshLayout.OnLoadListener, SwipeRefreshLayout.OnRefreshListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, DialogDelPics.OnClickBt, RequersCallBackListener {
 
     //根布局
     @ViewInject(R.id.activity_hd_catgory)
@@ -97,6 +103,10 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
     @ViewInject(R.id.ref_hd_catgory)
     private RefreshLayout mRefreshLayout;
 
+    //删除功能
+    @ViewInject(R.id.iv_more)
+    private ImageView iv_more;
+
     //emoji表情
     private EmojiPopup emojiPopup;
     private HuoDongCore mHuoDongCore;
@@ -108,15 +118,29 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
     private FtCatgoryAadapter mAdapter;
     private int position;
     private List<FtCommentInfo.RowsBean> allRows;
+    private DialogDelPics mDialog;
+    private MyWaitDialog waitDialog;
+    private DeleteCore mDelCore;
+    private Intent mIntent;
 
     @Override
     protected void initChild() {
         EventBus.getDefault().register(this);
         allRows = new ArrayList<>();
         rows = 25;
-        initTitle("活动详情");
+        initDialog();
         init();
         onRefresh();
+    }
+
+    private void initDialog() {
+        mDelCore = new DeleteCore();
+        mDialog = new DialogDelPics(this, R.style.MyDialogStyle);
+        waitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
+        Window dialogWindow = mDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.BottomDialog_Animation);
+        mDialog.setOnClickBt(this);
     }
 
     @Override
@@ -130,7 +154,10 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         mRefreshLayout.setOnRefreshListener(this);
         mHuoDongCore = new HuoDongCore();
         et_comment.setOnFocusChangeListener(this);
-        mReceivedBean = (QiYeHuoDongInfo.RowsBean) getIntent().getSerializableExtra("data");
+        mIntent = getIntent();
+        mReceivedBean = (QiYeHuoDongInfo.RowsBean) mIntent.getSerializableExtra("data");
+        boolean showMore = getIntent().getBooleanExtra("showMore", false);
+        iv_more.setVisibility(showMore ? View.VISIBLE : View.GONE);
         tv_conmmands.setText(mReceivedBean.getCommentCount() + "");
         tv_goods.setText(mReceivedBean.getGiveUpCount() + "");
         iv_zan.setImageResource(mReceivedBean.getIsSignUp() == 1 ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
@@ -368,7 +395,7 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         if (!mRefreshLayout.isRefreshing()) {
             mRefreshLayout.setRefreshing(true);
         }
-        mHuoDongCore.activeCommentQuery(mReceivedBean.getId(),-1, page, rows, new OnCommonListener() {
+        mHuoDongCore.activeCommentQuery(mReceivedBean.getId(), -1, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
@@ -385,8 +412,8 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
     //加载
     @Override
     public void onLoad() {
-        page ++;
-        mHuoDongCore.activeCommentQuery(mReceivedBean.getId(),-1, page, rows, new OnCommonListener() {
+        page++;
+        mHuoDongCore.activeCommentQuery(mReceivedBean.getId(), -1, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
@@ -464,5 +491,50 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void clickDel() {
+        mDelCore.delActive(mReceivedBean.getId(), this);
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        if (what == Constans.TYPE_998) {
+            CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+            if (msg.isSuccess()) {
+                ToastUtils.showToast("删除成功");
+                mIntent.putExtra("delete", true);
+                setResult(999, mIntent);
+                finish();
+            } else {
+                ToastUtils.showToast(msg.getMsg());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        if (what == Constans.TYPE_999) {
+            waitDialog.show();
+        }
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    //显示删除
+    @OnClick(R.id.iv_more)
+    public void clickShowDialo(View view) {
+        mDialog.show();
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (what == Constans.TYPE_999) {
+            waitDialog.dismiss();
+        }
     }
 }

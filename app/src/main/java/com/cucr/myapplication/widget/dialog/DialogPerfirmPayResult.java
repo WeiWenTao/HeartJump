@@ -15,7 +15,6 @@ import com.cucr.myapplication.R;
 
 public class DialogPerfirmPayResult extends Dialog implements View.OnClickListener {
 
-
     private ProgressBar mPb;
     private TextView mTv_title;
     private TextView tv_yes;
@@ -28,13 +27,12 @@ public class DialogPerfirmPayResult extends Dialog implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_perfirm_pay_result);
+        setCanceledOnTouchOutside(false);
+        setCancelable(false);       //点其他地方不起作用
         initView();
     }
 
     private void initView() {
-        //设置点击外部消失
-        setCanceledOnTouchOutside(false);
-        setCancelable(false);
 
         mPb = (ProgressBar) findViewById(R.id.pb);
         mTv_title = (TextView) findViewById(R.id.tv_title);
@@ -50,6 +48,18 @@ public class DialogPerfirmPayResult extends Dialog implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        dismiss();
+        if (mOnClickYes != null) {
+            mOnClickYes.clickYes();
+        }
+    }
+
+    private OnClickYes mOnClickYes;
+
+    public interface OnClickYes {
+        void clickYes();
+    }
+
+    public void setOnClickYes(OnClickYes onClickYes) {
+        mOnClickYes = onClickYes;
     }
 }

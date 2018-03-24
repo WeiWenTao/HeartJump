@@ -203,7 +203,8 @@ public class DingDanActivity extends BaseActivity implements TextWatcher {
             public void onRequestSuccess(Response<String> response) {
                 LoadUserInfo loadUserInfo = mGson.fromJson(response.get(), LoadUserInfo.class);
                 if (loadUserInfo.isSuccess()) {
-                    ToastUtils.showToast("兑换成功");
+                    ToastUtils.showToast("兑换成功,客服稍后会与您沟通订单详情哦");
+                    finish();
                 } else {
                     ToastUtils.showToast(loadUserInfo.getMsg());
                 }

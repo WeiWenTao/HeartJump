@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fenTuan.DaShangListInfo;
+import com.cucr.myapplication.constants.HttpContans;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -28,6 +28,13 @@ public class DaShangCatgoryAdapter extends RecyclerView.Adapter<DaShangCatgoryAd
     public void setData(List<DaShangListInfo.RowsBean> rows) {
         this.rows = rows;
         notifyDataSetChanged();
+    }
+
+    public void addData(List<DaShangListInfo.RowsBean> rows) {
+        if (this.rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
     }
 
     @Override

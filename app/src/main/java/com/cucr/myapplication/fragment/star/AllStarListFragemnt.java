@@ -2,6 +2,7 @@ package com.cucr.myapplication.fragment.star;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.bean.eventBus.EventOnClickFocus;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
@@ -38,7 +41,7 @@ import java.util.List;
  * Created by cucr on 2017/11/28.
  */
 
-public class AllStarListFragemnt extends Fragment {
+public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdapter.OnItemClickListener {
 
     //刷新控件
     @ViewInject(R.id.swipe_refresh_layout)
@@ -78,6 +81,7 @@ public class AllStarListFragemnt extends Fragment {
     private void initView() {
         rows = 10;
         mAdapter = new StarListForQiYeAdapter(getActivity());
+        mAdapter.setOnItemClickListener(this);
         rlv_starlist.setLayoutManager(new GridLayoutManager(mContext, 2));
         wapper = new LoadMoreWrapper(mAdapter);
         rlv_starlist.setAdapter(wapper);
@@ -204,5 +208,14 @@ public class AllStarListFragemnt extends Fragment {
             wapper.setLoadState(wapper.LOADING_COMPLETE);
         }
 
+    }
+
+    @Override
+    public void onClickItems(int position, StarListInfos.RowsBean rowsBean) {
+        //发送明星id到明星主页
+        EventBus.getDefault().postSticky(new EventFIrstStarId(rowsBean.getId()));
+        Intent intent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
+        intent.putExtra("starId", rowsBean.getId());
+        startActivity(intent);
     }
 }

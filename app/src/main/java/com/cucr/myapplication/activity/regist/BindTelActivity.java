@@ -1,7 +1,6 @@
 package com.cucr.myapplication.activity.regist;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,15 +15,14 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.login.LoadSuccess;
 import com.cucr.myapplication.bean.login.ReBackMsg;
-import com.cucr.myapplication.bean.login.ThirdPlaformInfo;
-import com.cucr.myapplication.bean.login.UserAccountInfo;
-import com.cucr.myapplication.constants.Constans;
-import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.constants.SpConstant;
-import com.cucr.myapplication.core.chat.ChatCore;
-import com.cucr.myapplication.core.login.RegistCore;
 import com.cucr.myapplication.bean.login.ThirdLoadInfo;
-import com.cucr.myapplication.listener.LoadChatServer;
+import com.cucr.myapplication.bean.login.ThirdPlaformInfo;
+import com.cucr.myapplication.bean.user.LoadUserInfos;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.login.RegistCore;
+import com.cucr.myapplication.dao.DaoCore;
+import com.cucr.myapplication.gen.LoadUserInfosDao;
 import com.cucr.myapplication.listener.OnGetYzmListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
@@ -42,9 +40,8 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-import io.rong.imlib.RongIMClient;
 
-public class BindTelActivity extends BaseActivity implements RequersCallBackListener, LoadChatServer {
+public class BindTelActivity extends BaseActivity implements RequersCallBackListener {
 
     @ViewInject(R.id.et_tel)
     private EditText et_tel;
@@ -62,7 +59,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
     private MyWaitDialog mMyWaitDialog;
     private List<String> mKeys;//这是存放账户信息的另一个容器  账号管理界面要用
     private Set<String> tags;//极光标签
-
+    private LoadUserInfosDao mUserDao;
     //验证码倒计时
     private CountDownTimer downTimer = new CountDownTimer(60 * 1000, 1000) {
         @Override
@@ -85,6 +82,8 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
         mRegistCore = new RegistCore();
         mKeys = new ArrayList<>();
         tags = new HashSet<>();
+        //数据库
+        mUserDao = DaoCore.getInstance().getUserDao();
         mMyWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         mInfo = (ThirdPlaformInfo) getIntent().getSerializableExtra("data");
 
@@ -189,21 +188,20 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             LoadSuccess loadSuccess = mGson.fromJson(loadUserInfo.getObj(), LoadSuccess.class);
 
             //这里保存的信息账号管理界面用-------------------------------------------------------
-            new ChatCore().connect(loadSuccess.getToken(),this);
-            UserAccountInfo accountInfo = new UserAccountInfo(loadSuccess.getUserId(), loadSuccess.getSign(),loadSuccess.getPhone(), "",
-                    HttpContans.IMAGE_HOST + loadSuccess.getUserHeadPortrait(), loadSuccess.getName());
-            SharedPreferences.Editor edit = SpUtil.getAccountSp().edit();
-            edit.putString(loadSuccess.getPhone(), mGson.toJson(accountInfo).toString()).commit();
-            //两个容器 类似于联表查询效果
-            String keys = (String) SpUtil.getParam("keys", "");
-            if (!TextUtils.isEmpty(keys)) {
-                mKeys = MyApplication.getGson().fromJson(keys, List.class);
-            }
+            LoadUserInfos loadUserInfos = new LoadUserInfos(null, loadSuccess.getUserId(), loadSuccess.getRoleId(),
+                    loadSuccess.getLoginStatu(), loadSuccess.getPhone(), loadSuccess.getSign(),
+                    loadSuccess.getName(), loadSuccess.getUserHeadPortrait(),
+                    loadSuccess.getToken(), loadSuccess.getCompanyName(), loadSuccess.getCompanyConcat(), "");
+            //先去数据库查询 手机号 唯一标识
+            LoadUserInfos unique = mUserDao.queryBuilder()
+                    .where(LoadUserInfosDao.Properties.Phone.ge(loadSuccess.getPhone())).build().unique();
 
-            if (!mKeys.contains(loadSuccess.getPhone())) {
-                mKeys.add(0, loadSuccess.getPhone());
+            //如果没有查到
+            if (unique == null) {
+                mUserDao.insert(loadUserInfos);
+            } else {//如果有这条数据  就更新这条数据
+                mUserDao.update(loadUserInfos);
             }
-            SpUtil.setParam("keys", MyApplication.getGson().toJson(mKeys).toString());
             //---------------------------------------------------------------------------------
 
             //设置极光推送的tag
@@ -233,7 +231,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             });
 
 //                  是否是第一次登录  没取到值表示是第一次登录  加个 !
-            if (!(boolean) SpUtil.getParam(SpConstant.IS_FIRST_LOAD, false)) {
+            if (!(boolean) SpUtil.getParam(SpConstant.HAS_LOAD, false)) {
                 MyLogger.jLog().i("isFirst_是第一次登录");
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);
@@ -253,16 +251,4 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
             ToastUtils.showToast(loadUserInfo.getMsg());
         }
     }
-
-    //============================聊天服务器回调====================================
-    @Override
-    public void onLoadSuccess(String userid) {
-        MyLogger.jLog().i("登录聊天服务器成功 userId =" + userid);
-    }
-
-    @Override
-    public void onLoadFial(RongIMClient.ErrorCode errorCode) {
-        MyLogger.jLog().i("登录聊天服务器失败 errorCode =" + errorCode);
-    }
-    //================================================================
 }

@@ -3,6 +3,7 @@ package com.cucr.myapplication.activity.setting;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
@@ -52,6 +53,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 import static com.luck.picture.lib.config.PictureConfig.LUBAN_COMPRESS_MODE;
 
@@ -103,6 +106,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     private PictureSelectionModel mModel;
     private MyWaitDialog mWaitDialog;
     private Intent mIntent;
+    private String mNickName;
 
     @Override
     protected void initChild() {
@@ -290,11 +294,10 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     public void saveInfo(View view) {
         int userId = (int) SpUtil.getParam(SpConstant.USER_ID, -1);
         String sign = (String) SpUtil.getParam(SpConstant.SIGN, "");
-        String nickName = et_nickname.getText().toString();
+        mNickName = et_nickname.getText().toString();
         String singName = et_my_sign.getText().toString();
         int sex = tv_gender.getText().equals("男") ? 0 : 1;
-
-        mCore.save(MyApplication.getInstance(), new PersonalInfo(userId, sign, nickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath), this);
+        mCore.save(MyApplication.getInstance(), new PersonalInfo(userId, sign, mNickName, sex, birthdayMsg, mProvince, mCity, singName, mTemppath), this);
     }
 
     @Override
@@ -372,6 +375,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
             if (msg.isSuccess()) {
                 ToastUtils.showToast("保存成功!");
                 EventBus.getDefault().post(new EventQueryPersonalInfo());
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo((String) SpUtil.getParam(SpConstant.USER_ID,-1), mNickName, Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
                 setResult(111);
                 finish();
             } else {

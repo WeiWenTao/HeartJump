@@ -72,7 +72,7 @@ public class FragmentStarRecommend extends Fragment implements SwipeRecyclerView
         rlv_starlist.setOnLoadListener(this);
         mAdapter.setOnItemClickListener(new StarListForQiYeAdapter.OnItemClickListener() {
             @Override
-            public void onClickItems(int position) {
+            public void onClickItems(int position,StarListInfos.RowsBean rowsBean1) {
                 final StarListInfos.RowsBean rowsBean = rows.get(position);
                 Intent intent = new Intent(mContext, StarPagerActivity.class);
                 intent.putExtra("data", rowsBean);

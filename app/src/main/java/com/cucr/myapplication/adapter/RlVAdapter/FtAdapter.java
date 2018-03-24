@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.ImagePagerActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
@@ -59,6 +58,12 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    public void delData(int position) {
+        this.rows.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -93,11 +98,6 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 // -------------------------------------------------------------------------------------------------
         if (holder instanceof Tp1_Holder) {  //视频
 
-            //跳转信息
-            final Intent intent = new Intent(context, FenTuanVideoCatgoryActiviry.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("dataId", rowsBean.getId()+"");//发送数据
-
             //头像
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), ((Tp1_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());
             //视频封面
@@ -127,7 +127,9 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).rl_goto_video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(intent);
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickVideoCommends(position, rowsBean, false, false);
+                    }
                 }
             });
 
@@ -145,7 +147,9 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).rl_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(intent);
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickVideoCommends(position, rowsBean, false, true);
+                    }
                 }
             });
 
@@ -165,7 +169,9 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).ll_type1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(intent);
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickVideoCommends(position, rowsBean, false, false);
+                    }
                 }
             });
 
@@ -204,6 +210,15 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
                         mOnClickBt.onClickUser(rowsBean.getCreateUserId(), rowsBean.getCreateUserRoleId() == Constans.STATUS_STAR);
+                    }
+                }
+            });
+
+            ((Tp1_Holder) holder).iv_ds.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDsRecored(rowsBean.getId());
                     }
                 }
             });
@@ -333,6 +348,15 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+
+            ((Tp2_Holder) holder).iv_ds.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDsRecored(rowsBean.getId());
+                    }
+                }
+            });
 // -------------------------------------------------------------------------------------------------
         } else { //文字
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), ((Tp3_Holder) holder).iv_pic, MyApplication.getImageLoaderOptions());     //头像
@@ -425,6 +449,15 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+
+            ((Tp3_Holder) holder).iv_ds.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickDsRecored(rowsBean.getId());
+                    }
+                }
+            });
         }
     }
 
@@ -513,6 +546,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.iv_tag)
         private ImageView iv_tag;
 
+        //打赏记录
+        @ViewInject(R.id.iv_ds)
+        private ImageView iv_ds;
+
         public Tp1_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -585,6 +622,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.iv_tag)
         private ImageView iv_tag;
 
+        //打赏记录
+        @ViewInject(R.id.iv_ds)
+        private ImageView iv_ds;
+
         public Tp2_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -654,6 +695,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @ViewInject(R.id.iv_tag)
         private ImageView iv_tag;
 
+        //打赏记录
+        @ViewInject(R.id.iv_ds)
+        private ImageView iv_ds;
+
         public Tp3_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
@@ -678,6 +723,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onClickDsRecored(int contentId);
 
         void onClickUser(int userId, boolean isStar);
+
+        void onClickVideoCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
 
     }
 }

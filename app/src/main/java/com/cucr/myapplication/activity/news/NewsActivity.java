@@ -22,9 +22,11 @@ import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.vanniktech.emoji.EmojiEditText;
@@ -85,6 +87,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     private Integer giveNum;
     private QueryFtInfoCore queryCore;
     private DialogShareStyle mDialog;
+    private MyWaitDialog mWaitDialog;
 
     @Override
     protected void initChild() {
@@ -98,6 +101,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
 
 
     private void initView() {
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         queryCore = new QueryFtInfoCore();
         rowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("date");
         upDataInfo();
@@ -186,21 +190,21 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     //点赞时
     @OnClick(R.id.ll_goods)
     public void zan(View view) {
+        if (rowsBean.isIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        upDataInfo();
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.isIsGiveUp()) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsGiveUp(false);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsGiveUp(true);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    upDataInfo();
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
@@ -227,23 +231,39 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     @OnClick(R.id.tv_send)
     public void clickSend(View view) {
         //一级评论传-1
-        queryCore.toComment(rowsBean.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()), new OnCommonListener() {
-            @Override
-            public void onRequestSuccess(Response<String> response) {
-                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
-                if (commonRebackMsg.isSuccess()) {
-                    ToastUtils.showToast("评论成功!");
-                    //查询一遍
-                    et_comment.setText("");
-                    emojiPopup.dismiss();
-                    CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
-                    et_comment.clearFocus();
-                    rowsBean.setCommentCount(rowsBean.getCommentCount() + 1);
-                    upDataInfo();
-                } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
-                }
-            }
-        });
+        queryCore.toComment(rowsBean.getId(), -1, CommonUtils.string2Unicode(et_comment.getText().toString().trim()),
+                new RequersCallBackListener() {
+                    @Override
+                    public void onRequestSuccess(int what, Response<String> response) {
+                        CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                        if (commonRebackMsg.isSuccess()) {
+                            ToastUtils.showToast("评论成功!");
+                            //查询一遍
+                            et_comment.setText("");
+                            emojiPopup.dismiss();
+                            CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
+                            et_comment.clearFocus();
+                            rowsBean.setCommentCount(rowsBean.getCommentCount() + 1);
+                            upDataInfo();
+                        } else {
+                            ToastUtils.showToast(commonRebackMsg.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+                        mWaitDialog.show();
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        mWaitDialog.dismiss();
+                    }
+                });
     }
 }

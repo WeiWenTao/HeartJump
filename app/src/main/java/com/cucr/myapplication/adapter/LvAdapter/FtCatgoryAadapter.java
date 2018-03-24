@@ -143,7 +143,6 @@ public class FtCatgoryAadapter extends BaseAdapter {
             tv_comment_size.setText("共" + mRowsBean.getCommentCount() + "条评论");
         }
 
-
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_comment_time.setText(mRowsBean.getReleaseTime());
@@ -154,7 +153,6 @@ public class FtCatgoryAadapter extends BaseAdapter {
         tv_comment_content.setText(CommonUtils.unicode2String(comment));
         return cvh.convertView;
     }
-
 
     public void setClickGoodsListener(OnClickCommentGoods clickGoodsListener) {
         this.clickGoodsListener = clickGoodsListener;

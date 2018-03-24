@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -48,7 +49,6 @@ import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
 import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
 import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
-import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
@@ -138,6 +138,10 @@ public class FragmentFans extends BaseFragment {
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
 
+    //微博图标
+    @ViewInject(R.id.iv_weib)
+    private ImageView iv_weib;
+
     private List<FragmentInfos> mDataList;
 
     //是否需要显示
@@ -193,6 +197,9 @@ public class FragmentFans extends BaseFragment {
                     tv_fans.setText("粉丝 " + mRowsBean.getFansCount());
                     tv_starname.setText(mRowsBean.getRealName());
                     tv_star_title.setText(mRowsBean.getRealName());
+                    if (TextUtils.isEmpty(mRowsBean.getWeiboUrl())){
+                        iv_weib.setVisibility(View.GONE);
+                    }
                     ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
@@ -233,9 +240,9 @@ public class FragmentFans extends BaseFragment {
 
     private void queryMsg() {
         //TODO: 2017/12/4   刷新和加载
-        mCore.queryMyFocusStars(-1, 1, 100, new OnCommonListener() {
+        mCore.queryMyFocusStars(-1, 1, 100, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 MyLogger.jLog().i("focusInfo:" + response.get());
                 FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
@@ -262,6 +269,21 @@ public class FragmentFans extends BaseFragment {
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
     }
@@ -306,7 +328,7 @@ public class FragmentFans extends BaseFragment {
     private void initIndicator() {
 
         mDataList = new ArrayList<>();
-        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(false), "星闻"));
+        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(), "星闻"));
         //------------------------------------------------------------------------------------------
         if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR) {
             percent = 4.0f;

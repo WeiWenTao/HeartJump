@@ -126,8 +126,8 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
     //评论
     @Override
-    public void toComment(int contentId, int commentId, String content, OnCommonListener listener) {
-        toCommentlistener = listener;
+    public void toComment(int contentId, int commentId, String content, RequersCallBackListener listener) {
+        ftQuerylistener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FT_COMMENT, RequestMethod.POST);
         // 添加普通参数。
         if (commentId != -1) {
@@ -181,6 +181,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         public void onStart(int what) {
             switch (what) {
                 case Constans.TYPE_ONE:
+                case Constans.TYPE_THREE:
                     ftQuerylistener.onRequestStar(what);
                     break;
             }
@@ -201,7 +202,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
 
                 case Constans.TYPE_THREE:
                     MyLogger.jLog().i("粉团评论成功，Cache?" + response.isFromCache());
-                    toCommentlistener.onRequestSuccess(response);
+                    ftQuerylistener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_FORE:
@@ -237,7 +238,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
                     break;
 
                 case Constans.TYPE_THREE:
-                    MyLogger.jLog().i("粉团评论请求失败");
+                    ftQuerylistener.onRequestError(what, response);
                     break;
 
                 case Constans.TYPE_FORE:
@@ -254,9 +255,7 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         public void onFinish(int what) {
             switch (what) {
                 case Constans.TYPE_ONE:
-                    ftQuerylistener.onRequestFinish(what);
-                    break;
-
+                case Constans.TYPE_THREE:
                 case Constans.TYPE_SEVEN:
                     ftQuerylistener.onRequestFinish(what);
                     break;

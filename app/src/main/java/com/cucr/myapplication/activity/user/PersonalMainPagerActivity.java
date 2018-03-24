@@ -65,43 +65,43 @@ public class PersonalMainPagerActivity extends Activity {
 
     //指示器
     @ViewInject(R.id.magic_indicator_personal_page)
-    MagicIndicator magicIndicator;
+    private MagicIndicator magicIndicator;
 
     //ViewPager
     @ViewInject(R.id.personal_vp)
-    ViewPager mViewPager;
+    private ViewPager mViewPager;
 
     //底部关注
     @ViewInject(R.id.tv_foucs)
-    TextView tv_foucs;
+    private TextView tv_foucs;
 
     //头像
     @ViewInject(R.id.iv_star_head)
-    ImageView iv_star_head;
+    private ImageView iv_star_head;
 
     //昵称
     @ViewInject(R.id.tv_nick_name)
-    TextView tv_nick_name;
+    private TextView tv_nick_name;
 
     //关注人数
     @ViewInject(R.id.tv_focuses)
-    TextView tv_focuses;
+    private TextView tv_focuses;
 
     //粉丝人数
     @ViewInject(R.id.tv_fenes)
-    TextView tv_fenes;
+    private TextView tv_fenes;
 
     //用户签名
     @ViewInject(R.id.tv_user_sign)
-    TextView tv_user_sign;
+    private TextView tv_user_sign;
 
     //用户性别
     @ViewInject(R.id.iv_general)
-    ImageView iv_general;
+    private ImageView iv_general;
 
     //背景封面 (静态数据)
     @ViewInject(R.id.iv_fuzzy_bg)
-    ImageView iv_fuzzy_bg;
+    private ImageView iv_fuzzy_bg;
 
     //礼物动画
     @ViewInject(R.id.iv_gift)
@@ -184,7 +184,6 @@ public class PersonalMainPagerActivity extends Activity {
         fragmentList.add(new StarFragment(mUserId));
         mViewPager.setAdapter(new PersonalMainPagerAdapter(getFragmentManager(), fragmentList));
     }
-
 
     //初始化标签栏
     private void initIndicator() {

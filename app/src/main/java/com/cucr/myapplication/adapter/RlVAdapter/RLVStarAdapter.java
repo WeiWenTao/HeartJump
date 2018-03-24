@@ -40,8 +40,8 @@ public class RLVStarAdapter extends RecyclerView.Adapter<RLVStarAdapter.StarList
     }
 
     public void addData(List<FocusInfo.RowsBean> list) {
+        notifyItemInserted(this.list.size() + 1);
         this.list.addAll(list);
-        notifyDataSetChanged();
     }
 
     @Override

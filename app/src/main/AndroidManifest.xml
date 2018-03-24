@@ -265,7 +265,6 @@
             android:name=".activity.comment.FenTuanVideoCatgoryActiviry"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensor"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             >
         </activity>
         <activity

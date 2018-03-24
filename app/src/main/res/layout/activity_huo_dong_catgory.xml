@@ -10,8 +10,36 @@
     tools:context="com.cucr.myapplication.activity.huodong.HuoDongCatgoryActivity"
     >
 
-    <include layout="@layout/activity_base_title"/>
 
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/blue_black"
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TitleStyle"
+            android:text="活动详情"
+            android:textColor="@color/xtred"
+            />
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/dp_15"
+            android:src="@drawable/more_"
+            />
+
+    </RelativeLayout>
 
     <com.cucr.myapplication.widget.refresh.RefreshLayout
         android:id="@+id/ref_hd_catgory"

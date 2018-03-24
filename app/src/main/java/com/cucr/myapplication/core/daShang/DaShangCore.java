@@ -7,10 +7,9 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.daShang.DaShangInterf;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -27,9 +26,8 @@ public class DaShangCore implements DaShangInterf {
     //请求队列
     private RequestQueue mQueue;
     private Context mContext;
-    private OnCommonListener rewardListener;
-    private OnCommonListener dsListListener;
-    private OnCommonListener dsMeListener;
+    private RequersCallBackListener mListener;
+
 
     public DaShangCore() {
         mQueue = NoHttp.newRequestQueue();
@@ -38,8 +36,8 @@ public class DaShangCore implements DaShangInterf {
 
     //打赏
     @Override
-    public void reward(int rewardContentId, int payType, int rewardType, int rewardMoney, OnCommonListener commonListener) {
-        rewardListener = commonListener;
+    public void reward(int rewardContentId, int payType, int rewardType, int rewardMoney, RequersCallBackListener commonListener) {
+        mListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DA_SHANG, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -53,20 +51,22 @@ public class DaShangCore implements DaShangInterf {
 
     //打赏列表
     @Override
-    public void queryDsList(int rewardContentId, OnCommonListener commonListener) {
-        dsListListener = commonListener;
+    public void queryDsList(int rows,int page,int rewardContentId, RequersCallBackListener commonListener) {
+        mListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DS_LIST, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("rewardContentId", rewardContentId) //打赏内容id
+                .add("rows", rows)
+                .add("page", page)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }
 
     //打赏我的
     @Override
-    public void queryDsMe(int queryMine, int rows, int page, OnCommonListener commonListener) {
-        dsMeListener = commonListener;
+    public void queryDsMe(int queryMine, int rows, int page, RequersCallBackListener commonListener) {
+        mListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_DS_ME, RequestMethod.POST);
         // 添加普通参数。
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -81,36 +81,23 @@ public class DaShangCore implements DaShangInterf {
     OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-
+            mListener.onRequestStar(what);
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            switch (what) {
-                case Constans.TYPE_ONE:
-                    rewardListener.onRequestSuccess(response);
-                    break;
-
-                case Constans.TYPE_TWO:
-                    dsListListener.onRequestSuccess(response);
-                    break;
-
-                case Constans.TYPE_THREE:
-                    dsMeListener.onRequestSuccess(response);
-                    break;
-            }
-
+            mListener.onRequestSuccess(what, response);
         }
 
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, mContext);
-            MyLogger.jLog().i("请求失败");
+            mListener.onRequestError(what, response);
         }
 
         @Override
         public void onFinish(int what) {
-
+            mListener.onRequestFinish(what);
         }
     };
 

@@ -374,6 +374,15 @@ public class QiYeHuoDongInfo implements Serializable {
             private String realName;
             private String signName;
             private String userHeadPortrait;
+            private String companyName;
+
+            public String getCompanyName() {
+                return companyName;
+            }
+
+            public void setCompanyName(String companyName) {
+                this.companyName = companyName;
+            }
 
             public String getBelongCompany() {
                 return belongCompany;

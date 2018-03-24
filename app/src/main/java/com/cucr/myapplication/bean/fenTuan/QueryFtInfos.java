@@ -116,6 +116,15 @@ public class QueryFtInfos implements Serializable {
         private String userHeadPortrait;
         private List<AttrFileListBean> attrFileList;
         private int createUserRoleId;
+        private String summary;
+
+        public String getSummary() {
+            return summary;
+        }
+
+        public void setSummary(String summary) {
+            this.summary = summary;
+        }
 
         public String getLocationUrl() {
             return locationUrl;

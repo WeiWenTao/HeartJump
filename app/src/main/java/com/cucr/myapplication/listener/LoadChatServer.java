@@ -11,4 +11,6 @@ public interface LoadChatServer {
     void onLoadSuccess(String userid);
 
     void onLoadFial(RongIMClient.ErrorCode errorCode);
+
+    void onTokenIncorrect();
 }

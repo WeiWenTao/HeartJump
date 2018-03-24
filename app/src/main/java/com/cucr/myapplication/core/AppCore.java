@@ -10,7 +10,6 @@ import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
@@ -36,9 +35,9 @@ public class AppCore {
         mListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_SPLISH, RequestMethod.POST);
         //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
-        request.setCacheKey(HttpContans.ADDRESS_SPLISH + flag);
+//        request.setCacheKey(HttpContans.ADDRESS_SPLISH + flag);
         //请求网络失败才去请求缓存
-        request.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+//        request.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
         mQueue.add(Constans.TYPE_ZERO, request, responseListener);
     }
 

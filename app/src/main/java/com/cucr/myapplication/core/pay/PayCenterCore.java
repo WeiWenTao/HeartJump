@@ -30,8 +30,7 @@ public class PayCenterCore implements PayCenterInterf {
 
     private Context context;
     private RequestQueue mQueue;
-    private OnCommonListener aliPayListener;
-    private OnCommonListener wxPayListener;
+    private RequersCallBackListener payListener;
     private PayLisntener payResultListener;
     private OnCommonListener userMoneyListener;
     private OnCommonListener TxRecordListener;
@@ -44,8 +43,8 @@ public class PayCenterCore implements PayCenterInterf {
 
 
     @Override
-    public void aliPay(double howMuch, String subject, int type, int activeId, OnCommonListener listener) {
-        aliPayListener = listener;
+    public void aliPay(double howMuch, String subject, int type, int activeId, RequersCallBackListener listener) {
+        payListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ALIPAY_PAY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("timeout_express", "30m");
@@ -65,8 +64,8 @@ public class PayCenterCore implements PayCenterInterf {
     }
 
     @Override
-    public void wxPay(int total_fee, String body, int type, int activeId, OnCommonListener listener) {
-        wxPayListener = listener;
+    public void wxPay(int total_fee, String body, int type, int activeId, RequersCallBackListener listener) {
+        payListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_WX_PAY, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add("total_fee", total_fee);
@@ -136,11 +135,8 @@ public class PayCenterCore implements PayCenterInterf {
 
             switch (what) {
                 case Constans.TYPE_ONE:
-
-                    break;
-
                 case Constans.TYPE_TWO:
-
+                    payListener.onRequestStar(what);
                     break;
 
                 case Constans.TYPE_THREE:
@@ -162,11 +158,8 @@ public class PayCenterCore implements PayCenterInterf {
 
             switch (what) {
                 case Constans.TYPE_ONE:
-                    aliPayListener.onRequestSuccess(response);
-                    break;
-
                 case Constans.TYPE_TWO:
-                    wxPayListener.onRequestSuccess(response);
+                    payListener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_THREE:
@@ -193,15 +186,29 @@ public class PayCenterCore implements PayCenterInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
-            if (what == Constans.TYPE_SIX) {
-                commonListener.onRequestError(what,response);
+            switch (what) {
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_TWO:
+                    payListener.onRequestError(what, response);
+                    break;
+
+                case Constans.TYPE_SIX:
+                    commonListener.onRequestError(what, response);
+                    break;
             }
         }
 
         @Override
         public void onFinish(int what) {
-            if (what == Constans.TYPE_SIX) {
-                commonListener.onRequestFinish(what);
+            switch (what) {
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_TWO:
+                    payListener.onRequestFinish(what);
+                    break;
+
+                case Constans.TYPE_SIX:
+                    commonListener.onRequestFinish(what);
+                    break;
             }
         }
     };

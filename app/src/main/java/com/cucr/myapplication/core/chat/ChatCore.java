@@ -3,8 +3,21 @@ package com.cucr.myapplication.core.chat;
 import android.content.Context;
 
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.constants.Constans;
+import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.listener.LoadChatServer;
+import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.utils.EncodingUtils;
+import com.cucr.myapplication.utils.HttpExceptionUtil;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -17,7 +30,14 @@ import static io.rong.imkit.utils.SystemUtils.getCurProcessName;
 
 public class ChatCore {
 
+    //请求队列
+    private RequestQueue mQueue;
     private Context context;
+    private OnCommonListener onCommonListener;
+    public ChatCore() {
+        this.context = MyApplication.getInstance();
+        mQueue = NoHttp.newRequestQueue();
+    }
 
     public void connect(String token, final LoadChatServer loadChatServer) {
         context = MyApplication.getInstance();
@@ -31,7 +51,7 @@ public class ChatCore {
                  */
                 @Override
                 public void onTokenIncorrect() {
-
+                    loadChatServer.onTokenIncorrect();
                 }
 
                 /**
@@ -58,4 +78,37 @@ public class ChatCore {
             });
         }
     }
+
+    public void reLoad(OnCommonListener onCommonListener){
+        this.onCommonListener = onCommonListener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_BANG_DAN_INFO, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+        mQueue.add(Constans.TYPE_ONE, request, callback);
+    }
+
+    //回调
+    OnResponseListener<String> callback = new OnResponseListener<String>() {
+        @Override
+        public void onStart(int what) {
+
+        }
+
+        @Override
+        public void onSucceed(int what, Response<String> response) {
+            onCommonListener.onRequestSuccess(response);
+
+        }
+
+        @Override
+        public void onFailed(int what, Response<String> response) {
+            HttpExceptionUtil.showTsByException(response, context);
+
+        }
+
+        @Override
+        public void onFinish(int what) {
+
+        }
+    };
 }

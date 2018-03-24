@@ -18,16 +18,18 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.pay_result);
+
         MyApplication.mMsgApi.handleIntent(getIntent(), this);
     }
 
 
     @Override
     public void onReq(BaseReq baseReq) {
-        Toast.makeText(this, "调用了", Toast.LENGTH_LONG).show();
+
     }
 
+    // TODO: 2018/3/23
+    //交易结果必须以微信后台为准     很玄学 暂时以微信后台为准
     @Override
     public void onResp(BaseResp baseResp) {
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
@@ -35,7 +37,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 EventBus.getDefault().post(new EventIsSuccess(true));
                 Toast.makeText(this, "支付成功", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "支付失败", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "支付失败", Toast.LENGTH_LONG).show();
             }
             finish();
         }

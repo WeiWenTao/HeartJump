@@ -3,6 +3,7 @@ package com.cucr.myapplication.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cucr.myapplication.activity.regist.NewLoadActivity;
@@ -61,6 +62,9 @@ public class ToastUtils {
     }
 
     public static void showToast(String message) {
+        if (TextUtils.isEmpty(message)){
+            return;
+        }
         if (message.equals("签名错误")) {
             Intent intent = new Intent(MyApplication.getInstance(), NewLoadActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

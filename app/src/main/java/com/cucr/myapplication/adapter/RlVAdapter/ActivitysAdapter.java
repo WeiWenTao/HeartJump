@@ -12,7 +12,6 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.utils.MyLogger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,8 +31,14 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
         notifyDataSetChanged();
     }
 
+    public void delData(int position) {
+        this.rows.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
+
     public void addData(List<QiYeHuoDongInfo.RowsBean> rows) {
-        notifyItemInserted(this.rows.size()+1);
+        notifyItemInserted(this.rows.size() + 1);
         this.rows.addAll(rows);
     }
 
@@ -46,12 +51,10 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
     @Override
     public void onBindViewHolder(ActivesHolder holder, final int position) {
         final QiYeHuoDongInfo.RowsBean rowsBean = rows.get(position);
-        MyLogger.jLog().i("activePosition:" + position + ",rowsBean:" + rowsBean);
-
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getPicurl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getApplyUser().getUserHeadPortrait(), holder.iv_head, MyApplication.getImageLoaderOptions());
         holder.tv_title.setText(rowsBean.getActiveName());
-        holder.tv_name.setText(rowsBean.getApplyUser().getRealName());
+        holder.tv_name.setText(rowsBean.getApplyUser().getCompanyName());
         holder.tv_commends.setText(rowsBean.getCommentCount() + "");
         holder.tv_goods.setText(rowsBean.getGiveUpCount() + "");
         if (rowsBean.getIsSignUp() == 1) {

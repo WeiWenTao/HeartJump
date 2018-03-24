@@ -322,10 +322,10 @@ public class StarRZ extends Fragment {
                 //点击去相册
                 imageConfig = new ImageConfig.Builder(
                         new MyLoader())
-                        .steepToolBarColor(getResources().getColor(R.color.titleBlue))
-                        .titleBgColor(getResources().getColor(R.color.titleBlue))
-                        .titleSubmitTextColor(getResources().getColor(R.color.white))
-                        .titleTextColor(getResources().getColor(R.color.white))
+                        .steepToolBarColor(getResources().getColor(R.color.zise))
+                        .titleBgColor(getResources().getColor(R.color.zise))
+                        .titleSubmitTextColor(getResources().getColor(R.color.xtred))
+                        .titleTextColor(getResources().getColor(R.color.xtred))
                         // 开启单选   （默认为多选）
                         .singleSelect()
                         // 裁剪 (只有单选可裁剪)
