@@ -2,6 +2,7 @@ package com.cucr.myapplication.activity.picWall;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -16,11 +17,12 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.MyPicWall;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.PicWall.PicWallInfo;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.user.PicWallCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
-import com.cucr.myapplication.bean.PicWall.PicWallInfo;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.goodAnimation.PeriscopeLayout;
@@ -81,11 +83,25 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
         ViewUtils.inject(this);
 //        UltimateBar ultimateBar = new UltimateBar(this);
 //        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-        UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
+
+        initBar();
         init();
         upData();
 
+    }
+
+    private void initBar() {
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
+        //设置导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance())) {
+            boolean b = CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance());
+            MyLogger.jLog().i("hasNB?" + b);
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) rlv_foot.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(MyApplication.getInstance()));
+            rlv_foot.setLayoutParams(layoutParams);
+        }
     }
 
     private void init() {

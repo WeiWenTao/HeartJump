@@ -39,8 +39,6 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
 
     private ImageView mIv_bg;
 
-//    private TextView mTimmer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +52,7 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
         initViews();
         initPermission();
         initData();
-        timmer();
+
     }
 
     private void initViews() {
@@ -84,10 +82,10 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
 //        }
 //    }
 
-    private void timmer() {
-//        mTimmer = (TextView) findViewById(R.id.tv_timmer);
+    //申请权限回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         downTimer.start();
-
     }
 
     //验证码倒计时
@@ -155,6 +153,7 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
             EventBus.getDefault().removeStickyEvent(event);
         }
     }
+
     private long firstTime;
     private long secondTime;
 

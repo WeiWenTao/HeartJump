@@ -85,8 +85,8 @@ public class PeriscopeLayout extends RelativeLayout {
     }
 
     private void init() {
-        marginRight = CommonUtils.dip2px(MyApplication.getInstance(),55f);
-        marginBottom = CommonUtils.dip2px(MyApplication.getInstance(),63f);
+        marginRight = CommonUtils.dip2px(MyApplication.getInstance(),48f);
+        marginBottom = CommonUtils.dip2px(MyApplication.getInstance(),60f);
         //初始化显示的图片
         drawables = new Drawable[3];
         Drawable red = getResources().getDrawable(R.drawable.love);

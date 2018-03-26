@@ -12,7 +12,9 @@ import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 public class FocusActivity extends BaseActivity implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
@@ -24,6 +26,9 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
     private QueryFocus core;
     private MyFocusAdapter mAdapter;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     @Override
     protected void initChild() {
@@ -47,7 +52,13 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
                 FocusInfo focusInfo = MyApplication.getGson().fromJson(response.get(), FocusInfo.class);
                 if (focusInfo.isSuccess()) {
                     if (isRefresh) {
-                        mAdapter.setData(focusInfo.getRows());
+                        if (focusInfo.getTotal() == 0) {
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                        } else {
+                            mAdapter.setData(focusInfo.getRows());
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        }
+                        ;
                     } else {
                         mAdapter.addDate(focusInfo.getRows());
                     }
@@ -66,12 +77,17 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
 
     @Override
     public void onRequestStar(int what) {
-
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -79,6 +95,9 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
         if (what == Constans.TYPE_TWO) {
             if (rlv.isRefreshing()) {
                 rlv.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (rlv.isLoadingMore()) {
+                rlv.stopLoadingMore();
             }
         }
     }

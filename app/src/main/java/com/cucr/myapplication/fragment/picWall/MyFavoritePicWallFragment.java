@@ -23,7 +23,9 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpacesItemDecoration;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import static android.app.Activity.RESULT_OK;
@@ -44,6 +46,8 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
     private MinePicWallAdapter mAdapter;
     private PicWallInfo mInfo;
     private Intent mIntent;
+    private MultiStateView multiStateView;
+    private boolean needShowLoading;
 
     @Nullable
     @Override
@@ -62,11 +66,13 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
     private void init() {
         page = 1;
         rows = 15;
+        needShowLoading = true;
         mInfo = new PicWallInfo();
         mCore = new PicWallCore();
         mGson = MyApplication.getGson();
         mIntent = new Intent();
         mRlv_my_pics = (SwipeRecyclerView) rootView.findViewById(R.id.rlv_my_pics);
+        multiStateView = (MultiStateView) rootView.findViewById(R.id.multiStateView);
         mRlv_my_pics.getRecyclerView().setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRlv_my_pics.getRecyclerView().addItemDecoration(new SpacesItemDecoration(CommonUtils.dip2px(MyApplication.getInstance(), 2.5f)));
         mAdapter = new MinePicWallAdapter();
@@ -95,10 +101,14 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
         if (what == Constans.TYPE_FORE) {
-            //todo 删除后的我喜欢的 会返回null
             PicWallInfo picWallInfo = mGson.fromJson(response.get(), PicWallInfo.class);
             if (picWallInfo.isSuccess()) {
                 if (isRefresh) {
+                    if (picWallInfo.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
                     mAdapter.setData(picWallInfo.getRows());
                     mInfo = picWallInfo;
                 } else {
@@ -118,12 +128,17 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
 
     @Override
     public void onRequestStar(int what) {
-
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -131,6 +146,9 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
         if (what == Constans.TYPE_FORE) {
             if (mRlv_my_pics.isRefreshing()) {
                 mRlv_my_pics.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (mRlv_my_pics.isLoadingMore()) {
+                mRlv_my_pics.stopLoadingMore();
             }
         }
     }
@@ -151,7 +169,7 @@ public class MyFavoritePicWallFragment extends LazyFragment_app implements Swipe
     }
 
     @Override
-    public void longClickItem(int dataId,int position) {
+    public void longClickItem(int dataId, int position) {
 
     }
 

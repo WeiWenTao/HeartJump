@@ -14,6 +14,7 @@ public class HttpContans {
     public static final String HTTP_EN = "http://210.14.157.131:8149/clker_inter/";
 
     public static final String IMAGE_HOST = "";
+    public static final String LOGO_ADDRESS = "http://www.cucrxt.com/static/512.png";
 
 //    public static final String HOST = "http://101.132.96.199";
 

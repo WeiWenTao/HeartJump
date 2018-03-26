@@ -13,7 +13,7 @@ import java.util.Hashtable;
 public class MyLogger {
 
 	//开关
-	private final static boolean logFlag = true;
+	private final static boolean logFlag = false;
 
 	public final static String TAG = "test";
 	private final static int logLevel = Log.VERBOSE;

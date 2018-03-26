@@ -147,7 +147,6 @@ public class PicWallCore implements PicturesWall {
                 case Constans.TYPE_THREE:
                     goodListener.onRequestSuccess(response);
                     break;
-
             }
 
         }

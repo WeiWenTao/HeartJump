@@ -380,6 +380,9 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
+            if (mRowsBean == null){
+                return;
+            }
             final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
             rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
             rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());

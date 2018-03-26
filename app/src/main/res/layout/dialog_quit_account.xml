@@ -27,7 +27,7 @@
         android:layout_marginLeft="45dp"
         android:layout_marginTop="@dimen/dp_40"
         android:text="取消"
-        android:textColor="#999"
+        android:textColor="@color/xtred"
         android:textSize="18sp"
         />
 
@@ -41,7 +41,7 @@
         android:layout_marginRight="45dp"
         android:layout_marginTop="@dimen/dp_40"
         android:text="确定"
-        android:textColor="#78ceb7"
+        android:textColor="@color/xtred"
         android:textSize="18sp"
         />
 </RelativeLayout>

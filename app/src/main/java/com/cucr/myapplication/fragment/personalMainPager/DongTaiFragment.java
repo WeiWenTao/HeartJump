@@ -377,6 +377,9 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
                 SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
+                if (mRowsBean == null) {
+                    return;
+                }
                 final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
                 rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
                 rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());

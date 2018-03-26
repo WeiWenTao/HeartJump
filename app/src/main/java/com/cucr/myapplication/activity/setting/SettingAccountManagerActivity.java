@@ -102,6 +102,7 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
         LoadUserInfos firstInfo = mUserDao.queryBuilder().limit(1).build().unique();
         //如果集合为空  那就跳转登录
         if (firstInfo == null) {
+            clearUserInfo();
             mIntent.setClass(MyApplication.getInstance(), MainActivity.class);
             startActivity(mIntent);
             finish();
@@ -110,6 +111,12 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
             changeAccount(firstInfo);
         }
 
+    }
+
+    //清除账号信息
+    private void clearUserInfo() {
+        SpUtil.setParam(SpConstant.USER_ID, -1);
+        SpUtil.setParam(SpConstant.SIGN, "");
     }
 
     @Override

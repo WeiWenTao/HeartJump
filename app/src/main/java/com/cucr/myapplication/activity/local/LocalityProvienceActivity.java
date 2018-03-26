@@ -8,7 +8,6 @@ import android.widget.ListView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.fuli.DingDanActivity;
-import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.activity.hyt.YyhdActivity_3;
 import com.cucr.myapplication.activity.journey.AddJourneyActivity;
@@ -36,8 +35,8 @@ public class LocalityProvienceActivity extends BaseActivity {
         actives = new HashMap<>();
         //个人中心
         actives.put("PersonalInfoActivity", PersonalInfoActivity.class);
-        //发布福利
-        actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
+       /* //发布福利
+        actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);*/
         //预约详情
         actives.put("YuYueCatgoryActivity", YuYueCatgoryActivity.class);
         //订单地区

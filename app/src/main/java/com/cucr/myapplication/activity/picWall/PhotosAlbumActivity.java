@@ -13,8 +13,8 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.PicWallAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.user.PicWallCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
@@ -24,6 +24,7 @@ import com.cucr.myapplication.widget.ItemDecoration.SpacesItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogSort;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -34,6 +35,7 @@ import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
@@ -47,6 +49,11 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     @ViewInject(R.id.rlv_picwall)
     private SwipeRecyclerView rlv_picwall;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
+    private boolean needShowLoading;
     private DialogSort mDialog;
     private MyWaitDialog mWaitDialog;
     private PicWallCore mCore;
@@ -75,6 +82,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     }
 
     private void init() {
+        needShowLoading = true;
         rows = 15;
         page = 1;
         orderType = 1;   //默认按时间排序
@@ -130,6 +138,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     //按时间排序
     @Override
     public void clickSortByTime() {
+        needShowLoading = true;
         orderType = 1;
         onRefresh();
     }
@@ -137,6 +146,7 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
     //按点赞量排序
     @Override
     public void clickSortByGoods() {
+        needShowLoading = true;
         orderType = 0;
         onRefresh();
     }
@@ -205,6 +215,11 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
             PicWallInfo picWallInfo = mGson.fromJson(response.get(), PicWallInfo.class);
             if (picWallInfo.isSuccess()) {
                 if (isRefresh) {
+                    if (picWallInfo.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
                     mAdapter.setData(picWallInfo.getRows());
                     mInfo = picWallInfo;
                 } else {
@@ -232,14 +247,21 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
 
     @Override
     public void onRequestStar(int what) {
-        if (what == Constans.TYPE_TWO) {
+        if (what == Constans.TYPE_ONE) {
+            if (needShowLoading) {
+                multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+                needShowLoading = false;
+            }
+        } else if (what == Constans.TYPE_TWO) {
             mWaitDialog.show();
         }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -247,6 +269,9 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
         if (what == Constans.TYPE_ONE) {
             if (rlv_picwall.isRefreshing()) {
                 rlv_picwall.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (rlv_picwall.isLoadingMore()) {
+                rlv_picwall.stopLoadingMore();
             }
         } else if (what == Constans.TYPE_TWO) {
             mWaitDialog.dismiss();

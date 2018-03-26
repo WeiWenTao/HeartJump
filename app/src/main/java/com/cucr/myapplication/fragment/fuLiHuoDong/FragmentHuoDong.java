@@ -114,7 +114,7 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
 
     @Subscribe(threadMode = ThreadMode.MAIN) //删除了活动 刷新
     public void onDataSynEvent(CommentEvent event) {
-        if (event.getFlag() == 999) {
+        if (event.getFlag() == 998) {
             onRefresh();
         }
     }

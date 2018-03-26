@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MainActivity;
@@ -85,12 +84,10 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
             @Override
             public void onGranted() {
-                Toast.makeText(NewLoadActivity.this, "All permissions have been granted", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onDenied(String permission) {
-                Toast.makeText(NewLoadActivity.this, "Permission " + permission + " has been denied", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -209,6 +206,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
 
     @OnClick(R.id.iv_qq_load)
     public void qqLoad(View view) {
+        mDialog.show();
         thirdPlatformLoad(SHARE_MEDIA.QQ);
     }
 
@@ -262,6 +260,9 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
@@ -317,6 +318,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             if (unique == null) {
                 mUserDao.insert(loadUserInfos);
             } else {//如果有这条数据  就更新这条数据
+                loadUserInfos.setId(unique.getId());    //修改时 主键不能为空
                 mUserDao.update(loadUserInfos);
             }
 

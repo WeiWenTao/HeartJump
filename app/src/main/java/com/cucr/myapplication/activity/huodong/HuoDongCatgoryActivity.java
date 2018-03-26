@@ -268,10 +268,10 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         tv_auther_name.setOnClickListener(this);
         tv_title.setText(receivedBean.getActiveName());
         tv_auther_name.setText(receivedBean.getApplyUser().getRealName());
-        tv_creattime.setText(receivedBean.getUpTime());
+        tv_creattime.setText(receivedBean.getUpTime().substring(0,10));
         tv_content.setText(receivedBean.getActiveInfo());
-        tv_active_time.setText(receivedBean.getActiveStartTime());
-        tv_active_address.setText(receivedBean.getActivePlace() + " " + receivedBean.getActiveAdress());
+        tv_active_time.setText(receivedBean.getActiveStartTime().substring(0, 10));
+        tv_active_address.setText(receivedBean.getActiveAdress());
         tv_actives_money.setText(receivedBean.getYs() + "万");
         mTv_all_comment.setText(receivedBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
         ll_show_money.setVisibility(receivedBean.getOpenys() == 0 ? View.VISIBLE : View.GONE);

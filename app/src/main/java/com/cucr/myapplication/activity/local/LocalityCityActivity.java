@@ -8,15 +8,14 @@ import android.widget.ListView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.fuli.DingDanActivity;
-import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.activity.hyt.YyhdActivity_3;
 import com.cucr.myapplication.activity.journey.AddJourneyActivity;
 import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.LvAdapter.LocationAdapter;
-import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.dao.CityDao;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.HashMap;
@@ -55,8 +54,8 @@ public class LocalityCityActivity extends BaseActivity {
         actives = new HashMap<>();
         //个人中心
         actives.put("PersonalInfoActivity", PersonalInfoActivity.class);
-        //发布福利
-        actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);
+      /*  //发布福利
+        actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);*/
         //预约详情
         actives.put("YuYueCatgoryActivity",YuYueCatgoryActivity.class);
         //预约详情

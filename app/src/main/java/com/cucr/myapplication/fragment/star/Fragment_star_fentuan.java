@@ -154,7 +154,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     }
 
     private void initInfos() {
-        if (mDaShangPagerAdapter == null){
+        if (mDaShangPagerAdapter == null) {
             mDaShangPagerAdapter = new DaShangPagerAdapter();
         }
         //查询用户余额
@@ -203,7 +203,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void eventData(EventDuiHuanSuccess event) {
-        if (mDaShangPagerAdapter == null){
+        if (mDaShangPagerAdapter == null) {
             mDaShangPagerAdapter = new DaShangPagerAdapter();
         }
         queryBackpack();
@@ -337,6 +337,9 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         }
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
+            if (mRowsBean == null) {
+                return;
+            }
             final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
             rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
             rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());

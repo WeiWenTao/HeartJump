@@ -10,9 +10,9 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 public interface HuoDongInterf {
 
     //发布活动
-    void publishActive(String activeName, String activePlace, String activeAdress,
+    void publishActive(String activeName,String activeAdress,
                        String activeStartTime, int ys, String activeInfo, int openys, int peopleCount,
-                       String picurl, OnCommonListener onCommonListener);
+                       String picurl, RequersCallBackListener onCommonListener);
 
     //查询活动
     void queryActive(boolean byMe, int dataId, int page, int rows, RequersCallBackListener onCommonListener);

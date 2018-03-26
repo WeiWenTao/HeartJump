@@ -16,8 +16,6 @@ import static com.cucr.myapplication.R.id.tv_quit_confirm;
 
 public class DialogQuitAccountStyle extends Dialog implements View.OnClickListener {
 
-
-
     public DialogQuitAccountStyle(Context context, int themeResId) {
         super(context, themeResId);
     }

@@ -375,7 +375,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
             if (msg.isSuccess()) {
                 ToastUtils.showToast("保存成功!");
                 EventBus.getDefault().post(new EventQueryPersonalInfo());
-                RongIM.getInstance().refreshUserInfoCache(new UserInfo((String) SpUtil.getParam(SpConstant.USER_ID,-1), mNickName, Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(((int) SpUtil.getParam(SpConstant.USER_ID, -1)) + "", mNickName, Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
                 setResult(111);
                 finish();
             } else {

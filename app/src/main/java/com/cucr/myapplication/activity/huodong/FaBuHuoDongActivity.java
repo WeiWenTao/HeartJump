@@ -24,20 +24,19 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
-import com.cucr.myapplication.core.fuLi.HuoDongCore;
-import com.cucr.myapplication.dao.CityDao;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.login.ReBackMsg;
-import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.bean.setting.BirthdayDate;
+import com.cucr.myapplication.core.fuLi.HuoDongCore;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.GetPathFromUri4kitkat;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
-import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -45,6 +44,7 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zcw.togglebutton.ToggleButton;
 
+import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
 
 import java.io.File;
@@ -63,43 +63,39 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg_fb_huodong)
-    FrameLayout fl_pop_bg_fb_huodong;
+    private FrameLayout fl_pop_bg_fb_huodong;
 
     //圆角图片
     @ViewInject(R.id.img_fabu_huodong_pic)
-    ImageView img_fabu_huodong_pic;
-
-    //活动地区
-    @ViewInject(R.id.tv_active_local)
-    TextView tv_active_local;
+    private ImageView img_fabu_huodong_pic;
 
     //详细地区
     @ViewInject(R.id.et_local_catgory)
-    EditText et_local_catgory;
+    private EditText et_local_catgory;
 
     //活动名称
     @ViewInject(R.id.et_active_name)
-    EditText et_active_name;
+    private EditText et_active_name;
 
     //活动内容
     @ViewInject(R.id.et_active_content)
-    EditText et_active_content;
+    private EditText et_active_content;
 
     //活动时间
     @ViewInject(R.id.tv_time_star)
-    TextView tv_time_star;
+    private TextView tv_time_star;
 
     //活动价格
     @ViewInject(R.id.et_money)
-    TextView et_money;
+    private TextView et_money;
 
     //活动人数
     @ViewInject(R.id.et_peoples)
-    TextView et_peoples;
+    private TextView et_peoples;
 
     //费用公开
     @ViewInject(R.id.toggle_show_price_tip)
-    ToggleButton toggle;
+    private ToggleButton toggle;
 
     private int isOpen;
     private PopupWindow popWindow;
@@ -109,8 +105,6 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     private Gson mGson;
     public static final int PHOTOZOOM = 0; // 相册/拍照
     public static final int PHOTOTAKE = 1; // 相册/拍照
-    public static final int IMAGE_COMPLETE = 2; // 结果
-    public static final int CROPREQCODE = 3; // 截取
     private String photoSavePath;//保存路径
     private String photoSaveName;//图pian名
     private String path;//图片全路径
@@ -118,6 +112,8 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     private HuoDongCore mHuoDongCore;
     private Intent openCameraIntent;
     private List<PermissonItem> permissonItems;
+    private DialogBirthdayStyle mBirthdayStyle;
+    private MyWaitDialog mWaitDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,6 +126,8 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     }
 
     protected void initChild() {
+        initDateDialog();
+        isOpen = 1;
         permissonItems = new ArrayList<>();
         permissonItems.add(new PermissonItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
         mHuoDongCore = new HuoDongCore();
@@ -138,39 +136,45 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
         toggle.setOnToggleChanged(this);
     }
 
-    //活动地区
-    @OnClick(R.id.tv_active_local)
-    public void selLocal(View view) {
-        Intent intent = new Intent(this, LocalityProvienceActivity.class);
-        intent.putExtra("needShow", true);
-        intent.putExtra("className", "FaBuHuoDongActivity");
-        startActivity(intent);
+    private String mYear;
+    private String mMon;
+    private String mDay;
+
+    private void initDateDialog() {
+
+        String dtaeInfo = CommonUtils.getCurrentDate();
+        mYear = dtaeInfo.substring(0, 4).trim();
+        mMon = dtaeInfo.substring(5, 7).trim();
+        mDay = dtaeInfo.substring(8, 10).trim();
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
+        mBirthdayStyle = new DialogBirthdayStyle(this, R.style.BirthdayStyleTheme, false);
+        //初始化日期数据
+        mBirthdayStyle.initDate(Integer.parseInt(mYear), Integer.parseInt(mMon), Integer.parseInt(mDay));
+        //点击对话框外部消失
+        mBirthdayStyle.setCanceledOnTouchOutside(true);
+        mBirthdayStyle.setOnDialogBtClick(new DialogBirthdayStyle.onDialogBtClick() {
+            @Override
+            public void onClickComplete(BirthdayDate date, boolean isChange) {
+                //如果用户改了生日就显示改了的  如果没改就显示原来的
+                if (isChange) {
+                    mYear = date.getYear() + "";
+                    mMon = (date.getMonth() + 1) + "";
+                    mDay = date.getDay() + "";
+                    String i = Integer.parseInt(mMon) + "";
+                    if (!i.startsWith("0") && i.length() == 1) {
+                        i = "0" + i;
+                    }
+                    tv_time_star.setText(mYear + "-" + i + "-" + mDay);
+                } else {
+                    String i = Integer.parseInt(mMon) + 1 + "";
+                    if (!i.startsWith("0") && i.length() == 1) {
+                        i = "0" + i;
+                    }
+                    tv_time_star.setText(mYear + "-" + i + "-" + mDay);
+                }
+            }
+        });
     }
-
-    //这个界面配置了signTask启动模式  用getIntent获取数据会为null  用onNewIntent + setIntent()
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        LocationData location = (LocationData) getIntent().getSerializableExtra("finalData");
-
-        if (location != null) {
-
-            String qu = location.getName();
-
-            LocationData shi = CityDao.queryCityBycode(location.getpCode());
-
-            LocationData sheng = CityDao.queryPrivnceBycode(shi.getpCode());
-
-            String district = shi.getName();
-            String province = sheng.getName();
-
-            tv_active_local.setText(province + " " + district + " " + qu);
-            et_local_catgory.requestFocus();
-        }
-
-    }
-
 
     //点击添加图片封面
     @OnClick(R.id.rl_fabu_huodong_pic)
@@ -181,7 +185,6 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
 
     private void initHead() {
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         File file = new File(Environment.getExternalStorageDirectory(), "HuoDongFaBu/cache");
         if (!file.exists())
             file.mkdirs();
@@ -333,8 +336,7 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     //点击活动时间
     @OnClick(R.id.ll_time)
     public void clickTime(View view) {
-        MyLogger.jLog().i("点击了");
-        new SlideDateTimePicker.Builder(getSupportFragmentManager())
+       /* new SlideDateTimePicker.Builder(getSupportFragmentManager())
                 .setListener(listener)
                 .setInitialDate(new Date())
                 .setMinDate(new Date(System.currentTimeMillis()))
@@ -343,7 +345,9 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
                 //.setTheme(SlideDateTimePicker.HOLO_LIGHT)
                 .setIndicatorColor(getResources().getColor(R.color.xtred))
                 .build()
-                .show();
+                .show();*/
+        //显示日期对话框
+        mBirthdayStyle.show();
     }
 
     private SlideDateTimeListener listener = new SlideDateTimeListener() {
@@ -396,32 +400,47 @@ public class FaBuHuoDongActivity extends FragmentActivity implements ToggleButto
     @OnClick(R.id.tv_commit)
     public void clickCommit(View view) {
         String active_name = et_active_name.getText().toString();
-        String active_local = tv_active_local.getText().toString();
         String local_catgory = et_local_catgory.getText().toString();
         String time = tv_time_star.getText().toString();
         String money = et_money.getText().toString();
         String active_content = et_active_content.getText().toString();
         String active_peoples = et_peoples.getText().toString();
 
-        boolean empty = CommonUtils.isEmpty(active_name, active_local, local_catgory, time, money, active_content
+        boolean empty = CommonUtils.isEmpty(active_name, local_catgory, time, money, active_content
                 , active_peoples, path
         );
         if (empty) {
             ToastUtils.showToast("请完善信息");
             return;
         }
-        mHuoDongCore.publishActive(active_name, active_local, local_catgory, time + ":00",
+        mHuoDongCore.publishActive(active_name, local_catgory, time,
                 Integer.parseInt(money), active_content, isOpen, Integer.parseInt(active_peoples),
-                path, new OnCommonListener() {
+                path, new RequersCallBackListener() {
                     @Override
-                    public void onRequestSuccess(Response<String> response) {
+                    public void onRequestSuccess(int what, Response<String> response) {
                         ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                         if (reBackMsg.isSuccess()) {
                             ToastUtils.showToast("发布成功");
+                            EventBus.getDefault().post(new CommentEvent(998));
                             finish();
                         } else {
                             ToastUtils.showToast(reBackMsg.getMsg());
                         }
+                    }
+
+                    @Override
+                    public void onRequestStar(int what) {
+                        mWaitDialog.show();
+                    }
+
+                    @Override
+                    public void onRequestError(int what, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onRequestFinish(int what) {
+                        mWaitDialog.dismiss();
                     }
                 });
     }

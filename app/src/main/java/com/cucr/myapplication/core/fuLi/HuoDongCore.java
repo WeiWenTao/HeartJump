@@ -32,7 +32,7 @@ public class HuoDongCore implements HuoDongInterf {
 
     private Context mContext;
     private OnCommonListener publishListener;   //活动发布
-    private RequersCallBackListener queryListener;     //活动查询
+    private RequersCallBackListener listener;     //活动查询
     private OnCommonListener giveUpListener;    //活动点赞
     private OnCommonListener commentListener;   //活动评论
     private OnCommonListener commentQueryListener;   //活动评论查询
@@ -49,14 +49,14 @@ public class HuoDongCore implements HuoDongInterf {
 
     //发布活动
     @Override
-    public void publishActive(String activeName, String activePlace, String activeAdress,
+    public void publishActive(String activeName, String activeAdress,
                               String activeStartTime, int ys, String activeInfo, int openys, int peopleCount,
-                              String picurl, OnCommonListener onCommonListener) {
-        this.publishListener = onCommonListener;
+                              String picurl, RequersCallBackListener onCommonListener) {
+        this.listener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ACTIVE_PUBLISH, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("activeName", activeName)
-                .add("activePlace", CommonUtils.replaceOtherChars(activePlace)) //去除特殊字符
+//                .add("activePlace", CommonUtils.replaceOtherChars(activePlace)) //去除特殊字符
                 .add("activeAdress", activeAdress)
                 .add("activeStartTime", activeStartTime)
                 .add("activeInfo", activeInfo)
@@ -78,7 +78,7 @@ public class HuoDongCore implements HuoDongInterf {
     //活动查询
     @Override
     public void queryActive(boolean byMe, int dataId, int page, int rows, RequersCallBackListener onCommonListener) {
-        this.queryListener = onCommonListener;
+        this.listener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_ACTIVE, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("queryMine", byMe)
@@ -153,8 +153,11 @@ public class HuoDongCore implements HuoDongInterf {
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-            if (what == Constans.TYPE_TWO){
-                queryListener.onRequestStar(what);
+            switch (what) {
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_TWO:
+                    listener.onRequestStar(what);
+                    break;
             }
         }
 
@@ -163,11 +166,8 @@ public class HuoDongCore implements HuoDongInterf {
             switch (what) {
 
                 case Constans.TYPE_ONE:
-                    publishListener.onRequestSuccess(response);
-                    break;
-
                 case Constans.TYPE_TWO:
-                    queryListener.onRequestSuccess(what,response);
+                    listener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_THREE:
@@ -194,8 +194,9 @@ public class HuoDongCore implements HuoDongInterf {
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, mContext);
             switch (what) {
+                case Constans.TYPE_ONE:
                 case Constans.TYPE_TWO:
-                    queryListener.onRequestError(what,response);
+                    listener.onRequestError(what, response);
                     break;
             }
         }
@@ -203,8 +204,9 @@ public class HuoDongCore implements HuoDongInterf {
         @Override
         public void onFinish(int what) {
             switch (what) {
+                case Constans.TYPE_ONE:
                 case Constans.TYPE_TWO:
-                    queryListener.onRequestFinish(what);
+                    listener.onRequestFinish(what);
                     break;
                 case Constans.TYPE_FIVE:
                     //用来区分是哪个接口请求

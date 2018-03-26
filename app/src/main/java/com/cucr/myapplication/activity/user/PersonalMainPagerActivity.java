@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -31,6 +33,7 @@ import com.cucr.myapplication.fragment.personalMainPager.DongTaiFragment;
 import com.cucr.myapplication.fragment.personalMainPager.StarFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -177,12 +180,25 @@ public class PersonalMainPagerActivity extends Activity {
 
     private void initViews() {
         //初始化头部 沉浸栏
-        UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
+        initBar();
         fragmentList = new ArrayList<>();
         fragmentList.add(new DongTaiFragment(mUserId));
         fragmentList.add(new StarFragment(mUserId));
         mViewPager.setAdapter(new PersonalMainPagerAdapter(getFragmentManager(), fragmentList));
+    }
+
+    private void initBar() {
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
+        //设置导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance())) {
+            boolean b = CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance());
+            MyLogger.jLog().i("hasNB?" + b);
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_footbar.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(MyApplication.getInstance()));
+            ll_footbar.setLayoutParams(layoutParams);
+        }
     }
 
     //初始化标签栏

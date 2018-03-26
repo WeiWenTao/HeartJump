@@ -18,8 +18,8 @@ import com.cucr.myapplication.activity.picWall.PicWallCatgoryActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.MinePicWallAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.user.PicWallCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
@@ -29,7 +29,9 @@ import com.cucr.myapplication.widget.ItemDecoration.SpacesItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogDelPics;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import static android.app.Activity.RESULT_OK;
@@ -54,7 +56,8 @@ public class MyPicWallFragment extends Fragment implements SwipeRecyclerView.OnL
     private int dataId;
     private int position;
     private MyWaitDialog mWaitDialog;
-
+    private MultiStateView multiStateView;
+    private boolean needShowLoading;
 
     @Nullable
     @Override
@@ -69,11 +72,13 @@ public class MyPicWallFragment extends Fragment implements SwipeRecyclerView.OnL
     private void init() {
         page = 1;
         rows = 15;
+        needShowLoading = true;
         mInfo = new PicWallInfo();
         mCore = new PicWallCore();
         mGson = MyApplication.getGson();
         mIntent = new Intent();
         mRlv_my_pics = (SwipeRecyclerView) rootView.findViewById(R.id.rlv_my_pics);
+        multiStateView = (MultiStateView) rootView.findViewById(R.id.multiStateView);
         mRlv_my_pics.getRecyclerView().setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRlv_my_pics.getRecyclerView().addItemDecoration(new SpacesItemDecoration(CommonUtils.dip2px(MyApplication.getInstance(), 2.5f)));
         mRlv_my_pics.getRecyclerView().setItemAnimator(new DefaultItemAnimator());
@@ -116,6 +121,11 @@ public class MyPicWallFragment extends Fragment implements SwipeRecyclerView.OnL
             PicWallInfo picWallInfo = mGson.fromJson(response.get(), PicWallInfo.class);
             if (picWallInfo.isSuccess()) {
                 if (isRefresh) {
+                    if (picWallInfo.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
                     mAdapter.setData(picWallInfo.getRows());
                     mInfo = picWallInfo;
                 } else {
@@ -147,12 +157,19 @@ public class MyPicWallFragment extends Fragment implements SwipeRecyclerView.OnL
     public void onRequestStar(int what) {
         if (what == Constans.TYPE_FIVE) {
             mWaitDialog.show();
+        }else if(what == Constans.TYPE_ONE){
+            if (needShowLoading) {
+                multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+                needShowLoading = false;
+            }
         }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -160,6 +177,9 @@ public class MyPicWallFragment extends Fragment implements SwipeRecyclerView.OnL
         if (what == Constans.TYPE_ONE) {
             if (mRlv_my_pics.isRefreshing()) {
                 mRlv_my_pics.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (mRlv_my_pics.isLoadingMore()) {
+                mRlv_my_pics.stopLoadingMore();
             }
         } else if (what == Constans.TYPE_FIVE) {
             mWaitDialog.dismiss();

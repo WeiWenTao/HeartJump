@@ -22,6 +22,7 @@ public abstract class BaseActivity extends Activity {
     protected int page;
     protected int rows;
     protected MyWaitDialog waitDialog;
+    protected boolean needShowLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public abstract class BaseActivity extends Activity {
         waitDialog = new MyWaitDialog(this,R.style.MyWaitDialog);
         page = 1;
         rows = 15;
+        needShowLoading = true;
         //初始化沉浸栏、标题内容、返回键
         initBar();
 
