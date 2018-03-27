@@ -128,8 +128,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         startActivity(intent);
     }
 
-
-
     private void initIM() {
         mChatCore = new ChatCore();
         String param = (String) SpUtil.getParam(SpConstant.TOKEN, "");
@@ -362,10 +360,10 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     public void onRequestSuccess(Response<String> response) {
         TokenMsg commonRebackMsg = MyApplication.getGson().fromJson(response.get(), TokenMsg.class);
         if (commonRebackMsg.isSuccess()) {
-            SpUtil.setParam(SpConstant.TOKEN, commonRebackMsg.getErrorMsg());
-            mChatCore.connect(commonRebackMsg.getErrorMsg(), this);
+            SpUtil.setParam(SpConstant.TOKEN, commonRebackMsg.getMsg());
+            mChatCore.connect(commonRebackMsg.getMsg(), this);
         } else {
-            ToastUtils.showToast(commonRebackMsg.getErrorMsg());
+            ToastUtils.showToast(commonRebackMsg.getMsg());
         }
     }
 }

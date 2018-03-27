@@ -81,7 +81,7 @@ public class ChatCore {
 
     public void reLoad(OnCommonListener onCommonListener){
         this.onCommonListener = onCommonListener;
-        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_BANG_DAN_INFO, RequestMethod.POST);
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_GET_TOKEN, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_ONE, request, callback);

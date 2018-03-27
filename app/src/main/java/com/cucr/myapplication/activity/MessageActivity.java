@@ -59,7 +59,7 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
                 userId((int) SpUtil.getParam(SpConstant.USER_ID, -1) + "").build();
 
         RongIM.getInstance().startCustomerServiceChat(this,
-                "KEFU152118815441491",
+                "KEFU152211570248279",
                 "在线客服",csInfo);
     }
 
@@ -67,8 +67,6 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
     public void onClick(View v) {
         finish();
     }
-
-
 
    /* private Fragment initConversationList() {
         if (mConversationListFragment == null) {

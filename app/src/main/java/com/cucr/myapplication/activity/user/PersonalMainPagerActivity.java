@@ -15,7 +15,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -195,7 +194,7 @@ public class PersonalMainPagerActivity extends Activity {
             boolean b = CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance());
             MyLogger.jLog().i("hasNB?" + b);
             getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_black));
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_footbar.getLayoutParams();
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) ll_footbar.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, ultimateBar.getNavigationHeight(MyApplication.getInstance()));
             ll_footbar.setLayoutParams(layoutParams);
         }

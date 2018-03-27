@@ -18,9 +18,9 @@ public class HttpContans {
 
 //    public static final String HOST = "http://101.132.96.199";
 
-//    public static final String HOST = "http://www.cucrxt.com";
+    public static final String HOST = "http://www.cucrxt.com";
 
-    public static final String HOST = "http://192.168.1.147:8080";
+//    public static final String HOST = "http://192.168.1.147:8080";
 
 //    public static final String HOST = "http://192.168.1.130:8080";
 

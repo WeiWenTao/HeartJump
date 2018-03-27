@@ -13,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cucr.myapplication.BuildConfig;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.MyLogger;
-import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.throwableCatch.Cockroach;
 import com.cucr.myapplication.utils.throwableCatch.Utils;
 import com.danikula.videocache.HttpProxyCacheServer;
@@ -60,7 +59,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         //异常处理
-//        throwableInstall();
+        throwableInstall();
 
         //融云
         RongIM.init(this);
@@ -154,7 +153,7 @@ public class MyApplication extends Application {
                         try {
                             //建议使用下面方式在控制台打印异常，这样就可以在Error级别看到红色log
 //                            Log.e("AndroidRuntime", "--->CockroachException:" + thread + "<---", throwable);
-                            ToastUtils.showToast("程序异常:\n" + thread + "\n" + throwable.toString());
+//                            ToastUtils.showToast("程序异常:\n" + thread + "\n" + throwable.toString());
                             Utils.handleT(getCacheDir().getAbsolutePath(), throwable.toString());
                             MyLogger.jLog().i("--->MyCatchException:" + thread + "<---" + throwable.toString());
 //                        throw new RuntimeException("..."+(i++));

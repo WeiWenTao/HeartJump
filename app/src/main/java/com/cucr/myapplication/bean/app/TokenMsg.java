@@ -1,31 +1,36 @@
 package com.cucr.myapplication.bean.app;
 
-import java.util.List;
-
 /**
  * Created by cucr on 2018/3/24.
  */
 
 public class TokenMsg {
 
+
     /**
-     * errorMsg : 签名错误
-     * rows : []
-     * success : false
-     * total : 0
+     * msg : yOEjafAYNVTcU97+Ucya7Ie6P2E2v/+FCNuq0ankrZXBufZZHxyOOR/w2sBG5tX3UI88Q+tmyJp+tos+dUvtuYkkq3oPZj8t
+     * obj : null
+     * success : true
      */
 
-    private String errorMsg;
+    private String msg;
+    private Object obj;
     private boolean success;
-    private int total;
-    private List<?> rows;
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Object getObj() {
+        return obj;
+    }
+
+    public void setObj(Object obj) {
+        this.obj = obj;
     }
 
     public boolean isSuccess() {
@@ -34,21 +39,5 @@ public class TokenMsg {
 
     public void setSuccess(boolean success) {
         this.success = success;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public List<?> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<?> rows) {
-        this.rows = rows;
     }
 }

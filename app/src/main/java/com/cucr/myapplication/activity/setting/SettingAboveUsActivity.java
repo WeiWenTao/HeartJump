@@ -59,6 +59,20 @@ public class SettingAboveUsActivity extends BaseActivity implements RequersCallB
         mCore.queryCode(this);
     }
 
+    //去应用市场评分
+    @OnClick(R.id.rlv_goMarket)
+    public void goMarket(View view) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            ToastUtils.showToast("您的手机没有安装Android应用市场");
+            e.printStackTrace();
+        }
+    }
+
     private void normalUpdate(String text, final AppInfo appInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(text + appInfo.getKeyFild());

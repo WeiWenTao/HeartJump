@@ -64,7 +64,6 @@
 
 -ignorewarnings
 -keep class com.cucr.myapplication.boradcastReceiver.ImReceiver {*;}
--keep public class * extends android.content.BroadcastReceiver
 #-----------------------------------------支付宝--------------------------------
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}
