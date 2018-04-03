@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.percent.PercentRelativeLayout
     android:id="@+id/activity_invate"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/invite_bg"
-    tools:context="com.cucr.myapplication.activity.setting.InvateActivity"
     android:fitsSystemWindows="true"
+    xmlns:percent="http://schemas.android.com/apk/res-auto"
+    tools:context="com.cucr.myapplication.activity.setting.InvateActivity"
     >
 
     <RelativeLayout
-        android:fitsSystemWindows="true"
         android:id="@+id/comment_head"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="@dimen/titleBarHight"
+        android:fitsSystemWindows="true"
 
         >
 
@@ -33,12 +34,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="220dp"
-        android:layout_height="350dp"
-        android:layout_centerInParent="true"
+        percent:layout_heightPercent="55%"
+        percent:layout_widthPercent="60%"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/invite_hongbao"
         android:gravity="bottom"
         android:paddingBottom="@dimen/dp_20"
+        percent:layout_marginTopPercent="15%"
         >
 
         <TextView
@@ -58,28 +60,29 @@
             android:layout_below="@id/tv_content1"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:text="你和你的小伙伴都能获得50星币哦"
+            android:text="你和你的小伙伴都能获得10星币哦"
             android:textColor="#ffff45"
             android:textSize="12sp"
             />
 
         <TextView
-            android:clickable="true"
-            android:onClick="invate"
             android:id="@+id/tv_invate"
             android:layout_width="140dp"
             android:layout_height="41.5dp"
             android:layout_below="@id/tv_content2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg"
+            android:clickable="true"
             android:gravity="center"
+            android:onClick="invate"
             android:text="立即邀请"
             android:textColor="#ff4f49"
             android:textSize="18sp"
-            android:background="@drawable/btn_bg"
+            android:layout_marginBottom="@dimen/dp_3"
             />
 
     </RelativeLayout>
 
 
-</RelativeLayout>
+</android.support.percent.PercentRelativeLayout>

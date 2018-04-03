@@ -14,11 +14,10 @@ public class HttpContans {
     public static final String HTTP_EN = "http://210.14.157.131:8149/clker_inter/";
 
     public static final String IMAGE_HOST = "";
-    public static final String LOGO_ADDRESS = "http://www.cucrxt.com/static/512.png";
+    public static final String LOGO_ADDRESS = "http://101.132.96.199/static/512.png";
 
-//    public static final String HOST = "http://101.132.96.199";
-
-    public static final String HOST = "http://www.cucrxt.com";
+    //线上环境
+    public static final String HOST = "http://101.132.96.199";
 
 //    public static final String HOST = "http://192.168.1.147:8080";
 
@@ -28,7 +27,7 @@ public class HttpContans {
     public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";
 
     //服务协议
-    public static final String HTTP_YHXY = HOST + "http://www.cucrxt.com/fwxy.html";
+    public static final String HTTP_YHXY = HOST + "http://101.132.96.199/fwxy.html";
 
     //注册
     public static final String ADDRESS_REGIST = HOST + "/interface/user/regist";

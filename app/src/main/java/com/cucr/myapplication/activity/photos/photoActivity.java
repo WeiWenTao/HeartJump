@@ -229,21 +229,21 @@ public class PhotoActivity extends BaseActivity implements ViewPager.OnPageChang
     //点赞时
     @OnClick(R.id.ll_goods)
     public void zan(View view) {
+        if (photos.isIsGiveUp()) {
+            giveNum = photos.getGiveUpCount() - 1;
+            photos.setIsGiveUp(false);
+            photos.setGiveUpCount(giveNum);
+        } else {
+            giveNum = photos.getGiveUpCount() + 1;
+            photos.setIsGiveUp(true);
+            photos.setGiveUpCount(giveNum);
+        }
+        upDataInfo();
         queryCore.ftGoods(photos.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (photos.isIsGiveUp()) {
-                        giveNum = photos.getGiveUpCount() - 1;
-                        photos.setIsGiveUp(false);
-                        photos.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = photos.getGiveUpCount() + 1;
-                        photos.setIsGiveUp(true);
-                        photos.setGiveUpCount(giveNum);
-                    }
-                    upDataInfo();
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }

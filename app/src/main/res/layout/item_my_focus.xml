@@ -28,7 +28,6 @@
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="时尚达人soso"
             android:textColor="@color/pink"
             android:textSize="@dimen/sp_16"
             />
@@ -41,7 +40,6 @@
             android:ellipsize="end"
             android:maxEms="14"
             android:singleLine="true"
-            android:text="达康书记被玩坏啦！快顶《达康..."
             android:textColor="#666"
             android:textSize="@dimen/sp_13"
             />

@@ -61,8 +61,10 @@ public class ToastUtils {
         oneTime = twoTime;
     }
 
+
     public static void showToast(String message) {
-        if (TextUtils.isEmpty(message)){
+
+        if (TextUtils.isEmpty(message)) {
             return;
         }
         if (message.equals("签名错误")) {

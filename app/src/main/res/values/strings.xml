@@ -12,5 +12,6 @@
 
     <string name="request_succeed">请求成功</string>
     <string name="request_failed">请求失败</string>
+    <string name="request_permission">要先获取权限才能打开哦</string>
 
 </resources>

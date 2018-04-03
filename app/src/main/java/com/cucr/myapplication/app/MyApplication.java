@@ -59,7 +59,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         //异常处理
-        throwableInstall();
+//        throwableInstall();
 
         //融云
         RongIM.init(this);
@@ -158,7 +158,6 @@ public class MyApplication extends Application {
                             MyLogger.jLog().i("--->MyCatchException:" + thread + "<---" + throwable.toString());
 //                        throw new RuntimeException("..."+(i++));
                         } catch (Throwable e) {
-
                         }
                     }
                 });

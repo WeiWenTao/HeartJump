@@ -36,8 +36,8 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
         rlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         mAdapter = new MyFocusAdapter();
         rlv.setAdapter(mAdapter);
-        core.queryMyFocusOthers(page, rows, this);
         rlv.setOnLoadListener(this);
+        onRefresh();
     }
 
     @Override
@@ -58,7 +58,6 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
                             mAdapter.setData(focusInfo.getRows());
                             multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         }
-                        ;
                     } else {
                         mAdapter.addDate(focusInfo.getRows());
                     }
@@ -107,7 +106,7 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
         isRefresh = true;
         page = 1;
         rlv.getSwipeRefreshLayout().setRefreshing(true);
-        core.queryMyFens(page, rows, this);
+        core.queryMyFocusOthers(page, rows, this);
     }
 
     @Override
@@ -115,6 +114,6 @@ public class FocusActivity extends BaseActivity implements RequersCallBackListen
         isRefresh = false;
         page++;
         rlv.onLoadingMore();
-        core.queryMyFens(page, rows, this);
+        core.queryMyFocusOthers(page, rows, this);
     }
 }

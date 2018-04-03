@@ -69,6 +69,8 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
     private void initPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }else {
+            downTimer.start();
         }
     }
 
@@ -178,7 +180,7 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
 //        boolean fromCache = response.isFromCache();
         SplishInfo splishInfo = MyApplication.getGson().fromJson(response.get(), SplishInfo.class);
         if (splishInfo.isSuccess()) {
-            ImageLoader.getInstance().displayImage(splishInfo.getObj().getFileUrl(), mIv_bg, MyApplication.getImageLoaderOptions());
+            ImageLoader.getInstance().displayImage(splishInfo.getObj().getFileUrl(), mIv_bg);
 //            ToastUtils.showToast("获取到了图片:" + fromCache);
         } else {
             ToastUtils.showToast(splishInfo.getMsg());

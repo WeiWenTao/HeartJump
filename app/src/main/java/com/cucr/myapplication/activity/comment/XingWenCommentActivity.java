@@ -117,7 +117,7 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
     protected void initChild() {
         EventBus.getDefault().register(this);
         initTitle("全部评论");
-        rows = 5;
+        rows = 15;
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
         initData();

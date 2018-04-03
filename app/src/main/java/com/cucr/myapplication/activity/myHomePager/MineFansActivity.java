@@ -4,7 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
-import com.cucr.myapplication.adapter.RlVAdapter.MyFocusAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.MyFansAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.constants.Constans;
@@ -22,19 +22,18 @@ public class MineFansActivity extends BaseActivity implements RequersCallBackLis
     @ViewInject(R.id.rlv)
     private SwipeRecyclerView rlv;
 
-
     //状态布局
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
 
     private QueryFocus core;
-    private MyFocusAdapter mAdapter;
+    private MyFansAdapter mAdapter;
 
     @Override
     protected void initChild() {
         core = new QueryFocus();
         rlv.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
-        mAdapter = new MyFocusAdapter();
+        mAdapter = new MyFansAdapter();
         rlv.setAdapter(mAdapter);
         rlv.setOnLoadListener(this);
         onRefresh();

@@ -1,6 +1,9 @@
 package com.cucr.myapplication.activity.hyt;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,11 +13,11 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
-import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogCreatHyt;
@@ -174,11 +177,34 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private Integer ViewId;
+
     //无论是哪个控件选择照片 都直接赋值跳转 用id区分
+
     @Override
     public void onClick(View v) {
         tempView = (ImageView) v;
-        mPictureSelectionModel.forResult(v.getId());
+        ViewId = v.getId();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }else {
+            mPictureSelectionModel.forResult(ViewId);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        boolean writeAccepted = false;
+        switch (requestCode) {
+            case 1:
+                writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
+                    mPictureSelectionModel.forResult(ViewId);
+                } else {
+                    ToastUtils.showToast(getResources().getString(R.string.request_permission));
+                }
+                break;
+        }
     }
 
     //提交审核
@@ -201,7 +227,7 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
         mCore.creatHyt(hytName, idCard, emali, creatBody, idCardPosiPath, idCardNegaPath,
                 coverPath, mStarId, phoneNum, address, new RequersCallBackListener() {
                     @Override
-                    public void onRequestSuccess(int what,Response<String> response) {
+                    public void onRequestSuccess(int what, Response<String> response) {
                         CommonRebackMsg reBackMsg = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
                         if (reBackMsg.isSuccess()) {
                             ToastUtils.showToast("已提交审核");
@@ -229,7 +255,7 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
     }
 
     @OnClick(R.id.iv_rule)
-    public void createRule(View view){
+    public void createRule(View view) {
         mRuleDialog.show();
     }
 }

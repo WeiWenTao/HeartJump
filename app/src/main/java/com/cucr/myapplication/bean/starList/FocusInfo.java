@@ -11,9 +11,9 @@ public class FocusInfo {
 
     /**
      * errorMsg :
-     * rows : [{"followTime":"2017-10-30 10:55:14","id":66,"start":{"id":29,"msgRegId":"123456","name":"笨笨的考拉","realName":"陈长义","signName":"你好","userHeadPortrait":"/static/ys_image/dfdbe4d2-4dbd-486a-9576-b4eb59ef45bc.gif"},"user":{"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}},{"followTime":"2017-10-30 10:55:06","id":65,"start":{"id":33,"msgRegId":"","name":"","realName":"林俊杰","signName":"","userHeadPortrait":"/static/ys_image/7f9a1e51-a248-4165-a91a-fcfbaf1e1ccf.gif"},"user":{"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}},{"followTime":"2017-10-30 10:54:53","id":64,"start":{"id":32,"msgRegId":"","name":"","realName":"周杰伦","signName":"","userHeadPortrait":"/static/ys_image/903d9168-68f3-4410-8d24-28b675b0409b.gif"},"user":{"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}}]
+     * rows : [{"followTime":"2018-03-29 10:55:56","id":118,"isfollow":0,"start":{"belongCompany":"","companyName":"","id":10002514,"msgRegId":"170976fa8a8b4a4df67","name":"妙恋果粒多°","phone":"13554389941","realName":"","ryimToken":"lIhVhSx+3WyuqImG8D9QFwh6+9YvyxcsZKTG2qJ3/+8QsmHR0FSpTsG8fhgpoWiuAOA8KlLdf94eQFKppiwVrZJwNJIFPwAY","signName":"","startCost":null,"userHeadPortrait":"http://101.132.96.199/static/yuanshi_image/4e6c8e6d-0957-4279-829a-1b6d6124f6a6.png","weiboUrl":""},"user":{"belongCompany":"","companyName":"","id":10002515,"msgRegId":"141fe1da9ea012a5a66","name":"晓月","phone":"18062092535","realName":"","ryimToken":"42DPPuqhMLPfdDbci+SA1gJNjeKytZG7limYQo+HrZaGyE46fRac9ZIhfhSbSi/zdxkcXaGnFBWDJXGrQe05NOYpEp+R4GSG","signName":"I like it","startCost":null,"userHeadPortrait":"http://101.132.96.199/static/yuanshi_image/4d039170-8cf6-41dd-a8e9-d2317da465a5.png","weiboUrl":""}},{"followTime":"2018-03-28 19:01:39","id":82,"isfollow":1,"start":{"belongCompany":"","companyName":"","id":10002514,"msgRegId":"170976fa8a8b4a4df67","name":"妙恋果粒多°","phone":"13554389941","realName":"","ryimToken":"lIhVhSx+3WyuqImG8D9QFwh6+9YvyxcsZKTG2qJ3/+8QsmHR0FSpTsG8fhgpoWiuAOA8KlLdf94eQFKppiwVrZJwNJIFPwAY","signName":"","startCost":null,"userHeadPortrait":"http://101.132.96.199/static/yuanshi_image/4e6c8e6d-0957-4279-829a-1b6d6124f6a6.png","weiboUrl":""},"user":{"belongCompany":"","companyName":"","id":10002517,"msgRegId":"18171adc0306485af20","name":"呼哈","phone":"13554516956","realName":"","ryimToken":"AZnFUjes3lsq5OHSdXrxPwh6+9YvyxcsZKTG2qJ3/+8QsmHR0FSpTlNtG0SwLSmS2LhFgRQ8M4OlSyJKMBkP2ZJwNJIFPwAY","signName":"","startCost":null,"userHeadPortrait":"http://101.132.96.199/static/touxiang.png","weiboUrl":""}}]
      * success : true
-     * total : 3
+     * total : 2
      */
 
     private String errorMsg;
@@ -54,23 +54,27 @@ public class FocusInfo {
     }
 
     public static class RowsBean {
-        /**
-         * followTime : 2017-10-30 10:55:14
-         * id : 66
-         * start : {"id":29,"msgRegId":"123456","name":"笨笨的考拉","realName":"陈长义","signName":"你好","userHeadPortrait":"/static/ys_image/dfdbe4d2-4dbd-486a-9576-b4eb59ef45bc.gif"}
-         * user : {"id":28,"msgRegId":"1104a8979290bcd6bb8","name":"9527","realName":"","signName":"","userHeadPortrait":""}
-         */
-
-        private String followTime;
-        private int id;
-        private StartBean start;
-        private UserBean user;
 
         public RowsBean(String followTime, int id, StartBean start) {
             this.followTime = followTime;
             this.id = id;
             this.start = start;
         }
+
+
+        /**
+         * followTime : 2018-03-29 10:55:56
+         * id : 118
+         * isfollow : 0
+         * start : {"belongCompany":"","companyName":"","id":10002514,"msgRegId":"170976fa8a8b4a4df67","name":"妙恋果粒多°","phone":"13554389941","realName":"","ryimToken":"lIhVhSx+3WyuqImG8D9QFwh6+9YvyxcsZKTG2qJ3/+8QsmHR0FSpTsG8fhgpoWiuAOA8KlLdf94eQFKppiwVrZJwNJIFPwAY","signName":"","startCost":null,"userHeadPortrait":"http://101.132.96.199/static/yuanshi_image/4e6c8e6d-0957-4279-829a-1b6d6124f6a6.png","weiboUrl":""}
+         * user : {"belongCompany":"","companyName":"","id":10002515,"msgRegId":"141fe1da9ea012a5a66","name":"晓月","phone":"18062092535","realName":"","ryimToken":"42DPPuqhMLPfdDbci+SA1gJNjeKytZG7limYQo+HrZaGyE46fRac9ZIhfhSbSi/zdxkcXaGnFBWDJXGrQe05NOYpEp+R4GSG","signName":"I like it","startCost":null,"userHeadPortrait":"http://101.132.96.199/static/yuanshi_image/4d039170-8cf6-41dd-a8e9-d2317da465a5.png","weiboUrl":""}
+         */
+
+        private String followTime;
+        private int id;
+        private int isfollow;
+        private StartBean start;
+        private UserBean user;
 
         public String getFollowTime() {
             return followTime;
@@ -86,6 +90,14 @@ public class FocusInfo {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public int getIsfollow() {
+            return isfollow;
+        }
+
+        public void setIsfollow(int isfollow) {
+            this.isfollow = isfollow;
         }
 
         public StartBean getStart() {
@@ -105,34 +117,53 @@ public class FocusInfo {
         }
 
         public static class StartBean {
-            /**
-             * id : 29
-             * msgRegId : 123456
-             * name : 笨笨的考拉
-             * realName : 陈长义
-             * signName : 你好
-             * userHeadPortrait : /static/ys_image/dfdbe4d2-4dbd-486a-9576-b4eb59ef45bc.gif
-             */
-
-            private int id;
-            private String msgRegId;
-            private String name;
-            private String realName;
-            private String signName;
-            private String userHeadPortrait;
-            private boolean noFocus;
-
             public StartBean(int id, String userHeadPortrait) {
                 this.id = id;
                 this.userHeadPortrait = userHeadPortrait;
             }
 
-            public boolean isNoFocus() {
-                return noFocus;
+            /**
+             * belongCompany :
+             * companyName :
+             * id : 10002514
+             * msgRegId : 170976fa8a8b4a4df67
+             * name : 妙恋果粒多°
+             * phone : 13554389941
+             * realName :
+             * ryimToken : lIhVhSx+3WyuqImG8D9QFwh6+9YvyxcsZKTG2qJ3/+8QsmHR0FSpTsG8fhgpoWiuAOA8KlLdf94eQFKppiwVrZJwNJIFPwAY
+             * signName :
+             * startCost : null
+             * userHeadPortrait : http://101.132.96.199/static/yuanshi_image/4e6c8e6d-0957-4279-829a-1b6d6124f6a6.png
+             * weiboUrl :
+             */
+
+            private String belongCompany;
+            private String companyName;
+            private int id;
+            private String msgRegId;
+            private String name;
+            private String phone;
+            private String realName;
+            private String ryimToken;
+            private String signName;
+            private Object startCost;
+            private String userHeadPortrait;
+            private String weiboUrl;
+
+            public String getBelongCompany() {
+                return belongCompany;
             }
 
-            public void setNoFocus(boolean noFocus) {
-                this.noFocus = noFocus;
+            public void setBelongCompany(String belongCompany) {
+                this.belongCompany = belongCompany;
+            }
+
+            public String getCompanyName() {
+                return companyName;
+            }
+
+            public void setCompanyName(String companyName) {
+                this.companyName = companyName;
             }
 
             public int getId() {
@@ -159,12 +190,28 @@ public class FocusInfo {
                 this.name = name;
             }
 
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
             public String getRealName() {
                 return realName;
             }
 
             public void setRealName(String realName) {
                 this.realName = realName;
+            }
+
+            public String getRyimToken() {
+                return ryimToken;
+            }
+
+            public void setRyimToken(String ryimToken) {
+                this.ryimToken = ryimToken;
             }
 
             public String getSignName() {
@@ -175,6 +222,14 @@ public class FocusInfo {
                 this.signName = signName;
             }
 
+            public Object getStartCost() {
+                return startCost;
+            }
+
+            public void setStartCost(Object startCost) {
+                this.startCost = startCost;
+            }
+
             public String getUserHeadPortrait() {
                 return userHeadPortrait;
             }
@@ -183,43 +238,58 @@ public class FocusInfo {
                 this.userHeadPortrait = userHeadPortrait;
             }
 
-            @Override
-            public String toString() {
-                return "StartBean{" +
-                        "id=" + id +
-                        ", msgRegId='" + msgRegId + '\'' +
-                        ", name='" + name + '\'' +
-                        ", realName='" + realName + '\'' +
-                        ", signName='" + signName + '\'' +
-                        ", userHeadPortrait='" + userHeadPortrait + '\'' +
-                        '}';
+            public String getWeiboUrl() {
+                return weiboUrl;
+            }
+
+            public void setWeiboUrl(String weiboUrl) {
+                this.weiboUrl = weiboUrl;
             }
         }
 
         public static class UserBean {
             /**
-             * id : 28
-             * msgRegId : 1104a8979290bcd6bb8
-             * name : 9527
+             * belongCompany :
+             * companyName :
+             * id : 10002515
+             * msgRegId : 141fe1da9ea012a5a66
+             * name : 晓月
+             * phone : 18062092535
              * realName :
-             * signName :
-             * userHeadPortrait :
+             * ryimToken : 42DPPuqhMLPfdDbci+SA1gJNjeKytZG7limYQo+HrZaGyE46fRac9ZIhfhSbSi/zdxkcXaGnFBWDJXGrQe05NOYpEp+R4GSG
+             * signName : I like it
+             * startCost : null
+             * userHeadPortrait : http://101.132.96.199/static/yuanshi_image/4d039170-8cf6-41dd-a8e9-d2317da465a5.png
+             * weiboUrl :
              */
 
+            private String belongCompany;
+            private String companyName;
             private int id;
             private String msgRegId;
             private String name;
+            private String phone;
             private String realName;
+            private String ryimToken;
             private String signName;
+            private Object startCost;
             private String userHeadPortrait;
-            private boolean noFocus;
+            private String weiboUrl;
 
-            public boolean isNoFocus() {
-                return noFocus;
+            public String getBelongCompany() {
+                return belongCompany;
             }
 
-            public void setNoFocus(boolean noFocus) {
-                this.noFocus = noFocus;
+            public void setBelongCompany(String belongCompany) {
+                this.belongCompany = belongCompany;
+            }
+
+            public String getCompanyName() {
+                return companyName;
+            }
+
+            public void setCompanyName(String companyName) {
+                this.companyName = companyName;
             }
 
             public int getId() {
@@ -246,12 +316,28 @@ public class FocusInfo {
                 this.name = name;
             }
 
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
             public String getRealName() {
                 return realName;
             }
 
             public void setRealName(String realName) {
                 this.realName = realName;
+            }
+
+            public String getRyimToken() {
+                return ryimToken;
+            }
+
+            public void setRyimToken(String ryimToken) {
+                this.ryimToken = ryimToken;
             }
 
             public String getSignName() {
@@ -262,6 +348,14 @@ public class FocusInfo {
                 this.signName = signName;
             }
 
+            public Object getStartCost() {
+                return startCost;
+            }
+
+            public void setStartCost(Object startCost) {
+                this.startCost = startCost;
+            }
+
             public String getUserHeadPortrait() {
                 return userHeadPortrait;
             }
@@ -270,37 +364,13 @@ public class FocusInfo {
                 this.userHeadPortrait = userHeadPortrait;
             }
 
-            @Override
-            public String toString() {
-                return "UserBean{" +
-                        "id=" + id +
-                        ", msgRegId='" + msgRegId + '\'' +
-                        ", name='" + name + '\'' +
-                        ", realName='" + realName + '\'' +
-                        ", signName='" + signName + '\'' +
-                        ", userHeadPortrait='" + userHeadPortrait + '\'' +
-                        '}';
+            public String getWeiboUrl() {
+                return weiboUrl;
+            }
+
+            public void setWeiboUrl(String weiboUrl) {
+                this.weiboUrl = weiboUrl;
             }
         }
-
-        @Override
-        public String toString() {
-            return "RowsBean{" +
-                    "followTime='" + followTime + '\'' +
-                    ", id=" + id +
-                    ", start=" + start +
-                    ", user=" + user +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "FocusInfo{" +
-                "errorMsg='" + errorMsg + '\'' +
-                ", success=" + success +
-                ", total=" + total +
-                ", rows=" + rows +
-                '}';
     }
 }

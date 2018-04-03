@@ -54,11 +54,11 @@ public class PublishActivity extends Activity {
 
     //预览列表
     @ViewInject(R.id.picture_list)
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     //发布内容
     @ViewInject(R.id.et_publish)
-    EditText et_publish;
+    private EditText et_publish;
 
     private int mType;
     private int fileType;
@@ -347,7 +347,6 @@ public class PublishActivity extends Activity {
                 RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布成功");
-                    MyLogger.jLog().i("发布pic成功");
                     needRefresh = true;
                     Intent intent = getIntent();
                     intent.putExtra("needRefresh",needRefresh);
@@ -363,7 +362,6 @@ public class PublishActivity extends Activity {
                 RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);
                 if (rzResult.isSuccess()) {
                     ToastUtils.showToast("发布视频成功");
-                    MyLogger.jLog().i("发布video成功");
                     needRefresh = true;
                     Intent intent = getIntent();
                     intent.putExtra("needRefresh",needRefresh);
@@ -388,7 +386,6 @@ public class PublishActivity extends Activity {
                     ToastUtils.showToast(rzResult.getMsg());
                 }
             }
-
         });
     }
 

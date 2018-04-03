@@ -154,7 +154,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     }
     //================================================================
 
-
     private void findView() {
         RadioButton rb_1 = (RadioButton) findViewById(R.id.rb_1);
         RadioButton rb_2 = (RadioButton) findViewById(R.id.rb_2);

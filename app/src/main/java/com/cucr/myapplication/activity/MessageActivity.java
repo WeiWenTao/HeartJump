@@ -1,5 +1,7 @@
 package com.cucr.myapplication.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,18 +11,13 @@ import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
-import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.fragment.msgFragment.CommendFragment;
 import com.cucr.myapplication.fragment.msgFragment.GoodsFragment;
-import com.cucr.myapplication.utils.SpUtil;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.rong.imkit.RongIM;
-import io.rong.imlib.model.CSCustomServiceInfo;
 
 
 public class MessageActivity extends FragmentActivity implements View.OnClickListener {
@@ -38,7 +35,6 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         TabLayout tl_tab = (TabLayout) findViewById(R.id.tl_tab);
         findViewById(R.id.iv_base_back).setOnClickListener(this);
-
         mFragmentList = new ArrayList<>();
         titles = new ArrayList<>();
         titles.add("评论");
@@ -52,15 +48,19 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
 
     //跳转客服
     public void kefu(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + "027-62433312");
+        intent.setData(data);
+        startActivity(intent);
 
-        //首先需要构造使用客服者的用户信息
+    /*    //首先需要构造使用客服者的用户信息
         CSCustomServiceInfo.Builder csBuilder = new CSCustomServiceInfo.Builder();
-        CSCustomServiceInfo csInfo = csBuilder.nickName((String) SpUtil.getParam(SpConstant.USER_NAEM,"")).
+        CSCustomServiceInfo csInfo = csBuilder.nickName((String) SpUtil.getParam(SpConstant.USER_NAEM, "")).
                 userId((int) SpUtil.getParam(SpConstant.USER_ID, -1) + "").build();
 
         RongIM.getInstance().startCustomerServiceChat(this,
                 "KEFU152211570248279",
-                "在线客服",csInfo);
+                "在线客服", csInfo);*/
     }
 
     @Override

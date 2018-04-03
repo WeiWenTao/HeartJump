@@ -249,11 +249,10 @@ public class FragmentFans extends BaseFragment {
                     iv_icon_unfold.setVisibility(View.VISIBLE);
                     rlv_click.setVisibility(View.VISIBLE);
 
+                    //添加明星自己为第一个
                     mRows = Info.getRows();
                     if (Constans.STATUS_STAR == ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1))) {
-                        FocusInfo.RowsBean rowsBean = new FocusInfo.RowsBean(null, -1,
-                                new FocusInfo.RowsBean.StartBean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)),
-                                        (String) SpUtil.getParam(SpConstant.SP_USERHEAD, "")));
+                        FocusInfo.RowsBean rowsBean = new FocusInfo.RowsBean(null, -1, new FocusInfo.RowsBean.StartBean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)),(String) SpUtil.getParam(SpConstant.SP_USERHEAD, "")));
                         mRows.add(0, rowsBean);
                     }
 

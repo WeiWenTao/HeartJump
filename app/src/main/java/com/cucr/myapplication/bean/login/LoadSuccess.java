@@ -23,6 +23,9 @@ public class LoadSuccess {
     private String token;
 
     public String getToken() {
+        if (token == null) {
+            return "";
+        }
         return token;
     }
 

@@ -30,9 +30,10 @@ public abstract class BaseActivity extends Activity {
         setContentView(getChildRes());
         ViewUtils.inject(this);
         mGson = MyApplication.getGson();
-        waitDialog = new MyWaitDialog(this,R.style.MyWaitDialog);
+        waitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         page = 1;
         rows = 15;
+        isRefresh = true;
         needShowLoading = true;
         //初始化沉浸栏、标题内容、返回键
         initBar();
@@ -72,7 +73,9 @@ public abstract class BaseActivity extends Activity {
         });
     }
 
-    protected void onBackBefore(){
+    protected void onBackBefore() {
 
-    };
+    }
+
+    ;
 }

@@ -282,7 +282,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             case Constans.TYPE_TWO:
                 //三方登录
                 CommonRebackMsg msg = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
-                MyLogger.jLog().i("aaa:" + msg);
                 if (msg.isSuccess()) {
                     //三方登录手动把密码设置成空串
                     mPassWord = "";
@@ -336,6 +335,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             SpUtil.setParam(SpConstant.USER_ID, loadSuccess.getUserId());
 //                    保存身份信息
             SpUtil.setParam(SpConstant.SP_STATUS, loadSuccess.getRoleId());
+//            SpUtil.setParam(SpConstant.SP_STATUS, 2);
 //                    存储账号和密码等信息
             SpUtil.setParam(SpConstant.USER_NAEM, loadSuccess.getPhone());
             SpUtil.setParam(SpConstant.PASSWORD, "");

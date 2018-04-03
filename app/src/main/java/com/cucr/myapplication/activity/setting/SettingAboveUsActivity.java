@@ -16,7 +16,6 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.AppUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.upDataUtils.DownLoadApk;
-import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -27,11 +26,9 @@ public class SettingAboveUsActivity extends BaseActivity implements RequersCallB
     private TextView tv_code;
 
     private AppCore mCore;
-    private Gson mGson;
 
     @Override
     protected void initChild() {
-        mGson = MyApplication.getGson();
         mCore = new AppCore();
         initTitle("关于我们");
         initData();

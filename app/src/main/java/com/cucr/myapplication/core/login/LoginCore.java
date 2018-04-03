@@ -166,10 +166,14 @@ public class LoginCore implements LoadByPsw {
 
             //---------------------------------------------------------------------------------
             //保存融云token
-            SpUtil.setParam(SpConstant.TOKEN, loadSuccess.getToken());
+            if (!TextUtils.isEmpty(loadSuccess.getToken())) {
+                SpUtil.setParam(SpConstant.TOKEN, loadSuccess.getToken());
+            }
 
             //设置极光推送的tag
-            tags.add(loadSuccess.getRoleId() + "");
+            if (tags != null) {
+                tags.add(loadSuccess.getRoleId() + "");
+            }
 //                    保存密钥
             SpUtil.setParam(SpConstant.SIGN, loadSuccess.getSign());
 //                      保存头像

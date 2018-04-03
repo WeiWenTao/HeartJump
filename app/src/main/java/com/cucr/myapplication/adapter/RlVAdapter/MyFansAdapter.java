@@ -34,7 +34,7 @@ import java.util.List;
  * Created by cucr on 2018/2/10.
  */
 
-public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHolder> {
+public class MyFansAdapter extends RecyclerView.Adapter<MyFansAdapter.FocusHolder> {
 
     private List<FocusInfo.RowsBean> rows;
     private FocusCore mCore;
@@ -54,6 +54,7 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
         notifyItemInserted(this.rows.size() + 1);
         this.rows.addAll(rows);
     }
+
     @Override
     public FocusHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mInstance = MyApplication.getInstance();
@@ -66,8 +67,8 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
     }
 
     @Override
-    public void onBindViewHolder(FocusHolder holder, int position) {
-        final FocusInfo.RowsBean.StartBean start = rows.get(position).getStart();
+    public void onBindViewHolder(FocusHolder holder, final int position) {
+        final FocusInfo.RowsBean.UserBean start = rows.get(position).getUser();
         final FocusInfo.RowsBean rowsBean = rows.get(position);
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + start.getUserHeadPortrait(), holder.iv_user_icon_all_focus, MyApplication.getImageLoaderOptions());
         holder.tv_name.setText(start.getName());
@@ -84,16 +85,17 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
         holder.tv_to_focus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ToastUtils.showToast("关注成功");
+                rowsBean.setIsfollow(1);
+                notifyDataSetChanged();
+                EventBus.getDefault().post(new CommentEvent(999));
+
                 if (rowsBean.getIsfollow() == 0) {
                     mCore.toFocus(start.getId(), new OnCommonListener() {
                         @Override
                         public void onRequestSuccess(Response<String> response) {
                             ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                             if (reBackMsg.isSuccess()) {
-                                ToastUtils.showToast("关注成功");
-                                rowsBean.setIsfollow(1);
-                                notifyDataSetChanged();
-                                EventBus.getDefault().post(new CommentEvent(999));
                             } else {
                                 ToastUtils.showToast(reBackMsg.getMsg());
                             }
@@ -101,15 +103,16 @@ public class MyFocusAdapter extends RecyclerView.Adapter<MyFocusAdapter.FocusHol
                     });
 
                 } else {
+                    ToastUtils.showToast("取消关注成功");
+                    rowsBean.setIsfollow(0);
+                    notifyDataSetChanged();
+                    EventBus.getDefault().post(new CommentEvent(999));
+
                     mCore.cancaleFocus(start.getId(), new OnCommonListener() {
                         @Override
                         public void onRequestSuccess(Response<String> response) {
                             ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                             if (reBackMsg.isSuccess()) {
-                                ToastUtils.showToast("取消关注成功");
-                                rowsBean.setIsfollow(0);
-                                notifyDataSetChanged();
-                                EventBus.getDefault().post(new CommentEvent(999));
                             } else {
                                 ToastUtils.showToast(reBackMsg.getMsg());
                             }

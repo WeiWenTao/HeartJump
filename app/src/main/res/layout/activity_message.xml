@@ -2,12 +2,12 @@
 <LinearLayout
     android:id="@+id/activity_message"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.MessageActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <RelativeLayout
@@ -44,11 +44,11 @@
 
     <!--我的私信-->
     <RelativeLayout
-        android:onClick="kefu"
         android:id="@+id/rl_kefu"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#fff"
+        android:onClick="kefu"
         >
 
         <ImageView
@@ -58,9 +58,18 @@
             />
 
         <TextView
+            android:id="@+id/tv_kefu"
             style="@style/My_tv"
             android:layout_toRightOf="@id/iv_my_private"
             android:text="客服咨询"
+            />
+
+        <TextView
+            style="@style/My_tv"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:layout_toRightOf="@id/tv_kefu"
+            android:text="（工作日9：00 - 18：00）"
+            android:textColor="#999"
             />
 
         <ImageView
@@ -71,9 +80,9 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_msg"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         ></android.support.v4.view.ViewPager>
 
 </LinearLayout>

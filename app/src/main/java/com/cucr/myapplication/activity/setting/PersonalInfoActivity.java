@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -309,14 +308,22 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     //打开相机
     @Override
     public void clickCamera() {
-        openCameraOrAblum(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, 2);
+        } else {
+            openCameraOrAblum(true);
+        }
     }
 
     //打开相册
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     @Override
     public void clickAlbum() {
-        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        } else {
+            openCameraOrAblum(false);
+        }
     }
 
     @Override
@@ -327,6 +334,17 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                 writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 if (writeAccepted) {
                     openCameraOrAblum(false);
+                } else {
+                    ToastUtils.showToast(getResources().getString(R.string.request_permission));
+                }
+                break;
+
+            case 2:
+                writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
+                    openCameraOrAblum(true);
+                } else {
+                    ToastUtils.showToast(getResources().getString(R.string.request_permission));
                 }
                 break;
         }

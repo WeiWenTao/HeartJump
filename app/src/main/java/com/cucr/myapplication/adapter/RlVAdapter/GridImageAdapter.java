@@ -23,7 +23,6 @@ import com.luck.picture.lib.tools.DateUtils;
 import com.luck.picture.lib.tools.DebugUtil;
 import com.luck.picture.lib.tools.StringUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,11 +164,11 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
             }
             // 图片
             if (media.isCompressed()) {
-                Log.i("compress image result:", new File(media.getCompressPath()).length() / 1024 + "k");
-                Log.i("压缩地址::", media.getCompressPath());
+//                Log.i("compress image result:", new File(media.getCompressPath()).length() / 1024 + "k");
+//                Log.i("压缩地址::", media.getCompressPath());
             }
 
-            Log.i("原图地址::", media.getPath());
+//            Log.i("原图地址::", media.getPath());
             int pictureType = PictureMimeType.isPictureType(media.getPictureType());
             if (media.isCut()) {
                 Log.i("裁剪地址::", media.getCutPath());
