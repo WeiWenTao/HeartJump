@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/tv_dialog_cancel"
             android:paddingLeft="@dimen/dp_5"
-            android:textColor="#78ceb7"
+            android:textColor="#999"
             android:textSize="@dimen/sp_15"
             android:gravity="center"
             android:layout_width="0dp"
@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/tv_dialog_confirm"
             android:paddingRight="@dimen/dp_5"
-            android:textColor="#78ceb7"
+            android:textColor="@color/xtred"
             android:textSize="@dimen/sp_15"
             android:gravity="center"
             android:layout_width="0dp"

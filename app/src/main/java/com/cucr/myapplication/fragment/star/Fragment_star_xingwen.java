@@ -56,6 +56,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     private QueryFtInfos mQueryFtInfos;
     private Gson mGson;
     private XingWenAdapter mAdapter;
+    private boolean needShowLoading;
 
     @Nullable
     @Override
@@ -66,6 +67,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
         dataType = 0;
         page = 1;
         rows = 15;
+        needShowLoading = true;
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_personal_pager_xingwen, container, false);
@@ -126,7 +128,6 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
             rlv_xingwen.getSwipeRefreshLayout().setRefreshing(true);
         }
 
-        MyLogger.jLog().i("starId------:" + starId);
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
@@ -154,7 +155,10 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
 
             @Override
             public void onRequestStar(int what) {
-
+                if (needShowLoading) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+                    needShowLoading = false;
+                }
             }
 
             @Override
@@ -171,7 +175,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
 
     @Override
     public void onLoadMore() {
-
+        rlv_xingwen.onLoadingMore();
         page++;
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
@@ -204,7 +208,12 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
 
             @Override
             public void onRequestFinish(int what) {
-
+                if (rlv_xingwen.isRefreshing()) {
+                    rlv_xingwen.getSwipeRefreshLayout().setRefreshing(false);
+                }
+                if (rlv_xingwen.isLoadingMore()) {
+                    rlv_xingwen.stopLoadingMore();
+                }
             }
         });
     }

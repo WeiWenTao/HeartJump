@@ -161,7 +161,6 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
         et_comment.setOnFocusChangeListener(this);
     }
 
-
     //点击评论时
     @OnClick(R.id.ll_comment)
     public void comment(View view) {

@@ -61,6 +61,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 @SuppressLint("ValidFragment")
 public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt {
+
     //礼物
     @ViewInject(R.id.tv_gift)
     private TextView gift;

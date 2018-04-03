@@ -15,7 +15,6 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogProgress;
-import com.cucr.myapplication.widget.dialog.WaitDialog;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Binary;
@@ -40,7 +39,6 @@ public class FtPublishCore implements FenTuanInterf {
 
     private Activity activity;
     private List<Binary> files;
-    private WaitDialog dialog;
     private DialogProgress dialog_progress;
     private OnUpLoadListener listener;
     private int type;
@@ -51,7 +49,6 @@ public class FtPublishCore implements FenTuanInterf {
 
     public FtPublishCore(Activity activity) {
         this.activity = activity;
-        dialog = new WaitDialog(activity, "正在上传...");
         dialog_progress = new DialogProgress(activity, R.style.BirthdayStyleTheme);
         //点击屏幕外部和返回键不响应
         files = new ArrayList<>();
@@ -73,7 +70,7 @@ public class FtPublishCore implements FenTuanInterf {
         //文字
         if (type == 0) {
             mQueue.add(Constans.TYPE_ONE, request, callback);
-        //图片
+            //图片
         } else if (type == 1) {
             files.clear();
             for (int i = 0; i < mData.size(); i++) {
@@ -137,9 +134,8 @@ public class FtPublishCore implements FenTuanInterf {
         public void onFinish(int what) {// 文件上传完成
             MyLogger.jLog().i("UploadonFinish");
             if (what == 10) {
-                dialog_progress.dismiss();
+//                dialog_progress.dismiss();
             }
-
         }
 
         @Override
@@ -156,9 +152,6 @@ public class FtPublishCore implements FenTuanInterf {
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-            if (type != 2) {
-                dialog.show();
-            }
         }
 
         @Override
@@ -170,10 +163,9 @@ public class FtPublishCore implements FenTuanInterf {
                     } else if (type == 0) {
                         listener.OnUpLoadTextListener(response);
                     } else if (type == 2) {
-                        dialog_progress.dismiss();
                         listener.OnUpLoadVideoListener(response);
+                        dialog_progress.dismiss();
                     }
-                    dialog.dismiss();
                     break;
             }
         }
@@ -181,7 +173,6 @@ public class FtPublishCore implements FenTuanInterf {
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, activity);
-            dialog.dismiss();
             switch (what) {
                 case Constans.TYPE_ONE:
 

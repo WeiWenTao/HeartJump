@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.utils.MyLogger;
 
 /**
  * Created by 911 on 2017/4/26.
@@ -48,7 +47,6 @@ public class DialogProgress extends Dialog {
         if (progress == 0){
             progress = 1;
         }
-        MyLogger.jLog().i("我被调用了,proregss:"+progress);
         mPb.setProgress(progress);
         mTv_progress.setText("已上传: "+progress +" / 100");
 

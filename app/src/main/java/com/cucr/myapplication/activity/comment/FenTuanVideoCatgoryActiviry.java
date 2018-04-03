@@ -43,6 +43,7 @@ import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
@@ -57,6 +58,8 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDelPics;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.dialog.DialogShareTo;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
@@ -93,7 +96,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener, DialogDelPics.OnClickBt {
+public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener, DialogDelPics.OnClickBt, DialogShareTo.OnClickShareTo {
 
     //根布局
     @ViewInject(R.id.rootview)
@@ -164,6 +167,8 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     private DialogDelPics mDialog;
     private MyWaitDialog waitDialog;
+    private DialogShareTo mShareToDialog;
+    private DialogShareStyle mShareDialog;
     private boolean mIsFormConmmomd;
     private SignleFtInfo.ObjBean mRowsBean;
     private QueryFtInfoCore queryCore;
@@ -206,7 +211,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
         mGson = MyApplication.getGson();
         EventBus.getDefault().register(this);
-        rows = 5;
+        rows = 15;
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
         initBar();
@@ -225,6 +230,18 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
         dialogWindow.setGravity(Gravity.BOTTOM);
         dialogWindow.setWindowAnimations(R.style.BottomDialog_Animation);
         mDialog.setOnClickBt(this);
+
+
+        mShareToDialog = new DialogShareTo(this, R.style.MyDialogStyle);
+        Window shareWindow = mShareToDialog.getWindow();
+        shareWindow.setGravity(Gravity.BOTTOM);
+        shareWindow.setWindowAnimations(R.style.BottomDialog_Animation);
+        mShareToDialog.setOnClickBt(this);
+
+        mShareDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
     }
 
     private void initViews() {
@@ -412,8 +429,6 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     private void initLV() {
         initPopWindow();
-        iv_more.setVisibility(mRowsBean.getCreateUserId() == ((int) SpUtil.getParam(SpConstant.USER_ID,
-                -1)) ? View.VISIBLE : View.GONE);
         mAdapter = new FtCatgoryAadapter(MyApplication.getInstance());
         mAdapter.setClickGoodsListener(this);
         View inflate = View.inflate(MyApplication.getInstance(), R.layout.item_ft_video_catgory_header, null);
@@ -978,6 +993,21 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     @OnClick(R.id.iv_more)
     public void clickShowDialo(View view) {
-        mDialog.show();
+        if (mRowsBean == null) {
+            return;
+        }
+        if (mRowsBean.getCreateUserId() == ((int) SpUtil.getParam(SpConstant.USER_ID,
+                -1))) {
+            mDialog.show();
+        } else {
+            mShareToDialog.show();
+        }
+    }
+
+    @Override
+    public void clickShareTo() {
+        mDialog.dismiss();
+        mShareDialog.setData(new ShareEntity("", "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
+
     }
 }
