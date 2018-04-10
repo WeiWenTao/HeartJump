@@ -18,8 +18,8 @@ public interface PayCenterInterf {
 
     void queryUserMoney(OnCommonListener listener);
 
-    void queryTxRecoed(int type, OnCommonListener listener);
+    void queryTxRecoed(int page, int row, int type, RequersCallBackListener listener);
 
-    void TxRequest(String txAccount,String name,String amount, RequersCallBackListener listener);
+    void TxRequest(String txAccount, String name, String amount, RequersCallBackListener listener);
 
 }

@@ -42,7 +42,7 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
 
     //查询自己的信息
     @Override
-    public void queryPersonalInfo( final OnCommonListener onCommonListener) {
+    public void queryPersonalInfo(final OnCommonListener onCommonListener) {
         this.onCommonListener = onCommonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_USERINFO, RequestMethod.POST);
         // 添加普通参数。
@@ -93,11 +93,11 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
                     break;
 
                 case Constans.TYPE_TWO:
-                    mListener.onRequestSuccess(what,response);
+                    mListener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_THREE:
-                    mListener.onRequestSuccess(what,response);
+                    mListener.onRequestSuccess(what, response);
                     break;
             }
         }
@@ -112,4 +112,8 @@ public class QueryPersonalMsgCore implements QueryPersonalInfo {
 
         }
     };
+
+    public void cancleAll() {
+        mQueue.cancelAll();
+    }
 }

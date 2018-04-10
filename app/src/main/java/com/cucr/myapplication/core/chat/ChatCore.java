@@ -111,4 +111,8 @@ public class ChatCore {
 
         }
     };
+
+    public void stopRequest(){
+        mQueue.cancelAll();
+    }
 }

@@ -184,7 +184,10 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     //根据常过来的索引切换fragment
     private void initFragment(int i) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.ll_container, mFragments.get(i)).commit();
+        fragmentManager
+                .beginTransaction().setCustomAnimations(R.anim.bg_gray_in, R.anim.bg_gray_out)
+                .replace(R.id.ll_container, mFragments.get(i))
+                .commit();
     }
 
     private void initView() {
@@ -192,7 +195,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 //        mFragments.add(new HomeHotFragment());            //首页
         mFragments.add(new FragmentHotAndFocusNews());   //首页
         mFragments.add(new FragmentHuoDongAndFuLi());    //福利
-
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的
 
@@ -253,13 +255,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             startActivity(intent);
             EventBus.getDefault().postSticky(new EventChageAccount());
 
-
             //实现只在冷启动时显示启动页，即点击返回键与点击HOME键退出效果一致
-        /*        Intent intent = new Intent(Intent.ACTION_MAIN);
+        /*      Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addCategory(Intent.CATEGORY_HOME);
                 startActivity(intent);*/
-
 
         }
     }
@@ -310,6 +310,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                     normalUpdate("心跳互娱有新版本了 V", appInfo);
                 }
                 break;
+
             case Constans.TYPE_TWO:
                 IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
                 if (info.isSuccess()) {
@@ -364,5 +365,12 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         } else {
             ToastUtils.showToast(commonRebackMsg.getMsg());
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        qucryCore.cancleAll();
+        mChatCore.stopRequest();
     }
 }

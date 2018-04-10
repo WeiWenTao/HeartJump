@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -66,7 +67,6 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
         et_xb.setFocusableInTouchMode(true);
         et_xb.requestFocus();
         CommonUtils.hideKeyBorad(MyApplication.getInstance(), et_xb, false);
-
     }
 
     //全部提现
@@ -88,11 +88,11 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
             ToastUtils.showToast("还没有填写姓名哦哟");
             return;
         }
-        if (TextUtils.isEmpty(amount) || Integer.parseInt(account) <= 0) {
+        if (TextUtils.isEmpty(amount) || Integer.parseInt(amount) <= 0) {
             ToastUtils.showToast("还没有填写金额哟");
             return;
         }
-        mCore.TxRequest(account, name, amount, this);
+        mCore.TxRequest(account, name, amount + "0", this);
     }
 
     @Override
@@ -104,7 +104,8 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
     public void onRequestSuccess(int what, Response<String> response) {
         CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
         if (msg.isSuccess()) {
-            ToastUtils.showToast("已提交兑换申请");
+            Toast.makeText(MyApplication.getInstance(), "已提交兑换申请,将在5个工作日内到账!", Toast.LENGTH_LONG).show();
+            finish();
         } else {
             ToastUtils.showToast(msg.getMsg());
         }
@@ -138,7 +139,8 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
     @Override
     public void afterTextChanged(Editable s) {
         if (!TextUtils.isEmpty(s) && Integer.parseInt(s.toString()) > 0) {
-            bt_confirm.setText("兑换成" + Integer.parseInt(s.toString()) + "元,确认提现");
+            double i = Double.parseDouble(s.toString());
+            bt_confirm.setText("兑换成" + CommonUtils.getTxMoney(i) + "元,确认提现");
         } else {
             bt_confirm.setText("请输入金额");
         }

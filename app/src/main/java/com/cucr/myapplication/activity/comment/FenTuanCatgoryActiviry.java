@@ -55,7 +55,7 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.DialogDelPics;
+import com.cucr.myapplication.widget.dialog.DialogShareDelPics;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.dialog.DialogShareTo;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
@@ -88,7 +88,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener, DialogDelPics.OnClickBt, DialogShareTo.OnClickShareTo {
+public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener, DialogShareTo.OnClickShareTo, DialogShareDelPics.OnClickBt {
 
     //根布局
     @ViewInject(R.id.rootview)
@@ -151,7 +151,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private ImageView iv_more;
 
 
-    private DialogDelPics mDialog;
+    private DialogShareDelPics mDialog;
     private DialogShareTo mShareToDialog;
     private DialogShareStyle mShareDialog;
     private MyWaitDialog waitDialog;
@@ -197,7 +197,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private void initDialog() {
         mDelCore = new DeleteCore();
 
-        mDialog = new DialogDelPics(this, R.style.MyDialogStyle);
+        mDialog = new DialogShareDelPics(this, R.style.MyDialogStyle);
         waitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         Window dialogWindow = mDialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
@@ -895,6 +895,11 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @Override
     public void clickDel() {
         mDelCore.delFt(mDataId, this);
+    }
+
+    @Override
+    public void clickShare() {
+        mShareDialog.setData(new ShareEntity("", "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
     }
 
     @OnClick(R.id.iv_more)

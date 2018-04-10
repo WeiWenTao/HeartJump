@@ -34,21 +34,22 @@ public class DialogQuitAccountStyle extends Dialog implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_quit_cancle:
                 dismiss();
                 break;
 
             case tv_quit_confirm:
-                if (mOnClickConfirmQuit != null){
+                if (mOnClickConfirmQuit != null) {
                     mOnClickConfirmQuit.clickConfirmQuit();
                 }
+                dismiss();
                 break;
         }
     }
 
     //点击确定退出的接口回调
-    public interface OnClickConfirmQuit{
+    public interface OnClickConfirmQuit {
         void clickConfirmQuit();
     }
 

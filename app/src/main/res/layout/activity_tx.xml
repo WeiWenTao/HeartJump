@@ -68,7 +68,6 @@
                 android:layout_marginLeft="@dimen/dp_15"
                 android:background="@null"
                 android:hint="支付宝账号"
-                android:inputType="number"
                 android:textColor="@color/color_333"
                 android:textColorHint="#bbb"
                 android:textSize="@dimen/sp_15"
@@ -178,7 +177,6 @@
             android:layout_weight="1"
             android:paddingBottom="@dimen/dp_5"
             android:paddingTop="@dimen/dp_15"
-            android:text="可提现数量3000"
             android:textColor="@color/color_999"
             android:textSize="@dimen/sp_15"
             />

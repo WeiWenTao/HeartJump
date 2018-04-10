@@ -7,10 +7,9 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.interf.user.UserInterf;
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.EncodingUtils;
 import com.cucr.myapplication.utils.HttpExceptionUtil;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -24,7 +23,7 @@ import com.yanzhenjie.nohttp.rest.Response;
  */
 
 public class UserCore implements UserInterf {
-    private OnCommonListener userCenterListener;
+    private RequersCallBackListener userCenterListener;
     /**
      * 请求队列。
      */
@@ -37,7 +36,7 @@ public class UserCore implements UserInterf {
     }
 
     @Override
-    public void queryUserCenterInfo(int userId, OnCommonListener listener) {
+    public void queryUserCenterInfo(int userId, RequersCallBackListener listener) {
         this.userCenterListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_USER_CENTER, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
@@ -49,33 +48,24 @@ public class UserCore implements UserInterf {
     OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
-            MyLogger.jLog().i("onStart");
+            userCenterListener.onRequestStar(what);
         }
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            switch (what) {
-                //用户中心信息
-                case Constans.TYPE_ONE:
-                    userCenterListener.onRequestSuccess(response);
-                    break;
-
-                case Constans.TYPE_TWO:
-                    break;
-
-
-            }
+            userCenterListener.onRequestSuccess(what,response);
 
         }
 
         @Override
         public void onFailed(int what, Response<String> response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
+            userCenterListener.onRequestError(what,response);
         }
 
         @Override
         public void onFinish(int what) {
-            MyLogger.jLog().i("onFinish");
+            userCenterListener.onRequestFinish(what);
         }
     };
 }

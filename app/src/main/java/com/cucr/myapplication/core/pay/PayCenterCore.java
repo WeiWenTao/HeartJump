@@ -33,7 +33,6 @@ public class PayCenterCore implements PayCenterInterf {
     private RequersCallBackListener payListener;
     private PayLisntener payResultListener;
     private OnCommonListener userMoneyListener;
-    private OnCommonListener TxRecordListener;
     private RequersCallBackListener commonListener;
 
     public PayCenterCore() {
@@ -104,13 +103,15 @@ public class PayCenterCore implements PayCenterInterf {
     }
 
     @Override
-    public void queryTxRecoed(int type, OnCommonListener listener) {
-        TxRecordListener = listener;
+    public void queryTxRecoed(int page, int rows, int type, RequersCallBackListener listener) {
+        commonListener = listener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_TX_RECORD, RequestMethod.POST);
         request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
         if (type != -1) {
             request.add("type", type);
         }
+        request.add("page", page);
+        request.add("rows", rows);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_FIVE, request, responseListener);
     }
@@ -147,6 +148,7 @@ public class PayCenterCore implements PayCenterInterf {
 
                     break;
 
+                case Constans.TYPE_FIVE:
                 case Constans.TYPE_SIX:
                     commonListener.onRequestStar(what);
                     break;
@@ -172,7 +174,7 @@ public class PayCenterCore implements PayCenterInterf {
                     break;
 
                 case Constans.TYPE_FIVE:
-                    TxRecordListener.onRequestSuccess(response);
+                    commonListener.onRequestSuccess(what, response);
                     break;
 
                 case Constans.TYPE_SIX:
@@ -192,6 +194,7 @@ public class PayCenterCore implements PayCenterInterf {
                     payListener.onRequestError(what, response);
                     break;
 
+                case Constans.TYPE_FIVE:
                 case Constans.TYPE_SIX:
                     commonListener.onRequestError(what, response);
                     break;
@@ -206,6 +209,7 @@ public class PayCenterCore implements PayCenterInterf {
                     payListener.onRequestFinish(what);
                     break;
 
+                case Constans.TYPE_FIVE:
                 case Constans.TYPE_SIX:
                     commonListener.onRequestFinish(what);
                     break;

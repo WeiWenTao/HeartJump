@@ -26,10 +26,12 @@
         android:id="@+id/tv_goods_price"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
         android:gravity="center"
         android:textColor="@color/pink"
         android:textSize="@dimen/sp_15"
+
         />
 
 </LinearLayout>

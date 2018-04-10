@@ -128,7 +128,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         inipopWindow();
         initInfos();
 
-
         //如果是企业用户  进页面的时候就查一遍
 //        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
 //            starId = qYStarId;
@@ -139,7 +138,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);//订阅
         needShowLoading = true;  //进入页面的时候显示(仅一次)
         mContext = MyApplication.getInstance();
         this.layoutInflater = inflater;
@@ -151,6 +149,18 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
             view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);//订阅
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);//订阅
     }
 
     private void initInfos() {
@@ -234,6 +244,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     //查询第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
+        EventBus.getDefault().removeStickyEvent(event);
         starId = event.getFirstId();
         MyLogger.jLog().i("EventStarId：" + starId);
         if (queryCore == null) {
@@ -508,13 +519,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);//解除订阅
-        EventBus.getDefault().removeAllStickyEvents(); //移除所有粘性事件
-    }
-
-    @Override
     public void onRequestSuccess(int what, Response<String> response) {
         if (what == Constans.TYPE_ONE) {
             QueryFtInfos infos = mGson.fromJson(response.get(), QueryFtInfos.class);
@@ -531,8 +535,10 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                     }
                 } else {
-                    mQueryFtInfos.getRows().addAll(infos.getRows());
-                    mAdapter.addData(infos.getRows());
+                    if (infos != null) {
+                        mQueryFtInfos.getRows().addAll(infos.getRows());
+                        mAdapter.addData(infos.getRows());
+                    }
                 }
                 if (infos.getTotal() <= page * rows) {
                     rlv_fentuan.onNoMore("没有更多了");

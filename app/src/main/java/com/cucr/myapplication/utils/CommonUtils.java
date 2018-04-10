@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -189,7 +190,6 @@ public class CommonUtils {
         }
         return result;
     }
-
 
     //显示缩略图
     public static Bitmap decodeBitmap(String path) {
@@ -643,5 +643,17 @@ public class CommonUtils {
             i = 5;
         }
         return i;
+    }
+
+    public static double getTxMoney(double money) {
+        if (money > 0 && money < 600) {
+            String format = new DecimalFormat("#.00").format(money * 00.5);
+            return Double.parseDouble(format);
+        } else if (money >= 600) {
+            String format = new DecimalFormat("#.00").format(money * 00.6);
+            return Double.parseDouble(format);
+        } else {
+            return 0;
+        }
     }
 }

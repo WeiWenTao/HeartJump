@@ -49,9 +49,11 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void addData(List<QueryFtInfos.RowsBean> newData) {
-        notifyItemInserted(rows.size() /*+ 1*/);
-        rows.addAll(newData);
+        if (rows != null) {
+            notifyItemInserted(rows.size() /*+ 1*/);
+            rows.addAll(newData);
 //        notifyDataSetChanged();
+        }
     }
 
     @Override

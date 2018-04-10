@@ -1,6 +1,6 @@
 package com.cucr.myapplication.interf.user;
 
-import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 
 /**
  * Created by cucr on 2017/11/29.
@@ -8,5 +8,5 @@ import com.cucr.myapplication.listener.OnCommonListener;
 
 public interface UserInterf {
     //查询用户中心信息
-    void queryUserCenterInfo(int userId, OnCommonListener listener);
+    void queryUserCenterInfo(int userId, RequersCallBackListener listener);
 }

@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -57,7 +58,7 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.DialogDelPics;
+import com.cucr.myapplication.widget.dialog.DialogShareDelPics;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.dialog.DialogShareTo;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
@@ -96,7 +97,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener, DialogDelPics.OnClickBt, DialogShareTo.OnClickShareTo {
+public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocusChangeListener, FtCatgoryAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, RequersCallBackListener, DialogShareTo.OnClickShareTo, DialogShareDelPics.OnClickBt {
 
     //根布局
     @ViewInject(R.id.rootview)
@@ -165,7 +166,11 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     @ViewInject(R.id.iv_more)
     private ImageView iv_more;
 
-    private DialogDelPics mDialog;
+    //头部
+    @ViewInject(R.id.head)
+    private RelativeLayout head;
+
+    private DialogShareDelPics mDialog;
     private MyWaitDialog waitDialog;
     private DialogShareTo mShareToDialog;
     private DialogShareStyle mShareDialog;
@@ -224,7 +229,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     }
 
     private void initDialog() {
-        mDialog = new DialogDelPics(this, R.style.MyDialogStyle);
+        mDialog = new DialogShareDelPics(this, R.style.MyDialogStyle);
         waitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         Window dialogWindow = mDialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
@@ -258,7 +263,6 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
             }
         });
 
-
         tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
         tv_dashang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,8 +288,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     private void initBar() {
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
-
+        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 100);
         //设置导航栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance())) {
             boolean b = CommonUtils.checkDeviceHasNavigationBar(MyApplication.getInstance());
@@ -565,11 +568,11 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     @Override
     public void onBackPressed() {
-        setData();
-        finish();
         if (player != null && player.onBackPressed()) {
             return;
         }
+        setData();
+        finish();
     }
 
     //根据状态改变发送栏
@@ -717,7 +720,6 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
         mRowsBean.setDssl(mRowsBean.getDssl() + 1);
         tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
     }
-
 
     //点击lv头部的用户时  直接跳转个人主页
     @Override
@@ -972,6 +974,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
         super.onConfigurationChanged(newConfig);
         if (player != null) {
             player.onConfigurationChanged(newConfig);
+            head.setVisibility(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -991,6 +994,11 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
         delCore.delFt(mDataId, this);
     }
 
+    @Override
+    public void clickShare() {
+        mShareDialog.setData(new ShareEntity("", "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
+    }
+
     @OnClick(R.id.iv_more)
     public void clickShowDialo(View view) {
         if (mRowsBean == null) {
@@ -1008,6 +1016,5 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     public void clickShareTo() {
         mDialog.dismiss();
         mShareDialog.setData(new ShareEntity("", "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
-
     }
 }

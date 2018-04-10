@@ -31,11 +31,13 @@ import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.personalMainPager.DongTaiFragment;
 import com.cucr.myapplication.fragment.personalMainPager.StarFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -122,6 +124,7 @@ public class PersonalMainPagerActivity extends Activity {
     private int mUserId;
     private int mFssl;
     private UserCenterInfo mUserInfo;
+    private MyWaitDialog mWaitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,10 +137,9 @@ public class PersonalMainPagerActivity extends Activity {
         if (mUserId == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
             ll_footbar.setVisibility(View.GONE);
         }
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         initData();     //查个人信息
         initViews();
-
-
     }
 
     //查个人信息
@@ -145,16 +147,30 @@ public class PersonalMainPagerActivity extends Activity {
         mDataList = new ArrayList<>();
         mUserCore = new UserCore();
         mFocusCore = new FocusCore();
-        mUserCore.queryUserCenterInfo(mUserId, new OnCommonListener() {
+        mUserCore.queryUserCenterInfo(mUserId, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
-                String json = response.get();
-                mUserInfo = MyApplication.getGson().fromJson(json, UserCenterInfo.class);
+            public void onRequestSuccess(int what, Response<String> response) {
+                mUserInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
                 if (mUserInfo.isSuccess()) {
                     setData();
                 } else {
                     ToastUtils.showToast(mUserInfo.getMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+                mWaitDialog.show();
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+                mWaitDialog.dismiss();
             }
         });
     }

@@ -5,19 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.MainActivity"
     >
 
     <LinearLayout
-        android:fitsSystemWindows="true"
         android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
-        ></LinearLayout>
+        android:background="@color/zise"
+        >
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

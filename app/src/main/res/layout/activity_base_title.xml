@@ -16,7 +16,6 @@
     <TextView
         android:id="@+id/tv_base_title"
         style="@style/TitleStyle"
-        android:text="标题"
         />
 
 </RelativeLayout>

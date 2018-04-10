@@ -42,6 +42,7 @@ import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -185,15 +186,30 @@ public class MineFragment extends BaseFragment {
 
     //查询用户信息
     private void queryInfos() {
-        mUserCore.queryUserCenterInfo((int) SpUtil.getParam(SpConstant.USER_ID, -1), new OnCommonListener() {
+        mUserCore.queryUserCenterInfo((int) SpUtil.getParam(SpConstant.USER_ID, -1), new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 UserCenterInfo userInfo = MyApplication.getGson().fromJson(response.get(), UserCenterInfo.class);
                 if (userInfo.isSuccess()) {
                     setData(userInfo.getObj());
                 } else {
                     ToastUtils.showToast(userInfo.getMsg());
                 }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
             }
         });
 

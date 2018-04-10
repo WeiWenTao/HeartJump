@@ -62,15 +62,26 @@ public class ToastUtils {
     }
 
 
+    private static long firstTime;
+    private static long secondTime;
+
+
     public static void showToast(String message) {
 
         if (TextUtils.isEmpty(message)) {
             return;
         }
         if (message.equals("签名错误")) {
-            Intent intent = new Intent(MyApplication.getInstance(), NewLoadActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            MyApplication.getInstance().startActivity(intent);
+            secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > 2000) {
+                Toast.makeText(MyApplication.getInstance(), "请先登录哦", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyApplication.getInstance(), NewLoadActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                MyApplication.getInstance().startActivity(intent);
+                firstTime = secondTime;
+            } else {
+                return;
+            }
             return;
         }
         if (toast == null) {

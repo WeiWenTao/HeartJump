@@ -155,9 +155,7 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
 
     @Override
     protected void initChild() {
-
         initTitle("充值中心");
-
         moneys = new HashMap<>();
         EventBus.getDefault().register(this);
         mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
@@ -168,7 +166,6 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
         tv_account.setText(SpUtil.getParam(SpConstant.USER_NAEM, "") + "");
         findRG();
         initRBS();
-
     }
 
     @Override
