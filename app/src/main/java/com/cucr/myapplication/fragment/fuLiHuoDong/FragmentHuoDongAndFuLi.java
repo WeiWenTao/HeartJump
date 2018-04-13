@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -37,28 +36,23 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
 
     //ViewPager
     @ViewInject(R.id.vp_fuli_huodong)
-    ViewPager vp_fuli_huodong;
+    private ViewPager vp_fuli_huodong;
 
     //福利
     @ViewInject(R.id.tv_title1)
-    TextView tv_title1;
+    private TextView tv_title1;
 
     //活动
     @ViewInject(R.id.tv_title2)
-    TextView tv_title2;
+    private TextView tv_title2;
 
     //小三角
     @ViewInject(R.id.iv_sjx)
-    ImageView iv_sjx;
-
-    //popupWindow背景
-    @ViewInject(R.id.fl_pop_bg)
-    FrameLayout fl_pop_bg;
+    private ImageView iv_sjx;
 
     private List<Fragment> mFragments;
     private List<String> tytles;
     private PopupWindow genderPopWindow;
-
 
     @Override
     protected void initView(View childView) {
@@ -71,16 +65,14 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     private void initVP() {
         mFragments = new ArrayList<>();
         tytles = new ArrayList<>();
-
         mFragments.add(new FragmentFuLi());
         mFragments.add(new FragmentHuoDong());
         tytles.add("福利");
         tytles.add("活动");
-//        mFragments.add(new FragmentStarRecommend());
+//      mFragments.add(new FragmentStarRecommend());
 //      快速导航栏
 //      mFragments.add(new FragmentStarClassify());
-//        mFragments.add(new FragmentStarRecommend());
-
+//      mFragments.add(new FragmentStarRecommend());
         vp_fuli_huodong.setAdapter(new CommonPagerAdapter(getFragmentManager(), mFragments, tytles));
         vp_fuli_huodong.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -145,8 +137,6 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         attributes.alpha = 0.3f;
         getActivity().getWindow().setAttributes(attributes);
-
-
         if (genderPopWindow == null) {
             View genderView = inflater.inflate(R.layout.pop_active_publish, null);
             genderPopWindow = new PopupWindow(genderView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -155,12 +145,9 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
         genderPopWindow.setAnimationStyle(R.style.AnimationFade);
         genderPopWindow.setFocusable(true);
         genderPopWindow.setOutsideTouchable(true);
-
         genderPopWindow.setBackgroundDrawable(new BitmapDrawable());
-
         genderPopWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         genderPopWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-
         genderPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -168,7 +155,6 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
                 attributes.alpha = 1.0f;
                 attributes.windowAnimations = 1;
                 getActivity().getWindow().setAttributes(attributes);
-
             }
         });
     }

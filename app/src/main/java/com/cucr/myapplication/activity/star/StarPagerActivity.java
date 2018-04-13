@@ -23,6 +23,7 @@ import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventDaBangStarPagerId;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.others.FragmentInfos;
@@ -247,6 +248,8 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
 
         //获取数据
         mStarId = getIntent().getIntExtra("starId", -1);
+        //发送明星id到明星主页
+        EventBus.getDefault().postSticky(new EventDaBangStarPagerId(mStarId));
         //并初始化
         mStarCore.queryStar(2, 1, 1, mStarId, null, null, this);
     }

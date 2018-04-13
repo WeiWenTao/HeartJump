@@ -57,7 +57,6 @@
             </LinearLayout>
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_sjx"
                 android:layout_width="30dp"
                 android:layout_height="21dp"
@@ -69,6 +68,7 @@
                 android:paddingRight="@dimen/dp_10"
                 android:paddingTop="8dp"
                 android:src="@drawable/sjx"
+                android:visibility="gone"
                 />
 
 
@@ -92,19 +92,6 @@
             android:layout_height="match_parent"
             />
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/fl_pop_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/popWindowBg"
-        android:fitsSystemWindows="true"
-        android:visibility="gone"
-        />
-
-    <!--android:id="@+id/ll_star_recommend"-->
-    <!--android:id="@+id/ll_star_classify"-->
-
 
 </RelativeLayout>
 

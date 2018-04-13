@@ -49,6 +49,7 @@ public class MyApplication extends Application {
     private static RequestOptions glideOptions;
 
     private static Gson mGson;
+
     public static IWXAPI mMsgApi;
 
 

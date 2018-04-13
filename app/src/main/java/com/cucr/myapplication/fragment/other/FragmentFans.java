@@ -197,7 +197,7 @@ public class FragmentFans extends BaseFragment {
                     tv_fans.setText("粉丝 " + mRowsBean.getFansCount());
                     tv_starname.setText(mRowsBean.getRealName());
                     tv_star_title.setText(mRowsBean.getRealName());
-                    if (TextUtils.isEmpty(mRowsBean.getWeiboUrl())){
+                    if (TextUtils.isEmpty(mRowsBean.getWeiboUrl())) {
                         iv_weib.setVisibility(View.GONE);
                     }
                     ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
@@ -238,6 +238,12 @@ public class FragmentFans extends BaseFragment {
 //        MyLogger.jLog().i("onActivityResult");
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().postSticky(new EventFIrstStarId(mStarId));
+    }
+
     private void queryMsg() {
         //TODO: 2017/12/4   刷新和加载
         mCore.queryMyFocusStars(-1, 1, 100, new RequersCallBackListener() {
@@ -252,7 +258,7 @@ public class FragmentFans extends BaseFragment {
                     //添加明星自己为第一个
                     mRows = Info.getRows();
                     if (Constans.STATUS_STAR == ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1))) {
-                        FocusInfo.RowsBean rowsBean = new FocusInfo.RowsBean(null, -1, new FocusInfo.RowsBean.StartBean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)),(String) SpUtil.getParam(SpConstant.SP_USERHEAD, "")));
+                        FocusInfo.RowsBean rowsBean = new FocusInfo.RowsBean(null, -1, new FocusInfo.RowsBean.StartBean(((int) SpUtil.getParam(SpConstant.USER_ID, -1)), (String) SpUtil.getParam(SpConstant.SP_USERHEAD, "")));
                         mRows.add(0, rowsBean);
                     }
 

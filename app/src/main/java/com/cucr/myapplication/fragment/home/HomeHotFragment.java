@@ -18,7 +18,6 @@ import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -204,7 +203,6 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
     @Override
     public void onLoadMore() {
         page++;
-        MyLogger.jLog().i("page = " + page);
         mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what,Response<String> response) {

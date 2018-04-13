@@ -85,6 +85,9 @@ public class DaBangAdapter extends BaseAdapter {
     }
 
     public void addData(List<BangDanInfo.RowsBean> rows) {
+        if (rows==null){
+            return;
+        }
         this.rows.addAll(rows);
         notifyDataSetChanged();
     }

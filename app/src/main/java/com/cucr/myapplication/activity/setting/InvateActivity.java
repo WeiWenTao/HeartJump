@@ -41,11 +41,10 @@ public class InvateActivity extends Activity {
     }
 
     public void invate(View view) {
-        mDialog.setData2(new ShareEntity("下载心跳互娱", "追爱豆，领红包! 更多精彩等你来玩",
+        mDialog.setData2(new ShareEntity("心跳互娱，明星守护神！", "追爱豆，领红包! 更多精彩等你来玩",
                 HttpContans.ADDRESS_INVATE_REGIST + SpUtil.getParam(SpConstant.USER_ID,
-                        -1), ""));
+                        -1), HttpContans.LOGO_ADDRESS));
         mDialog.show();
     }
-
 
 }

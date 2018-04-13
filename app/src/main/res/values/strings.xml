@@ -14,4 +14,7 @@
     <string name="request_failed">请求失败</string>
     <string name="request_permission">要先获取权限才能打开哦</string>
 
+    <string name="share_title">追爱豆，领红包，尽在心跳互娱</string>
+    <string name="share_desirc">明星守护神!更多精彩等你来玩</string>
+
 </resources>

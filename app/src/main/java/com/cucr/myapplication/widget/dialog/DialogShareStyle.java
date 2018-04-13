@@ -54,11 +54,17 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         mWeb = new UMWeb(entity.getLink());
         if (!TextUtils.isEmpty(entity.getImgURL())) {
             mWeb.setThumb(new UMImage(context, entity.getImgURL()));
+        } else {
+            mWeb.setThumb(new UMImage(context, HttpContans.LOGO_ADDRESS));
         }
 //        mWeb.setDescription(entity.getDescribe());
 //        mWeb.setTitle(entity.getTitle());
-        mWeb.setDescription("追爱豆，领红包! 更多精彩等你来玩");
-        mWeb.setTitle("下载心跳互娱");
+        if (TextUtils.isEmpty(entity.getDescribe())) {
+            mWeb.setDescription(MyApplication.getInstance().getString(R.string.share_desirc));
+        } else {
+            mWeb.setDescription(entity.getDescribe());
+        }
+        mWeb.setTitle(entity.getTitle());
         show();
     }
 
@@ -195,7 +201,6 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
 
     //分享到新浪微博
     private void sharToSina() {
-        mWeb.setThumb(new UMImage(context, HttpContans.LOGO_ADDRESS));
         new ShareAction(mActivity)
                 .withMedia(mWeb).
                 setPlatform(SHARE_MEDIA.SINA).

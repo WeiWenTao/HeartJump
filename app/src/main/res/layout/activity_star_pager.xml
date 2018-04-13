@@ -30,7 +30,6 @@
             <TextView
                 android:id="@+id/tv_base_title"
                 style="@style/TitleStyle"
-                android:text="标题"
                 />
 
         </RelativeLayout>
@@ -96,20 +95,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_starname"
+                            android:layout_marginBottom="@dimen/dp_5"
                             android:layout_marginTop="@dimen/dp_5"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_14"
-                            android:layout_marginBottom="@dimen/dp_5"
                             />
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:id="@+id/ll_photos"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_fans"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             >
+
                             <ImageView
                                 android:layout_width="26dp"
                                 android:layout_height="26dp"
@@ -117,9 +117,9 @@
                                 />
 
                             <TextView
-                                android:layout_marginLeft="@dimen/dp_5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_5"
                                 android:text="图片墙"
                                 android:textColor="#f3f3f3"
                                 android:textSize="@dimen/sp_14"
@@ -188,11 +188,11 @@
         </android.support.design.widget.CoordinatorLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/ll_qiye_look"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             >
 
             <TextView

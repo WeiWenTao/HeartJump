@@ -333,8 +333,8 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     }
 
     @Override
-    public void onClickshare(int id) {
-        mDialog.setData(new ShareEntity("this is title", " this is describe", HttpContans.ADDRESS_FT_SHARE + id, ""));
+    public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
+        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
     }
 
     @Override

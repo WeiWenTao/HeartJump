@@ -138,7 +138,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickshare(rowsBean.getId());
+                        mOnClickBt.onClickshare(rowsBean, rowsBean.getAttrFileList().get(0).getVideoPagePic());
                     }
                 }
             });
@@ -275,7 +275,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickshare(rowsBean.getId());
+                        mOnClickBt.onClickshare(rowsBean, rowsBean.getAttrFileList().get(0).getFileUrl());
                     }
                 }
             });
@@ -374,7 +374,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickshare(rowsBean.getId());
+                        mOnClickBt.onClickshare(rowsBean, HttpContans.LOGO_ADDRESS);
                     }
                 }
             });
@@ -716,7 +716,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
 
-        void onClickshare(int dataId);
+        void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl);
 
         void onClickDaShang(int contentId, int position);
 

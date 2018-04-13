@@ -334,8 +334,8 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
 
     //点击分享
     @Override
-    public void onClickshare(int id) {
-        mDialog.setData(new ShareEntity("this is title", " this is describe", HttpContans.ADDRESS_FT_SHARE + id, ""));
+    public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
+        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
     }
 
     //点击打赏

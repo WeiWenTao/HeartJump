@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -199,6 +200,12 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (((head_Holder) holder).banner.isTurning()) {
                 return;
             }
+
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            ViewGroup.LayoutParams layoutParams = ((head_Holder) holder).banner.getLayoutParams();
+            layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.2f);
+            ((head_Holder) holder).banner.setLayoutParams(layoutParams);
+
             ((head_Holder) holder).banner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                 @Override
                 public NetworkImageHolderView createHolder() {

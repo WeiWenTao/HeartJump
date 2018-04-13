@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.eventBus.EventDaBangStarPagerId;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventStarId;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
@@ -110,6 +111,17 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     public void onEvent(EventFIrstStarId event) {
         if (starId != event.getFirstId() && event.getFirstId() != 0) {
             starId = event.getFirstId();
+            needShowLoading = true;
+            onRefresh();
+        }
+    }
+
+    //查询第一个明星
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
+    public void onEvent(EventDaBangStarPagerId event) {
+        if (starId != event.getFirstId() && event.getFirstId() != 0) {
+            starId = event.getFirstId();
+
             onRefresh();
         }
     }

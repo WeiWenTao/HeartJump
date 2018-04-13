@@ -467,8 +467,8 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
 
     //分享
     @Override
-    public void onClickshare(int dataId) {
-        mDialog.setData(new ShareEntity("this is title", " this is describe", HttpContans.ADDRESS_FT_SHARE + dataId, ""));
+    public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
+        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
     }
 
     //弹出打赏框

@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -74,6 +76,11 @@ public class FuLiAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         //点击事件
         if (holder instanceof FiLiHolder) {
+            WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            ViewGroup.LayoutParams layoutParams = ((FiLiHolder) holder).ll_item.getLayoutParams();
+            layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.2f);
+            ((FiLiHolder) holder).ll_item.setLayoutParams(layoutParams);
+
             final ActiveInfo.RowsBean bean = activeInfos.get(position - 1);
             ((FiLiHolder) holder).rl_fuli.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,12 +136,14 @@ public class FuLiAdapter extends RecyclerView.Adapter {
         private RelativeLayout rl_fuli;
         private TextView tv_isopen;
         private ImageView iv_active_bg;
+        private LinearLayout ll_item;
 
         public FiLiHolder(View itemView) {
             super(itemView);
             rl_fuli = (RelativeLayout) itemView.findViewById(R.id.rl_fuli);
             tv_isopen = (TextView) itemView.findViewById(R.id.tv_isopen);
             iv_active_bg = (ImageView) itemView.findViewById(R.id.iv_active_bg);
+            ll_item = (LinearLayout) itemView.findViewById(R.id.ll_item);
         }
     }
 
@@ -142,9 +151,11 @@ public class FuLiAdapter extends RecyclerView.Adapter {
 
         private RecyclerView mRlv_duihuan;
 
+
         public DuiHuanViewHolder(View itemView) {
             super(itemView);
             mRlv_duihuan = (RecyclerView) itemView.findViewById(R.id.rlv_fuli_duihuan);
+
         }
     }
 

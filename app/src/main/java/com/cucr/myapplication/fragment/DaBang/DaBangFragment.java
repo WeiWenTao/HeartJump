@@ -114,8 +114,6 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
                 starId = starid;
                 mIntent.putExtra("starId", starId);
                 startActivity(mIntent);
-                //发送明星id到明星主页
-                EventBus.getDefault().postSticky(new EventFIrstStarId(starId));
             }
         });
 
