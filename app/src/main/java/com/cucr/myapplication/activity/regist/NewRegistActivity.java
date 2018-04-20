@@ -123,7 +123,7 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
         String yzm = et_yanzhengm.getText().toString();
         mSetPsw = et_set_psw.getText().toString();
 
-        if (!mPhoneNum.matches(Constans.PHONE_REGEX)) {
+        if (mPhoneNum.length() != 11) {
             ToastUtils.showToast("手机号码有误哦");
             return;
         }

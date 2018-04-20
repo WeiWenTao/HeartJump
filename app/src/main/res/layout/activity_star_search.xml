@@ -30,12 +30,13 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/shape_search_bg"
+            android:gravity="center"
             android:hint="搜明星"
             android:imeOptions="actionSearch"
+            android:maxLength="8"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
             android:singleLine="true"
-            android:gravity="center"
             android:textColor="@color/color_333"
             android:textColorHint="@color/color_999"
             android:textSize="@dimen/sp_13"
@@ -50,10 +51,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:msv_animateViewChanges="true"
         app:msv_emptyView="@layout/empty_search"
         app:msv_errorView="@layout/error_view"
         app:msv_loadingView="@layout/loading_view"
-        app:msv_animateViewChanges="true"
         >
 
         <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView

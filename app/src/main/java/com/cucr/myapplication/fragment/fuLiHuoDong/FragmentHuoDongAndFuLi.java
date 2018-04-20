@@ -19,6 +19,7 @@ import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.ToastUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -118,7 +119,7 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     //点击活动
     @OnClick(R.id.tv_title2)
     public void clickHuoDong(View view) {
-        if (iv_sjx.getVisibility() == View.VISIBLE && CommonUtils.isQiYe()) {
+        if (iv_sjx.getVisibility() == View.VISIBLE) {
             showPopwindow(view);
         }
         isClickFuLi(false);
@@ -127,7 +128,7 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     //点击sjx
     @OnClick(R.id.iv_sjx)
     public void clickSjx(View view) {
-        if (iv_sjx.getVisibility() == View.VISIBLE && CommonUtils.isQiYe()) {
+        if (iv_sjx.getVisibility() == View.VISIBLE) {
             showPopwindow(view);
         }
         isClickFuLi(false);
@@ -171,7 +172,11 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
         popView.findViewById(R.id.ll_up_pop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, FaBuHuoDongActivity.class));
+                if (CommonUtils.isQiYe()) {
+                    startActivity(new Intent(mContext, FaBuHuoDongActivity.class));
+                } else {
+                    ToastUtils.showToast("只有企业用户才能发布哦~ 赶快去认证吧");
+                }
                 genderPopWindow.dismiss();
             }
         });
@@ -193,9 +198,7 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
             vp_fuli_huodong.setCurrentItem(1);
             tv_title1.setTextColor(getResources().getColor(R.color.zongse));
             tv_title2.setTextColor(getResources().getColor(R.color.xtred));
-            if (CommonUtils.isQiYe()) {
-                iv_sjx.setVisibility(View.VISIBLE);
-            }
+            iv_sjx.setVisibility(View.VISIBLE);
         }
     }
 }

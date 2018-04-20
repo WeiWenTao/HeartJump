@@ -154,7 +154,6 @@ public class QueryFtInfos implements Serializable {
             this.newTransCount = newTransCount;
         }
 
-
         public int getCreateUserRoleId() {
             return createUserRoleId;
         }

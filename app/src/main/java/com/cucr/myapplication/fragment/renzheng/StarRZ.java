@@ -76,51 +76,51 @@ public class StarRZ extends Fragment {
 
     //popWindow背景
     @ViewInject(R.id.fl_pop_bg)
-    FrameLayout fl_pop_bg;
+    private FrameLayout fl_pop_bg;
 
     //正面
     @ViewInject(R.id.img_star_positive)
-    ImageView iv_add_pic_positive;
+    private ImageView iv_add_pic_positive;
 
     //提交
     @ViewInject(R.id.tv_commit_check)
-    TextView tv_commit_check;
+    private TextView tv_commit_check;
 
     //反面
     @ViewInject(R.id.img_star_nagetive)
-    ImageView iv_add_pic_nagetive;
+    private ImageView iv_add_pic_nagetive;
 
     //姓名
     @ViewInject(R.id.et_name)
-    EditText et_name;
+    private EditText et_name;
 
     //失败原因
     @ViewInject(R.id.tv_fail_info)
-    TextView tv_fail_info;
+    private TextView tv_fail_info;
 
     //失败标题
     @ViewInject(R.id.tv_fail_title)
-    TextView tv_fail_title;
+    private TextView tv_fail_title;
 
     //联系方式
     @ViewInject(R.id.et_contact)
-    EditText et_contact;
+    private EditText et_contact;
 
     //所属公司
     @ViewInject(R.id.et_belone)
-    EditText et_belone;
+    private EditText et_belone;
 
     //明星商演费用
     @ViewInject(R.id.et_star_price)
-    EditText et_star_price;
+    private EditText et_star_price;
 
     //身份证反面
     @ViewInject(R.id.rl_star_shenfenzheng_negative)
-    RelativeLayout rl_star_shenfenzheng_negative;
+    private RelativeLayout rl_star_shenfenzheng_negative;
 
     //身份证正面
     @ViewInject(R.id.rl_star_shenfenzheng_positive)
-    RelativeLayout rl_star_shenfenzheng_positive;
+    private RelativeLayout rl_star_shenfenzheng_positive;
 
     private PopupWindow popWindow;
     private LayoutInflater layoutInflater;

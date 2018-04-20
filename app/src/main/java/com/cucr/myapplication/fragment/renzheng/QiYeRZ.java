@@ -237,6 +237,8 @@ public class QiYeRZ extends Fragment {
         instance.displayImage(HttpContans.IMAGE_HOST + pic2, img_qiye_nagetive, MyApplication.getImageLoaderOptions());
         instance.displayImage(HttpContans.IMAGE_HOST + pic3, img_qieye_zhizhao, MyApplication.getImageLoaderOptions());
 
+        setView(false, "审核中");
+
         switch (result) {
             case 1:
                 //"1"代表用户审核未通过 且未重新选择上传照片

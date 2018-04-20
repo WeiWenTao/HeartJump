@@ -12,5 +12,7 @@ public interface StarListInfo {
 
     void queryZiDuan(String actionCode, OnCommonListener onCommonListener);
 
-    void querStarByName( int row, int page, String code, RequersCallBackListener onCommonListener);
+    void querStarByName(int row, int page, String code, RequersCallBackListener onCommonListener);
+
+    void upLoadStar(String name, RequersCallBackListener callBackListener);
 }

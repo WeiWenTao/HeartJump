@@ -100,7 +100,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
         String telNumber = et_tel.getText().toString();
         String yzm = et_yzm.getText().toString();
 
-        if (!telNumber.matches(Constans.PHONE_REGEX)) {
+        if (telNumber.length() != 11) {
             ToastUtils.showToast("手机号码有误哦");
             return;
         }
@@ -194,8 +194,7 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
                     loadSuccess.getToken(), loadSuccess.getCompanyName(), loadSuccess.getCompanyConcat(), "");
             //先去数据库查询 手机号 唯一标识
             LoadUserInfos unique = mUserDao.queryBuilder()
-                    .where(LoadUserInfosDao.Properties.Phone.ge(loadSuccess.getPhone())).build().unique();
-
+                    .where(LoadUserInfosDao.Properties.UserId.eq(loadSuccess.getUserId())).build().unique();
             //如果没有查到
             if (unique == null) {
                 mUserDao.insert(loadUserInfos);

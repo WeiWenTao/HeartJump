@@ -29,7 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 public class QueryStarListCore implements StarListInfo {
 
     private RequersCallBackListener requestListener;
-    private OnCommonListener onCommonListener;
     private OnCommonListener queryZdListener;
 
     /**
@@ -102,14 +101,29 @@ public class QueryStarListCore implements StarListInfo {
         mQueue.add(Constans.TYPE_THREE, request, responseListener);
     }
 
+    @Override
+    public void upLoadStar(String name, RequersCallBackListener callBackListener) {
+        this.requestListener = callBackListener;
+
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_ADD_STAR, RequestMethod.POST);
+        // 添加普通参数。
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+        request.add("idea", name);
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+
+        mQueue.add(Constans.TYPE_FORE, request, responseListener);
+    }
+
 
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onStart(int what) {
-            if (what == Constans.TYPE_THREE) {
-                requestListener.onRequestStar(what);
-            } else if (what == Constans.TYPE_ONE) {
-                requestListener.onRequestStar(what);
+            switch (what) {
+                case Constans.TYPE_ONE:
+                case Constans.TYPE_THREE:
+                case Constans.TYPE_FORE:
+                    requestListener.onRequestStar(what);
+                    break;
             }
         }
 
@@ -128,20 +142,24 @@ public class QueryStarListCore implements StarListInfo {
                 case Constans.TYPE_THREE:
                     requestListener.onRequestSuccess(what, response);
                     break;
+
+                case Constans.TYPE_FORE:
+                    requestListener.onRequestSuccess(what, response);
+                    break;
             }
         }
 
         @Override
         public void onFailed(int what, Response response) {
             HttpExceptionUtil.showTsByException(response, MyApplication.getInstance());
-            if (what == Constans.TYPE_ONE || what == Constans.TYPE_THREE) {
+            if (what == Constans.TYPE_ONE || what == Constans.TYPE_THREE || what == Constans.TYPE_FORE) {
                 requestListener.onRequestError(what, response);
             }
         }
 
         @Override
         public void onFinish(int what) {
-            if (what == Constans.TYPE_THREE || what == Constans.TYPE_ONE) {
+            if (what == Constans.TYPE_THREE || what == Constans.TYPE_ONE || what == Constans.TYPE_FORE) {
                 requestListener.onRequestFinish(what);
             }
             EventBus.getDefault().post(new EventRequestFinish(HttpContans.ADDRESS_QUERY_STAR));

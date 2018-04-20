@@ -418,21 +418,23 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     //点赞时
     @OnClick(R.id.ll_goods)
     public void zan(View view) {
+        if (mRowsBean.isIsGiveUp()) {
+            giveNum = mRowsBean.getGiveUpCount() - 1;
+            mRowsBean.setIsGiveUp(false);
+            mRowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = mRowsBean.getGiveUpCount() + 1;
+            mRowsBean.setIsGiveUp(true);
+            mRowsBean.setGiveUpCount(giveNum);
+        }
+        upDataInfo();
+
         queryCore.ftGoods(mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (mRowsBean.isIsGiveUp()) {
-                        giveNum = mRowsBean.getGiveUpCount() - 1;
-                        mRowsBean.setIsGiveUp(false);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = mRowsBean.getGiveUpCount() + 1;
-                        mRowsBean.setIsGiveUp(true);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    }
-                    upDataInfo();
+
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }

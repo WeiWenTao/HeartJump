@@ -14,19 +14,20 @@ public class HttpContans {
     public static final String HTTP_EN = "http://210.14.157.131:8149/clker_inter/";
 
     public static final String IMAGE_HOST = "";
+
     public static final String LOGO_ADDRESS = HttpContans.HOST + "/static/512.png";
 
     //线上环境
     public static final String HOST = "http://www.cucrxt.com";
 
     //测试环境
-//    public static final String HOST = "http://192.168.1.147:8080";
+//    public static final String HOST = "http://192.168.1.147:8081";
 
     //splish
     public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";
 
     //服务协议
-    public static final String HTTP_YHXY = HOST + "http://101.132.96.199/fwxy.html";
+    public static final String HTTP_YHXY = "http://101.132.96.199/fwxy.html";
 
     //注册
     public static final String ADDRESS_REGIST = HOST + "/interface/user/regist";
@@ -87,6 +88,9 @@ public class HttpContans {
 
     //明星查询
     public static final String ADDRESS_QUERY_STAR = HOST + "/interface/mobileStartAction/query";
+
+    //明星添加
+    public static final String ADDRESS_ADD_STAR = HOST + "/interface/user/addStartIdea";
 
     //关注
     public static final String ADDRESS_TO_FOCUS = HOST + "/interface/mobileStartAction/follow";
@@ -318,4 +322,7 @@ public class HttpContans {
 
     //查询消息信息
     public static final String ADDRESS_MSGINFO = HOST + "/interface/mobileMessageQueryAction/queryMessage";
+
+    //首页新闻分类
+    public static final String ADDRESS_HOME_NEWS = HOST + "/interface/mobileContentAction/queryInfoSX";
 }

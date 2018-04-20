@@ -157,7 +157,7 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         String psw = mEt_psw.getText().toString();
 
         //账号有误
-        if (!accunt.matches(Constans.PHONE_REGEX)) {
+        if (accunt.length() != 11) {
             ToastUtils.showToast("请输入正确的手机号哦");
             return;
         }
@@ -172,7 +172,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
 
         mLoginCore.login(mUserName, mPassWord, this);
     }
-
 
     @OnClick(R.id.iv_cancle)
     public void click(View view) {
@@ -202,7 +201,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
             UMShareAPI.get(this).release();
         }
     }
-
 
     @OnClick(R.id.iv_qq_load)
     public void qqLoad(View view) {

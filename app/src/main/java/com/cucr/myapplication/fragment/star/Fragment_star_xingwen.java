@@ -121,7 +121,6 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
     public void onEvent(EventDaBangStarPagerId event) {
         if (starId != event.getFirstId() && event.getFirstId() != 0) {
             starId = event.getFirstId();
-
             onRefresh();
         }
     }

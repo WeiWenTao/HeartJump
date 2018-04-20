@@ -187,7 +187,6 @@ public class FragmentFans extends BaseFragment {
 
     //初始化明星封面数据
     private void initDatas(int starId) {
-        MyLogger.jLog().i("starId" + starId);
         mStarCore.queryStar(type, page, rows, starId, null, null, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
@@ -249,12 +248,10 @@ public class FragmentFans extends BaseFragment {
         mCore.queryMyFocusStars(-1, 1, 100, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
-                MyLogger.jLog().i("focusInfo:" + response.get());
                 FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
                     iv_icon_unfold.setVisibility(View.VISIBLE);
                     rlv_click.setVisibility(View.VISIBLE);
-
                     //添加明星自己为第一个
                     mRows = Info.getRows();
                     if (Constans.STATUS_STAR == ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1))) {
@@ -293,7 +290,6 @@ public class FragmentFans extends BaseFragment {
         });
     }
 
-
     private void initRlv() {
         drawer_rcv.setLayoutManager(new GridLayoutManager(mContext, 4));
         mAdapter = new StarListAdapter(mContext);
@@ -317,7 +313,6 @@ public class FragmentFans extends BaseFragment {
         });
         drawer_rcv.setAdapter(mAdapter);
     }
-
 
     @Override
     protected boolean needHeader() {
@@ -383,6 +378,7 @@ public class FragmentFans extends BaseFragment {
                 return indicator;
             }
         });
+
         magicIndicator.setNavigator(commonNavigator7);
         ViewPagerHelper.bind(magicIndicator, mViewPager);
 
@@ -416,7 +412,6 @@ public class FragmentFans extends BaseFragment {
         iv_gift.setVisibility(View.VISIBLE);
         MyLogger.jLog().i(event);
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + event.getGiftPic(), iv_gift);
-
 
         switch (event.getGiftId()) {
 
@@ -505,7 +500,6 @@ public class FragmentFans extends BaseFragment {
                 break;
         }
     }
-
 
     //显示PopupWindow
     @OnClick(R.id.ll_show_stars)

@@ -41,6 +41,9 @@ public class FtCatgoryAadapter extends BaseAdapter {
     }
 
     public void addData(List<FtCommentInfo.RowsBean> rows) {
+        if (this.rows == null) {
+            return;
+        }
         this.rows.addAll(rows);
         notifyDataSetChanged();
     }

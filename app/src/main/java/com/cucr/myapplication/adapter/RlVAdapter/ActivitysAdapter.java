@@ -1,11 +1,9 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,10 +50,10 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
 
     @Override
     public void onBindViewHolder(ActivesHolder holder, final int position) {
-        WindowManager wm = (WindowManager) MyApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
-        ViewGroup.LayoutParams layoutParams = holder.item_active.getLayoutParams();
-        layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.0f);
-        holder.item_active.setLayoutParams(layoutParams);
+//        WindowManager wm = (WindowManager) MyApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
+//        ViewGroup.LayoutParams layoutParams = holder.iv_pic.getLayoutParams();
+//        layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.0f);
+//        holder.item_active.setLayoutParams(layoutParams);
 
         final QiYeHuoDongInfo.RowsBean rowsBean = rows.get(position);
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getPicurl(), holder.iv_pic, MyApplication.getImageLoaderOptions());

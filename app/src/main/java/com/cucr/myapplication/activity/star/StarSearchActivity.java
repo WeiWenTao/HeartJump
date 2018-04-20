@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.RlVAdapter.SearchStarAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
@@ -30,6 +31,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpaceItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogCanaleFocusStyle;
+import com.cucr.myapplication.widget.dialog.DialogSearchEmpty;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
@@ -42,7 +44,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.zackratos.ultimatebar.UltimateBar;
 
-public class StarSearchActivity extends Activity implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener, SearchStarAdapter.OnItemClick, DialogCanaleFocusStyle.OnClickBtListener {
+public class StarSearchActivity extends Activity implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener, SearchStarAdapter.OnItemClick, DialogCanaleFocusStyle.OnClickBtListener, DialogSearchEmpty.ClickListener {
 
     @ViewInject(R.id.rlv_stars)
     private SwipeRecyclerView rlv_stars;
@@ -63,6 +65,7 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     private Gson mGson;
     private SearchStarAdapter mAdapter;
     private FocusCore mFCore;
+    private DialogSearchEmpty mDialogSearchEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,8 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
         mGson = MyApplication.getGson();
         mDialogCanaleFocusStyle = new DialogCanaleFocusStyle(this, R.style.ShowAddressStyleTheme);
         mDialogCanaleFocusStyle.setOnClickBtListener(this);
+        mDialogSearchEmpty = new DialogSearchEmpty(this, R.style.BirthdayStyleTheme);
+        mDialogSearchEmpty.setClickListener(this);
     }
 
     public void watchSearch() {
@@ -137,6 +142,8 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
             if (isRefresh) {
                 if (starList.getTotal() == 0) {
                     multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    mDialogSearchEmpty.show();
+                    mDialogSearchEmpty.setName(mCode);
                 } else {
                     mAdapter.setData(starList.getRows());
                     multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
@@ -229,20 +236,21 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
 
     @Override
     public void clickConfirm() {
+        ToastUtils.showToast("已取消关注！");
+        rowsBean.setIsfollow(0);
+        EventBus.getDefault().post(new EventNotifyStarInfo());
+        EventBus.getDefault().post(new EventOnClickCancleFocus());
+        mAdapter.notifyDataSetChanged();
+        mDialogCanaleFocusStyle.dismiss();
+
         mFCore.cancaleFocus(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                 if (reBackMsg.isSuccess()) {
-                    ToastUtils.showToast("已取消关注！");
-                    rowsBean.setIsfollow(0);
-                    EventBus.getDefault().post(new EventNotifyStarInfo());
-                    EventBus.getDefault().post(new EventOnClickCancleFocus());
-                    mAdapter.notifyDataSetChanged();
                 } else {
                     ToastUtils.showToast(reBackMsg.getMsg());
                 }
-                mDialogCanaleFocusStyle.dismiss();
             }
         });
     }
@@ -250,5 +258,35 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     @Override
     public void clickCancle() {
         mDialogCanaleFocusStyle.dismiss();
+    }
+
+    @Override
+    public void onClickConfirm(String who) {
+        mCore.upLoadStar(who, new RequersCallBackListener() {
+            @Override
+            public void onRequestSuccess(int what, Response<String> response) {
+                CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (msg.isSuccess()) {
+                    ToastUtils.showToast("我们已经收到您的推荐啦");
+                } else {
+                    ToastUtils.showToast(msg.getMsg());
+                }
+            }
+
+            @Override
+            public void onRequestStar(int what) {
+
+            }
+
+            @Override
+            public void onRequestError(int what, Response<String> response) {
+
+            }
+
+            @Override
+            public void onRequestFinish(int what) {
+
+            }
+        });
     }
 }

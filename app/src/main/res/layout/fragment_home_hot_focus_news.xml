@@ -1,47 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:fitsSystemWindows="true"
-              android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
     >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_hot_focus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        ></android.support.v4.view.ViewPager>
+
+    <View
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:background="#99333333"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_25"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="资讯分类"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/drawer_rcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@color/white"
+            android:overScrollMode="never"
+            />
+    </LinearLayout>
+
     <RelativeLayout
-        android:fitsSystemWindows="true"
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/zise"
+        android:fitsSystemWindows="true"
         >
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/xtred"
-            app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/zongse"
-            ></android.support.design.widget.TabLayout>
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <LinearLayout
+                android:id="@+id/ll_title1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/tv_title1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:text="热门"
+                    android:textColor="@color/xtred"
+                    android:textSize="@dimen/sp_18"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_sjx"
+                    android:layout_width="12dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:src="@drawable/sjx"
+                    />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_title2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="关注"
+                android:textColor="@color/zongse"
+                android:textSize="@dimen/sp_18"
+                />
+
+
+        </LinearLayout>
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/iv_search"
             android:layout_width="41dp"
             android:layout_height="35dp"
-            android:paddingRight="@dimen/dp_20"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="14dp"
             android:layout_marginLeft="@dimen/dp_10"
+            android:paddingBottom="14dp"
+            android:paddingRight="@dimen/dp_20"
             android:src="@drawable/icon_search"
+            android:visibility="gone"
             />
 
         <ImageView
@@ -50,19 +133,13 @@
             android:layout_height="44dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:paddingBottom="13dp"
             android:layout_marginRight="@dimen/dp_10"
+            android:paddingBottom="13dp"
             android:paddingLeft="18dp"
             android:paddingTop="10dp"
             android:src="@drawable/icon_msg"
             />
+
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_hot_focus"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></android.support.v4.view.ViewPager>
-
-
-</LinearLayout>
+</RelativeLayout>

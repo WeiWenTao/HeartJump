@@ -12,15 +12,21 @@ import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.HomeXingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.Home.HomeBannerInfo;
+import com.cucr.myapplication.bean.eventBus.EventHomeNewsCatgory;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
-import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.home.HomeNewsCore;
 import com.cucr.myapplication.core.home.QueryBannerCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,24 +41,30 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
     private SwipeRecyclerView mRlv_home;
     private QueryBannerCore mCore;
     private List<String> pics;
-    private QueryFtInfoCore mDataCore;
+    private HomeNewsCore mDataCore;
     private HomeXingWenAdapter mAdapter;
     private QueryFtInfos mQueryFtInfos;
     private int page;
     private int rows;
     private HomeBannerInfo mHomeBannerInfo;
+    private int type;
 
     @Override
     protected void initView(View childView) {
+        EventBus.getDefault().register(this);
         page = 1;
         rows = 20;
         mCore = new QueryBannerCore(getActivity());
-        mDataCore = new QueryFtInfoCore();
+        mDataCore = new HomeNewsCore();
         initRlv(childView);
         queryBanner();
-//        queryFtInfo();
-
         onRefresh();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -109,6 +121,16 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
 //
 //    }
 
+    //点击分类之后
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEvent(EventHomeNewsCatgory event) {
+        if (type == event.getType()) {
+            return;
+        }
+        type = event.getType();
+        onRefresh();
+    }
+
     private void queryBanner() {
         pics = new ArrayList<>();
         mCore.queryBanner(new OnCommonListener() {
@@ -119,11 +141,10 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
                     for (HomeBannerInfo.ObjBean objBean : mHomeBannerInfo.getObj()) {
                         pics.add(objBean.getFileUrl());
                     }
-                   mAdapter.setBanner(pics);
+                    mAdapter.setBanner(pics);
                 } else {
                     ToastUtils.showToast(mHomeBannerInfo.getMsg());
                 }
-
             }
         });
     }
@@ -164,10 +185,10 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
         if (!mRlv_home.getSwipeRefreshLayout().isRefreshing()) {
             mRlv_home.getSwipeRefreshLayout().setRefreshing(true);
         }
-
-        mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new RequersCallBackListener() {
+        MyLogger.jLog().i("EventHomeNewsCatgory:onRefresh = " + type);
+        mDataCore.queryHomeNews(rows, page, type, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     mAdapter.setData(mQueryFtInfos);
@@ -203,9 +224,9 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
     @Override
     public void onLoadMore() {
         page++;
-        mDataCore.queryFtInfo(-1, 0, -1, false, page, rows, new RequersCallBackListener() {
+        mDataCore.queryHomeNews(rows, page, type, new RequersCallBackListener() {
             @Override
-            public void onRequestSuccess(int what,Response<String> response) {
+            public void onRequestSuccess(int what, Response<String> response) {
                 mQueryFtInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
                 if (mQueryFtInfos.isSuccess()) {
                     if (mQueryFtInfos.getRows().size() != 0) {
@@ -244,7 +265,7 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
     public void onBannerClick(int position) {
         HomeBannerInfo.ObjBean objBean = mHomeBannerInfo.getObj().get(position);
         Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
-        intent.putExtra("url",objBean.getLocationUrl());
+        intent.putExtra("url", objBean.getLocationUrl());
         startActivity(intent);
     }
 }

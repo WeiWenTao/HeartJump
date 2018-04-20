@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="40dp"
+    android:layout_marginTop="@dimen/dp_5"
+    android:layout_marginBottom="@dimen/dp_5"
+    >
+
+    <TextView
+        android:id="@+id/tv_catgory"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:background="@drawable/corner_r_6_nor_eb"
+        android:gravity="center"
+        android:text="测试"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/sp_18"
+        />
+
+</LinearLayout>

@@ -234,7 +234,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         needShowLoading = true;
         page = 1;
         rlv_fentuan.onLoadingMore();
-        MyLogger.jLog().i("EventStarId：" + starId);
         if (queryCore == null) {
             queryCore = new QueryFtInfoCore();
         }
@@ -244,7 +243,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     //查询第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
-        EventBus.getDefault().removeStickyEvent(event);
+//        EventBus.getDefault().removeStickyEvent(event);
         starId = event.getFirstId();
         MyLogger.jLog().i("EventStarId：" + starId);
         if (queryCore == null) {
@@ -293,7 +292,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         mFam.attachToRecyclerView(rlv_fentuan.getRecyclerView());
         action_a.setOnClickListener(this);
         action_b.setOnClickListener(this);
-
     }
 
     @Override
