@@ -79,7 +79,7 @@ public class RecommendStarListFragemnt extends Fragment implements StarListForQi
     }
 
     private void initView() {
-        rows = 10;
+        rows = 20;
         mAdapter = new StarListForQiYeAdapter(getActivity());
         mAdapter.setOnItemClickListener(this);
         rlv_starlist.setLayoutManager(new GridLayoutManager(mContext, 2));

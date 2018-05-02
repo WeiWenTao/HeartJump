@@ -89,10 +89,12 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
         rlv_fuli.setOnLoadListener(this);
         activeAdapter.setOnItemListener(new FuLiAdapter.OnItemListener() {
             @Override
-            public void OnItemClick(View view, int activeId) {
+            public void OnItemClick(View view, int activeId, String title) {
                 //跳转到福利活动详情
                 mIntent.putExtra("url", HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FULI_ACTIVE_DETIAL
                         + "?activeId=" + activeId + "&userId=" + SpUtil.getParam(SpConstant.USER_ID, -1));
+                mIntent.putExtra("activeId", activeId);
+                mIntent.putExtra("activeTitle", title);
                 startActivity(mIntent);
             }
         });

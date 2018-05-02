@@ -29,6 +29,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -310,22 +311,32 @@ public class XingWenCommentActivity extends BaseActivity implements View.OnFocus
     }
 
     @Override
-    public void clickGoods(final FtCommentInfo.RowsBean rowsBean) {
+    public void clickGoods(final FtCommentInfo.RowsBean rowsBean, ShineButton sib) {
+
+        sib.init(this);
+        if (rowsBean.getIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (rowsBean.getIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
         mCommentCore.ftCommentGoods(rowsBean.getContentId(), rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.getIsGiveUp()) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsGiveUp(false);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsGiveUp(true);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }

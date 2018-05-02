@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     >
 
     <RelativeLayout
@@ -131,6 +132,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_marginRight="@dimen/dp_3"
+            android:background="@color/white"
             />
 
     </com.cucr.myapplication.widget.stateLayout.MultiStateView>

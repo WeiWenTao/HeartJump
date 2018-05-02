@@ -13,13 +13,21 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogErWeiMa;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PiaoWuActivity extends BaseActivity implements RequersCallBackListener, MyActivesAdapter.OnClickItem, SwipeRecyclerView.OnLoadListener {
 
     @ViewInject(R.id.rlv)
     private SwipeRecyclerView rlv;
+
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     private MyActivesAdapter mAdapter;
     private FuLiCore mCore;
@@ -50,9 +58,14 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
         mMyActives = mGson.fromJson(response.get(), MyActives.class);
         if (mMyActives.isSuccess()) {
             if (isRefresh) {
-                mAdapter.setData(mMyActives.getRows());
+                if (filter(mMyActives.getRows()).size() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    mAdapter.setData(filter(mMyActives.getRows()));
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
             } else {
-                mAdapter.addData(mMyActives.getRows());
+                mAdapter.addData(filter(mMyActives.getRows()));
             }
             if (mMyActives.getTotal() <= page * rows) {
                 rlv.onNoMore("没有更多了");
@@ -62,6 +75,16 @@ public class PiaoWuActivity extends BaseActivity implements RequersCallBackListe
         } else {
             ToastUtils.showToast(mMyActives.getErrorMsg());
         }
+    }
+
+    private List<MyActives.RowsBean> filter(List<MyActives.RowsBean> rows) {
+        List<MyActives.RowsBean> filterRoews = new ArrayList<>();
+        for (MyActives.RowsBean row : rows) {
+            if (row.getActive().isShowQRCode()) {
+                filterRoews.add(row);
+            }
+        }
+        return filterRoews;
     }
 
     @Override

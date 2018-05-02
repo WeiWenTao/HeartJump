@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/ll_type3"
               xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/white"
               android:orientation="vertical"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <LinearLayout
@@ -33,20 +33,20 @@
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal"
                 >
+
                 <TextView
                     android:id="@+id/tv_neckname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="胡歌"
                     android:textColor="@color/name_color"
                     android:textSize="@dimen/sp_16"
                     />
 
                 <ImageView
                     android:id="@+id/iv_tag"
-                    android:layout_marginLeft="@dimen/dp_6"
                     android:layout_width="20dp"
                     android:layout_height="22dp"
+                    android:layout_marginLeft="@dimen/dp_6"
                     android:src="@drawable/icon_starid"
                     />
             </LinearLayout>
@@ -63,7 +63,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1月27日 17：28 来自微博"
                     android:textColor="#929292"
                     android:textSize="@dimen/sp_12"
                     />
@@ -88,7 +87,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_5"
-                        android:text="6534"
                         android:textColor="#929292"
                         android:textSize="@dimen/sp_12"
                         />
@@ -108,7 +106,6 @@
         android:ellipsize="end"
         android:lineSpacingExtra="@dimen/dp_4"
         android:maxLines="5"
-        android:text="联凯尔国际传媒机构（C.U.CR）创始于2002年，通过10余年的发展，已经成为国内一线知名公关传媒机构之一，公司集公关传播、城市营销、媒体投资、文化创意四大业务模块于一体。现在北京和武汉设有南北两大运营中心，同时上海、广州（香港）、成都等地的区域公司正在筹备中，预计在未来5年内形成全国市场五大区域精细化管理的规模。创联凯尔一直密切关注市场动向、紧随客户，凭籍公关行业领跑者的历史使命，在专业的运作系统保障下，为广大客户提供策略性、创造性、整合性和可实施性的全方位一体化的公关解决方案，矢志为政府、非政府组织、国内外知名企业提供一体化的一站式精准公关传播服务。企业独创的MMS、CMS、QMS、SMS、HMS、FMS六大运营管理系统现已成为企业持续经营的有力保障，能够高效地为客户提供360°超乎想象的即时在线服务。"
         android:textColor="@color/color_333"
         android:textSize="@dimen/sp_15"
         app:emojiSize="@dimen/sp_15"
@@ -120,10 +117,10 @@
         >
 
         <RelativeLayout
-            android:layout_marginLeft="@dimen/dp_20"
             android:id="@+id/rl_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
             >
 
             <ImageView
@@ -157,22 +154,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_20"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginRight="@dimen/dp_20"
             >
 
-            <ImageView
+            <com.cucr.myapplication.widget.ftGiveUp.ShineButton
                 android:id="@+id/iv_favorite3"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="33dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/tv_favorite"
-                android:paddingBottom="@dimen/dp_10"
-                android:paddingLeft="@dimen/dp_10"
-                android:paddingRight="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_10"
-                android:src="@drawable/icon_good_nor"
+                android:layout_width="15.5dp"
+                android:layout_height="13.5dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/dp_5"
+                app:allow_random_color="false"
+                app:btn_color="#999"
+                app:btn_fill_color="@color/good"
+                app:siShape="@drawable/icon_good_under"
+                app:small_shine_color="#ffb436"
                 />
 
             <TextView
@@ -182,7 +179,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_10"
-                android:text="1249"
                 android:textColor="#929292"
                 android:textSize="@dimen/sp_13"
                 />
@@ -195,6 +191,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             >
+
             <ImageView
                 android:id="@+id/iv_session3"
                 android:layout_width="@dimen/dp_30"
@@ -214,7 +211,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="711"
                 android:textColor="#929292"
                 android:textSize="@dimen/sp_13"
                 />
@@ -253,7 +249,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_6"
-            android:text="10人打赏了道具"
             android:textColor="#5d1111"
             android:textSize="@dimen/sp_13"
             />

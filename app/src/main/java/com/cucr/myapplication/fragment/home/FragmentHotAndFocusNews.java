@@ -82,7 +82,6 @@ public class FragmentHotAndFocusNews extends BaseFragment implements HomeNewsCat
         ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
         mGson = MyApplication.getGson();
 
-        initTableLayout();
         initView();
         initRlv();
     }
@@ -137,13 +136,6 @@ public class FragmentHotAndFocusNews extends BaseFragment implements HomeNewsCat
             }
         });
     }
-
-
-    //初始化标签
-    private void initTableLayout() {
-
-    }
-
 
     @OnClick(R.id.iv_search)
     public void toSearch(View view) {

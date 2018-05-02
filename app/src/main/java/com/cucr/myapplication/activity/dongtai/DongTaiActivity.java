@@ -42,6 +42,7 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
@@ -189,7 +190,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         rlv_dongtai.setOnLoadListener(this);
         LinearLayoutManager layout = new LinearLayoutManager(MyApplication.getInstance());
         rlv_dongtai.getRecyclerView().setLayoutManager(layout);
-        mAdapter = new FtAdapter();
+        mAdapter = new FtAdapter(this);
         rlv_dongtai.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
         onRefresh();
@@ -296,7 +297,15 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
     }
 
     @Override
-    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
+    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean, ShineButton sib) {
+
+        if (rowsBean.isIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
         if (rowsBean.isIsGiveUp()) {
             giveNum = rowsBean.getGiveUpCount() - 1;
             rowsBean.setIsGiveUp(false);
@@ -315,7 +324,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
                 if (commonRebackMsg.isSuccess()) {
 
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });
@@ -380,7 +389,7 @@ public class DongTaiActivity extends BaseActivity implements FtAdapter.OnClickBt
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
-            if (mRowsBean == null){
+            if (mRowsBean == null) {
                 return;
             }
             final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);

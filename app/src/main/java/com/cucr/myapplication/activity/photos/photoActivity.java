@@ -23,6 +23,8 @@ import com.cucr.myapplication.adapter.PagerAdapter.HomePhotoPagerAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
@@ -110,6 +112,8 @@ public class PhotoActivity extends BaseActivity implements ViewPager.OnPageChang
     private TranslateAnimation mFootHide;
     private boolean canStarAni;//播放完成才能开始新的动画
     private DialogShareStyle mDialog;
+    private DialogShareStyle mShareDialog;
+
 
     @Override
     protected void initChild() {
@@ -141,6 +145,10 @@ public class PhotoActivity extends BaseActivity implements ViewPager.OnPageChang
     }
 
     private void initDialog() {
+        mShareDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
+        Window window1 = mShareDialog.getWindow();
+        window1.setGravity(Gravity.BOTTOM);
+        window1.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
 
         mDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
         Window window = mDialog.getWindow();
@@ -172,6 +180,11 @@ public class PhotoActivity extends BaseActivity implements ViewPager.OnPageChang
         emojiPopup.toggle();
     }
 
+    //点击分享
+    @OnClick(R.id.iv_news_share)
+    public void clickShare(View view) {
+        mShareDialog.setData(new ShareEntity("追爱豆,领红包,尽在心跳互娱", photos.getTitle(), HttpContans.ADDRESS_NEWS_SHARE + photos.getId(), ""));
+    }
 
     private void setUpEmojiPopup() {
         emojiPopup = EmojiPopup.Builder.fromRootView(rootview)

@@ -43,6 +43,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
@@ -192,7 +193,7 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
         rlv_dongtai.setOnLoadListener(this);
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_dongtai.getRecyclerView().setLayoutManager(layout);
-        mAdapter = new FtAdapter();
+        mAdapter = new FtAdapter(getActivity());
         rlv_dongtai.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
         onRefresh();
@@ -296,7 +297,14 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
     }
 
     @Override
-    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
+    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean, ShineButton sib) {
+        if (rowsBean.isIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
         if (rowsBean.isIsGiveUp()) {
             giveNum = rowsBean.getGiveUpCount() - 1;
             rowsBean.setIsGiveUp(false);
@@ -312,9 +320,8 @@ public class DongTaiFragment extends Fragment implements SwipeRecyclerView.OnLoa
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });

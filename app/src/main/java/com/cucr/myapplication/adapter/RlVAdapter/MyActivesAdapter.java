@@ -46,10 +46,6 @@ public class MyActivesAdapter extends RecyclerView.Adapter<MyActivesAdapter.MyHo
     @Override
     public void onBindViewHolder(MyHoder holder, int position) {
         final MyActives.RowsBean rowsBean = rows.get(position);
-        //如果不需要二维码不显示
-        if (!rowsBean.getActive().isCansignUp()) {
-            return;
-        }
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getActive().getPicUrl(), holder.iv_pic, MyApplication.getImageLoaderOptions());
         holder.tv_time.setText("有效期至" + rowsBean.getActive().getEndTime().substring(0, 10));
         holder.item.setOnClickListener(new View.OnClickListener() {

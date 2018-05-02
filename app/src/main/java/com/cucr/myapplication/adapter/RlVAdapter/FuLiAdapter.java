@@ -86,7 +86,7 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     if (onItemListener != null) {
-                        onItemListener.OnItemClick(v, bean.getId());
+                        onItemListener.OnItemClick(v, bean.getId(), bean.getActiveName());
                     }
                 }
             });
@@ -163,7 +163,7 @@ public class FuLiAdapter extends RecyclerView.Adapter {
 
 
     public interface OnItemListener {
-        void OnItemClick(View view, int activeId);
+        void OnItemClick(View view, int activeId, String title);
     }
 
     public void setOnItemListener(OnItemListener onItemListener) {

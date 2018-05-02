@@ -177,6 +177,7 @@
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
+-keep class com.umeng.commonsdk.** {*;}
 #-----------------------------------------Grifferplay--------------------------------
 -keepclassmembers class fqcn.of.javascript.interface.for.webview { public *;}
 #-----------------------------------------evebtBus--------------------------------

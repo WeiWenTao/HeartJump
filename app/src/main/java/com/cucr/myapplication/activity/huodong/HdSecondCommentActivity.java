@@ -11,21 +11,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtAllCommentAadapter;
+import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
+import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.listener.OnCommonListener;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
-import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
-import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -70,7 +71,7 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
 
     //点赞
     @ViewInject(R.id.iv_zan)
-    ImageView iv_zan;
+    ShineButton iv_zan;
 
     //表情和发送
     @ViewInject(R.id.ll_emoji_send)
@@ -125,7 +126,7 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
         ref.setOnRefreshListener(this);
         ref.setOnLoadListener(this);
-        upDataInfo();
+        upDataInfo(false);
         setUpEmojiPopup();
     }
 
@@ -163,34 +164,56 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
         return R.layout.activity_ft_second_comment;
     }
 
-    private void upDataInfo() {
+    private void upDataInfo(boolean ani) {
         tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
-        iv_zan.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        if (mRowsBean.getIsGiveUp()) {
+            iv_zan.setChecked(true, ani);
+        } else {
+            iv_zan.setChecked(false, false);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+
+        }
         tv_comment_count.setText(mRowsBean.getChildList().size() + "");
     }
+
+    @OnClick(R.id.iv_zan)
+    public void zan_(View view) {
+        clickGoods(view);
+    }
+
 
     //底部导航栏点赞
     @OnClick(R.id.ll_goods)
     public void clickGoods(View view) {
+        if (mRowsBean == null) {
+            return;
+        }
+
+        if (mRowsBean.getIsGiveUp()) {
+            iv_zan.setChecked(false, true);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            iv_zan.setChecked(true, true);
+        }
+
+        if (mRowsBean.getIsGiveUp()) {
+            giveNum = mRowsBean.getGiveUpCount() - 1;
+            mRowsBean.setIsGiveUp(false);
+            mRowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = mRowsBean.getGiveUpCount() + 1;
+            mRowsBean.setIsGiveUp(true);
+            mRowsBean.setGiveUpCount(giveNum);
+        }
+        upDataInfo(true);
+
         hdCore.activeCommentGood(mRowsBean.getContentId(), mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (mRowsBean.getIsGiveUp()) {
-                        giveNum = mRowsBean.getGiveUpCount() - 1;
-                        mRowsBean.setIsGiveUp(false);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = mRowsBean.getGiveUpCount() + 1;
-                        mRowsBean.setIsGiveUp(true);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    }
-//                      upDataInfo();
-                    tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
-                    iv_zan.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });
@@ -273,7 +296,7 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
                     emojiPopup.dismiss();
                     CommonUtils.hideKeyBorad(HdSecondCommentActivity.this, root_view, true);
                     et_comment.clearFocus();
-                    upDataInfo();
+                    upDataInfo(false);
                     mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
@@ -285,24 +308,34 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
 
     //点赞
     @Override
-    public void clickGoods(final FtCommentInfo.RowsBean childListBean) {
+    public void clickGoods(final FtCommentInfo.RowsBean childListBean, ShineButton sib) {
+
+        sib.init(this);
+        if (childListBean.getIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (childListBean.getIsGiveUp()) {
+            giveNum = childListBean.getGiveUpCount() - 1;
+            childListBean.setIsGiveUp(false);
+            childListBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = childListBean.getGiveUpCount() + 1;
+            childListBean.setIsGiveUp(true);
+            childListBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
         hdCore.activeCommentGood(childListBean.getContentId(), childListBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (childListBean.getIsGiveUp()) {
-                        giveNum = childListBean.getGiveUpCount() - 1;
-                        childListBean.setIsGiveUp(false);
-                        childListBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = childListBean.getGiveUpCount() + 1;
-                        childListBean.setIsGiveUp(true);
-                        childListBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(HdSecondCommentActivity.this, commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(HdSecondCommentActivity.this, commonRebackMsg.getMsg());
                 }
             }
         });

@@ -1,5 +1,11 @@
 package com.cucr.myapplication.utils;
 
+import android.os.Environment;
+
+import com.cucr.myapplication.app.MyApplication;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
@@ -7,13 +13,15 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * ZIP压缩与解压工具
+ *
  * @author tongxu_li
- * Copyright (c) 2015 Shanghai P&C Information Technology Co., Ltd.
+ *         Copyright (c) 2015 Shanghai P&C Information Technology Co., Ltd.
  */
 public class ZipUtil {
 
     /**
      * 解压功能
+     *
      * @param is
      * @param os
      * @throws Exception
@@ -39,7 +47,6 @@ public class ZipUtil {
     }
 
 
-
     //压缩文件
     public static void zip(InputStream is, OutputStream os) throws Exception {
         // 输入流读取目标文件
@@ -60,4 +67,31 @@ public class ZipUtil {
         is.close();
         gos.close();
     }
+
+    public static void initData() {
+        //实例化文件对象 判断文件是否存在
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
+        file.mkdir();
+        if (!file.exists() || file.listFiles() == null || file.listFiles().length == 0) {
+            //解压文件
+            initZip();
+        }
+    }
+
+
+    public static  void initZip() {
+        ThreadUtils.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InputStream is = MyApplication.getInstance().getAssets().open("citys.zip");
+                    FileOutputStream os = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase", "city.db"));
+                    ZipUtil.unzip(is, os);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 }

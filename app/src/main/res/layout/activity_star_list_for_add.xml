@@ -1,11 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_star_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/xtred"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="进入心跳"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        android:visibility="gone"
+        />
+
+    <View
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:background="#99333333"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_25"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="明星分类"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/drawer_rcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@color/white"
+            android:overScrollMode="never"
+            />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/head"
@@ -15,23 +77,57 @@
         android:fitsSystemWindows="true"
         >
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="@dimen/dp_55"
-            android:layout_marginRight="@dimen/dp_55"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/xtred"
-            app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/zongse"
-            ></android.support.design.widget.TabLayout>
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="170dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/tv_title1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:text="推荐"
+                android:textColor="@color/xtred"
+                android:textSize="@dimen/sp_18"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_title2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/tv_title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="全部"
+                    android:textColor="@color/zongse"
+                    android:textSize="@dimen/sp_18"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_sjx"
+                    android:layout_width="12dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:src="@drawable/sjx"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_base_back"
@@ -50,26 +146,6 @@
 
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_star_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        ></android.support.v4.view.ViewPager>
 
-
-    <TextView
-        android:id="@+id/tv_enter"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:background="@color/xtred"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="进入心跳"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_18"
-        android:visibility="gone"
-        />
-
-</LinearLayout>
+</RelativeLayout>
 

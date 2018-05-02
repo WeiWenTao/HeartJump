@@ -10,7 +10,6 @@ import android.support.multidex.MultiDex;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.cucr.myapplication.BuildConfig;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.throwableCatch.Cockroach;
@@ -22,13 +21,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.yanzhenjie.nohttp.InitializationConfig;
-import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
@@ -65,9 +65,15 @@ public class MyApplication extends Application {
         //融云
         RongIM.init(this);
 
-        //友盟
-        Config.DEBUG = false;
+        //友盟分享
+        Config.DEBUG = true;
         UMShareAPI.get(this);
+        //友盟统计
+        UMConfigure.init(this, null, null, UMConfigure.DEVICE_TYPE_PHONE, null);
+//        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);//统计
+        UMConfigure.setLogEnabled(true);
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+//        UMConfigure.setEncryptEnabled(true);
 //-----------------------------微信支付
         mMsgApi = WXAPIFactory.createWXAPI(this, "wxbe72c16183cf70da");
         mMsgApi.registerApp("wxbe72c16183cf70da");
@@ -83,8 +89,8 @@ public class MyApplication extends Application {
 
         _instance = this;
 
-        Logger.setDebug(BuildConfig.DEBUG);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
-        Logger.setTag("NoHttpDeBug");// 设置NoHttp打印Log的tag。
+//        Logger.setDebug(BuildConfig.DEBUG);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
+//        Logger.setTag("NoHttpDeBug");// 设置NoHttp打印Log的tag。
 
         // 一般情况下你只需要这样初始化：
 //        NoHttp.initialize(this);Headers.HEAD_VALUE_CONTENT_TYPE_OCTET_STREAM

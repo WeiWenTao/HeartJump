@@ -266,6 +266,7 @@ public class HomeHotFragment extends BaseFragment implements OnItemClickListener
         HomeBannerInfo.ObjBean objBean = mHomeBannerInfo.getObj().get(position);
         Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         intent.putExtra("url", objBean.getLocationUrl());
+        intent.putExtra("bannershare", objBean.getId());
         startActivity(intent);
     }
 }

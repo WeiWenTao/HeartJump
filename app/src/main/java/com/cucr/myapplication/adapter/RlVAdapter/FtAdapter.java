@@ -1,5 +1,6 @@
 package com.cucr.myapplication.adapter.RlVAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.picture.FlowImageLayout;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -39,8 +41,10 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private QueryFtInfos mQueryFtInfos;
     private List<QueryFtInfos.RowsBean> rows;
     private Intent mIntent;
+    private Activity activity;
 
-    public FtAdapter() {
+    public FtAdapter(Activity activity) {
+        this.activity = activity;
         this.context = MyApplication.getInstance();
         mLayoutInflater = LayoutInflater.from(context);
     }
@@ -91,6 +95,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return rowsBean.getType();
     }
 
+    private Integer giveNum;
+
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final QueryFtInfos.RowsBean rowsBean = rows.get(position);
@@ -106,13 +112,19 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp1_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp1_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
+            if (rowsBean.isIsGiveUp()) {
+                ((Tp1_Holder) holder).iv_favorite3.setChecked(true, false);
+            } else {
+                ((Tp1_Holder) holder).iv_favorite3.setChecked(false, false);
+                ((Tp1_Holder) holder).iv_favorite3.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_above));
+            }
+
             if (TextUtils.isEmpty(rowsBean.getContent())) {                 //文字内容
                 ((Tp1_Holder) holder).tv_content.setVisibility(View.GONE);
             } else {
                 ((Tp1_Holder) holder).tv_content.setText(rowsBean.getContent());
             }
 
-            ((Tp1_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
             ((Tp1_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             if (TextUtils.isEmpty(rowsBean.getContent())) {
                 ((Tp1_Holder) holder).tv_content.setVisibility(View.GONE);
@@ -157,10 +169,18 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp1_Holder) holder).ll_good.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-//                    ((Tp1_Holder) holder).iv_favorite3.setImageResource(R.drawable.icon_good_sel);
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickGoods(position, rowsBean);
+                        mOnClickBt.onClickGoods(position, rowsBean, ((Tp1_Holder) holder).iv_favorite3);
+                    }
+                }
+            });
+
+            //点赞爱心
+            ((Tp1_Holder) holder).iv_favorite3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickGoods(position, rowsBean, ((Tp1_Holder) holder).iv_favorite3);
                     }
                 }
             });
@@ -229,6 +249,14 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).tv_neckname.setText(rowsBean.getCreateUserName());    //昵称
             ((Tp2_Holder) holder).tv_forminfo.setText(rowsBean.getCreaetTime());    //时间和来源
             ((Tp2_Holder) holder).tv_read.setText(rowsBean.getReadCount() + "");    //阅读量
+
+            if (rowsBean.isIsGiveUp()) {
+                ((Tp2_Holder) holder).iv_favorite3.setChecked(true, false);
+            } else {
+                ((Tp2_Holder) holder).iv_favorite3.setChecked(false, false);
+                ((Tp2_Holder) holder).iv_favorite3.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_above));
+            }
+
             ((Tp2_Holder) holder).iv_tag.setVisibility(isStar ? View.VISIBLE : View.INVISIBLE);
             ((Tp2_Holder) holder).image_layout.loadImage(rowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
                 @Override
@@ -244,7 +272,6 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).image_layout.setSingleImageSize(640, 400);
 
             ((Tp2_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
-            ((Tp2_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
             ((Tp2_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             MyLogger.jLog().i("position:" + position + "ISGIVEUP_GETVIEW:" + rowsBean.isIsGiveUp());
             if (TextUtils.isEmpty(rowsBean.getContent())) {
@@ -295,7 +322,33 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickGoods(position, rowsBean);
+                        mOnClickBt.onClickGoods(position, rowsBean, ((Tp2_Holder) holder).iv_favorite3);
+                    }
+                }
+            });
+
+            ((Tp2_Holder) holder).iv_favorite3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+//                        if (rowsBean.isIsGiveUp()) {
+//                            ((Tp2_Holder) holder).iv_favorite3.setChecked(false, true);
+//                            ((Tp2_Holder) holder).iv_favorite3.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+//                        } else {
+//                            ((Tp2_Holder) holder).iv_favorite3.setChecked(true, true);
+//                        }
+//
+//                        rowsBean.setIsGiveUp(!rowsBean.isIsGiveUp());
+//
+//                        if (rowsBean.isIsGiveUp()) {
+//                            giveNum = rowsBean.getGiveUpCount() - 1;
+//                            rowsBean.setGiveUpCount(giveNum);
+//                        } else {
+//                            giveNum = rowsBean.getGiveUpCount() + 1;
+//                            rowsBean.setGiveUpCount(giveNum);
+//                        }
+//                        ((Tp2_Holder) holder).tv_favorite.setText(giveNum + "");
+                        mOnClickBt.onClickGoods(position, rowsBean, ((Tp2_Holder) holder).iv_favorite3);
                     }
                 }
             });
@@ -366,7 +419,12 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp3_Holder) holder).tv_content.setText(rowsBean.getContent());    //文字内容
             ((Tp3_Holder) holder).tv_session.setText(rowsBean.getCommentCount() + "");    //评论数量
             ((Tp3_Holder) holder).tv_favorite.setText(rowsBean.getGiveUpCount() + "");    //点赞数量
-            ((Tp3_Holder) holder).iv_favorite3.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+            if (rowsBean.isIsGiveUp()) {
+                ((Tp3_Holder) holder).iv_favorite3.setChecked(true, false);
+            } else {
+                ((Tp3_Holder) holder).iv_favorite3.setChecked(false, false);
+                ((Tp3_Holder) holder).iv_favorite3.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_above));
+            }
             ((Tp3_Holder) holder).tv_dashang.setText(rowsBean.getDssl() + "人打赏了道具");
             ((Tp3_Holder) holder).iv_tag.setVisibility(isStar ? View.VISIBLE : View.INVISIBLE);
             //点击分享
@@ -394,7 +452,17 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (mOnClickBt != null) {
-                        mOnClickBt.onClickGoods(position, rowsBean);
+                        mOnClickBt.onClickGoods(position, rowsBean, ((Tp3_Holder) holder).iv_favorite3);
+                    }
+                }
+            });
+
+            //点赞爱心
+            ((Tp3_Holder) holder).iv_favorite3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickBt != null) {
+                        mOnClickBt.onClickGoods(position, rowsBean, ((Tp3_Holder) holder).iv_favorite3);
                     }
                 }
             });
@@ -515,7 +583,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         //点赞
         @ViewInject(R.id.iv_favorite3)
-        private ImageView iv_favorite3;
+        private ShineButton iv_favorite3;
 
         //点赞数量
         @ViewInject(R.id.tv_favorite)
@@ -532,7 +600,6 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //点赞区域
         @ViewInject(R.id.ll_good)
         private LinearLayout ll_good;
-
 
         //打赏人数
         @ViewInject(R.id.tv_dashang)
@@ -553,6 +620,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public Tp1_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
+            iv_favorite3.init(activity);
         }
     }
 
@@ -596,7 +664,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         //点赞
         @ViewInject(R.id.iv_favorite3)
-        private ImageView iv_favorite3;
+        private ShineButton iv_favorite3;
 
         //点赞数量
         @ViewInject(R.id.tv_favorite)
@@ -629,6 +697,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public Tp2_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
+            iv_favorite3.init(activity);
         }
     }
 
@@ -669,7 +738,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         //点赞
         @ViewInject(R.id.iv_favorite3)
-        private ImageView iv_favorite3;
+        private ShineButton iv_favorite3;
 
         //点赞数量
         @ViewInject(R.id.tv_favorite)
@@ -702,6 +771,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public Tp3_Holder(View itemView) {
             super(itemView);
             ViewUtils.inject(this, itemView);
+            iv_favorite3.init(activity);
         }
     }
 
@@ -712,7 +782,8 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface OnClickBt {
-        void onClickGoods(int position, QueryFtInfos.RowsBean rowsBean);
+
+        void onClickGoods(int position, QueryFtInfos.RowsBean rowsBean, ShineButton sib);
 
         void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond);
 

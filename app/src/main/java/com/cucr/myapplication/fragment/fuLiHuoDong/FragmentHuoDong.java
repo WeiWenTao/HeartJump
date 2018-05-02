@@ -24,6 +24,7 @@ import com.cucr.myapplication.fragment.LazyFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
@@ -134,7 +135,15 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
     }
 
     @Override
-    public void onClickGoods(int position, final QiYeHuoDongInfo.RowsBean rowsBean) {
+    public void onClickGoods(int position, final QiYeHuoDongInfo.RowsBean rowsBean, ShineButton sib) {
+
+        if (rowsBean.getIsSignUp() == 1) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
         if (rowsBean.getIsSignUp() == 1) {
             giveNum = rowsBean.getGiveUpCount() - 1;
             rowsBean.setIsSignUp(0);
@@ -145,13 +154,14 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
             rowsBean.setGiveUpCount(giveNum);
         }
         mAdapter.notifyDataSetChanged();
+
         mCore.activeGiveUp(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });

@@ -54,17 +54,19 @@
                     android:paddingRight="@dimen/dp_10"
                     >
 
-
-
-                    <ImageView
+                    <com.cucr.myapplication.widget.ftGiveUp.ShineButton
                         android:id="@+id/iv_good"
-                        android:layout_width="@dimen/dp_25"
-                        android:layout_height="23dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/tv_good_value"
-                        android:padding="@dimen/dp_5"
-                        android:src="@drawable/good_selector"
+                        android:layout_width="15.5dp"
+                        android:layout_height="13.5dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="@dimen/dp_5"
+                        app:allow_random_color="false"
+                        app:btn_color="#999"
+                        app:btn_fill_color="@color/good"
+                        app:siShape="@drawable/icon_good_under"
+                        app:small_shine_color="#ffb436"
                         />
+
 
                     <TextView
                         android:id="@+id/tv_good_value"

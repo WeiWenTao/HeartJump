@@ -11,13 +11,12 @@ import java.util.List;
  */
 
 public class StarListPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> mFragmentslist;
-    private List<String> tytles;
 
-    public StarListPagerAdapter(FragmentManager fm, List<Fragment> mFragmentslist, List<String> tytles) {
+    private List<Fragment> mFragmentslist;
+
+    public StarListPagerAdapter(FragmentManager fm, List<Fragment> mFragmentslist) {
         super(fm);
         this.mFragmentslist = mFragmentslist;
-        this.tytles = tytles;
     }
 
     @Override
@@ -30,8 +29,4 @@ public class StarListPagerAdapter extends FragmentPagerAdapter {
         return mFragmentslist == null ? 0 : mFragmentslist.size();
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return tytles.get(position);
-    }
 }

@@ -28,6 +28,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -56,44 +57,42 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
 
     //root_view
     @ViewInject(R.id.root_view)
-    LinearLayout root_view;
+    private LinearLayout root_view;
 
     //ListView
     @ViewInject(R.id.lv_all_comment)
-    ListView lv_all_comment;
+    private ListView lv_all_comment;
 
     //点赞数量
     @ViewInject(R.id.tv_givecount)
-    TextView tv_givecount;
-
+    private TextView tv_givecount;
     //点赞
     @ViewInject(R.id.iv_zan)
-    ImageView iv_zan;
+    private ShineButton iv_zan;
 
     //表情和发送
     @ViewInject(R.id.ll_emoji_send)
-    LinearLayout ll_emoji_send;
+    private LinearLayout ll_emoji_send;
 
     //评论和点赞
     @ViewInject(R.id.ll_comment_good)
-    LinearLayout ll_comment_good;
+    private LinearLayout ll_comment_good;
 
     //评论数量
     @ViewInject(R.id.tv_comment_count)
-    TextView tv_comment_count;
+    private TextView tv_comment_count;
 
     //评论框
     @ViewInject(R.id.et_comment)
-    EmojiEditText et_comment;
+    private EmojiEditText et_comment;
 
     //表情按钮
     @ViewInject(R.id.iv_emoji)
-    ImageView iv_emoji;
-
+    private ImageView iv_emoji;
 
     //刷新控件
     @ViewInject(R.id.ref)
-    RefreshLayout ref;
+    private RefreshLayout ref;
 
 
     private FtCommentInfo.RowsBean mRowsBean;
@@ -111,7 +110,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         EventBus.getDefault().register(this);
         initTitle("全部评论");
         page = 1;
-        rows = 10;
+        rows = 15;
         initDatas();
         initViews();
         onRefresh();
@@ -124,7 +123,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
         ref.setOnRefreshListener(this);
         ref.setOnLoadListener(this);
-        upDataInfo();
+        upDataInfo(false);
         setUpEmojiPopup();
     }
 
@@ -162,33 +161,53 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         return R.layout.activity_ft_second_comment;
     }
 
-    private void upDataInfo() {
+    private void upDataInfo(boolean ani) {
         tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
-        iv_zan.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        if (mRowsBean.getIsGiveUp()) {
+            iv_zan.setChecked(true, ani);
+        } else {
+            iv_zan.setChecked(false, false);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+
+        }
         tv_comment_count.setText(mRowsBean.getChildList().size() + "");
+    }
+
+    @OnClick(R.id.iv_zan)
+    public void zan_(View view) {
+        clickGoods(view);
     }
 
     @OnClick(R.id.ll_goods)
     public void clickGoods(View view) {
+        if (mRowsBean == null) {
+            return;
+        }
+
+        if (mRowsBean.getIsGiveUp()) {
+            iv_zan.setChecked(false, true);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            iv_zan.setChecked(true, true);
+        }
+
+        if (mRowsBean.getIsGiveUp()) {
+            giveNum = mRowsBean.getGiveUpCount() - 1;
+            mRowsBean.setIsGiveUp(false);
+            mRowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = mRowsBean.getGiveUpCount() + 1;
+            mRowsBean.setIsGiveUp(true);
+            mRowsBean.setGiveUpCount(giveNum);
+        }
+        upDataInfo(true);
         mCommentCore.ftCommentGoods(mRowsBean.getContentId(), mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (mRowsBean.getIsGiveUp()) {
-                        giveNum = mRowsBean.getGiveUpCount() - 1;
-                        mRowsBean.setIsGiveUp(false);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = mRowsBean.getGiveUpCount() + 1;
-                        mRowsBean.setIsGiveUp(true);
-                        mRowsBean.setGiveUpCount(giveNum);
-                    }
-//                      upDataInfo();
-                    tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
-                    iv_zan.setImageResource(mRowsBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });
@@ -272,7 +291,7 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
                             emojiPopup.dismiss();
                             CommonUtils.hideKeyBorad(FtSecondCommentActivity.this, root_view, true);
                             et_comment.clearFocus();
-                            upDataInfo();
+                            upDataInfo(false);
                             mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
                         } else {
                             ToastUtils.showToast(commonRebackMsg.getMsg());
@@ -298,24 +317,34 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
 
     //点赞
     @Override
-    public void clickGoods(final FtCommentInfo.RowsBean childListBean) {
+    public void clickGoods(final FtCommentInfo.RowsBean childListBean, ShineButton sib) {
+
+        sib.init(this);
+        if (childListBean.getIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (childListBean.getIsGiveUp()) {
+            giveNum = childListBean.getGiveUpCount() - 1;
+            childListBean.setIsGiveUp(false);
+            childListBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = childListBean.getGiveUpCount() + 1;
+            childListBean.setIsGiveUp(true);
+            childListBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
         mCommentCore.ftCommentGoods(childListBean.getContentId(), childListBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (childListBean.getIsGiveUp()) {
-                        giveNum = childListBean.getGiveUpCount() - 1;
-                        childListBean.setIsGiveUp(false);
-                        childListBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = childListBean.getGiveUpCount() + 1;
-                        childListBean.setIsGiveUp(true);
-                        childListBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(FtSecondCommentActivity.this, commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(FtSecondCommentActivity.this, commonRebackMsg.getMsg());
                 }
             }
         });

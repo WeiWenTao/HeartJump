@@ -108,6 +108,7 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
                     mIntent.setClass(context, TestWebViewActivity.class);
                     mIntent.putExtra("url", rowsBean.getLocationUrl());
+                    mIntent.putExtra("data", rowsBean);
                     context.startActivity(mIntent);
                 }
             });

@@ -30,7 +30,6 @@ public class HomeNewsCore {
         mQueue = NoHttp.newRequestQueue();
     }
 
-
     public void queryHomeNews(int rows, int page, int newsType, RequersCallBackListener commonListener) {
         this.commonListener = commonListener;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_HOME_NEWS, RequestMethod.POST);
@@ -38,7 +37,7 @@ public class HomeNewsCore {
                 .add("dataType", 0)
                 .add("newsType", newsType)
                 .add("rows", rows)
-                .add("page,", page)
+                .add("page", page)
                 .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
 //        //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
 //        request.setCacheKey(HttpContans.ADDRESS_HOME_BANNER);

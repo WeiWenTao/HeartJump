@@ -9,12 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.CommonViewHolder;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.vanniktech.emoji.EmojiTextView;
 
@@ -63,12 +64,13 @@ public class FtAllCommentAadapter extends BaseAdapter {
         final FtCommentInfo.RowsBean childListBean = childList.get(position);
         CommonViewHolder cvh = CommonViewHolder.createCVH(convertView, mContext, R.layout.item_ft_catgory, null);
         ImageView userHead = cvh.getIv(R.id.iv_userhead);
-        ImageView iv_good = cvh.getIv(R.id.iv_good);
+        final ShineButton iv_good = cvh.getView(R.id.iv_good, ShineButton.class);
         TextView tv_username = cvh.getTv(R.id.tv_username);
         TextView tv_comment_time = cvh.getTv(R.id.tv_comment_time);
         TextView tv_good_value = cvh.getTv(R.id.tv_good_value);
         EmojiTextView tv_comment_content = cvh.getView(R.id.tv_comment_content, EmojiTextView.class);
         LinearLayout ll_comment_more = cvh.getView(R.id.ll_comment_more, LinearLayout.class);
+        LinearLayout rl_good = cvh.getView(R.id.rl_good, LinearLayout.class);
         cvh.getView(R.id.ll_item, LinearLayout.class).setBackgroundColor(Color.parseColor("#f6f6f6"));
 
 
@@ -94,7 +96,16 @@ public class FtAllCommentAadapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (clickGoodsListener != null) {
-                    clickGoodsListener.clickGoods(childListBean);
+                    clickGoodsListener.clickGoods(childListBean, iv_good);
+                }
+            }
+        });
+
+        rl_good.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickGoods(childListBean, iv_good);
                 }
             }
         });
@@ -103,11 +114,15 @@ public class FtAllCommentAadapter extends BaseAdapter {
         ll_comment_more.setVisibility(View.GONE);
 
 
-
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + childListBean.getUser().getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_comment_time.setText(childListBean.getReleaseTime());
-        iv_good.setImageResource(childListBean.getIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        if (childListBean.getIsGiveUp()) {
+            iv_good.setChecked(true, false);
+        } else {
+            iv_good.setChecked(false, false);
+            iv_good.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_above));
+        }
         tv_good_value.setText(childListBean.getGiveUpCount() + "");
         tv_username.setText(childListBean.getUser().getName());
         tv_comment_content.setText(CommonUtils.unicode2String(childListBean.getComment()));
@@ -122,7 +137,9 @@ public class FtAllCommentAadapter extends BaseAdapter {
     private OnClickCommentGoods clickGoodsListener;
 
     public interface OnClickCommentGoods {
-        void clickGoods(FtCommentInfo.RowsBean childListBean);
+
+        void clickGoods(FtCommentInfo.RowsBean childListBean, ShineButton view);
+
         void clickUser(int userId);
     }
 }

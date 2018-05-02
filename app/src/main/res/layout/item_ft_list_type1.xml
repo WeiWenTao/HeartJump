@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/ll_type1"
               xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/white"
               android:orientation="vertical"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <LinearLayout
@@ -27,29 +27,31 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal"
                 >
+
                 <TextView
                     android:id="@+id/tv_neckname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="胡歌"
                     android:textColor="@color/name_color"
                     android:textSize="@dimen/sp_16"
                     />
 
                 <ImageView
                     android:id="@+id/iv_tag"
-                    android:layout_marginLeft="@dimen/dp_6"
                     android:layout_width="20dp"
                     android:layout_height="22dp"
+                    android:layout_marginLeft="@dimen/dp_6"
                     android:src="@drawable/icon_starid"
                     />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +64,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1月27日 17：28 来自微博"
                     android:textColor="#929292"
                     android:textSize="@dimen/sp_12"
                     />
@@ -87,7 +88,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_5"
-                        android:text="6534"
                         android:textColor="#929292"
                         android:textSize="@dimen/sp_12"
                         />
@@ -138,7 +138,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="15dp"
-            android:text="18:23"
             android:textColor="@color/white"
             />
 
@@ -157,10 +156,10 @@
         >
 
         <RelativeLayout
-            android:layout_marginLeft="@dimen/dp_20"
             android:id="@+id/rl_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
             >
 
             <ImageView
@@ -189,28 +188,27 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_marginRight="@dimen/dp_20"
             android:id="@+id/ll_good"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_20"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             >
 
-
-            <ImageView
+            <com.cucr.myapplication.widget.ftGiveUp.ShineButton
                 android:id="@+id/iv_favorite3"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="33dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/tv_favorite"
-                android:paddingBottom="@dimen/dp_10"
-                android:paddingLeft="@dimen/dp_10"
-                android:paddingRight="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_10"
-                android:src="@drawable/icon_good_nor"
+                android:layout_width="15.5dp"
+                android:layout_height="13.5dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/dp_5"
+                app:allow_random_color="false"
+                app:btn_color="#999"
+                app:btn_fill_color="@color/good"
+                app:siShape="@drawable/icon_good_under"
+                app:small_shine_color="#ffb436"
                 />
 
             <TextView
@@ -220,7 +218,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_10"
-                android:text="1249"
                 android:textColor="#929292"
                 android:textSize="@dimen/sp_13"
                 />
@@ -234,6 +231,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             >
+
             <ImageView
                 android:id="@+id/iv_session3"
                 android:layout_width="@dimen/dp_30"
@@ -253,7 +251,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="789"
                 android:textColor="#929292"
                 android:textSize="@dimen/sp_13"
                 />
@@ -293,7 +290,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_6"
-            android:text="10人打赏了道具"
             android:textColor="#5d1111"
             android:textSize="@dimen/sp_13"
             />

@@ -26,8 +26,6 @@ import com.cucr.myapplication.core.login.RegistCore;
 import com.cucr.myapplication.dao.DaoCore;
 import com.cucr.myapplication.gen.LoadUserInfosDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.runtimepermissions.PermissionsManager;
-import com.cucr.myapplication.runtimepermissions.PermissionsResultAction;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -81,15 +79,15 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(this).setShareConfig(config);
 
-        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
-            @Override
-            public void onGranted() {
-            }
-
-            @Override
-            public void onDenied(String permission) {
-            }
-        });
+//        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
+//            @Override
+//            public void onGranted() {
+//            }
+//
+//            @Override
+//            public void onDenied(String permission) {
+//            }
+//        });
 
         mRegistCore = new RegistCore();
         bindIntent = new Intent(MyApplication.getInstance(), BindTelActivity.class);

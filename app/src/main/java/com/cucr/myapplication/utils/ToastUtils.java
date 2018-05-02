@@ -73,7 +73,7 @@ public class ToastUtils {
         }
         if (message.equals("签名错误")) {
             secondTime = System.currentTimeMillis();
-            if (secondTime - firstTime > 2000) {
+            if (secondTime - firstTime > 3000) {
                 Toast.makeText(MyApplication.getInstance(), "请先登录哦", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MyApplication.getInstance(), NewLoadActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

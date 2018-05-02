@@ -50,6 +50,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
@@ -102,7 +103,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     private RecyclerView rlv_test;
     private QueryFtInfos mQueryFtInfos;
     private FtAdapter mAdapter;
-    private Integer giveNum;
+    private int giveNum;
     private int position = -1;
     private LayoutInflater layoutInflater;
     private PopupWindow popWindow;
@@ -243,19 +244,21 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     //查询第一个明星
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
     public void onDataSynEvent(EventFIrstStarId event) {
-//        EventBus.getDefault().removeStickyEvent(event);
         starId = event.getFirstId();
         MyLogger.jLog().i("EventStarId：" + starId);
         if (queryCore == null) {
             queryCore = new QueryFtInfoCore();
         }
-        onRefresh();
+        if (starId != event.getFirstId()) {
+            onRefresh();
+        }
+//        EventBus.getDefault().removeStickyEvent(event);
     }
 
     private void initRlV() {
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
-        mAdapter = new FtAdapter();
+        mAdapter = new FtAdapter(getActivity());
         rlv_fentuan.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
 
@@ -427,7 +430,14 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
 
     //点赞
     @Override
-    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean) {
+    public void onClickGoods(int position, final QueryFtInfos.RowsBean rowsBean, ShineButton sib) {
+        if (rowsBean.isIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
         if (rowsBean.isIsGiveUp()) {
             giveNum = rowsBean.getGiveUpCount() - 1;
             rowsBean.setIsGiveUp(false);
@@ -446,7 +456,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
                 if (commonRebackMsg.isSuccess()) {
 
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });

@@ -32,10 +32,10 @@ public class DuiHuanCatgoryActivity extends Activity {
 
     //商品列表
     @ViewInject(R.id.gallery)
-    GalleryRecyclerView mGalleryRecyclerView;
+    private GalleryRecyclerView mGalleryRecyclerView;
 
     @ViewInject(R.id.head)
-    RelativeLayout head;
+    private RelativeLayout head;
 
     //    private int[] mImgs ={R.mipmap.test1,R.mipmap.test2,R.mipmap.test3,R.mipmap.test4,R.mipmap.test5,R.mipmap.test6,R.mipmap.test7
 //            ,R.mipmap.test8,R.mipmap.test9,R.mipmap.test10,R.mipmap.test11,R.mipmap.test12,R.mipmap.test13,R.mipmap.test14,R.mipmap.test15
@@ -117,7 +117,8 @@ public class DuiHuanCatgoryActivity extends Activity {
         mGalleryRecyclerView.setOnViewSelectedListener(new GalleryRecyclerView.OnViewSelectedListener() {
             @Override
             public void onSelected(View view, final int position) {
-                if (position == mDatas.size() - 1){}
+                if (position == mDatas.size() - 1) {
+                }
 //                    ToastUtils.showToast(DuiHuanCatgoryActivity.this, "到最后了哦");
             }
         });

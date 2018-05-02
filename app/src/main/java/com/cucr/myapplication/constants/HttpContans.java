@@ -215,7 +215,7 @@ public class HttpContans {
     //活动评论查询
     public static final String ADDRESS_ACTIVE_COMMENT_QUERY = HOST + "/interface/mobileStartAppointment/activeCommentQuery";
 
-    //活动评论查询
+    //活动评论点赞
     public static final String ADDRESS_ACTIVE_COMMENT_GOOD = HOST + "/interface/mobileStartAppointment/activeCommentGiveUp";
 
     //福利活动跳转
@@ -244,6 +244,15 @@ public class HttpContans {
 
     //粉团分享
     public static final String ADDRESS_FT_SHARE = HOST + "/interface/newsShare/page?fansNewsContentId=";
+
+    //首页新闻分享
+    public static final String ADDRESS_NEWS_SHARE = HOST + "/interface/newsShare/newsPage?contentId=";
+
+    //首页Banner分享
+    public static final String ADDRESS_BANNER_SHARE = HOST + "/interface/newsShare/bannerPage?id=";
+
+    //福利活动分享
+    public static final String ADDRESS_FULI_HUOD_SHARE = HOST + "/interface/newsShare/welfarePage?id=";
 
     //粉团删除
     public static final String ADDRESS_FT_DELETE = HOST + "/interface/mobileContentAction/del";

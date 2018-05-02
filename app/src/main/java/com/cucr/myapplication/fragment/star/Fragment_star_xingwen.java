@@ -78,6 +78,7 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
         }
         EventBus.getDefault().register(this);//订阅
         return view;
+
     }
 
     private void initRlV() {
@@ -138,7 +139,6 @@ public class Fragment_star_xingwen extends Fragment implements SwipeRecyclerView
         if (!rlv_xingwen.getSwipeRefreshLayout().isRefreshing()) {
             rlv_xingwen.getSwipeRefreshLayout().setRefreshing(true);
         }
-
         mCore.queryFtInfo(starId, dataType, -1, false, page, rows, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {

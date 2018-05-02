@@ -181,6 +181,9 @@
                 android:id="@+id/rl_mysign"
                 android:layout_width="match_parent"
                 android:layout_height="61dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:background="@color/white"
                 >
 

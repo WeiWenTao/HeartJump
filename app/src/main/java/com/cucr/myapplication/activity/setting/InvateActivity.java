@@ -31,13 +31,13 @@ public class InvateActivity extends Activity {
         Window window = mDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
-//
-//        findViewById(R.id.iv_base_back).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
+
+        findViewById(R.id.iv_base_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void invate(View view) {
@@ -46,5 +46,7 @@ public class InvateActivity extends Activity {
                         -1), HttpContans.LOGO_ADDRESS));
         mDialog.show();
     }
+
+
 
 }

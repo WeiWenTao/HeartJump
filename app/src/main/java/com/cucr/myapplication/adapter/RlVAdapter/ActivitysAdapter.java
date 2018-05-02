@@ -12,6 +12,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -49,7 +50,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
     }
 
     @Override
-    public void onBindViewHolder(ActivesHolder holder, final int position) {
+    public void onBindViewHolder(final ActivesHolder holder, final int position) {
 //        WindowManager wm = (WindowManager) MyApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
 //        ViewGroup.LayoutParams layoutParams = holder.iv_pic.getLayoutParams();
 //        layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.0f);
@@ -62,10 +63,12 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
         holder.tv_name.setText(rowsBean.getApplyUser().getCompanyName());
         holder.tv_commends.setText(rowsBean.getCommentCount() + "");
         holder.tv_goods.setText(rowsBean.getGiveUpCount() + "");
+
         if (rowsBean.getIsSignUp() == 1) {
-            holder.iv_zan.setImageResource(R.drawable.icon_good_sel);
+            holder.iv_zan.setChecked(true, false);
         } else {
-            holder.iv_zan.setImageResource(R.drawable.icon_good_nor);
+            holder.iv_zan.setChecked(false, false);
+            holder.iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_above));
         }
 
 
@@ -91,9 +94,17 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
             @Override
             public void onClick(View v) {
                 if (onClickListener != null) {
-                    onClickListener.onClickGoods(position, rowsBean);
+                    onClickListener.onClickGoods(position, rowsBean, holder.iv_zan);
                 }
-                notifyDataSetChanged();
+            }
+        });
+
+        holder.iv_zan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickListener != null) {
+                    onClickListener.onClickGoods(position, rowsBean, holder.iv_zan);
+                }
             }
         });
 
@@ -128,7 +139,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
 
         //点赞图标
         @ViewInject(R.id.iv_zan)
-        private ImageView iv_zan;
+        private ShineButton iv_zan;
 
         //标题
         @ViewInject(R.id.tv_title)
@@ -171,7 +182,7 @@ public class ActivitysAdapter extends RecyclerView.Adapter<ActivitysAdapter.Acti
     }
 
     public interface ClickListener {
-        void onClickGoods(int position, QiYeHuoDongInfo.RowsBean rowsBean);
+        void onClickGoods(int position, QiYeHuoDongInfo.RowsBean rowsBean, ShineButton sib);
 
         void onClickCommends(int position, QiYeHuoDongInfo.RowsBean rowsBean, boolean isFromComment);
 

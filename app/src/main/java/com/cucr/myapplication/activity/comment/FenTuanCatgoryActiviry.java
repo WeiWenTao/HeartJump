@@ -59,6 +59,7 @@ import com.cucr.myapplication.widget.dialog.DialogShareDelPics;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.dialog.DialogShareTo;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.picture.FlowImageLayout;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.cucr.myapplication.widget.viewpager.NoScrollPager;
@@ -100,7 +101,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     //点赞
     @ViewInject(R.id.iv_zan)
-    private ImageView iv_zan;
+    private ShineButton iv_zan;
 
     //点赞数量
     @ViewInject(R.id.tv_givecount)
@@ -286,9 +287,15 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     }
 
     //更新数据
-    private void upDataInfo() {
+    private void upDataInfo(boolean ani) {
         tv_givecount.setText(mRowsBean.getGiveUpCount() + "");
-        iv_zan.setImageResource(mRowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        if (mRowsBean.isIsGiveUp()) {
+            iv_zan.setChecked(true, ani);
+        } else {
+            iv_zan.setChecked(false, false);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+
+        }
         tv_comment_count.setText(mRowsBean.getCommentCount() + "");
     }
 
@@ -415,9 +422,25 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         lv_ft_catgory.smoothScrollToPositionFromTop(1, 75, 300);
     }
 
+    @OnClick(R.id.iv_zan)
+    public void zan_(View view) {
+        zan(view);
+    }
+
     //点赞时
     @OnClick(R.id.ll_goods)
     public void zan(View view) {
+        if (mRowsBean == null) {
+            return;
+        }
+
+        if (mRowsBean.isIsGiveUp()) {
+            iv_zan.setChecked(false, true);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            iv_zan.setChecked(true, true);
+        }
+
         if (mRowsBean.isIsGiveUp()) {
             giveNum = mRowsBean.getGiveUpCount() - 1;
             mRowsBean.setIsGiveUp(false);
@@ -427,8 +450,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             mRowsBean.setIsGiveUp(true);
             mRowsBean.setGiveUpCount(giveNum);
         }
-        upDataInfo();
 
+        upDataInfo(true);
         queryCore.ftGoods(mRowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -436,7 +459,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 if (commonRebackMsg.isSuccess()) {
 
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });
@@ -473,7 +496,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                             CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
                             et_comment.clearFocus();
                             mRowsBean.setCommentCount(mRowsBean.getCommentCount() + 1);
-                            upDataInfo();
+                            upDataInfo(false);
                             mTv_all_comment.setText(mRowsBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
                             //评论成功后滚动到最顶部
 //                    lv_ft_catgory.smoothScrollToPositionFromTop(0, 0, 300);
@@ -575,7 +598,15 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     }
 
     @Override
-    public void clickGoods(final FtCommentInfo.RowsBean rowsBean) {
+    public void clickGoods(final FtCommentInfo.RowsBean rowsBean, ShineButton sib) {
+        sib.init(this);
+        if (rowsBean.getIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
         if (rowsBean.getIsGiveUp()) {
             giveNum = rowsBean.getGiveUpCount() - 1;
             rowsBean.setIsGiveUp(false);
@@ -593,7 +624,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });
@@ -854,7 +885,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             if (signleFtInfo.isSuccess()) {
                 mRowsBean = signleFtInfo.getObj();
                 mHasPicture = mRowsBean.getAttrFileList().size() > 0;
-                upDataInfo();
+                upDataInfo(false);
                 initLV();
                 queryCore.ftRead(mRowsBean.getId() + "");
                 onRefresh();

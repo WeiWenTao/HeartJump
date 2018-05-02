@@ -36,6 +36,7 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDelPics;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -93,7 +94,7 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
 
     //点赞图片
     @ViewInject(R.id.iv_zan)
-    ImageView iv_zan;
+    ShineButton iv_zan;
 
     //表情按钮
     @ViewInject(R.id.iv_emoji_hd)
@@ -158,9 +159,7 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         mReceivedBean = (QiYeHuoDongInfo.RowsBean) mIntent.getSerializableExtra("data");
         boolean showMore = getIntent().getBooleanExtra("showMore", false);
         iv_more.setVisibility(showMore ? View.VISIBLE : View.GONE);
-        tv_conmmands.setText(mReceivedBean.getCommentCount() + "");
-        tv_goods.setText(mReceivedBean.getGiveUpCount() + "");
-        iv_zan.setImageResource(mReceivedBean.getIsSignUp() == 1 ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        upDataInfo(false);
         View lvHead = View.inflate(this, R.layout.head_huo_dong_catgory, null);
         initLVHead(lvHead, mReceivedBean);
         lv_huodong_catgory.addHeaderView(lvHead, null, true);
@@ -289,6 +288,12 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         ll_hd_comment_good.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
     }
 
+    //点击评论时
+    @OnClick(R.id.ll_comment)
+    public void comment(View view) {
+        lv_huodong_catgory.smoothScrollToPositionFromTop(1, 75, 300);
+    }
+
     //emoji表情
     @OnClick(R.id.iv_emoji_hd)
     public void clickEmoji(View view) {
@@ -303,25 +308,46 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
         super.onStop();
     }
 
-    //点赞
+    //点击爱心
+    @OnClick(R.id.iv_zan)
+    public void zan_(View view) {
+        clickZan(view);
+    }
+
+
+    //点击爱心和数字
     @OnClick(R.id.ll_hd_goods)
     public void clickZan(View view) {
+
+        if (mReceivedBean == null) {
+            return;
+        }
+
+        if (mReceivedBean.getIsSignUp() == 1) {
+            iv_zan.setChecked(false, true);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            iv_zan.setChecked(true, true);
+        }
+
+        if (mReceivedBean.getIsSignUp() == 1) {
+            giveNum = mReceivedBean.getGiveUpCount() - 1;
+            mReceivedBean.setIsSignUp(0);
+            mReceivedBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = mReceivedBean.getGiveUpCount() + 1;
+            mReceivedBean.setIsSignUp(1);
+            mReceivedBean.setGiveUpCount(giveNum);
+        }
+        upDataInfo(true);
+
+        EventBus.getDefault().post(new EventNotifyDataSetChange(1));
+
         mHuoDongCore.activeGiveUp(mReceivedBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (mReceivedBean.getIsSignUp() == 1) {
-                        giveNum = mReceivedBean.getGiveUpCount() - 1;
-                        mReceivedBean.setIsSignUp(0);
-                        mReceivedBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = mReceivedBean.getGiveUpCount() + 1;
-                        mReceivedBean.setIsSignUp(1);
-                        mReceivedBean.setGiveUpCount(giveNum);
-                    }
-                    upDataInfo();
-                    EventBus.getDefault().post(new EventNotifyDataSetChange(1));
                 } else {
                     ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
@@ -330,9 +356,15 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
     }
 
     //更新数据 评论 点赞
-    private void upDataInfo() {
+    private void upDataInfo(boolean ani) {
         tv_goods.setText(mReceivedBean.getGiveUpCount() + "");
-        iv_zan.setImageResource(mReceivedBean.getIsSignUp() == 1 ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        if (mReceivedBean.getIsSignUp() == 1) {
+            iv_zan.setChecked(true, ani);
+        } else {
+            iv_zan.setChecked(false, false);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+
+        }
         tv_conmmands.setText(mReceivedBean.getCommentCount() + "");
     }
 
@@ -377,7 +409,7 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
                     CommonUtils.hideKeyBorad(HuoDongCatgoryActivity.this, rootview, true);
                     et_comment.clearFocus();
                     mReceivedBean.setCommentCount(mReceivedBean.getCommentCount() + 1);
-                    upDataInfo();
+                    upDataInfo(false);
                     mTv_all_comment.setText(mReceivedBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
                     //评论成功后滚动到最顶部
                     lv_huodong_catgory.setSelection(0);
@@ -429,24 +461,34 @@ public class HuoDongCatgoryActivity extends BaseActivity implements View.OnFocus
 
     //点击点赞
     @Override
-    public void clickGoods(final FtCommentInfo.RowsBean rowsBean) {
+    public void clickGoods(final FtCommentInfo.RowsBean rowsBean, ShineButton sib) {
+
+        sib.init(this);
+        if (rowsBean.getIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (rowsBean.getIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
         mHuoDongCore.activeCommentGood(rowsBean.getContentId(), rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.getIsGiveUp()) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsGiveUp(false);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsGiveUp(true);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });

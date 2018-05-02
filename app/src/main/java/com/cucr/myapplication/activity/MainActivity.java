@@ -41,6 +41,7 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.upDataUtils.DownLoadApk;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -276,7 +277,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         UMShareAPI.get(this).release();
     }
 
-
     //获取用户信息返回给融云
     @Override
     public UserInfo getUserInfo(String userId) {
@@ -372,5 +372,13 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         super.onPause();
         qucryCore.cancleAll();
         mChatCore.stopRequest();
+        MobclickAgent.onPause(this);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
 }

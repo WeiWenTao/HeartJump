@@ -32,6 +32,7 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.ZipUtil;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
 import com.cucr.myapplication.widget.dialog.DialogGender;
 import com.cucr.myapplication.widget.dialog.DialogPhoto;
@@ -231,10 +232,16 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     //选择所在地
     @OnClick(R.id.rl_location)
     public void selectLocation(View view) {
-        Intent intent = new Intent(this, LocalityProvienceActivity.class);
-        intent.putExtra("needShow", false);
-        intent.putExtra("className", "PersonalInfoActivity");
-        startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    , Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        } else {
+            ZipUtil.initData();
+            Intent intent = new Intent(this, LocalityProvienceActivity.class);
+            intent.putExtra("needShow", false);
+            intent.putExtra("className", "PersonalInfoActivity");
+            startActivity(intent);
+        }
     }
 
     //换头像
@@ -330,6 +337,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         boolean writeAccepted = false;
         switch (requestCode) {
+            //相册权限
             case 1:
                 writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 if (writeAccepted) {
@@ -339,6 +347,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                 }
                 break;
 
+            //相机权限
             case 2:
                 writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 if (writeAccepted) {
@@ -347,6 +356,21 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                     ToastUtils.showToast(getResources().getString(R.string.request_permission));
                 }
                 break;
+
+            //内存写入权限
+            case 3:
+                writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
+                    ZipUtil.initData();
+                    Intent intent = new Intent(this, LocalityProvienceActivity.class);
+                    intent.putExtra("needShow", false);
+                    intent.putExtra("className", "PersonalInfoActivity");
+                    startActivity(intent);
+                } else {
+                    ToastUtils.showToast(getResources().getString(R.string.request_permission));
+                }
+                break;
+
         }
     }
 

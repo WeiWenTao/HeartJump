@@ -20,6 +20,8 @@ import com.cucr.myapplication.activity.comment.XingWenCommentActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
@@ -27,6 +29,7 @@ import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.vanniktech.emoji.EmojiEditText;
@@ -74,7 +77,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
 
     //点赞红心
     @ViewInject(R.id.iv_zan)
-    private ImageView iv_zan;
+    private ShineButton iv_zan;
 
     //点赞数量
     @ViewInject(R.id.tv_givecount)
@@ -88,6 +91,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     private QueryFtInfoCore queryCore;
     private DialogShareStyle mDialog;
     private MyWaitDialog mWaitDialog;
+    private DialogShareStyle mShareDialog;
 
     @Override
     protected void initChild() {
@@ -101,10 +105,15 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
 
 
     private void initView() {
+        mShareDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
+        Window window1 = mShareDialog.getWindow();
+        window1.setGravity(Gravity.BOTTOM);
+        window1.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
+
         mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         queryCore = new QueryFtInfoCore();
         rowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("date");
-        upDataInfo();
+        upDataInfo(false);
         mIntent = new Intent(MyApplication.getInstance(), XingWenCommentActivity.class);
         mIntent.putExtra("rowsBean", rowsBean);
         et_comment.clearFocus();
@@ -133,6 +142,11 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         emojiPopup.toggle();
     }
 
+    //点击分享
+    @OnClick(R.id.iv_news_share)
+    public void clickShare(View view) {
+        mShareDialog.setData(new ShareEntity("追爱豆,领红包,尽在心跳互娱", rowsBean.getTitle(), HttpContans.ADDRESS_NEWS_SHARE + rowsBean.getId(), ""));
+    }
 
     private void setUpEmojiPopup() {
         emojiPopup = EmojiPopup.Builder.fromRootView(rootview)
@@ -187,9 +201,26 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         ll_comment_good.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
     }
 
+
+    @OnClick(R.id.iv_zan)
+    public void zan_(View view) {
+        zan(view);
+    }
+
+
     //点赞时
     @OnClick(R.id.ll_goods)
     public void zan(View view) {
+        if (rowsBean == null) {
+            return;
+        }
+        if (rowsBean.isIsGiveUp()) {
+            iv_zan.setChecked(false, true);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            iv_zan.setChecked(true, true);
+        }
+
         if (rowsBean.isIsGiveUp()) {
             giveNum = rowsBean.getGiveUpCount() - 1;
             rowsBean.setIsGiveUp(false);
@@ -199,7 +230,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
             rowsBean.setIsGiveUp(true);
             rowsBean.setGiveUpCount(giveNum);
         }
-        upDataInfo();
+        upDataInfo(true);
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
@@ -213,9 +244,15 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     }
 
     //更新数据
-    private void upDataInfo() {
+    private void upDataInfo(boolean ani) {
         tv_givecount.setText(rowsBean.getGiveUpCount() + "");
-        iv_zan.setImageResource(rowsBean.isIsGiveUp() ? R.drawable.icon_good_sel : R.drawable.icon_good_nor);
+        if (rowsBean.isIsGiveUp()) {
+            iv_zan.setChecked(true, ani);
+        } else {
+            iv_zan.setChecked(false, false);
+            iv_zan.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+
+        }
         tv_comment_count.setText(rowsBean.getCommentCount() + "");
     }
 
@@ -244,7 +281,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
                             CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
                             et_comment.clearFocus();
                             rowsBean.setCommentCount(rowsBean.getCommentCount() + 1);
-                            upDataInfo();
+                            upDataInfo(false);
                         } else {
                             ToastUtils.showToast(commonRebackMsg.getMsg());
                         }

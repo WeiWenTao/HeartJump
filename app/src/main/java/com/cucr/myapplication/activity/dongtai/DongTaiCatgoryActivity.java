@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.LvAdapter.FtCatgoryAadapter;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.text.MyClickableSpan;
@@ -78,7 +79,7 @@ public class DongTaiCatgoryActivity extends BaseActivity implements View.OnClick
 
         lv_dongtai_catgory.addHeaderView(lvHead, null, true);
         lv_dongtai_catgory.setHeaderDividersEnabled(false);
-        lv_dongtai_catgory.setAdapter(new FtCatgoryAadapter(this));
+        lv_dongtai_catgory.setAdapter(new FtCatgoryAadapter(MyApplication.getInstance()));
 
     }
 

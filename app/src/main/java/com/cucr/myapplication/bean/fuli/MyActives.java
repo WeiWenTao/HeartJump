@@ -133,6 +133,15 @@ public class MyActives {
             private String locationUrl;
             private String picUrl;
             private String startTime;
+            private boolean showQRCode;
+
+            public boolean isShowQRCode() {
+                return showQRCode;
+            }
+
+            public void setShowQRCode(boolean showQRCode) {
+                this.showQRCode = showQRCode;
+            }
 
             public String getActiveName() {
                 return activeName;

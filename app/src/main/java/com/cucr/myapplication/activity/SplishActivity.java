@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -19,7 +18,6 @@ import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
-import com.cucr.myapplication.utils.ThreadUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.ZipUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,9 +27,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -51,7 +46,6 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initViews();
         initPermission();
-        initData();
 
     }
 
@@ -71,6 +65,7 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
                     , Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         } else {
+            ZipUtil.initData();
             downTimer.start();
         }
     }
@@ -113,33 +108,6 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
             }
         }
     };
-
-    private void initData() {
-        //实例化文件对象 判断文件是否存在
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase");
-        file.mkdir();
-        if (!file.exists() || file.listFiles() == null || file.listFiles().length == 0) {
-            //解压文件
-            initZip();
-        }
-    }
-
-
-    private void initZip() {
-        ThreadUtils.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
-                MyLogger.jLog().i("解压文件");
-                try {
-                    InputStream is = getAssets().open("citys.zip");
-                    FileOutputStream os = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dataBase", "city.db"));
-                    ZipUtil.unzip(is, os);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
 
     @Override

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -130,6 +129,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View v) {
                     mIntent.setClass(context, TestWebViewActivity.class);
                     mIntent.putExtra("url", rowsBean.getLocationUrl());
+                    mIntent.putExtra("data", rowsBean);
                     context.startActivity(mIntent);
                 }
             });
@@ -139,6 +139,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((Tp2_Holder) holder).tv_title.setText(rowsBean.getTitle());            //标题
             ((Tp2_Holder) holder).tv_from.setText(rowsBean.getCreateUserName());    //来自
             if (rowsBean.getAttrFileList().size() > 0) {
+
                 ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl(), ((Tp2_Holder) holder).iv_pic1, MyApplication.getImageLoaderOptions());
             }
             initStar(((Tp2_Holder) holder).ll_mystar, rowsBean.getNewTransCount());
@@ -201,10 +202,10 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return;
             }
 
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            ViewGroup.LayoutParams layoutParams = ((head_Holder) holder).banner.getLayoutParams();
-            layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.2f);
-            ((head_Holder) holder).banner.setLayoutParams(layoutParams);
+//            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//            ViewGroup.LayoutParams layoutParams = ((head_Holder) holder).banner.getLayoutParams();
+//            layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.2f);
+//            ((head_Holder) holder).banner.setLayoutParams(layoutParams);
 
             ((head_Holder) holder).banner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                 @Override
@@ -225,7 +226,7 @@ public class HomeXingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //小星星初始化
     private void initStar(LinearLayout ll_mystar, int i) {
-        i = CommonUtils.getStarCount(CommonUtils.getStarCount(i));
+        i = CommonUtils.getStarCount(i);
         ll_mystar.removeAllViews();
         for (int count = 0; count < i; count++) {
             ImageView starView = new ImageView(context);

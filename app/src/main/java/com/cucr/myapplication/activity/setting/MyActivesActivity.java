@@ -17,8 +17,8 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
@@ -99,25 +99,33 @@ public class MyActivesActivity extends BaseActivity implements ActivitysAdapter.
     }
 
     @Override
-    public void onClickGoods(int position, final QiYeHuoDongInfo.RowsBean rowsBean) {
-        MyLogger.jLog().i("onClickGoods");
+    public void onClickGoods(int position, final QiYeHuoDongInfo.RowsBean rowsBean, ShineButton sib) {
+
+        if (rowsBean.getIsSignUp() == 1) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (rowsBean.getIsSignUp() == 1) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsSignUp(0);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsSignUp(1);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
         mCore.activeGiveUp(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-                    if (rowsBean.getIsSignUp() == 1) {
-                        giveNum = rowsBean.getGiveUpCount() - 1;
-                        rowsBean.setIsSignUp(0);
-                        rowsBean.setGiveUpCount(giveNum);
-                    } else {
-                        giveNum = rowsBean.getGiveUpCount() + 1;
-                        rowsBean.setIsSignUp(1);
-                        rowsBean.setGiveUpCount(giveNum);
-                    }
-                    mAdapter.notifyDataSetChanged();
                 } else {
-                    ToastUtils.showToast(commonRebackMsg.getMsg());
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
             }
         });

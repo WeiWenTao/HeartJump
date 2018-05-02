@@ -13,8 +13,8 @@ android {
         useLibrary 'org.apache.http.legacy'
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
 
 //        这两句 解决重复依赖bug
         multiDexEnabled true
@@ -210,4 +210,11 @@ dependencies {
 
     //百分比布局
     compile 'com.android.support:percent:25.2.0'
+
+    //友盟统计
+    compile 'com.umeng.sdk:common:latest.integration'
+    compile 'com.umeng.sdk:analytics:latest.integration'
+
+    //粉团点赞动画需要
+    compile 'com.daasuu:EasingInterpolator:1.0.0'
 }

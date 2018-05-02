@@ -17,6 +17,7 @@ import com.cucr.myapplication.activity.star.StarPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListForQiYeAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
+import com.cucr.myapplication.bean.eventBus.EventHomeStarsCatgory;
 import com.cucr.myapplication.bean.eventBus.EventOnClickCancleFocus;
 import com.cucr.myapplication.bean.eventBus.EventOnClickFocus;
 import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
@@ -59,6 +60,7 @@ public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdap
     private int rows;
     private LoadMoreWrapper wapper;
     private Context mContext;
+    private String type;
 
     public AllStarListFragemnt() {
         mCore = new QueryStarListCore();
@@ -79,7 +81,7 @@ public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdap
     }
 
     private void initView() {
-        rows = 10;
+        rows = 20;
         mAdapter = new StarListForQiYeAdapter(getActivity());
         mAdapter.setOnItemClickListener(this);
         rlv_starlist.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -104,7 +106,7 @@ public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdap
             public void onLoadMore() {
                 wapper.setLoadState(wapper.LOADING);
                 page++;
-                mCore.queryStar(2, page, rows, -1, null, null, new RequersCallBackListener() {
+                mCore.queryStar(2, page, rows, -1, null, type, new RequersCallBackListener() {
                     @Override
                     public void onRequestSuccess(int what, Response<String> response) {
                         StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
@@ -143,13 +145,22 @@ public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdap
         });
     }
 
+
+    //点击分类之后
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEvent(EventHomeStarsCatgory event) {
+        if (type == event.getType()) {
+            return;
+        }
+        type = event.getType();
+        queryStar();
+    }
+
+
     //查询明星列表品
     private void queryStar() {
-        if (!swipe_refresh_layout.isRefreshing()) {
-            swipe_refresh_layout.setRefreshing(true);
-        }
         page = 1;
-        mCore.queryStar(2, page, rows, -1, null, null, new RequersCallBackListener() {
+        mCore.queryStar(2, page, rows, -1, null, type, new RequersCallBackListener() {
             @Override
             public void onRequestSuccess(int what, Response<String> response) {
                 StarListInfos starListInfos = mGson.fromJson(response.get(), StarListInfos.class);
@@ -164,7 +175,7 @@ public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdap
 
             @Override
             public void onRequestStar(int what) {
-
+                swipe_refresh_layout.setRefreshing(true);
             }
 
             @Override
@@ -174,7 +185,7 @@ public class AllStarListFragemnt extends Fragment implements StarListForQiYeAdap
 
             @Override
             public void onRequestFinish(int what) {
-
+                swipe_refresh_layout.setRefreshing(false);
             }
         });
     }
