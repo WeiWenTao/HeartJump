@@ -11,7 +11,7 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
         >
 
         <TextView
@@ -33,9 +33,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_10"
             android:paddingBottom="13dp"
-            android:paddingLeft="18dp"
+            android:paddingLeft="15dp"
             android:paddingTop="10dp"
-            android:src="@drawable/icon_msg"
+            android:src="@drawable/icon_message"
             />
     </RelativeLayout>
 

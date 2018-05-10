@@ -140,6 +140,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
                     ToastUtils.showToast("请先装微信客户端");
                 } else {
                     sharToPyq();
+
                 }
                 dismiss();
                 break;
@@ -240,7 +241,7 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
                 share();
     }
 
-    //分享到微信好友
+    //分享到微信群或者微信好友
     private void sharToWxhy() {
         new ShareAction(mActivity)
                 .withMedia(mWeb).

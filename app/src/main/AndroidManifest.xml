@@ -61,13 +61,12 @@
 
 
         <!-- ======================友盟========================= -->
-        <!-- 友盟分享 统计-->
+        <!-- 友盟分享 统计 -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5a54173db27b0a6cbe000167"
             >
         </meta-data>
-
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="tencent"
@@ -183,15 +182,17 @@
             <!-- </intent-filter> -->
         </activity>
 
-        <!--会话列表-->
+        <!-- 会话列表 -->
         <activity
-            android:name="com.cucr.myapplication.activity.chat.ConversationListActivity"
+            android:name=".activity.chat.ConversationListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
+
                 <data
                     android:host="com.cucr.myapplication"
                     android:pathPrefix="/conversationlist"
@@ -199,7 +200,6 @@
                     />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.star.StarSearchActivity"
             android:windowSoftInputMode="adjustPan"
@@ -207,9 +207,7 @@
         </activity>
         <activity android:name=".activity.fenTuan.PublishActivity">
         </activity>
-        <activity
-            android:name=".activity.MessageActivity"
-            />
+        <activity android:name=".activity.MessageActivity"/>
         <activity
             android:name=".activity.setting.PersonalInfoActivity"
             android:launchMode="singleTask"
@@ -278,9 +276,7 @@
         </activity>
         <activity android:name=".activity.yuyue.MyYuYueActivity">
         </activity>
-        <activity
-            android:name=".activity.huodong.FaBuHuoDongActivity"
-            >
+        <activity android:name=".activity.huodong.FaBuHuoDongActivity">
         </activity>
         <activity
             android:name=".activity.huodong.HuoDongCatgoryActivity"
@@ -467,6 +463,11 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.PlayerActivity">
+        </activity>
+        <activity android:name=".activity.PlayerListActivity">
+        </activity>
     </application>
 
 </manifest>

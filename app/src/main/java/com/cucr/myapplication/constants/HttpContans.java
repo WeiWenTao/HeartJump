@@ -18,10 +18,10 @@ public class HttpContans {
     public static final String LOGO_ADDRESS = HttpContans.HOST + "/static/512.png";
 
     //线上环境
-    public static final String HOST = "http://www.cucrxt.com";
+//    public static final String HOST = "http://www.cucrxt.com";
 
     //测试环境
-//    public static final String HOST = "http://192.168.1.147:8081";
+    public static final String HOST = "http://192.168.1.147:8080";
 
     //splish
     public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";

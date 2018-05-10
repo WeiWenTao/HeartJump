@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
+import com.cucr.myapplication.activity.PlayerListActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
@@ -177,7 +178,7 @@ public class FragmentFans extends BaseFragment {
         initRlv();
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         initIndicator();
         initVp();
         queryMsg();
@@ -221,7 +222,6 @@ public class FragmentFans extends BaseFragment {
             }
         });
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN) //点击关注或取消关注时再查一遍
     public void notifyDatas(EventNotifyStarInfo event) {
@@ -493,7 +493,6 @@ public class FragmentFans extends BaseFragment {
                 ObjectAnimator transYAni_r = ObjectAnimator.ofFloat(iv_gift, "translationY",
                         1000f, 0f, 0f, 0f, -500f, -1000f, -1500f);
 
-
                 animSet_r.playTogether(scaleXAni_r, scaleYAni_r, alphaAni_r, transYAni_r);
                 animSet_r.setDuration(2600);
                 animSet_r.start();
@@ -594,6 +593,12 @@ public class FragmentFans extends BaseFragment {
         Intent intent = new Intent(mContext, TestWebViewActivity.class);
         intent.putExtra("url", mRowsBean.getWeiboUrl());
         startActivity(intent);
+    }
+
+    //跳转音乐播放
+    @OnClick(R.id.iv_player)
+    public void clickToPlayer(View iv_player) {
+        startActivity(new Intent(mContext, PlayerListActivity.class));
     }
 
 }

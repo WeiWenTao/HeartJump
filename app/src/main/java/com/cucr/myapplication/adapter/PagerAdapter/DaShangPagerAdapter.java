@@ -39,10 +39,12 @@ public class DaShangPagerAdapter extends PagerAdapter {
 
     public void setGiftInfos(FtGiftsInfo mFtGiftsInfo) {
         this.mFtGiftsInfo = mFtGiftsInfo;
+        notifyDataSetChanged();
     }
 
     public void setUserMoney(double userMoney) {
         this.userMoney = userMoney;
+        notifyDataSetChanged();
     }
 
     public void setBackpackInfos(FtBackpackInfo mFtBackpackInfo) {

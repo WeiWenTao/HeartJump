@@ -31,6 +31,9 @@ public class QueryBannerCore implements QueryHomeBanner {
 
     private Activity activity;
 
+    public QueryBannerCore() {
+    }
+
     public QueryBannerCore(Activity activity) {
         this.activity = activity;
     }
@@ -59,13 +62,13 @@ public class QueryBannerCore implements QueryHomeBanner {
 
         @Override
         public void onSucceed(int what, Response<String> response) {
-            MyLogger.jLog().i("banner:"+response.isFromCache());
+            MyLogger.jLog().i("banner:" + response.isFromCache());
             commonListener.onRequestSuccess(response);
         }
 
         @Override
         public void onFailed(int what, Response<String> response) {
-            HttpExceptionUtil.showTsByException(response, activity);
+            HttpExceptionUtil.showTsByException(response, null);
         }
 
         @Override

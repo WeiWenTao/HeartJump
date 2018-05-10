@@ -138,7 +138,7 @@ public class MineFragment extends BaseFragment {
         showAndHide();  //分配权限
 //        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         queryInfos();
 
         mIntent = new Intent();

@@ -74,7 +74,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
             }
         });
         UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         //如果是企业用户
        /* if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
             //跳转企业用户看的明星主页

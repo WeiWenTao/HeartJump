@@ -18,7 +18,7 @@
             android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@color/zise"
+            android:background="@color/white"
             android:fitsSystemWindows="true"
             >
 

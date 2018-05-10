@@ -59,7 +59,7 @@ public class FragmentHuoDongAndFuLi extends BaseFragment {
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
         UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         initVP();
     }
 

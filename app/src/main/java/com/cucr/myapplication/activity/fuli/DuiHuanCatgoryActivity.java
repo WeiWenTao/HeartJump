@@ -37,7 +37,7 @@ public class DuiHuanCatgoryActivity extends Activity {
     @ViewInject(R.id.head)
     private RelativeLayout head;
 
-    //    private int[] mImgs ={R.mipmap.test1,R.mipmap.test2,R.mipmap.test3,R.mipmap.test4,R.mipmap.test5,R.mipmap.test6,R.mipmap.test7
+//    private int[] mImgs ={R.mipmap.test1,R.mipmap.test2,R.mipmap.test3,R.mipmap.test4,R.mipmap.test5,R.mipmap.test6,R.mipmap.test7
 //            ,R.mipmap.test8,R.mipmap.test9,R.mipmap.test10,R.mipmap.test11,R.mipmap.test12,R.mipmap.test13,R.mipmap.test14,R.mipmap.test15
 //            ,R.mipmap.test16,R.mipmap.test17,R.mipmap.test18,R.mipmap.test19,R.mipmap.test20,R.mipmap.test21,R.mipmap.test22,R.mipmap.test23};
 //    private int[] mImgs = new int[20];
@@ -140,7 +140,6 @@ public class DuiHuanCatgoryActivity extends Activity {
             head.setLayoutParams(layoutParams);
             head.requestLayout();
         }
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();

@@ -28,7 +28,7 @@ import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
 import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
-import com.cucr.myapplication.fragment.home.FragmentHotAndFocusNews;
+import com.cucr.myapplication.fragment.home.FragmentHomePage;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
 import com.cucr.myapplication.fragment.yuyue.ApointmentFragmentA;
@@ -73,7 +73,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
+        initUMcount();
         initIM();
         qucryCore = new QueryPersonalMsgCore();
         //获取从 我的-明星-右上角加关注 界面跳转过来的数据
@@ -88,6 +89,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);
+    }
+
+    private void initUMcount() {
+//        当用户使用自有账号登录时，可以这样统计：
+        MobclickAgent.onProfileSignIn((String) SpUtil.getParam(SpConstant.USER_NAEM, ""));
     }
 
     private void CheckUpData() {
@@ -194,7 +200,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private void initView() {
         mFragments = new ArrayList<>();
 //        mFragments.add(new HomeHotFragment());            //首页
-        mFragments.add(new FragmentHotAndFocusNews());   //首页
+        mFragments.add(new FragmentHomePage());   //首页
         mFragments.add(new FragmentHuoDongAndFuLi());    //福利
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的
@@ -251,6 +257,10 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             ToastUtils.showToast("再按一次就要退出啦");
             firstTime = secondTime;
         } else {
+
+            //登出
+            MobclickAgent.onProfileSignOff();
+
             Intent intent = new Intent(MyApplication.getInstance(), SplishActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

@@ -145,6 +145,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         queryCore = new QueryFtInfoCore();
         mPayCenterCore = new PayCenterCore();
         mGson = MyApplication.getGson();
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
         //view的复用
         if (view == null) {
             view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
@@ -220,7 +221,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         queryBackpack();
     }
 
-    //查询粉团 点击明星列表的时候发送 starid
+//查询粉团 点击明星列表的时候发送 starid
 //    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
 //    public void onEvents(EventXwStarId event) {
 //        starId = event.getStarId();

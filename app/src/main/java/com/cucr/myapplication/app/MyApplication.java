@@ -10,6 +10,7 @@ import android.support.multidex.MultiDex;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cucr.myapplication.BuildConfig;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.throwableCatch.Cockroach;
@@ -29,6 +30,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.yanzhenjie.nohttp.InitializationConfig;
+import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
@@ -89,8 +91,8 @@ public class MyApplication extends Application {
 
         _instance = this;
 
-//        Logger.setDebug(BuildConfig.DEBUG);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
-//        Logger.setTag("NoHttpDeBug");// 设置NoHttp打印Log的tag。
+        Logger.setDebug(BuildConfig.DEBUG);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
+        Logger.setTag("NoHttpDeBug");// 设置NoHttp打印Log的tag。
 
         // 一般情况下你只需要这样初始化：
 //        NoHttp.initialize(this);Headers.HEAD_VALUE_CONTENT_TYPE_OCTET_STREAM
