@@ -159,7 +159,7 @@ public class HomeCommonFragment extends LazyFragment implements SwipeRecyclerVie
     }
 
     @OnClick(R.id.ll_error)
-    public void refreshAgain(View view) {
+    public void refres(View view) {
         needShowLoading = true;
         onRefresh();
     }

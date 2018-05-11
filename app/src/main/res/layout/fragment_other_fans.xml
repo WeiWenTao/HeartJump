@@ -18,7 +18,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="275dp"
             >
 
             <RelativeLayout
@@ -167,21 +167,67 @@
 
             </RelativeLayout>
 
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/magic_indicator_personal_page"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+
+                >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_catgory"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_dot1"
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:padding="7dp"
+                        android:src="@drawable/cricle_sel"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_dot2"
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_toRightOf="@id/iv_dot1"
+                        android:padding="7dp"
+                        android:src="@drawable/cricle_nor_ccc"
+                        />
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </android.support.design.widget.AppBarLayout>
 
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+        <com.cucr.myapplication.widget.stateLayout.MultiStateView
+            android:id="@+id/multiStateView"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+            app:msv_animateViewChanges="true"
+            app:msv_emptyView="@layout/empty_common"
+            app:msv_errorView="@layout/error_view"
+            app:msv_loadingView="@layout/loading_view"
+            >
+
+            <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+                android:id="@+id/rlv_xingwen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </com.cucr.myapplication.widget.stateLayout.MultiStateView>
+
 
     </android.support.design.widget.CoordinatorLayout>
 

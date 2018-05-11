@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.fansCatgory.HytActivity"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/activity_base_title"/>
+
+    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlv_hyt"
+        android:background="@color/white"
+        />
+
+
+</LinearLayout>

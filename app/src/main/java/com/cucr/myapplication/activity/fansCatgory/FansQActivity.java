@@ -1,10 +1,10 @@
-package com.cucr.myapplication.fragment.star;
+package com.cucr.myapplication.activity.fansCatgory;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
@@ -31,8 +33,7 @@ import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
 import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
-import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
-import com.cucr.myapplication.bean.eventBus.EventStarId;
+import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
 import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
 import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
@@ -43,7 +44,6 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
-import com.cucr.myapplication.fragment.LazyFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
@@ -57,6 +57,7 @@ import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -67,10 +68,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import toan.android.floatingactionmenu.FloatingActionButton;
 import toan.android.floatingactionmenu.FloatingActionsMenu;
 
-/**
- * Created by 911 on 2017/6/24.
- */
-public class Fragment_star_fentuan extends LazyFragment implements View.OnClickListener, SwipeRecyclerView.OnLoadListener, FtAdapter.OnClickBt, RequersCallBackListener {
+public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, SwipeRecyclerView.OnLoadListener, View.OnClickListener, RequersCallBackListener {
 
     //礼物
     @ViewInject(R.id.tv_gift)
@@ -84,10 +82,17 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     @ViewInject(R.id.vp_dahsnag)
     private NoScrollPager vp_dahsnag;
 
+    //根布局
+    @ViewInject(R.id.view)
+    private View view;
+
+    //礼物动画
+    @ViewInject(R.id.iv_gift)
+    private ImageView iv_gift;
+
     //填充布局
     private MultiStateView multiStateView;
     private PayCenterCore mPayCenterCore;
-    private View view;
     private Context mContext;
     private FloatingActionsMenu mFam;
     private FloatingActionButton action_a, action_b;
@@ -103,7 +108,6 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     private FtAdapter mAdapter;
     private int giveNum;
     private int position = -1;
-    private LayoutInflater layoutInflater;
     private PopupWindow popWindow;
     private DaShangPagerAdapter mDaShangPagerAdapter;
     private DialogShareStyle mDialog;
@@ -111,36 +115,26 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     private boolean isRefresh;
     private boolean needShowLoading;
 
-    @Override
-    protected void onFragmentFirstVisible() {
 
+    @Override
+    protected void initChild() {
+        initTitle("fans圈");
+        init();
         initView();
         initRlV();
         inipopWindow();
         initInfos();
-
-        //如果是企业用户  进页面的时候就查一遍
-//        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
-//            starId = qYStarId;
         onRefresh();
-//        }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    private void init() {
         needShowLoading = true;  //进入页面的时候显示(仅一次)
         mContext = MyApplication.getInstance();
-        this.layoutInflater = inflater;
         queryCore = new QueryFtInfoCore();
         mPayCenterCore = new PayCenterCore();
         mGson = MyApplication.getGson();
         mDaShangPagerAdapter = new DaShangPagerAdapter();
-        //view的复用
-        if (view == null) {
-            view = inflater.inflate(R.layout.item_other_fans_fentuan, container, false);
-        }
-        return view;
+        starId = getIntent().getIntExtra("starId", -1);
     }
 
     @Override
@@ -153,6 +147,12 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
     public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);//取消订阅
+    }
+
+
+    @Override
+    protected int getChildRes() {
+        return R.layout.activity_fans_q;
     }
 
     private void initInfos() {
@@ -211,52 +211,17 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
         queryBackpack();
     }
 
-//查询粉团 点击明星列表的时候发送 starid
-//    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
-//    public void onEvents(EventXwStarId event) {
-//        starId = event.getStarId();
-//        MyLogger.jLog().i("EventStarId：" + starId);
-//        queryFtInfo();
-//    }
-
-    //切换明星的时候
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onDataSynEvent(EventStarId event) {
-        starId = event.getStarId();
-        needShowLoading = true;
-        page = 1;
-        rlv_fentuan.onLoadingMore();
-        if (queryCore == null) {
-            queryCore = new QueryFtInfoCore();
-        }
-        onRefresh();
-    }
-
-    //查询第一个明星
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true) //在ui线程执行
-    public void onDataSynEvent(EventFIrstStarId event) {
-        starId = event.getFirstId();
-        MyLogger.jLog().i("EventStarId：" + starId);
-        if (queryCore == null) {
-            queryCore = new QueryFtInfoCore();
-        }
-        if (starId != event.getFirstId()) {
-            onRefresh();
-        }
-//        EventBus.getDefault().removeStickyEvent(event);
-    }
-
     private void initRlV() {
         LinearLayoutManager layout = new LinearLayoutManager(mContext);
         rlv_fentuan.getRecyclerView().setLayoutManager(layout);
-        mAdapter = new FtAdapter(getActivity());
+        mAdapter = new FtAdapter(this);
         rlv_fentuan.setAdapter(mAdapter);
         mAdapter.setOnClickBt(this);
 
         rlv_test.setLayoutManager(new LinearLayoutManager(mContext));
         rlv_test.setAdapter(mAdapter);
 
-        mDialog = new DialogShareStyle(getActivity(), R.style.MyDialogStyle);
+        mDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
         Window window = mDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
@@ -386,7 +351,7 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
 
     private void inipopWindow() {
         if (popWindow == null) {
-            View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
+            View view = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.popupwindow_dashang, null);
             ViewUtils.inject(this, view);
             popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         }
@@ -438,14 +403,13 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
             rowsBean.setIsGiveUp(true);
             rowsBean.setGiveUpCount(giveNum);
         }
-        mAdapter.notifyDataSetChanged();
 
         queryCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (commonRebackMsg.isSuccess()) {
-
+                    mAdapter.notifyDataSetChanged();
                 } else {
 //                    ToastUtils.showToast(commonRebackMsg.getMsg());
                 }
@@ -576,4 +540,99 @@ public class Fragment_star_fentuan extends LazyFragment implements View.OnClickL
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(EventRewardGifts event) {
+        MyLogger.jLog().i("打赏动画");
+        iv_gift.setVisibility(View.VISIBLE);
+        MyLogger.jLog().i(event);
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + event.getGiftPic(), iv_gift);
+
+        switch (event.getGiftId()) {
+
+            case Constans.GIFT_KISS:      //么么哒
+                iv_gift.clearAnimation();
+                AnimatorSet mAnimSet = new AnimatorSet();
+                ObjectAnimator scaleXAni = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        0f, 1.4f, 1f, 1f, 1.08f, 1.15f, 1.23f, 1.3f, 1.38f, 1.45f, 1.53f, 1.6f, 1.68f, 1.75f, 1.83f, 1.9f, 1.98f, 2.05f, 2.13f, 2.2f);
+
+                ObjectAnimator scaleYAni = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        0f, 1.4f, 1f, 1f, 1.08f, 1.15f, 1.23f, 1.3f, 1.38f, 1.45f, 1.53f, 1.6f, 1.68f, 1.75f, 1.83f, 1.9f, 1.98f, 2.05f, 2.13f, 2.2f);
+
+                ObjectAnimator alphaAni = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        1f, 1f, 1f, 1f, 0.94f, 0.88f, 0.82f, 0.76f, 0.7f, 0.64f, 0.58f, 0.52f, 0.46f, 0.4f, 0.34f, 0.28f, 0.22f, 0.16f, 0.1f, 0f);
+
+                ObjectAnimator transYAni = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        0f, 0f);
+
+                mAnimSet.playTogether(scaleXAni, scaleYAni, alphaAni, transYAni);
+                mAnimSet.setDuration(2000);
+                mAnimSet.start();
+                break;
+
+            case Constans.GIFT_666:       //666
+                AnimatorSet animSet_666 = new AnimatorSet();
+                ObjectAnimator scaleXAni_666 = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.8f, 2.0f);
+
+                ObjectAnimator scaleYAni_666 = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.8f, 2.0f);
+
+                ObjectAnimator alphaAni_666 = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.7f, 0.4f, 0.3f, 0f);
+
+                ObjectAnimator rotateAni_666 = ObjectAnimator.ofFloat(iv_gift, "rotation",
+                        0f, 0f, 0f, 0f, 25f, 0f, 15f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+                ObjectAnimator transYAni_666 = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        -1000f, 0f, 0f, 0f, 0f, 0f, 0f, -200f, -400f);
+
+                animSet_666.playTogether(scaleXAni_666, scaleYAni_666, alphaAni_666, rotateAni_666, transYAni_666);
+                animSet_666.setDuration(2000);
+                animSet_666.start();
+                break;
+
+            case Constans.GIFT_DIAMON:    //钻石
+                AnimatorSet animSet_diamon = new AnimatorSet();
+                ObjectAnimator scaleXAni_diamon = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.6f, 1.7f, 1.8f, 1.9f, 2.0f);
+
+                ObjectAnimator scaleYAni_diamon = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.6f, 1.7f, 1.8f, 1.9f, 2.0f);
+
+                ObjectAnimator alphaAni_diamon = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        0f, 0.3f, 1f, 1f, 1f, 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
+
+                ObjectAnimator rotateAni_diamon = ObjectAnimator.ofFloat(iv_gift, "rotation",
+                        0f, 20f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+                ObjectAnimator transYAni_diamon = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        0f, -20f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+                animSet_diamon.playTogether(scaleXAni_diamon, scaleYAni_diamon, alphaAni_diamon, rotateAni_diamon, transYAni_diamon);
+                animSet_diamon.setDuration(2000);
+                animSet_diamon.start();
+                break;
+
+            case Constans.GIFT_ROCKET:    //火箭
+                AnimatorSet animSet_r = new AnimatorSet();
+                ObjectAnimator scaleXAni_r = ObjectAnimator.ofFloat(iv_gift, "scaleX",
+                        1f, 2f, 2f, 2f, 2f, 2f, 1.5f, 0.8f);
+
+                ObjectAnimator scaleYAni_r = ObjectAnimator.ofFloat(iv_gift, "scaleY",
+                        1f, 2f, 2f, 2f, 2f, 2f, 1.5f, 0.8f);
+
+                ObjectAnimator alphaAni_r = ObjectAnimator.ofFloat(iv_gift, "alpha",
+                        1f, 1f, 1f, 0.5f, 1f, 0.7f, 1f, 1f, 1f);
+
+                ObjectAnimator transYAni_r = ObjectAnimator.ofFloat(iv_gift, "translationY",
+                        1000f, 0f, 0f, 0f, -500f, -1000f, -1500f);
+
+                animSet_r.playTogether(scaleXAni_r, scaleYAni_r, alphaAni_r, transYAni_r);
+                animSet_r.setDuration(2600);
+                animSet_r.start();
+                break;
+        }
+    }
+
 }

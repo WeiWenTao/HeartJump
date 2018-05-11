@@ -157,7 +157,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
             mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
             percent = 4.0f;
         }
-        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(mStarId), "粉团"));
+        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(), "粉团"));
         mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
 
         //背景

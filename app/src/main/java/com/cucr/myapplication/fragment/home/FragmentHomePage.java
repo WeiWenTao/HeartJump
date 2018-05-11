@@ -69,8 +69,6 @@ public class FragmentHomePage extends BaseFragment implements OnItemClickListene
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
-        //设置状态栏字体颜色
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         mCore = new QueryBannerCore();

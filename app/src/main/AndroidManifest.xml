@@ -468,6 +468,14 @@
         </activity>
         <activity android:name=".activity.PlayerListActivity">
         </activity>
+        <activity android:name=".activity.fansCatgory.FansQActivity">
+        </activity>
+        <activity android:name=".activity.fansCatgory.ShuJuActivity">
+        </activity>
+        <activity android:name=".activity.fansCatgory.HytActivity">
+        </activity>
+        <activity android:name=".activity.fansCatgory.JourneyActivity">
+        </activity>
     </application>
 
 </manifest>

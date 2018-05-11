@@ -16,6 +16,7 @@ import java.util.List;
 public class StarPagerAdapter extends FragmentPagerAdapter {
     List<FragmentInfos> fragmentInfos;
 
+
     public StarPagerAdapter(FragmentManager fm, List<FragmentInfos> fragmentInfos) {
         super(fm);
         this.fragmentInfos = fragmentInfos;

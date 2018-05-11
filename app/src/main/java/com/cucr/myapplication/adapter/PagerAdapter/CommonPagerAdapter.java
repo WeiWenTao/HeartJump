@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Created by 911 on 2017/5/19.
- *
+ * <p>
  * 粉团页面的pagerAdapter
  */
 
@@ -37,6 +37,9 @@ public class CommonPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        if (tytles == null) {
+            return "";
+        }
         return tytles.get(position);
     }
 }

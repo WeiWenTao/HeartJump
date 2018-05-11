@@ -2,22 +2,18 @@ package com.cucr.myapplication.fragment.other;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,50 +23,44 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.PlayerListActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
+import com.cucr.myapplication.activity.fansCatgory.FansQActivity;
+import com.cucr.myapplication.activity.fansCatgory.HytActivity;
+import com.cucr.myapplication.activity.fansCatgory.JourneyActivity;
+import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
-import com.cucr.myapplication.adapter.PagerAdapter.StarPagerAdapter;
+import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.eventBus.EventFIrstStarId;
 import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
-import com.cucr.myapplication.bean.eventBus.EventStarId;
-import com.cucr.myapplication.bean.others.FragmentInfos;
+import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
-import com.cucr.myapplication.fragment.star.Fragment_star_fentuan;
-import com.cucr.myapplication.fragment.star.Fragment_star_shuju;
-import com.cucr.myapplication.fragment.star.Fragment_star_xingcheng;
-import com.cucr.myapplication.fragment.star.Fragment_star_xingwen;
+import com.cucr.myapplication.fragment.star.Fragment_fans_one;
+import com.cucr.myapplication.fragment.star.Fragment_fans_two;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.temp.ColorFlipPagerTitleView;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
-
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.UIUtil;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,15 +75,19 @@ import java.util.List;
  * 粉丝看的
  */
 
-public class FragmentFans extends BaseFragment {
-
-    //头部
-    @ViewInject(R.id.head)
-    private RelativeLayout head;
+public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLoadListener, RequersCallBackListener, ViewPager.OnPageChangeListener, Fragment_fans_one.OnClickCatgoryOne, Fragment_fans_two.OnClickCatgoryTwo {
 
     //点击显示下拉菜单
     @ViewInject(R.id.ll_show_stars)
     private LinearLayout ll_show_stars;
+
+    //vp指示器1
+    @ViewInject(R.id.iv_dot1)
+    private ImageView iv_dot1;
+
+    //vp指示器2
+    @ViewInject(R.id.iv_dot2)
+    private ImageView iv_dot2;
 
     //点击显示下拉菜单 旋转图标
     @ViewInject(R.id.iv_icon_unfold)
@@ -111,13 +105,13 @@ public class FragmentFans extends BaseFragment {
     @ViewInject(R.id.bg)
     private View bg;
 
-    //ViewPager
-    @ViewInject(R.id.viewpager)
-    private ViewPager mViewPager;
+    //新闻列表
+    @ViewInject(R.id.rlv_xingwen)
+    private SwipeRecyclerView rlv_news;
 
-    //指示器
-    @ViewInject(R.id.magic_indicator_personal_page)
-    private MagicIndicator magicIndicator;
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     //粉丝数量
     @ViewInject(R.id.tv_fans)
@@ -143,7 +137,9 @@ public class FragmentFans extends BaseFragment {
     @ViewInject(R.id.iv_weib)
     private ImageView iv_weib;
 
-    private List<FragmentInfos> mDataList;
+    //频道分类
+    @ViewInject(R.id.vp_catgory)
+    private ViewPager vp_catgory;
 
     //是否需要显示
     private boolean isShow = true;
@@ -153,11 +149,17 @@ public class FragmentFans extends BaseFragment {
     private QueryStarListCore mStarCore;
     private int page = 1;
     private int rows = 100;
+    private int newsPage;
+    private int newsRows;
     private int type = 2;
-    private float percent;//占屏比
     private Intent mIntent;
     private int mStarId;
     private StarListInfos.RowsBean mRowsBean;
+    private boolean needShowLoading;
+    private QueryFtInfoCore mNewsCore;
+    private boolean isRefresh;
+    private XingWenAdapter newsAdapter;
+    private List<Fragment> mDataList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -171,18 +173,43 @@ public class FragmentFans extends BaseFragment {
         ViewUtils.inject(this, childView);
         mStarCore = new QueryStarListCore();
         mCore = new QueryFocus();
-        percent = 3.0f;
+        mNewsCore = new QueryFtInfoCore();
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        initRlv();
-//        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
-        initIndicator();
-        initVp();
+        initRlv();
+        initCatgory();
         queryMsg();
         mAdapter.setPosition(0);
+        initNewsInfo();
+    }
+
+    private void initCatgory() {
+        mDataList = new ArrayList<>();
+        Fragment_fans_one catgoryOne = new Fragment_fans_one();
+        Fragment_fans_two catgoryTwo = new Fragment_fans_two();
+        mDataList.add(catgoryOne);
+        mDataList.add(catgoryTwo);
+        catgoryOne.setOnClickCatgoryOne(this);
+        catgoryTwo.setOnClickCatgoryTwo(this);
+        vp_catgory.setAdapter(new CommonPagerAdapter(getFragmentManager(), mDataList, null));
+        vp_catgory.addOnPageChangeListener(this);
+    }
+
+    private void initNewsInfo() {
+        newsAdapter = new XingWenAdapter();
+        newsPage = 1;
+        newsRows = 20;
+        needShowLoading = true;
+        //分割线
+        DividerItemDecoration decor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        decor.setDrawable(getResources().getDrawable(R.drawable.divider_bg));
+        rlv_news.getRecyclerView().addItemDecoration(decor);
+        rlv_news.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
+        rlv_news.setAdapter(newsAdapter);
+        rlv_news.setOnLoadListener(this);
+        rlv_news.onLoadingMore();
     }
 
 
@@ -229,20 +256,6 @@ public class FragmentFans extends BaseFragment {
         mAdapter.setPosition(0);//设置第一个被勾选
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        queryMsg();
-//        mAdapter.setPosition(0);
-//        MyLogger.jLog().i("onActivityResult");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getDefault().postSticky(new EventFIrstStarId(mStarId));
-    }
-
     private void queryMsg() {
         //TODO: 2017/12/4   刷新和加载
         mCore.queryMyFocusStars(-1, 1, 100, new RequersCallBackListener() {
@@ -263,11 +276,11 @@ public class FragmentFans extends BaseFragment {
                     if (mRows == null || mRows.size() == 0) {
                         return;
                     }
+
                     //默认查询第一个明星数据
-                    int id = mRows.get(0).getStart().getId();
-                    EventBus.getDefault().postSticky(new EventFIrstStarId(id));
-                    mStarId = id;
+                    mStarId = mRows.get(0).getStart().getId();
                     initDatas(mStarId);
+                    onRefresh();
                 } else {
                     ToastUtils.showToast(mContext, Info.getErrorMsg());
                 }
@@ -300,8 +313,8 @@ public class FragmentFans extends BaseFragment {
                 mStarId = mRows.get(position).getStart().getId();
                 initDatas(mStarId);
                 initDrawer(false);
-                //eventBus传递数据
-                EventBus.getDefault().post(new EventStarId(mRows.get(position).getStart().getId()));
+                needShowLoading = true;
+                onRefresh();
             }
 
             @Override
@@ -317,93 +330,6 @@ public class FragmentFans extends BaseFragment {
     @Override
     protected boolean needHeader() {
         return false;
-    }
-
-    private void initVp() {
-        mViewPager.setAdapter(new StarPagerAdapter(getFragmentManager(), mDataList));
-        mViewPager.setOffscreenPageLimit(3);
-    }
-
-    //初始化标签栏
-    private void initIndicator() {
-
-        mDataList = new ArrayList<>();
-        mDataList.add(new FragmentInfos(new Fragment_star_xingwen(), "星闻"));
-        //------------------------------------------------------------------------------------------
-        if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR) {
-            percent = 4.0f;
-            mDataList.add(new FragmentInfos(new Fragment_star_shuju(), "数据"));
-        }
-        //------------------------------------------------------------------------------------------
-        //这里随便传个数 粉团的有参构造 StarPagerForQiYeActivity_111界面用
-        mDataList.add(new FragmentInfos(new Fragment_star_fentuan(-1), "粉团"));
-        mDataList.add(new FragmentInfos(new Fragment_star_xingcheng(), "行程"));
-
-
-        //背景
-        magicIndicator.setBackgroundColor(Color.parseColor("#fafafa"));
-        CommonNavigator commonNavigator7 = new CommonNavigator(mContext);
-        commonNavigator7.setScrollPivotX(0.5f);
-        commonNavigator7.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return mDataList == null ? 0 : mDataList.size();
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, final int index) {
-                SimplePagerTitleView simplePagerTitleView = new ColorFlipPagerTitleView(context, percent);
-                simplePagerTitleView.setText(mDataList.get(index).getTitle());
-                simplePagerTitleView.setNormalColor(Color.parseColor("#bfbfbf"));
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#ff4f49"));
-                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mViewPager.setCurrentItem(index);
-                    }
-                });
-                return simplePagerTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
-                indicator.setLineHeight(UIUtil.dip2px(context, 4));
-                indicator.setLineWidth(UIUtil.dip2px(context, 18));
-                indicator.setRoundRadius(UIUtil.dip2px(context, 2));
-                indicator.setStartInterpolator(new AccelerateInterpolator());
-                indicator.setEndInterpolator(new DecelerateInterpolator(2.0f));
-                indicator.setColors(Color.parseColor("#ff4f49"));
-                return indicator;
-            }
-        });
-
-        magicIndicator.setNavigator(commonNavigator7);
-        ViewPagerHelper.bind(magicIndicator, mViewPager);
-
-    }
-
-    //沉浸栏
-    private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(mContext, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getActivity().getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -601,4 +527,164 @@ public class FragmentFans extends BaseFragment {
         startActivity(new Intent(mContext, PlayerListActivity.class));
     }
 
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
+
+    }
+
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        rlv_news.onLoadingMore();
+        mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        QueryFtInfos newsInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
+        if (newsInfos.isSuccess()) {
+            if (isRefresh) {
+                if (newsInfos.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    newsAdapter.setData(newsInfos);
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                }
+            } else {
+                newsAdapter.addData(newsInfos.getRows());
+            }
+            if (newsInfos.getTotal() <= page * rows) {
+                rlv_news.onNoMore("没有更多了");
+            } else {
+                rlv_news.complete();
+            }
+        } else {
+            ToastUtils.showToast(newsInfos.getErrorMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+        if (needShowLoading && isRefresh) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+        if (rlv_news.isRefreshing()) {
+            rlv_news.getSwipeRefreshLayout().setRefreshing(false);
+        }
+        if (rlv_news.isLoadingMore()) {
+            rlv_news.stopLoadingMore();
+        }
+    }
+
+    @OnClick(R.id.ll_error)
+    public void refres(View view) {
+        needShowLoading = true;
+        onRefresh();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        setIndecator(position == 0);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private void setIndecator(boolean isOne) {
+        iv_dot1.setImageResource(isOne ? R.drawable.cricle_sel : R.drawable.cricle_nor_ccc);
+        iv_dot2.setImageResource(isOne ? R.drawable.cricle_nor_ccc : R.drawable.cricle_sel);
+    }
+
+    @OnClick(R.id.iv_dot1)
+    public void clickOneDot(View view) {
+        vp_catgory.setCurrentItem(0);
+    }
+
+    @OnClick(R.id.iv_dot2)
+    public void clickOneTwo(View view) {
+        vp_catgory.setCurrentItem(1);
+    }
+
+    //粉丝圈
+    @Override
+    public void onClickFanQ() {
+        Intent intent = new Intent(mContext, FansQActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //数据
+    @Override
+    public void onClickShuJu() {
+        Intent intent = new Intent(mContext, ShuJuActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //后援团
+    @Override
+    public void onClickHYT() {
+        Intent intent = new Intent(mContext, HytActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //图片墙
+    @Override
+    public void onClickTPQ() {
+        Intent intent = new Intent(mContext, PhotosAlbumActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //行程
+    @Override
+    public void onClickjourney() {
+        Intent intent = new Intent(mContext, JourneyActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //关于Ta
+    @Override
+    public void onClickAbout() {
+
+    }
+
+    //应援众筹
+    @Override
+    public void onClickYyzc() {
+
+    }
+
+    //微博
+    @Override
+    public void onClickWeiBo() {
+        Intent intent = new Intent(mContext, TestWebViewActivity.class);
+        intent.putExtra("url", mRowsBean.getWeiboUrl());
+        startActivity(intent);
+    }
 }
