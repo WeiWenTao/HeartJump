@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_setting"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.setting.SettingActivity"
     >
 
@@ -13,15 +14,16 @@
 
     <RelativeLayout
         android:id="@+id/rl_account_manager"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="51dp"
+        android:background="@color/white"
         >
 
         <TextView
             style="@style/Setting_tv"
             android:text="账号管理"
             />
+
         <ImageView
             style="@style/My_Arrow"
             android:src="@drawable/icon_more"
@@ -33,52 +35,57 @@
 
     <RelativeLayout
         android:id="@+id/rl_account_safe"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="51dp"
+        android:background="@color/white"
         >
 
         <TextView
             style="@style/Setting_tv"
             android:text="账号安全"
             />
+
         <ImageView
             style="@style/My_Arrow"
             android:src="@drawable/icon_more"
             />
+
         <include layout="@layout/horizontal_line_for10dp"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_above_us"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="51dp"
+        android:background="@color/white"
         >
 
         <TextView
             style="@style/Setting_tv"
             android:text="关于我们"
             />
+
         <ImageView
             style="@style/My_Arrow"
             android:src="@drawable/icon_more"
             />
+
         <include layout="@layout/horizontal_line_for10dp"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_clean_cache"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="51dp"
+        android:background="@color/white"
         >
 
         <TextView
             style="@style/Setting_tv"
             android:text="清除缓存"
             />
+
         <ImageView
             style="@style/My_Arrow"
             android:src="@drawable/icon_more"
@@ -89,15 +96,16 @@
 
     <RelativeLayout
         android:id="@+id/rl_exit"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="51dp"
+        android:background="@color/white"
         >
 
         <TextView
             style="@style/Setting_tv"
             android:text="退出"
             />
+
         <ImageView
             style="@style/My_Arrow"
             android:src="@drawable/icon_more"

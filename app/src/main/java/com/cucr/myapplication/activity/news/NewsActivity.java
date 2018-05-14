@@ -201,12 +201,10 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         ll_comment_good.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
     }
 
-
     @OnClick(R.id.iv_zan)
     public void zan_(View view) {
         zan(view);
     }
-
 
     //点赞时
     @OnClick(R.id.ll_goods)

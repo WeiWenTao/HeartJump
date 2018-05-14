@@ -23,10 +23,12 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.PlayerListActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
+import com.cucr.myapplication.activity.fansCatgory.AboutActivity;
 import com.cucr.myapplication.activity.fansCatgory.FansQActivity;
 import com.cucr.myapplication.activity.fansCatgory.HytActivity;
 import com.cucr.myapplication.activity.fansCatgory.JourneyActivity;
 import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
+import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
 import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
@@ -530,7 +532,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @Override
     public void onRefresh() {
         isRefresh = true;
-        page = 1;
+        newsPage = 1;
         mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
 
     }
@@ -538,7 +540,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @Override
     public void onLoadMore() {
         isRefresh = false;
-        page++;
+        newsPage++;
         rlv_news.onLoadingMore();
         mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
     }
@@ -671,13 +673,17 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     //关于Ta
     @Override
     public void onClickAbout() {
-
+        Intent intent = new Intent(mContext, AboutActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
     }
 
     //应援众筹
     @Override
     public void onClickYyzc() {
-
+        Intent intent = new Intent(mContext, YyzcActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
     }
 
     //微博

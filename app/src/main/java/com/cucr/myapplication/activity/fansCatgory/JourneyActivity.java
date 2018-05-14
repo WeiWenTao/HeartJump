@@ -3,7 +3,6 @@ package com.cucr.myapplication.activity.fansCatgory;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -27,7 +26,6 @@ public class JourneyActivity extends BaseActivity {
     private WheelView mWheelview;
     private MultiStateView multiStateView;
     private RecyclerView mRlv_journey;
-    private RecyclerView rlv_test;
     private QueryJourneyList mCore;
     private Gson mGson;
     private List<StarJourneyList.RowsBean> mRows;
@@ -51,14 +49,13 @@ public class JourneyActivity extends BaseActivity {
     }
 
     private void initView() {
-        starId = getIntent().getIntExtra("starId",-1);
+        starId = getIntent().getIntExtra("starId", -1);
         mCore = new QueryJourneyList();
         mGson = new Gson();
         mContext = MyApplication.getInstance();
         page = 1;
         rows = 10;
         mRlv_journey = (RecyclerView) findViewById(R.id.rlv_journey);
-        rlv_test = (RecyclerView) findViewById(R.id.rlv_test);
         mWheelview = (WheelView) findViewById(R.id.wheelview);
         multiStateView = (MultiStateView) findViewById(R.id.multiStateView);
         //设置单位（没啥用，设置属性的时候才有用 ）
@@ -75,10 +72,8 @@ public class JourneyActivity extends BaseActivity {
                     List<String> obj = starScheduleLIst.getObj();
                     mWheelview.setItems(obj);
                     if (obj != null && obj.size() > 0) {
-                        rlv_test.setVisibility(View.GONE);
                         queryJourneyByTime(0);
                     } else {
-                        rlv_test.setVisibility(View.VISIBLE);
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         return;
                     }
@@ -100,10 +95,6 @@ public class JourneyActivity extends BaseActivity {
         mRlv_journey.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new RlvPersonalJourneyAdapter(mContext, mRows);
         mRlv_journey.setAdapter(mAdapter);
-
-        rlv_test.setLayoutManager(new LinearLayoutManager(mContext));
-        rlv_test.setAdapter(mAdapter);
-
 
         mWheelview.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override

@@ -4,20 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.cucr.myapplication.activity.fansCatgory.HytActivity"
     android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.cucr.myapplication.activity.fansCatgory.AboutActivity"
+    android:fitsSystemWindows="true"
     >
 
     <include layout="@layout/activity_base_title"/>
-
-    <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rlv_hyt"
-        android:background="@color/white"
-        />
-
 
 </LinearLayout>

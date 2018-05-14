@@ -8,7 +8,7 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/bar_color"
         >
 
         <ImageView
@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
             android:text="更换头像"
-            android:textColor="@color/white"
+            android:textColor="@color/title_color"
             android:textSize="18sp"
             />
 

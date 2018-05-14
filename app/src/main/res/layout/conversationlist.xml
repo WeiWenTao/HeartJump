@@ -7,7 +7,7 @@
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/bar_color"
         >
 
 
@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/tv_title"
             style="@style/TitleStyle"
-            android:textColor="@color/xtred"
+            android:textColor="@color/title_color"
             android:text="我的私信"
             />
 

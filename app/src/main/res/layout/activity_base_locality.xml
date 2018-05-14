@@ -10,7 +10,7 @@
     >
 
     <RelativeLayout
-        android:background="@color/pink"
+        android:background="@color/bar_color"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         >

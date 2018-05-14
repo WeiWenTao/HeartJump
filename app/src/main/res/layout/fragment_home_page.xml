@@ -50,11 +50,13 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:background="@color/white"
+            android:layout_height="241dp"
+            android:background="#eee"
+            android:paddingBottom="1px"
             >
 
             <RelativeLayout
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
@@ -194,6 +196,7 @@
                 android:id="@+id/magic_indicator_personal_page"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 />
 
         </android.support.design.widget.AppBarLayout>

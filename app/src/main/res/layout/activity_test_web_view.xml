@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.TestWebViewActivity"
     >
 
@@ -14,7 +15,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="@dimen/titleBarHight"
-        android:background="@color/blue_black"
+        android:background="@color/white"
 
         >
 
@@ -37,6 +38,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
+
 
     </RelativeLayout>
 

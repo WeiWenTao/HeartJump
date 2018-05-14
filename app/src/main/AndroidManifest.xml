@@ -476,6 +476,10 @@
         </activity>
         <activity android:name=".activity.fansCatgory.JourneyActivity">
         </activity>
+        <activity android:name=".activity.fansCatgory.AboutActivity">
+        </activity>
+        <activity android:name=".activity.fansCatgory.YyzcActivity">
+        </activity>
     </application>
 
 </manifest>

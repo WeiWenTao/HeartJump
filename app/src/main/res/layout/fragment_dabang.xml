@@ -40,6 +40,9 @@
             android:paddingTop="10dp"
             android:src="@drawable/icon_msg"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
+
     </RelativeLayout>
 
     <com.cucr.myapplication.widget.refresh.RefreshLayout
