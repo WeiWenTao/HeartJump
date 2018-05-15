@@ -574,19 +574,19 @@ public class CommonUtils {
         return false;
     }
 
-    //获取身份信息
+    //是否是明星
     public static boolean isStar() {
         return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_STAR;
     }
 
-    //获取身份信息
+    //是否是企业
     public static boolean isQiYe() {
         return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE;
     }
 
-    //获取身份信息
+    //是否是普通用户
     public static boolean isFans() {
-        return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE;
+        return ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_COMMON_USER;
     }
 
     //根据积分获取头衔

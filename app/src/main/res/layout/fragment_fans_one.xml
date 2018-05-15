@@ -34,6 +34,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_shuju"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -127,6 +128,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="行程"
+            android:textColor="@color/color_666"
+            android:textSize="11sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_about"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="24dp"
+            android:src="@drawable/s_guanyu"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于Ta"
             android:textColor="@color/color_666"
             android:textSize="11sp"
             />

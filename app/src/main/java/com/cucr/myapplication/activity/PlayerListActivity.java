@@ -29,7 +29,7 @@ public class PlayerListActivity extends Activity implements Serializable {
         setContentView(R.layout.activity_player_list);
 
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         initData();
 
         ListView lv = (ListView) findViewById(R.id.lv);

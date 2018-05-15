@@ -22,11 +22,14 @@ import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
 import com.cucr.myapplication.bean.setting.BirthdayDate;
 import com.cucr.myapplication.bean.setting.LocationData;
+import com.cucr.myapplication.bean.user.LoadUserInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.editPersonalInfo.EditInfoCore;
 import com.cucr.myapplication.dao.CityDao;
+import com.cucr.myapplication.dao.DaoCore;
+import com.cucr.myapplication.gen.LoadUserInfosDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
@@ -107,6 +110,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
     private MyWaitDialog mWaitDialog;
     private Intent mIntent;
     private String mNickName;
+    private LoadUserInfosDao mUserDao;
 
     @Override
     protected void initChild() {
@@ -419,11 +423,22 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                 EventBus.getDefault().post(new EventQueryPersonalInfo());
                 RongIM.getInstance().refreshUserInfoCache(new UserInfo(((int) SpUtil.getParam(SpConstant.USER_ID, -1)) + "", mNickName, Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")));
                 setResult(111);
+                saveUserInfo();
                 finish();
             } else {
                 ToastUtils.showToast(msg.getMsg());
             }
         }
+    }
+
+    private void saveUserInfo() {
+        //先去数据库查询 用户id 唯一标识
+        mUserDao = DaoCore.getInstance().getUserDao();
+        LoadUserInfos unique = mUserDao.queryBuilder()
+                .where(LoadUserInfosDao.Properties.UserId.eq(SpUtil.getParam(SpConstant.USER_ID, -1))).build().unique();
+        unique.setName(et_nickname.getText().toString());
+        mUserDao.update(unique);
+
     }
 
     @Override

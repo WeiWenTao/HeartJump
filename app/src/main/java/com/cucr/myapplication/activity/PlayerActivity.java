@@ -2,11 +2,12 @@ package com.cucr.myapplication.activity;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.cleveroad.play_widget.PlayLayout;
 import com.cucr.myapplication.R;
+
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,13 @@ public class PlayerActivity extends AppCompatActivity implements PlayLayout.OnBu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+
         setContentView(R.layout.activity_player);
+
+        //沉浸栏
+        UltimateBar ultimateBar = new UltimateBar(this);
+        ultimateBar.setImmersionBar();
+
         initData();
 
         mPlayLayout = (PlayLayout) findViewById(R.id.revealView);

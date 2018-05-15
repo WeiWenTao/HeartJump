@@ -10,11 +10,11 @@
     >
 
     <RelativeLayout
-        android:fitsSystemWindows="true"
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/zise"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
         >
 
         <ImageView
@@ -28,12 +28,17 @@
             android:text="音乐作品"
             />
 
+        <include layout="@layout/horizontal_line_for_eee"/>
+
     </RelativeLayout>
 
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></ListView>
+        android:background="@color/white"
+        android:divider="#cccccc"
+        android:dividerHeight="1px"
+        />
 
 </LinearLayout>

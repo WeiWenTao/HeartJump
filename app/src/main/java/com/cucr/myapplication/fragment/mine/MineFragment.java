@@ -427,5 +427,4 @@ public class MineFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
-
 }

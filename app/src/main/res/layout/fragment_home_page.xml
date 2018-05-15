@@ -57,7 +57,7 @@
             <RelativeLayout
                 android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="203dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 >
 

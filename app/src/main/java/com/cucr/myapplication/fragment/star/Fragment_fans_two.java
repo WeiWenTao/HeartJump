@@ -1,10 +1,13 @@
 package com.cucr.myapplication.fragment.star;
 
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.fragment.BaseFragment;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 /**
@@ -13,9 +16,21 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 
 public class Fragment_fans_two extends BaseFragment {
 
+    @ViewInject(R.id.ll_about)
+    private LinearLayout ll_about;
+
+    @ViewInject(R.id.ll_temp)
+    private LinearLayout ll_temp;
+
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
+        initLayout();
+    }
+
+    private void initLayout() {
+        ll_about.setVisibility(CommonUtils.isQiYe() || CommonUtils.isStar() ? View.VISIBLE : View.GONE);
+        ll_temp.setVisibility(CommonUtils.isQiYe() || CommonUtils.isStar() ? View.GONE : View.VISIBLE);
     }
 
     @Override

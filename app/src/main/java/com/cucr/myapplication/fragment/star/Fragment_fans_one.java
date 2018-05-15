@@ -1,10 +1,13 @@
 package com.cucr.myapplication.fragment.star;
 
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.fragment.BaseFragment;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 /**
@@ -13,9 +16,28 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 
 public class Fragment_fans_one extends BaseFragment {
 
+    @ViewInject(R.id.ll_shuju)
+    private LinearLayout ll_shuju;
+
+    @ViewInject(R.id.ll_about)
+    private LinearLayout ll_about;
+
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
+        initLayout();
+    }
+
+    //根据身份显示不同频道
+    private void initLayout() {
+        if (CommonUtils.isQiYe() || CommonUtils.isStar()) {
+            ll_shuju.setVisibility(View.VISIBLE);
+            ll_about.setVisibility(View.GONE);
+        } else {
+            ll_shuju.setVisibility(View.GONE);
+            ll_about.setVisibility(View.VISIBLE);
+        }
+
 
     }
 
@@ -65,6 +87,13 @@ public class Fragment_fans_one extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.ll_about)
+    public void about(View view) {
+        if (mOnClickCatgoryOne != null) {
+            mOnClickCatgoryOne.onClickAbout_one();
+        }
+    }
+
     public interface OnClickCatgoryOne {
         void onClickFanQ();
 
@@ -75,6 +104,8 @@ public class Fragment_fans_one extends BaseFragment {
         void onClickTPQ();
 
         void onClickjourney();
+
+        void onClickAbout_one();
 
     }
 

@@ -670,7 +670,15 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         startActivity(intent);
     }
 
-    //关于Ta
+    //第一页的关于Ta(粉丝)
+    @Override
+    public void onClickAbout_one() {
+        Intent intent = new Intent(mContext, AboutActivity.class);
+        intent.putExtra("starId", mStarId);
+        startActivity(intent);
+    }
+
+    //关于Ta(企业或明星)
     @Override
     public void onClickAbout() {
         Intent intent = new Intent(mContext, AboutActivity.class);
