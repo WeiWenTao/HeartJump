@@ -20,7 +20,6 @@
             android:text="心跳互娱"
             />
 
-
         <ImageView
             android:id="@+id/iv_header_msg"
             android:layout_width="40dp"

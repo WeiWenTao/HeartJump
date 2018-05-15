@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.fuli.FragmentFuLi;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMHytInfo;
 import com.cucr.myapplication.bean.EditPersonalInfo.IMPersonalInfo;
@@ -28,7 +29,6 @@ import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.chat.ChatCore;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
 import com.cucr.myapplication.fragment.DaBang.DaBangFragment;
-import com.cucr.myapplication.fragment.fuLiHuoDong.FragmentHuoDongAndFuLi;
 import com.cucr.myapplication.fragment.home.FragmentHomePage;
 import com.cucr.myapplication.fragment.mine.MineFragment;
 import com.cucr.myapplication.fragment.other.FragmentFans;
@@ -204,7 +204,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         mFragments = new ArrayList<>();
 //        mFragments.add(new HomeHotFragment());            //首页
         mFragments.add(new FragmentHomePage());   //首页
-        mFragments.add(new FragmentHuoDongAndFuLi());    //福利
+        mFragments.add(new FragmentFuLi());    //福利
         mFragments.add(new DaBangFragment());            //打榜
         mFragments.add(new MineFragment());              //我的
 

@@ -1,16 +1,13 @@
-package com.cucr.myapplication.fragment.fuLiHuoDong;
+package com.cucr.myapplication.activity.fuli;
 
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.huodong.HuoDongCatgoryActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.ActivitysAdapter;
@@ -20,7 +17,6 @@ import com.cucr.myapplication.bean.eventBus.CommentEvent;
 import com.cucr.myapplication.bean.fuli.QiYeHuoDongInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
-import com.cucr.myapplication.fragment.LazyFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
@@ -28,7 +24,6 @@ import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -44,7 +39,7 @@ import java.util.List;
  * Created by cucr on 2017/9/8.
  */
 
-public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.OnLoadListener, ActivitysAdapter.ClickListener, RequersCallBackListener {
+public class HuoDongActivity extends BaseActivity implements SwipeRecyclerView.OnLoadListener, ActivitysAdapter.ClickListener, RequersCallBackListener {
 
     //活动列表
     @ViewInject(R.id.rlv_actives)
@@ -67,17 +62,6 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
     private List<QiYeHuoDongInfo.RowsBean> mRowBeans;
     private boolean isRefresh;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
-        if (mView == null) {
-            mView = inflater.inflate(R.layout.fragment_huo_dong, container, false);
-            ViewUtils.inject(this, mView);
-        }
-        return mView;
-    }
-
     private void initRLV() {
         mContext = MyApplication.getInstance();
         mCore = new HuoDongCore();
@@ -97,8 +81,8 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
         if (mCore != null) { //判断是否初始化
             mCore.stop();
@@ -126,12 +110,6 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
         page++;
         rlv_actives.onLoadingMore();
         mCore.queryActive(false, -1, page, rows, this);
-    }
-
-    @Override
-    protected void onFragmentFirstVisible() {
-        initRLV();
-        onRefresh();
     }
 
     @Override
@@ -257,5 +235,18 @@ public class FragmentHuoDong extends LazyFragment implements SwipeRecyclerView.O
                 rlv_actives.stopLoadingMore();
             }
         }
+    }
+
+    @Override
+    protected void initChild() {
+        EventBus.getDefault().register(this);
+        initTitle("企业活动");
+        initRLV();
+        onRefresh();
+    }
+
+    @Override
+    protected int getChildRes() {
+        return R.layout.active_huo_dong;
     }
 }

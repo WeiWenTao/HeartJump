@@ -81,6 +81,16 @@ public class FuLiCore implements QueryFuLi {
         mQueue.add(Constans.TYPE_THREE, request, callback);
     }
 
+    @Override
+    public void QueryFuLiBanner(RequersCallBackListener listener) {
+        this.listener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FULI_BANNER, RequestMethod.POST);
+        request.add(SpConstant.USER_ID, ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(mContext, request.getParamKeyValues()));
+
+        mQueue.add(Constans.TYPE_FORE, request, callback);
+    }
+
     //回调
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override

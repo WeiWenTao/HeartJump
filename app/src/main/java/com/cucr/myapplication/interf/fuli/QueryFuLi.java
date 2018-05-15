@@ -16,4 +16,6 @@ public interface QueryFuLi {
     void QueryHuoDong(int page, int rows, RequersCallBackListener listener);
 
     void QueryMyActive(int page, int rows, RequersCallBackListener listener);
+
+    void QueryFuLiBanner(RequersCallBackListener listener);
 }

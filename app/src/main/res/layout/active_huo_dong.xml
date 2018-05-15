@@ -7,7 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     >
+
+    <include layout="@layout/activity_base_title"/>
 
     <com.cucr.myapplication.widget.stateLayout.MultiStateView
         android:id="@+id/multiStateView"

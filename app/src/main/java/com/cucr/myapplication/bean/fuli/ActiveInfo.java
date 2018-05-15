@@ -70,11 +70,20 @@ public class ActiveInfo implements Serializable {
         private String createTime;
         private int createUserId;
         private String createUserName;
+        private String orderNo;
         private String endTime;
         private int id;
         private String locationUrl;
         private String picUrl;
         private String startTime;
+
+        public String getOrderNo() {
+            return orderNo;
+        }
+
+        public void setOrderNo(String orderNo) {
+            this.orderNo = orderNo;
+        }
 
         public String getActiveName() {
             return activeName;

@@ -1,33 +1,30 @@
-package com.cucr.myapplication.fragment.fuLiHuoDong;
+package com.cucr.myapplication.activity.fuli;
 
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.FuLiAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.Home.HomeBannerInfo;
 import com.cucr.myapplication.bean.fuli.ActiveInfo;
-import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.fuLi.FuLiCore;
+import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.SpUtil;
-import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -37,7 +34,8 @@ import java.util.List;
  * Created by cucr on 2017/9/1.
  */
 
-public class FragmentFuLi extends Fragment implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
+public class FragmentFuLi extends BaseFragment implements RequersCallBackListener, SwipeRecyclerView.OnLoadListener {
+
     //活动福利
     @ViewInject(R.id.rlv_fuli)
     private SwipeRecyclerView rlv_fuli;
@@ -46,9 +44,6 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
 
-    private View view;
-    private boolean hasActive;
-    private boolean hasGoods;
     private Gson mGson;
     private FuLiCore mCore;
     private int page;
@@ -57,32 +52,31 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
     private FuLiAdapter activeAdapter;
     private Intent mIntent;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void initView(View childView) {
         page = 1;
         rows = 10;
         mGson = new Gson();
         mIntent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         mCore = new FuLiCore();
-        //view的复用
-        if (view == null) {
-            view = inflater.inflate(R.layout.fragment_fuli, container, false);
-            ViewUtils.inject(this, view);
-            initRLV();
-            queryDduiHuanInfo();
-            onRefresh();
-        }
-        return view;
+        ViewUtils.inject(this, childView);
+        initRLV();
+        onRefresh();
     }
 
-    private void queryDduiHuanInfo() {
-        //兑换
-        mCore.QueryDuiHuan(1, 1000, this);
+    @Override
+    public int getContentLayoutRes() {
+        return R.layout.fragment_fuli;
     }
 
+    //是否需要头部
+    @Override
+    protected boolean needHeader() {
+        return false;
+    }
 
     private void initRLV() {
+        mCore.QueryFuLiBanner(this);
         rlv_fuli.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         activeAdapter = new FuLiAdapter();
         rlv_fuli.setAdapter(activeAdapter);
@@ -106,10 +100,12 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
             ActiveInfo infos = mGson.fromJson(response.get(), ActiveInfo.class);
             if (infos.isSuccess()) {
                 if (isRefresh) {
-                    if (infos.getTotal() > 0) {
-                        hasActive = true;
+                    if (infos.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        activeAdapter.setDate(infos.getRows());
                     }
-                    activeAdapter.setDate(infos.getRows());
                 } else {
                     activeAdapter.addDate(infos.getRows());
                 }
@@ -119,19 +115,10 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
                     rlv_fuli.complete();
                 }
             }
-        } else if (what == Constans.TYPE_ONE) {
-            DuiHuanGoosInfo duiHuanGoosInfo = mGson.fromJson(response.get(), DuiHuanGoosInfo.class);
-            if (duiHuanGoosInfo.isSuccess()) {
-                //兑换查询结果
-                List<DuiHuanGoosInfo.RowsBean> goodInfos = duiHuanGoosInfo.getRows();
-                if (duiHuanGoosInfo.getTotal() > 0) {
-                    hasGoods = true;
-                }
-                //更新数据
-                activeAdapter.setDuiHuan(goodInfos);
-            } else {
-                ToastUtils.showToast(duiHuanGoosInfo.getErrorMsg());
-            }
+        } else if (what == Constans.TYPE_FORE) {
+            HomeBannerInfo infos = mGson.fromJson(response.get(), HomeBannerInfo.class);
+            List<HomeBannerInfo.ObjBean> obj = infos.getObj();
+            activeAdapter.setBanner(obj);
         }
     }
 
@@ -154,13 +141,6 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
                 rlv_fuli.getSwipeRefreshLayout().setRefreshing(false);
             }
         }
-        if (!hasGoods && !hasActive) {   //只有当两者都为空时
-            multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-        } else {
-            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-        }
-
-
     }
 
     //查询福利活动
@@ -183,4 +163,9 @@ public class FragmentFuLi extends Fragment implements RequersCallBackListener, S
         mCore.QueryHuoDong(page, rows, this);
     }
 
+    //跳转到消息界面
+    @OnClick(R.id.iv_header_msg)
+    public void goMsg(View view) {
+        startActivity(new Intent(MyApplication.getInstance(), MessageActivity.class));
+    }
 }

@@ -150,9 +150,11 @@ public class HytCore implements HytInterf {
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_HYT_ACTIVE, RequestMethod.POST);
         request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
                 .add("page", page)
-                .add("rows", rows)
-                .add("startId", starId)
-                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
+                .add("rows", rows);
+        if (starId != -1) {
+            request.add("startId", starId);
+        }
+        request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
         mQueue.add(Constans.TYPE_SEVEN, request, listener);
     }
 

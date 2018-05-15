@@ -2,39 +2,37 @@ package com.cucr.myapplication.adapter.RlVAdapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.fuli.DuiHuanCatgoryActivity;
+import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
+import com.cucr.myapplication.activity.fuli.HuoDongActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.Home.HomeBannerInfo;
 import com.cucr.myapplication.bean.fuli.ActiveInfo;
-import com.cucr.myapplication.bean.fuli.DuiHuanGoosInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
-import com.cucr.myapplication.utils.CommonUtils;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by 911 on 2017/6/23.
  */
-public class FuLiAdapter extends RecyclerView.Adapter {
+public class FuLiAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context mContext;
     private List<ActiveInfo.RowsBean> activeInfos;
-    private List<DuiHuanGoosInfo.RowsBean> goodInfos;
-    private int hasDuiHuan;
+    private List<HomeBannerInfo.ObjBean> obj;
+    private Intent mIntent;
 
     public FuLiAdapter() {
         mContext = MyApplication.getInstance();
@@ -42,6 +40,11 @@ public class FuLiAdapter extends RecyclerView.Adapter {
 
     public void setDate(List<ActiveInfo.RowsBean> activeInfos) {
         this.activeInfos = activeInfos;
+        notifyDataSetChanged();
+    }
+
+    public void setBanner(List<HomeBannerInfo.ObjBean> obj) {
+        this.obj = obj;
         notifyDataSetChanged();
     }
 
@@ -53,16 +56,11 @@ public class FuLiAdapter extends RecyclerView.Adapter {
         this.activeInfos.addAll(activeInfos);
     }
 
-    public void setDuiHuan(List<DuiHuanGoosInfo.RowsBean> goodInfos) {
-        this.goodInfos = goodInfos;
-        notifyDataSetChanged();
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == Constans.TYPE_ONE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_duihuan_header, parent, false);
-            DuiHuanViewHolder holder = new DuiHuanViewHolder(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rl_fuli_header, parent, false);
+            FuLiHeader holder = new FuLiHeader(view);
             return holder;
         } else {
             View view = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_rl_fuli, parent, false);
@@ -76,13 +74,13 @@ public class FuLiAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         //点击事件
         if (holder instanceof FiLiHolder) {
-            WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+     /*       WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
             ViewGroup.LayoutParams layoutParams = ((FiLiHolder) holder).ll_item.getLayoutParams();
             layoutParams.height = (int) (wm.getDefaultDisplay().getHeight() / 3.2f);
-            ((FiLiHolder) holder).ll_item.setLayoutParams(layoutParams);
+            ((FiLiHolder) holder).ll_item.setLayoutParams(layoutParams);*/
 
             final ActiveInfo.RowsBean bean = activeInfos.get(position - 1);
-            ((FiLiHolder) holder).rl_fuli.setOnClickListener(new View.OnClickListener() {
+            ((FiLiHolder) holder).ll_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemListener != null) {
@@ -91,28 +89,31 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                 }
             });
             //显示图片
-            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + bean.getPicUrl(), ((FiLiHolder) holder).iv_active_bg);
+            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + bean.getPicUrl(),
+                    ((FiLiHolder) holder).iv_active_bg,
+                    MyApplication.getImageLoaderOptions());
             //显示进行状态
             String endTime = bean.getEndTime();
-            ((FiLiHolder) holder).tv_isopen.setText(CommonUtils.IsGone(endTime) ? "进行中" : "已结束");
+            ((FiLiHolder) holder).tv_title.setText(bean.getActiveName());
+            ((FiLiHolder) holder).tv_time.setText(bean.getCreateTime());
+            ((FiLiHolder) holder).tv_peoples.setText(bean.getOrderNo() + "人参与");
+
             //跳转链接
 //            String locationUrl = rowsBean.getLocationUrl();
 
-        } else if (holder instanceof DuiHuanViewHolder) {
-            FuLiDuiHuanAdapter fuLiDuiHuanAdapter = new FuLiDuiHuanAdapter(mContext);
-            ((DuiHuanViewHolder) holder).mRlv_duihuan.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-            ((DuiHuanViewHolder) holder).mRlv_duihuan.setAdapter(fuLiDuiHuanAdapter);
-            fuLiDuiHuanAdapter.setDate(goodInfos);
-            fuLiDuiHuanAdapter.setOnItemListener(new FuLiDuiHuanAdapter.OnItemListener() {
-                @Override
-                public void OnItemClick(View view, int position) {
-                    Intent intent = new Intent(view.getContext(), DuiHuanCatgoryActivity.class);
-                    intent.putExtra("datas", (Serializable) goodInfos);
-                    intent.putExtra("position", position);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                }
-            });
+        } else if (holder instanceof FuLiHeader) {
+            if (obj == null) {
+                return;
+            }
+            mIntent = new Intent();
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ImageLoader.getInstance().displayImage(obj.get(0).getFileUrl(),
+                    ((FuLiHeader) holder).iv_banner,
+                    MyApplication.getImageLoaderOptions());
+            ((FuLiHeader) holder).ll_zxsc.setOnClickListener(this);
+            ((FuLiHeader) holder).ll_fxcj.setOnClickListener(this);
+            ((FuLiHeader) holder).ll_qyhd.setOnClickListener(this);
+            ((FuLiHeader) holder).ll_zcyy.setOnClickListener(this);
         }
     }
 
@@ -123,39 +124,68 @@ public class FuLiAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        //判断是否有福利活动
-        if (goodInfos == null || goodInfos.size() == 0) {
-            hasDuiHuan = 0;
-        } else {
-            hasDuiHuan = 1;
+        return activeInfos == null ? 1 : activeInfos.size() + 1;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_zxsc:
+//                mIntent.setClass(mContext, HuoDongActivity.class);
+                break;
+
+            case R.id.ll_fxcj:
+//                mIntent.setClass(mContext, HuoDongActivity.class);
+                break;
+
+            case R.id.ll_qyhd:
+                mIntent.setClass(mContext, HuoDongActivity.class);
+                break;
+
+            case R.id.ll_zcyy:
+                mIntent.setClass(mContext, YyzcActivity.class);
+                break;
         }
-        return activeInfos == null ? 0 + hasDuiHuan : activeInfos.size() + hasDuiHuan;
+        mContext.startActivity(mIntent);
     }
 
     class FiLiHolder extends RecyclerView.ViewHolder {
-        private RelativeLayout rl_fuli;
-        private TextView tv_isopen;
+        private TextView tv_title;
+        private TextView tv_time;
+        private TextView tv_peoples;
         private ImageView iv_active_bg;
         private LinearLayout ll_item;
 
         public FiLiHolder(View itemView) {
             super(itemView);
-            rl_fuli = (RelativeLayout) itemView.findViewById(R.id.rl_fuli);
-            tv_isopen = (TextView) itemView.findViewById(R.id.tv_isopen);
+            tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+            tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+            tv_peoples = (TextView) itemView.findViewById(R.id.tv_peoples);
             iv_active_bg = (ImageView) itemView.findViewById(R.id.iv_active_bg);
             ll_item = (LinearLayout) itemView.findViewById(R.id.ll_item);
         }
     }
 
-    class DuiHuanViewHolder extends RecyclerView.ViewHolder {
+    class FuLiHeader extends RecyclerView.ViewHolder {
 
-        private RecyclerView mRlv_duihuan;
+        @ViewInject(R.id.iv_banner)
+        private ImageView iv_banner;
 
+        @ViewInject(R.id.ll_zxsc)
+        private LinearLayout ll_zxsc;
 
-        public DuiHuanViewHolder(View itemView) {
+        @ViewInject(R.id.ll_fxcj)
+        private LinearLayout ll_fxcj;
+
+        @ViewInject(R.id.ll_qyhd)
+        private LinearLayout ll_qyhd;
+
+        @ViewInject(R.id.ll_zcyy)
+        private LinearLayout ll_zcyy;
+
+        public FuLiHeader(View itemView) {
             super(itemView);
-            mRlv_duihuan = (RecyclerView) itemView.findViewById(R.id.rlv_fuli_duihuan);
-
+            ViewUtils.inject(this, itemView);
         }
     }
 

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:id="@+id/iv_banner"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_zxsc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:src="@drawable/f_shangcheng"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="在线商城"
+                android:textColor="#3b3241"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_fxcj"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:src="@drawable/f_choujiang"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="分享抽奖"
+                android:textColor="#3b3241"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_qyhd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:src="@drawable/f_huodong"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="企业活动"
+                android:textColor="#3b3241"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_zcyy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:src="@drawable/f_yingyuan"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="众筹应援"
+                android:textColor="#3b3241"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,6 +9,37 @@
     android:orientation="vertical"
     >
 
+    <RelativeLayout
+        android:id="@+id/comment_head"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBarHight"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/tv_base_title"
+            style="@style/TitleStyle"
+            android:text="福利"
+            />
+
+        <ImageView
+            android:id="@+id/iv_header_msg"
+            android:layout_width="40dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:paddingBottom="13dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/icon_message"
+            />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
+
+    </RelativeLayout>
+
     <com.cucr.myapplication.widget.stateLayout.MultiStateView
         android:id="@+id/multiStateView"
         xmlns:android="http://schemas.android.com/apk/res/android"

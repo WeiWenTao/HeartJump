@@ -480,6 +480,8 @@
         </activity>
         <activity android:name=".activity.fansCatgory.YyzcActivity">
         </activity>
+        <activity android:name=".activity.fuli.HuoDongActivity">
+        </activity>
     </application>
 
 </manifest>

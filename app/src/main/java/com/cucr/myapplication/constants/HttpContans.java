@@ -334,4 +334,7 @@ public class HttpContans {
 
     //首页新闻分类
     public static final String ADDRESS_HOME_NEWS = HOST + "/interface/mobileContentAction/queryInfoSX";
+
+    //福利banner查询
+    public static final String ADDRESS_FULI_BANNER = HOST + "/interface/mobileBannerAction/welfareBanner";
 }

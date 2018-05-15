@@ -28,6 +28,7 @@
             android:textSize="@dimen/sp_18"
             />
 
+
         <ImageView
             android:id="@+id/iv_header_msg"
             android:layout_width="40dp"
@@ -36,9 +37,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_10"
             android:paddingBottom="13dp"
-            android:paddingLeft="18dp"
+            android:paddingLeft="15dp"
             android:paddingTop="10dp"
-            android:src="@drawable/icon_msg"
+            android:src="@drawable/icon_message"
             />
 
         <include layout="@layout/horizontal_line_for_eee"/>
