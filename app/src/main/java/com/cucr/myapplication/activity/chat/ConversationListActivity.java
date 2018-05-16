@@ -19,7 +19,7 @@ public class ConversationListActivity extends FragmentActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversationlist);
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         findViewById(R.id.iv_base_back).setOnClickListener(this);
     }
 

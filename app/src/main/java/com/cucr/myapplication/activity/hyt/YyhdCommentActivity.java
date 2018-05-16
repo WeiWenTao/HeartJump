@@ -13,14 +13,15 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.YyhdCommentAdater;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.Hyt.YyhdCommentInfo;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -34,13 +35,12 @@ import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
 import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
-
-import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class YyhdCommentActivity extends BaseActivity implements RequersCallBackListener, YyhdCommentAdater.OnClickGood {
+public class YyhdCommentActivity extends BaseActivity implements RequersCallBackListener, YyhdCommentAdater.OnClickGood, SwipeRecyclerView.OnLoadListener {
 
     @ViewInject(R.id.rlv_comment)
     private SwipeRecyclerView srlv;
@@ -54,6 +54,10 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
     @ViewInject(R.id.iv_emoji)
     private ImageView iv_emoji;
 
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
+
     private HytCore mCore;
     private int page;
     private int rows;
@@ -65,6 +69,8 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
     private EmojiPopup emojiPopup;
     private int totalComments;
     private Intent mIntent;
+    private boolean needShowLoading;
+    private boolean isRefresh;
 
     @Override
     protected void initChild() {
@@ -74,12 +80,8 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
         mActiveId = mIntent.getIntExtra("activeId", -1);
         mCore = new HytCore();
         mGson = MyApplication.getGson();
-        queryComment();
         initRlv();
-    }
-
-    private void queryComment() {
-        mCore.queryComment(page, rows, mActiveId, this);
+        onRefresh();
     }
 
     private void initRlv() {
@@ -87,6 +89,7 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
         mAdapter = new YyhdCommentAdater();
         mAdapter.setOnClickGood(this);
         srlv.getRecyclerView().setAdapter(mAdapter);
+        srlv.setOnLoadListener(this);
         setUpEmojiPopup();
     }
 
@@ -101,8 +104,21 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
             case Constans.TYPE_NINE:
                 YyhdCommentInfo info = mGson.fromJson(response.get(), YyhdCommentInfo.class);
                 if (info.isSuccess()) {
-                    List<YyhdCommentInfo.RowsBean> rows = info.getRows();
-                    mAdapter.setData(rows);
+                    if (isRefresh) {
+                        if (info.getTotal() == 0) {
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                        } else {
+                            mAdapter.setData(info.getRows());
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        }
+                    } else {
+                        mAdapter.addData(info.getRows());
+                    }
+                    if (info.getTotal() <= page * rows) {
+                        srlv.onNoMore("没有更多了");
+                    } else {
+                        srlv.complete();
+                    }
                     totalComments = info.getTotal();
                 } else {
                     ToastUtils.showToast(info.getErrorMsg());
@@ -113,7 +129,7 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
                 CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 if (msg.isSuccess()) {
                     ToastUtils.showToast("评论成功");
-                    queryComment();
+                    onRefresh();
                     et_comment.setText("");
                     emojiPopup.dismiss();
                     CommonUtils.hideKeyBorad(ll_rootview.getContext(), ll_rootview, true);
@@ -128,17 +144,29 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
 
     @Override
     public void onRequestStar(int what) {
-
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
     public void onRequestFinish(int what) {
-
+        if (what == Constans.TYPE_NINE) {
+            if (srlv.isRefreshing()) {
+                srlv.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (srlv.isLoadingMore()) {
+                srlv.stopLoadingMore();
+            }
+        }
     }
 
     @Override
@@ -242,5 +270,21 @@ public class YyhdCommentActivity extends BaseActivity implements RequersCallBack
     protected void onBackBefore() {
         mIntent.putExtra("count", totalComments);
         setResult(2, mIntent);
+    }
+
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        page = 1;
+        srlv.getSwipeRefreshLayout().setRefreshing(true);
+        mCore.queryComment(page, rows, mActiveId, this);
+    }
+
+    @Override
+    public void onLoadMore() {
+        isRefresh = false;
+        page++;
+        srlv.onLoadingMore();
+        mCore.queryComment(page, rows, mActiveId, this);
     }
 }

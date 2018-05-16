@@ -31,6 +31,13 @@ public class YyhdCommentAdater extends RecyclerView.Adapter<YyhdCommentAdater.My
         notifyDataSetChanged();
     }
 
+    public void addData(List<YyhdCommentInfo.RowsBean> rows) {
+        if (this.rows != null) {
+            notifyItemInserted(this.rows.size() + 1);
+            this.rows.addAll(rows);
+        }
+    }
+
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_yyhd_comment, parent, false);

@@ -49,6 +49,9 @@ public class TestWebViewActivity extends BaseActivity {
         activeId = getIntent().getIntExtra("activeId", -1);
         activeTitle = getIntent().getStringExtra("activeTitle");
         mRowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("data");
+        if (mBannerId != -1 || activeId != -1 || activeTitle != null || mRowsBean != null) {
+            iv_news_share.setVisibility(View.VISIBLE);
+        }
 //        url = "https://weibo.com/yangmiblog?topnav=1&wvr=6&topsug=1&is_hot=1";
         WebSettings settings = wv.getSettings();
 
@@ -98,7 +101,7 @@ public class TestWebViewActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                MyLogger.jLog().i("开始加载");
+                MyLogger.jLog().i("开始加载 url:" + url);
             }
         });
         wv.loadUrl(url);

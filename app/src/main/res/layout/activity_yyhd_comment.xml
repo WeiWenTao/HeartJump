@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/ll_rootview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:id="@+id/ll_rootview"
     tools:context="com.cucr.myapplication.activity.hyt.YyhdCommentActivity"
     >
 
@@ -15,7 +16,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
 
         >
 
@@ -28,17 +29,25 @@
             android:id="@+id/tv_base_title"
             style="@style/TitleStyle"
             android:text="全部评论"
-            android:textColor="@color/xtred"
+            android:textColor="@color/title_color"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 
-    <com.cucr.myapplication.widget.refresh.RefreshLayout
-        android:id="@+id/ref"
+    <com.cucr.myapplication.widget.stateLayout.MultiStateView
+        android:id="@+id/multiStateView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:msv_animateViewChanges="true"
+        app:msv_emptyView="@layout/empty_common"
+        app:msv_errorView="@layout/error_view"
+        app:msv_loadingView="@layout/loading_view"
         >
 
         <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
@@ -46,8 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+    </com.cucr.myapplication.widget.stateLayout.MultiStateView>
 
-    </com.cucr.myapplication.widget.refresh.RefreshLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,7 +79,6 @@
             android:textSize="@dimen/sp_13"
             android:theme="@style/MyEditText"
             />
-
 
 
         <LinearLayout

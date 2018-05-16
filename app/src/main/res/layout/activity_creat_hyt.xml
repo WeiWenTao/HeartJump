@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.hyt.CreatHytActivity"
     >
@@ -13,7 +14,7 @@
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
         >
 
 
@@ -38,6 +39,8 @@
             android:paddingTop="@dimen/dp_10"
             android:src="@drawable/icon_rule"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 
@@ -148,8 +151,8 @@
                 <EditText
                     android:id="@+id/et_phone"
                     style="@style/CreatHyt_ETStyle"
-                    android:inputType="number"
                     android:hint="请输入联系手机"
+                    android:inputType="number"
                     />
 
                 <include layout="@layout/horizontal_line_for_ccc"/>

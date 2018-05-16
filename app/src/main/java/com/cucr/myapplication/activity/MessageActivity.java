@@ -32,7 +32,9 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
         setContentView(R.layout.activity_message);
 
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         TabLayout tl_tab = (TabLayout) findViewById(R.id.tl_tab);
         findViewById(R.id.iv_base_back).setOnClickListener(this);
         mFragmentList = new ArrayList<>();

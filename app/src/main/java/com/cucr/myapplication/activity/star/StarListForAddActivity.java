@@ -121,8 +121,10 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
     private void initView() {
         tv_enter.setVisibility((getIntent().getBooleanExtra("formLoad", false)) ? View.VISIBLE : View.GONE);
         iv_base_back.setVisibility((getIntent().getBooleanExtra("formLoad", false)) ? View.GONE : View.VISIBLE);
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         mGson = new Gson();
         mFragmentslist.add(new RecommendStarListFragemnt());
         mFragmentslist.add(new AllStarListFragemnt());

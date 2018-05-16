@@ -32,8 +32,9 @@
 
         <ImageView
             android:id="@+id/iv_news_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:padding="@dimen/dp_5"
+            android:layout_height="match_parent"
             android:src="@drawable/share"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

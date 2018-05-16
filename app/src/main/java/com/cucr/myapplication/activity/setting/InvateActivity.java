@@ -24,9 +24,10 @@ public class InvateActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invate);
 
-        //沉浸栏
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setImmersionBar();
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         mDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
         Window window = mDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);

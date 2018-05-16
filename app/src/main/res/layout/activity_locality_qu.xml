@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.local.LocalityQuActivity"
     >
@@ -16,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@drawable/list_divider_line"
-        android:dividerHeight="1dp"
+        android:dividerHeight="1px"
         ></ListView>
 
 </LinearLayout>

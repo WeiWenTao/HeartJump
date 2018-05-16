@@ -14,7 +14,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
 
         >
 
@@ -27,8 +27,10 @@
             android:id="@+id/tv_base_title"
             style="@style/TitleStyle"
             android:text="支持记录"
-            android:textColor="@color/xtred"
+            android:textColor="@color/title_color"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 

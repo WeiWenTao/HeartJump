@@ -37,8 +37,6 @@ public class Fragment_fans_one extends BaseFragment {
             ll_shuju.setVisibility(View.GONE);
             ll_about.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     @Override
@@ -50,7 +48,6 @@ public class Fragment_fans_one extends BaseFragment {
     protected boolean needHeader() {
         return false;
     }
-
 
     @OnClick(R.id.ll_fansq)
     public void fansQ(View view) {
@@ -95,6 +92,7 @@ public class Fragment_fans_one extends BaseFragment {
     }
 
     public interface OnClickCatgoryOne {
+
         void onClickFanQ();
 
         void onClickShuJu();
@@ -106,7 +104,6 @@ public class Fragment_fans_one extends BaseFragment {
         void onClickjourney();
 
         void onClickAbout_one();
-
     }
 
     private OnClickCatgoryOne mOnClickCatgoryOne;

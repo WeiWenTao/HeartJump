@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
+import com.cucr.myapplication.activity.huodong.FaBuHuoDongActivity;
 import com.cucr.myapplication.activity.huodong.HuoDongCatgoryActivity;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.adapter.RlVAdapter.ActivitysAdapter;
@@ -25,6 +26,7 @@ import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -248,5 +250,10 @@ public class HuoDongActivity extends BaseActivity implements SwipeRecyclerView.O
     @Override
     protected int getChildRes() {
         return R.layout.active_huo_dong;
+    }
+
+    @OnClick(R.id.iv_fabu)
+    public void fuBuHuoDong(View view) {
+        startActivity(new Intent(MyApplication.getInstance(), FaBuHuoDongActivity.class));
     }
 }

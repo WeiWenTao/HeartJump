@@ -44,7 +44,7 @@ public class DaShangRecordActivity extends FragmentActivity {
 
     private void initBar() {
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
     }
 
     private void initViews() {

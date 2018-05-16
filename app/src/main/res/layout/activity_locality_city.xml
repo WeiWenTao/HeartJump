@@ -6,17 +6,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.local.LocalityCityActivity"
     >
 
     <include layout="@layout/activity_base_title"/>
 
     <ListView
-        android:dividerHeight="1dp"
+        android:dividerHeight="1px"
         android:divider="@drawable/list_divider_line"
         android:id="@+id/lv_city"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></ListView>
+        />
 
 </LinearLayout>

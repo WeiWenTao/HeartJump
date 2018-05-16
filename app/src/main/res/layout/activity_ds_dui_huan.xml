@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_ds_dui_huan"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/zise"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.fenTuan.DsDuiHuanActivity"
     >
 
@@ -14,7 +14,7 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/zise"
+        android:background="@color/white"
         >
 
         <ImageView
@@ -29,28 +29,30 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
             android:text="背包兑换"
-            android:textColor="@color/white"
+            android:textColor="@color/title_color"
             android:textSize="18sp"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rlv_bp_duihuan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/rlv_bp_duihuan"
         ></android.support.v7.widget.RecyclerView>
 
     <Button
         android:id="@+id/tv_to_duihuna"
         android:layout_width="300dp"
         android:layout_height="@dimen/dp_40"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp_60"
+        android:layout_marginTop="60dp"
         android:background="@drawable/shape_load_bg_nor"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/dp_60"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
         android:textColor="@color/white"
         android:textSize="18sp"
         />

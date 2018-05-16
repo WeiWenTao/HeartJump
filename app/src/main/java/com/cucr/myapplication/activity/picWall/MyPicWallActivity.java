@@ -34,8 +34,10 @@ public class MyPicWallActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_pic_wall);
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         ViewUtils.inject(this);
         init();
     }

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity"
     >
 
@@ -13,7 +14,7 @@
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/zise"
+        android:background="@color/white"
         >
 
 
@@ -35,7 +36,7 @@
             android:gravity="center_vertical"
             android:paddingRight="@dimen/dp_10"
             android:text="打赏记录"
-            android:textColor="@color/white"
+            android:textColor="@color/xtred"
             android:textSize="@dimen/sp_14"
             />
 

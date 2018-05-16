@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.picWall.MyPicWallActivity"
     >
 
@@ -13,7 +14,7 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/zise"
+        android:background="@color/white"
         android:fitsSystemWindows="true"
         >
 
@@ -30,15 +31,17 @@
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
             app:tabPadding="@dimen/dp_10"
-            app:tabSelectedTextColor="@color/xtred"
+            app:tabSelectedTextColor="@color/title_one"
             app:tabTextAppearance="@style/TabLayoutText"
-            app:tabTextColor="@color/zongse"
-            ></android.support.design.widget.TabLayout>
+            app:tabTextColor="@color/title_two"
+            />
 
         <ImageView
             android:id="@+id/iv_base_back"
             style="@style/IconBackStyle"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 

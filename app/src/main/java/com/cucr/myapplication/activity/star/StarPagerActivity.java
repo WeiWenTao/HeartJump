@@ -140,8 +140,11 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         setContentView(R.layout.activity_star_pager);
 
         EventBus.getDefault().register(this);
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
+
         ViewUtils.inject(this);
         //确定身份 企业用户才显示预约栏
         ll_qiye_look.setVisibility(CommonUtils.isQiYe() ? View.VISIBLE : View.GONE);
