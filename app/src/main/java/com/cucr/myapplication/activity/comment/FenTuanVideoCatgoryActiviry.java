@@ -904,7 +904,9 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
             SignleFtInfo signleFtInfo = mGson.fromJson(response.get(), SignleFtInfo.class);
             if (signleFtInfo.isSuccess()) {
                 mRowsBean = signleFtInfo.getObj();
-
+                if (mRowsBean.getCreateUserId() == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
+                    iv_more.setVisibility(View.VISIBLE);
+                }
                 //        mProxy.registerCacheListener(cacheListener, url);
                 //如果缓存过了就设置缓存100%
                 if (mProxy.isCached(mRowsBean.getAttrFileList().get(0).getFileUrl())) {

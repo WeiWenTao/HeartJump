@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/ll_item"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/white"
               android:orientation="vertical"
-              android:id="@+id/ll_item"
     >
 
     <LinearLayout
@@ -68,11 +68,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_25"
         android:layout_marginLeft="60dp"
-        android:textIsSelectable="true"
+        android:layout_marginRight="@dimen/dp_30"
         android:text="哇哇哇！行走的荷尔蒙，帅死了！"
         android:textColor="#333"
-        app:emojiSize="@dimen/sp_15"
+        android:textIsSelectable="true"
         android:textSize="@dimen/sp_15"
+        app:emojiSize="@dimen/sp_15"
         />
 
 

@@ -41,6 +41,8 @@
             android:visibility="gone"
             />
 
+        <include layout="@layout/horizontal_line_for_eee"/>
+
     </RelativeLayout>
 
     <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView

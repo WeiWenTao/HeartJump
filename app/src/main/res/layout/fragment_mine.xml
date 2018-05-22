@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/lvbg"
+              android:background="@color/white"
               android:orientation="vertical"
     >
 
@@ -39,6 +39,7 @@
             />
 
         <include layout="@layout/horizontal_line_for_eee"/>
+
     </RelativeLayout>
 
 
@@ -49,7 +50,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             >
 
@@ -117,14 +118,13 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="1px"
                 android:background="#ddd"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 >
@@ -278,395 +278,18 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#f6f6f6"
-                android:orientation="vertical"
-                >
-
-                <!--我的私信-->
-                <RelativeLayout
-                    android:id="@+id/rl_private"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_private"
-                        style="@style/My_iv"
-                        android:src="@drawable/icon_sixin"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_private"
-                        android:text="我的私信"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--认证-->
-                <RelativeLayout
-                    android:id="@+id/rl_ren_zheng"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_ren_zheng"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_rz"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_ren_zheng"
-                        android:text="我的认证"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--要求-->
-                <RelativeLayout
-                    android:id="@+id/rl_require"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    android:visibility="gone"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_require"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_requires"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_require"
-                        android:text="我的要求"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-
-                </RelativeLayout>
-
-                <!--行程-->
-                <RelativeLayout
-                    android:id="@+id/rl_my_journey"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:visibility="gone"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_journey"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_xc"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_journey"
-                        android:text="我的行程"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--充值中心-->
-                <RelativeLayout
-                    android:id="@+id/rl_pay_center"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_pay"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_cz"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_pay"
-                        android:text="充值中心"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--预约-->
-                <RelativeLayout
-                    android:id="@+id/rl_my_yuyue"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:visibility="gone"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_yuyue"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_appoinment"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_yuyue"
-                        android:text="我的预约"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--我的活动-->
-                <RelativeLayout
-                    android:id="@+id/rl_my_actis"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    android:visibility="gone"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_actis"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_huodong"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_actis"
-                        android:text="我的活动"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--我的图集-->
-                <RelativeLayout
-                    android:id="@+id/rl_my_pics"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_pics"
-                        style="@style/My_iv"
-                        android:src="@drawable/icon_mypic"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_pics"
-                        android:text="我的图集"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--邀请有礼-->
-                <RelativeLayout
-                    android:id="@+id/rl_yaoqing"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_task"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_invate"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_task"
-                        android:text="邀请有礼"
-                        />
-
-                    <ImageView
-                        android:id="@+id/iv_yaoqing"
-                        style="@style/My_Arrow"
-                        />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="25dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/dp_15"
-                        android:layout_toLeftOf="@id/iv_yaoqing"
-                        android:background="@drawable/shape_immediately_pay_bg"
-                        android:gravity="center"
-                        android:text="免费星币等你来领"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_10"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--新手教程-->
-                <RelativeLayout
-                    android:id="@+id/rl_learning"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_learning"
-                        style="@style/My_iv"
-                        android:src="@drawable/icon_learning"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_learning"
-                        android:text="新手教程"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--设置-->
-                <RelativeLayout
-                    android:id="@+id/rl_setting"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_setting"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_set"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_setting"
-                        android:text="设置"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-                </RelativeLayout>
-
-                <!--票务-->
-                <RelativeLayout
-                    android:id="@+id/rl_piaowu"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_rl_piaowu"
-                        style="@style/My_iv"
-                        android:src="@drawable/m_pw"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_rl_piaowu"
-                        android:text="票务福利"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-
-                    <include layout="@layout/horizontal_line"
-                        />
-                </RelativeLayout>
-
-                <!--礼物背包-->
-                <RelativeLayout
-                    android:id="@+id/rl_bp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="@dimen/dp_40"
-                    android:background="#fff"
-                    >
-
-                    <ImageView
-                        android:id="@+id/iv_my_rl_bp"
-                        style="@style/My_iv"
-                        android:src="@drawable/icon_pack"
-                        />
-
-                    <TextView
-                        style="@style/My_tv"
-                        android:layout_toRightOf="@id/iv_my_rl_bp"
-                        android:text="礼物背包"
-                        />
-
-                    <ImageView
-                        style="@style/My_Arrow"
-                        />
-                </RelativeLayout>
-
-            </LinearLayout>
+                android:layout_height="@dimen/dp_10"
+                android:background="@color/lvbg"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rlv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                />
 
         </LinearLayout>
 

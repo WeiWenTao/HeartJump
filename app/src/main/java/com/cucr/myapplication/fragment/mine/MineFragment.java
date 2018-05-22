@@ -1,15 +1,11 @@
 package com.cucr.myapplication.fragment.mine;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -31,11 +27,11 @@ import com.cucr.myapplication.activity.setting.PersonalInfoActivity;
 import com.cucr.myapplication.activity.setting.RenZhengActivity;
 import com.cucr.myapplication.activity.setting.SettingActivity;
 import com.cucr.myapplication.activity.yuyue.MyYuYueActivity;
+import com.cucr.myapplication.adapter.RlVAdapter.MineAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.EditPersonalInfo.PersonMessage;
 import com.cucr.myapplication.bean.eventBus.EventQueryPersonalInfo;
 import com.cucr.myapplication.bean.user.UserCenterInfo;
-import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.editPersonalInfo.QueryPersonalMsgCore;
@@ -43,9 +39,9 @@ import com.cucr.myapplication.core.user.UserCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.ItemDecoration.MineSpaceItemDecoration;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -67,11 +63,7 @@ import io.rong.imlib.model.Conversation;
  * Created by 911 on 2017/4/10.
  */
 
-public class MineFragment extends BaseFragment {
-
-    //界面头部
-    @ViewInject(R.id.head)
-    private RelativeLayout head;
+public class MineFragment extends BaseFragment implements MineAdapter.OnClickItems {
 
     //用户头像
     @ViewInject(R.id.iv_user_mine)
@@ -101,30 +93,15 @@ public class MineFragment extends BaseFragment {
     @ViewInject(R.id.tv_sign)
     private TextView userSign;
 
-    //我的行程(明星)
-    @ViewInject(R.id.rl_my_journey)
-    private RelativeLayout rl_my_journey;
-
-    //我的要求(明星)
-    @ViewInject(R.id.rl_require)
-    private RelativeLayout rl_require;
-
-    //我的活动(企业)
-    @ViewInject(R.id.rl_my_actis)
-    private RelativeLayout rl_my_actis;
-
-    //我的预约(企业)
-    @ViewInject(R.id.rl_my_yuyue)
-    private RelativeLayout rl_my_yuyue;
-
-    //新手教程(明星没有)
-    @ViewInject(R.id.rl_learning)
-    private RelativeLayout rl_learning;
+    //九宫格
+    @ViewInject(R.id.rlv)
+    private RecyclerView rlv;
 
     private Intent mIntent;
     private PersonMessage.ObjBean mObj;
     private UserCore mUserCore;
     private QueryPersonalMsgCore mQucryCore;
+    private MineAdapter mAdapter;
 
     @Override
     protected void initView(View childView) {
@@ -135,42 +112,21 @@ public class MineFragment extends BaseFragment {
         map = new HashMap<>();
         map.put(Conversation.ConversationType.PRIVATE.getName(), false);
         map.put(Conversation.ConversationType.GROUP.getName(), false);
-        showAndHide();  //分配权限
-//        initHead();
         UltimateBar ultimateBar = new UltimateBar(getActivity());
         ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         queryInfos();
-
+        initRlv();
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
     }
 
-    //分配权限  先隐藏再根据身份显示
-    private void showAndHide() {
-        switch (((int) SpUtil.getParam(SpConstant.SP_STATUS, 0))) {
-            case Constans.STATUS_EVERYONE:    //无角色
-
-                break;
-            case Constans.STATUS_ADMIN:      //管理员
-
-                break;
-            case Constans.STATUS_STAR:    //明星
-                rl_require.setVisibility(View.VISIBLE);   //要求
-                rl_my_journey.setVisibility(View.VISIBLE);//行程
-                rl_learning.setVisibility(View.GONE);     //新手教程
-
-                break;
-
-            case Constans.STATUS_QIYE:    //企业
-                rl_my_yuyue.setVisibility(View.VISIBLE);  //预约
-                rl_my_actis.setVisibility(View.VISIBLE);  //我的活动
-                break;
-            case Constans.STATUS_COMMON_USER://普通用户
-
-                break;
-
-        }
+    private void initRlv() {
+        rlv.setLayoutManager(new GridLayoutManager(MyApplication.getInstance(), 4));
+        rlv.addItemDecoration(new MineSpaceItemDecoration(1, 0, getResources().getColor(R.color.ccc)));
+        mAdapter = new MineAdapter();
+        mAdapter.getDatas();
+        mAdapter.setOnClickItems(this);
+        rlv.setAdapter(mAdapter);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //点击保存的时候再查一遍
@@ -182,6 +138,7 @@ public class MineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         queryInfos();
+        mAdapter.getDatas();
     }
 
     //查询用户信息
@@ -213,14 +170,12 @@ public class MineFragment extends BaseFragment {
             }
         });
 
-
         mQucryCore.queryPersonalInfo(new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 PersonMessage personMessage = mGson.fromJson(response.get().toString(), PersonMessage.class);
                 if (personMessage.isSuccess()) {
                     mObj = mGson.fromJson(personMessage.getMsg(), PersonMessage.ObjBean.class);
-
                     initViews();
                 } else {
                     ToastUtils.showToast(personMessage.getMsg());
@@ -251,40 +206,13 @@ public class MineFragment extends BaseFragment {
         } else {
             userSign.setText(mObj.getSignName());
         }
-
     }
 
-    //沉浸栏
-    private void initHead() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) head.getLayoutParams();
-            layoutParams.height = CommonUtils.dip2px(mContext, 73.0f);
-            head.setLayoutParams(layoutParams);
-            head.requestLayout();
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getActivity().getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
 
     //跳转到消息界面
     @OnClick(R.id.iv_header_msg)
     public void goMsg(View view) {
         mIntent.setClass(mContext, MessageActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //设置
-    @OnClick(R.id.rl_setting)
-    public void goSetting(View view) {
-        mIntent.setClass(mContext, SettingActivity.class);
         mContext.startActivity(mIntent);
     }
 
@@ -324,91 +252,8 @@ public class MineFragment extends BaseFragment {
         mContext.startActivity(mIntent);
     }
 
-    //充值中心
-    @OnClick(R.id.rl_pay_center)
-    public void goPayCenter(View view) {
-        mIntent.setClass(mContext, PayCenterActivity_new.class);
-        mContext.startActivity(mIntent);
-    }
 
     private Map<String, Boolean> map;
-
-    //私信
-    @OnClick(R.id.rl_private)
-    public void goPrivate(View view) {
-        RongIM.getInstance().startConversationList(MyApplication.getInstance(), map);
-    }
-
-    //认证
-    @OnClick(R.id.rl_ren_zheng)
-    public void goRz(View view) {
-        mIntent.setClass(mContext, RenZhengActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //预约
-    @OnClick(R.id.rl_my_yuyue)
-    public void goYuYue(View view) {
-        mIntent.setClass(mContext, MyYuYueActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //我的图集
-    @OnClick(R.id.rl_my_pics)
-    public void goPics(View view) {
-        // TODO: 2018/3/6
-        mIntent.setClass(mContext, MyPicWallActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //新手教程
-    @OnClick(R.id.rl_learning)
-    public void goLearning(View view) {
-        mIntent.setClass(mContext, LearnningActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //礼物背包
-    @OnClick(R.id.rl_bp)
-    public void goBp(View view) {
-        mIntent.setClass(mContext, DsDuiHuanActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //票务
-    @OnClick(R.id.rl_piaowu)
-    public void goPw(View view) {
-        mIntent.setClass(mContext, PiaoWuActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //行程
-    @OnClick(R.id.rl_my_journey)
-    public void goJourney(View view) {
-        mIntent.setClass(mContext, MyJourneyActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //邀请有礼
-    @OnClick(R.id.rl_yaoqing)
-    public void goInvate(View view) {
-        mIntent.setClass(mContext, InvateActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //我的要求
-    @OnClick(R.id.rl_require)
-    public void goMyRequire(View view) {
-        mIntent.setClass(mContext, MyRequiresActivity.class);
-        mContext.startActivity(mIntent);
-    }
-
-    //我的活动
-    @OnClick(R.id.rl_my_actis)
-    public void goMyActives(View view) {
-        mIntent.setClass(mContext, MyActivesActivity.class);
-        mContext.startActivity(mIntent);
-    }
 
     //是否需要头部
     @Override
@@ -427,4 +272,86 @@ public class MineFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void clickItem(int flag) {
+        switch (flag) {
+
+            //私信
+            case 1:
+                RongIM.getInstance().startConversationList(MyApplication.getInstance(), map);
+                break;
+
+            //认证
+            case 2:
+                mIntent.setClass(mContext, RenZhengActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //充值中心
+            case 3:
+                mIntent.setClass(mContext, PayCenterActivity_new.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //我的图集
+            case 4:
+                mIntent.setClass(mContext, MyPicWallActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //邀请有礼
+            case 5:
+                mIntent.setClass(mContext, InvateActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //新手教程
+            case 6:
+                mIntent.setClass(mContext, LearnningActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //福利票务
+            case 7:
+                mIntent.setClass(mContext, PiaoWuActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //礼物背包
+            case 8:
+                mIntent.setClass(mContext, DsDuiHuanActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //我的行程
+            case 9:
+                mIntent.setClass(mContext, MyJourneyActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //我的要求
+            case 10:
+                mIntent.setClass(mContext, MyRequiresActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //我的预约
+            case 11:
+                mIntent.setClass(mContext, MyYuYueActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //我的活动
+            case 12:
+                mIntent.setClass(mContext, MyActivesActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+
+            //设置
+            case 13:
+                mIntent.setClass(mContext, SettingActivity.class);
+                mContext.startActivity(mIntent);
+                break;
+        }
+    }
 }

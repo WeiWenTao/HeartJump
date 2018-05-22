@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,10 +101,6 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     //礼物动画
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
-
-    //微博图标
-    @ViewInject(R.id.iv_weib)
-    private ImageView iv_weib;
 
     //企业看的
     @ViewInject(R.id.ll_qiye_look)
@@ -247,9 +242,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
                     tv_starname.setText(mData.getRealName());
                     tv_base_title.setText(mData.getRealName());
                     tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
-                    if (TextUtils.isEmpty(mData.getWeiboUrl())) {
-                        iv_weib.setVisibility(View.GONE);
-                    }
+
                     ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
@@ -383,12 +376,6 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         }
     }
 
-    @OnClick(R.id.ll_photos)
-    public void goPhotos(View view) {
-        mIntent.putExtra("starId", mStarId);
-        mIntent.setClass(MyApplication.getInstance(), PhotosAlbumActivity.class);
-        startActivity(mIntent);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -412,13 +399,6 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         mDataList.clear();
         mDataList = null;
 
-    }
-
-    @OnClick(R.id.iv_weib)
-    public void click(View iv_weib) {
-        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
-        intent.putExtra("url", mData.getWeiboUrl());
-        startActivity(intent);
     }
 
     private void setIndecator(boolean isOne) {

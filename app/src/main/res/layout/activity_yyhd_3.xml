@@ -14,7 +14,7 @@
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
         >
 
 
@@ -26,8 +26,10 @@
         <TextView
             style="@style/TitleStyle"
             android:text="粉丝见面会众筹"
-            android:textColor="@color/xtred"
+            android:textColor="@color/title_color"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 

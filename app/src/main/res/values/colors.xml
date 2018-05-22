@@ -12,6 +12,7 @@
     <color name="alpha_red">#66ff4f49</color>
     <color name="popWindowBg">#5000</color>
     <color name="gray">#bfbfbf</color>
+    <color name="gray_white">#fbfbfb</color>
     <color name="white">#fff</color>
     <color name="mygray">#f9f9f9</color>
     <color name="lvbg">#f6f6f6</color>
@@ -21,6 +22,7 @@
     <color name="color_999">#999</color>
     <color name="blue_black">#1d022e</color>
     <color name="zise">#1d022e</color>
+    <color name="ccc">#cccccc</color>
     <color name="bar_color">#fff</color>
     <color name="zongse">#7a5b5b</color>
     <color name="Color_92">#929292</color>

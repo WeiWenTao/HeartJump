@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:id="@+id/activity_news"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.news.NewsActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <RelativeLayout
@@ -33,12 +33,12 @@
         <ImageView
             android:id="@+id/iv_news_share"
             android:layout_width="30dp"
-            android:padding="@dimen/dp_5"
             android:layout_height="match_parent"
-            android:src="@drawable/share"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            android:src="@drawable/share"
             />
 
         <include layout="@layout/horizontal_line_for_eee"/>
@@ -48,6 +48,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/head"
         >
 
 
@@ -64,7 +65,6 @@
                 />
 
         </ScrollView>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -201,4 +201,86 @@
         </LinearLayout>
 
     </RelativeLayout>
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dm_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_dm_1"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/tank"
+            >
+
+            <TextView
+                android:id="@+id/tv_dm_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxEms="13"
+                android:maxLines="3"
+                android:text="这是评论"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/sp_13"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dm_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_dm_2"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/tank"
+            >
+
+            <TextView
+                android:id="@+id/tv_dm_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxEms="13"
+                android:maxLines="3"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/sp_13"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

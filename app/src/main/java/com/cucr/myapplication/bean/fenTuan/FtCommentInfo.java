@@ -54,6 +54,15 @@ public class FtCommentInfo implements Serializable {
     }
 
     public static class RowsBean implements Serializable {
+
+        public RowsBean() {
+        }
+
+        public RowsBean(String comment, UserBean user) {
+            this.comment = comment;
+            this.user = user;
+        }
+
         @Override
         public String toString() {
             return "RowsBean{" +
@@ -173,6 +182,11 @@ public class FtCommentInfo implements Serializable {
         }
 
         public static class UserBean implements Serializable {
+
+            public UserBean(String userHeadPortrait) {
+                this.userHeadPortrait = userHeadPortrait;
+            }
+
             @Override
             public String toString() {
                 return "UserBean{" +

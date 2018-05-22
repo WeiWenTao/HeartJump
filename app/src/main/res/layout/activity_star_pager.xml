@@ -34,13 +34,16 @@
                 />
 
             <ImageView
-                android:id="@+id/iv_gift"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:id="@+id/iv_header_msg"
+                android:layout_width="40dp"
+                android:layout_height="44dp"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:paddingBottom="13dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:src="@drawable/icon_message"
                 />
 
             <include layout="@layout/horizontal_line_for_eee"/>
@@ -103,6 +106,8 @@
                             android:textSize="@dimen/sp_18"
                             />
 
+
+
                         <TextView
                             android:id="@+id/tv_fans"
                             android:layout_width="wrap_content"
@@ -112,70 +117,6 @@
                             android:layout_marginTop="@dimen/dp_5"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_14"
-                            />
-
-                        <LinearLayout
-                            android:id="@+id/ll_photos"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_fans"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            >
-
-                            <ImageView
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:src="@drawable/icon_photoalbum"
-                                />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dp_5"
-                                android:text="图片墙"
-                                android:textColor="#f3f3f3"
-                                android:textSize="@dimen/sp_14"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/ll_hyt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_fans"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:layout_toRightOf="@id/ll_photos"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            >
-
-                            <ImageView
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:src="@drawable/icon_teams"
-                                />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dp_5"
-                                android:text="后援团"
-                                android:textColor="#f3f3f3"
-                                android:textSize="@dimen/sp_14"
-                                />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/iv_weib"
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
-                            android:layout_alignBottom="@+id/ll_hyt"
-                            android:layout_marginLeft="@dimen/dp_20"
-                            android:layout_toRightOf="@+id/ll_hyt"
-                            android:src="@drawable/weibo"
                             />
 
                     </RelativeLayout>
@@ -293,5 +234,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
 
 </RelativeLayout>

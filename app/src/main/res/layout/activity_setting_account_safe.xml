@@ -1,78 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     android:id="@+id/activity_setting_account_safe"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.setting.SettingAccountSafeActivity"
     >
 
     <include layout="@layout/activity_base_title"/>
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/white"
         >
 
-
         <TextView
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_15"
-            android:textColor="#666"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
             android:text="账号"
+            android:textColor="#666"
+            android:textSize="@dimen/sp_15"
             />
 
         <TextView
             android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_15"
-            android:textColor="#333"
             android:text="13912345678"
+            android:textColor="#333"
+            android:textSize="@dimen/sp_15"
             />
 
         <View
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
-            android:background="#ebebeb"/>
+            android:background="#ebebeb"
+            />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_modify_psw"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/white"
         >
 
 
         <TextView
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_15"
-            android:textColor="#666"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
             android:text="修改密码"
+            android:textColor="#666"
+            android:textSize="@dimen/sp_15"
             />
 
         <ImageView
+            android:layout_width="8dp"
+            android:layout_height="16dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
-            android:layout_width="8dp"
-            android:layout_height="16dp"
             android:src="@drawable/icon_more"
             />
     </RelativeLayout>

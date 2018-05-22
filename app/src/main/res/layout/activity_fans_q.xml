@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -11,12 +11,77 @@
     tools:context="com.cucr.myapplication.activity.fansCatgory.FansQActivity"
     >
 
-    <include layout="@layout/activity_base_title"/>
+    <RelativeLayout
+        android:id="@+id/comment_head"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBarHight"
+        android:background="@color/white"
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <TextView
+            android:id="@+id/tv_base_title"
+            style="@style/TitleStyle"
+            />
+
+        <ImageView
+            android:id="@+id/iv_sort"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:src="@drawable/icon_sorting"
+            />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_sort"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/comment_head"
+        android:background="@color/gray_white"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/tv_sort_hot"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="人气"
+            android:textColor="@color/xtred"
+            />
+
+        <TextView
+            android:id="@+id/tv_sort_new"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="最新"
+            android:textColor="@color/color_999"
+            />
+
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/comment_head"
+        android:background="@color/white"
         >
 
         <android.support.v7.widget.RecyclerView
@@ -44,7 +109,6 @@
                 />
 
         </com.cucr.myapplication.widget.stateLayout.MultiStateView>
-
 
         <toan.android.floatingactionmenu.FloatingActionsMenu
             android:id="@+id/multiple_actions"
@@ -104,4 +168,4 @@
 
     </FrameLayout>
 
-</LinearLayout>
+</RelativeLayout>

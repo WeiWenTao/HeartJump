@@ -6,6 +6,7 @@
               android:layout_height="wrap_content"
               android:background="@color/white"
               android:orientation="vertical"
+              android:paddingRight="@dimen/dp_10"
     >
 
     <LinearLayout
@@ -51,7 +52,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:paddingRight="@dimen/dp_10"
                     >
 
                     <com.cucr.myapplication.widget.ftGiveUp.ShineButton
@@ -109,6 +109,7 @@
         android:layout_marginLeft="60dp"
         android:text="哇哇哇！行走的荷尔蒙，帅死了！"
         android:textColor="#333"
+        android:layout_marginRight="@dimen/dp_10"
         android:textIsSelectable="true"
         android:textSize="@dimen/sp_15"
         app:emojiSize="@dimen/sp_15"
@@ -120,7 +121,6 @@
         android:layout_height="28dp"
         android:layout_marginBottom="@dimen/dp_10"
         android:layout_marginLeft="60dp"
-        android:layout_marginRight="@dimen/dp_10"
         android:background="#f9f9f9"
         android:orientation="horizontal"
         >

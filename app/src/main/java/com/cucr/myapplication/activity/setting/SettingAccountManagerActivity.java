@@ -73,6 +73,7 @@ public class SettingAccountManagerActivity extends BaseActivity implements Dialo
         SpUtil.setParam(SpConstant.USER_ID, loadUserInfos.getUserId());
         SpUtil.setParam(SpConstant.SIGN, loadUserInfos.getSign());
         SpUtil.setParam(SpConstant.SP_STATUS, loadUserInfos.getRoleId());
+        SpUtil.setParam(SpConstant.USER_NAEM, loadUserInfos.getPhone());
         startActivity(new Intent(SettingAccountManagerActivity.this, MainActivity.class));
         finish();
     }

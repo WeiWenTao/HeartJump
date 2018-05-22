@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.cucr.myapplication.activity.hyt.YyhdActivity_2"
     >
 
@@ -15,7 +16,7 @@
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
         >
 
 
@@ -27,8 +28,10 @@
         <TextView
             style="@style/TitleStyle"
             android:text="武汉BIGPAD"
-            android:textColor="@color/xtred"
+            android:textColor="@color/title_color"
             />
+        <include layout="@layout/horizontal_line_for_eee"/>
+
 
     </RelativeLayout>
 

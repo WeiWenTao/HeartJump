@@ -1,5 +1,6 @@
 package com.cucr.myapplication.activity.fansCatgory;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -46,6 +48,7 @@ import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
@@ -68,7 +71,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import toan.android.floatingactionmenu.FloatingActionButton;
 import toan.android.floatingactionmenu.FloatingActionsMenu;
 
-public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, SwipeRecyclerView.OnLoadListener, View.OnClickListener, RequersCallBackListener {
+public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, SwipeRecyclerView.OnLoadListener, View.OnClickListener, RequersCallBackListener, Animator.AnimatorListener {
 
     //礼物
     @ViewInject(R.id.tv_gift)
@@ -89,6 +92,18 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
     //礼物动画
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
+
+    //排序分类
+    @ViewInject(R.id.ll_sort)
+    private LinearLayout ll_sort;
+
+    //人气分类
+    @ViewInject(R.id.tv_sort_hot)
+    private TextView tv_sort_hot;
+
+    //最新分类
+    @ViewInject(R.id.tv_sort_new)
+    private TextView tv_sort_new;
 
     //填充布局
     private MultiStateView multiStateView;
@@ -114,6 +129,9 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
     private Intent mIntent;
     private boolean isRefresh;
     private boolean needShowLoading;
+    private ObjectAnimator mAni_open;
+    private ObjectAnimator mAni_close;
+    private boolean isOpened;
 
 
     @Override
@@ -125,7 +143,23 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         inipopWindow();
         initInfos();
         onRefresh();
+        initSort();
     }
+
+    private void initSort() {
+        int hight = CommonUtils.dip2px(40);
+        mAni_open = ObjectAnimator.ofFloat(view, "translationY", 0, hight);
+
+        mAni_close = ObjectAnimator.ofFloat(view, "translationY", hight, 0);
+
+        mAni_open.setDuration(300);
+
+        mAni_close.setDuration(300);
+
+        mAni_open.addListener(this);
+        mAni_close.addListener(this);
+    }
+
 
     private void init() {
         needShowLoading = true;  //进入页面的时候显示(仅一次)
@@ -635,4 +669,44 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         }
     }
 
+    @OnClick(R.id.iv_sort)
+    public void clickSort(View iview) {
+        if (isOpened) {
+            mAni_close.start();
+        } else {
+            mAni_open.start();
+        }
+    }
+
+    @OnClick(R.id.tv_sort_hot)
+    private void sortByHot(View view) {
+        tv_sort_hot.setTextColor(getResources().getColor(R.color.xtred));
+        tv_sort_new.setTextColor(getResources().getColor(R.color.color_999));
+    }
+
+    @OnClick(R.id.tv_sort_new)
+    private void sortByNew(View view) {
+        tv_sort_hot.setTextColor(getResources().getColor(R.color.color_999));
+        tv_sort_new.setTextColor(getResources().getColor(R.color.xtred));
+    }
+
+    @Override
+    public void onAnimationStart(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        isOpened = animation == mAni_open;
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
+    }
 }

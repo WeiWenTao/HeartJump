@@ -83,7 +83,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         //获取从 我的-明星-右上角加关注 界面跳转过来的数据
         findView();
         initView();
-        initFragment(0);
+        initFragment(4);
         initRadioGroup();
         CheckUpData();    //检查更新
         DisplayMetrics dm = new DisplayMetrics();

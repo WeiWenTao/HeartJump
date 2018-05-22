@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.cucr.myapplication.activity.hyt.YyhdActivity_1"
+    android:fitsSystemWindows="true"
     >
 
     <RelativeLayout
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
         >
 
 
@@ -26,10 +27,12 @@
             style="@style/TitleStyle"
             android:text="点亮开屏"
             />
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 
     <ScrollView
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >

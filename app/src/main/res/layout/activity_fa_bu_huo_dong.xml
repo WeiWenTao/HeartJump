@@ -37,6 +37,8 @@
                 style="@style/TitleStyle"
                 android:text="活动发布"
                 />
+            <include layout="@layout/horizontal_line_for_eee"/>
+
 
         </RelativeLayout>
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -151,6 +153,29 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @ViewInject(R.id.iv_more)
     private ImageView iv_more;
 
+    //弹幕1
+    @ViewInject(R.id.ll_dm_1)
+    private LinearLayout ll_dm1;
+
+    //弹幕头像1
+    @ViewInject(R.id.iv_dm_1)
+    private ImageView iv_dm1;
+
+    //弹幕文字1
+    @ViewInject(R.id.tv_dm_1)
+    private TextView tv_dm1;
+
+    //弹幕2
+    @ViewInject(R.id.ll_dm_2)
+    private LinearLayout ll_dm2;
+
+    //弹幕头像2
+    @ViewInject(R.id.iv_dm_2)
+    private ImageView iv_dm2;
+
+    //弹幕文字2
+    @ViewInject(R.id.tv_dm_2)
+    private TextView tv_dm2;
 
     private DialogShareDelPics mDialog;
     private DialogShareTo mShareToDialog;
@@ -180,6 +205,13 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private PayCenterCore mPayCenterCore;
     private DeleteCore mDelCore;
     private String mDataId;
+    private int dmCount;
+    private Handler mHandler;
+    private ObjectAnimator mRa1;
+    private boolean isFinish;
+    private ObjectAnimator mRa2;
+    private List<FtCommentInfo.RowsBean> mDmRows;
+
 
     @Override
     protected void initChild() {
@@ -193,11 +225,102 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         //阅读量
         setUpEmojiPopup();
         initGiftAndBackPack();
+        initDm();
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCommentCore.queryFtComment(Integer.parseInt(mDataId), -1, 1, 20, new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                        if (ftCommentInfo.isSuccess()) {
+//------------------------------------------评论弹幕-------------------------------------------------
+                            mDmRows = ftCommentInfo.getRows();
+                            if (ftCommentInfo.getTotal() != 0) {
+                                //开启弹幕1
+                                tv_dm1.setText(CommonUtils.unicode2String(mDmRows.get(0).getComment()));
+                                ImageLoader.getInstance().displayImage(mDmRows.get(0).getUser().getUserHeadPortrait(), iv_dm1, MyApplication.getImageLoaderOptions());
+                                starDm1();
+                                if (mDmRows.size() > 1) {
+                                    //开启弹幕2
+                                    starDm2();
+                                }
+                            }
+//--------------------------------------------------------------------------------------------------
+                        } else {
+                            ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                        }
+                    }
+                });
+            }
+        }, 2000);
     }
+
+    //弹幕
+    private void initDm() {
+
+        mHandler = new Handler();
+        mRa1 = ObjectAnimator.ofFloat(ll_dm1, "translationY", 0, -600);
+        mRa1.setDuration(4000);
+        mRa1.setInterpolator(new AccelerateInterpolator());
+
+        mRa2 = ObjectAnimator.ofFloat(ll_dm2, "translationY", 0, -600);
+        mRa2.setDuration(4000);
+        mRa2.setInterpolator(new AccelerateInterpolator());
+
+    }
+
+    //设置弹幕 1
+    private void starDm1() {
+        ll_dm1.setVisibility(View.VISIBLE);
+        mRa1.setRepeatCount((int) (mDmRows.size() - 0.1 / 2));
+        mRa1.start();
+        mHandler.post(new Runnable() {
+            public void run() {
+                if (dmCount < mDmRows.size()) {
+                    mHandler.postDelayed(this, 3950);
+                    tv_dm1.setText(CommonUtils.unicode2String(mDmRows.get(dmCount).getComment()));
+                    ImageLoader.getInstance().displayImage(mDmRows.get(dmCount).getUser().getUserHeadPortrait(), iv_dm1, MyApplication.getImageLoaderOptions());
+                    dmCount++;
+                } else {
+                    ll_dm1.clearAnimation();
+                    ll_dm1.setVisibility(View.GONE);
+                    isFinish = true;
+                }
+            }
+        });
+    }
+
+    //设置弹幕2
+    private void starDm2() {
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                ll_dm2.setVisibility(View.VISIBLE);
+                mRa2.setRepeatCount(mDmRows.size() / 2 - 1);
+                mRa2.start();
+            }
+        }, 2000);
+
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                if (dmCount < mDmRows.size()) {
+                    mHandler.postDelayed(this, 3950);
+                    tv_dm2.setText(CommonUtils.unicode2String(mDmRows.get(dmCount).getComment()));
+                    ImageLoader.getInstance().displayImage(mDmRows.get(dmCount).getUser().getUserHeadPortrait(), iv_dm2, MyApplication.getImageLoaderOptions());
+                    dmCount++;
+                } else {
+                    ll_dm2.clearAnimation();
+                    ll_dm2.setVisibility(View.GONE);
+                    isFinish = true;
+                }
+            }
+        }, 2000);
+    }
+
 
     private void initDialog() {
         mDelCore = new DeleteCore();
-
         mDialog = new DialogShareDelPics(this, R.style.MyDialogStyle);
         waitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         Window dialogWindow = mDialog.getWindow();
@@ -491,6 +614,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                             ToastUtils.showToast("评论成功!");
                             //查询一遍
                             onRefresh();
+                            //添加一条评论弹幕
+                            addDM(et_comment.getText().toString().trim());
                             et_comment.setText("");
                             emojiPopup.dismiss();
                             CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
@@ -521,6 +646,16 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                         waitDialog.dismiss();
                     }
                 });
+    }
+
+    private void addDM(String s) {
+        mDmRows.add(dmCount, new FtCommentInfo.RowsBean(s, new FtCommentInfo.RowsBean.UserBean((String) SpUtil.getParam(SpConstant.SP_USERHEAD, ""))));
+        if (isFinish) {
+            tv_dm1.setText(CommonUtils.unicode2String(s));
+            ll_dm1.setVisibility(View.VISIBLE);
+            mRa1.setRepeatCount(0);
+            mRa1.start();
+        }
     }
 
 
@@ -817,7 +952,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         }
     }
 
-
     //刷新
     @Override
     public void onRefresh() {
@@ -827,7 +961,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
         //查询评论
         page = 1;
-        mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
+        mCommentCore.queryFtComment(Integer.parseInt(mDataId), -1, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
@@ -836,6 +970,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                     allRows.clear();
                     allRows.addAll(mRows);
                     mAdapter.setData(mRows);
+//------------------------------------------评论弹幕-------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------
                     if (mIsFormConmmomd) {
                         lv_ft_catgory.smoothScrollToPositionFromTop(1, 75, 500);
                         mIsFormConmmomd = false;
@@ -854,7 +991,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             return;
         }
         page++;
-        mCommentCore.queryFtComment(mRowsBean.getId(), -1, page, rows, new OnCommonListener() {
+        mCommentCore.queryFtComment(Integer.parseInt(mDataId), -1, page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
@@ -885,6 +1022,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             if (signleFtInfo.isSuccess()) {
                 mRowsBean = signleFtInfo.getObj();
                 mHasPicture = mRowsBean.getAttrFileList().size() > 0;
+                if (mRowsBean.getCreateUserId() == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
+                    iv_more.setVisibility(View.VISIBLE);
+                }
                 upDataInfo(false);
                 initLV();
                 queryCore.ftRead(mRowsBean.getId() + "");
@@ -952,6 +1092,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @Override
     public void clickShareTo() {
         mDialog.dismiss();
-        mShareDialog.setData(new ShareEntity("", "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
+        mShareDialog.setData(new ShareEntity(getResources().getString(R.string.share_title), "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
     }
 }

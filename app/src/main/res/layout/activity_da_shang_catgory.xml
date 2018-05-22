@@ -39,6 +39,7 @@
             android:textColor="@color/xtred"
             android:textSize="@dimen/sp_14"
             />
+        <include layout="@layout/horizontal_line_for_eee"/>
 
     </RelativeLayout>
 

@@ -66,7 +66,6 @@ public class AddJourneyActivity extends BaseActivity {
         //初始化日期数据
         mBirthdayStyle.initDate(Integer.parseInt(year), Integer.parseInt(mon) - 1, Integer.parseInt(day));
 
-
     }
 
     //显示日期对话框
@@ -146,7 +145,7 @@ public class AddJourneyActivity extends BaseActivity {
                 tv_date.getText().toString().substring(0, 10), new OnCommonListener() {
                     @Override
                     public void onRequestSuccess(Response<String> response) {
-                        ToastUtils.showToast(AddJourneyActivity.this,"添加行程成功");
+                        ToastUtils.showToast(AddJourneyActivity.this, "添加行程成功");
                         finish();
                     }
                 });

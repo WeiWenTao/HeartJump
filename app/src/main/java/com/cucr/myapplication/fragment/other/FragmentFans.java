@@ -11,17 +11,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.PlayerListActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.fansCatgory.AboutActivity;
 import com.cucr.myapplication.activity.fansCatgory.FansQActivity;
@@ -95,10 +92,6 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @ViewInject(R.id.iv_icon_unfold)
     private ImageView iv_icon_unfold;
 
-    //后援团 图集 预约等按钮 (加载完成后 才能显示并点击)
-    @ViewInject(R.id.rlv_click)
-    private RelativeLayout rlv_click;
-
     //下拉内容
     @ViewInject(R.id.drawer_rcv)
     private RecyclerView drawer_rcv;
@@ -134,10 +127,6 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     //礼物动画
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
-
-    //微博图标
-    @ViewInject(R.id.iv_weib)
-    private ImageView iv_weib;
 
     //频道分类
     @ViewInject(R.id.vp_catgory)
@@ -226,9 +215,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
                     tv_fans.setText("粉丝 " + mRowsBean.getFansCount());
                     tv_starname.setText(mRowsBean.getRealName());
                     tv_star_title.setText(mRowsBean.getRealName());
-                    if (TextUtils.isEmpty(mRowsBean.getWeiboUrl())) {
-                        iv_weib.setVisibility(View.GONE);
-                    }
+
                     ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
@@ -266,7 +253,6 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
                 FocusInfo Info = mGson.fromJson(response.get(), FocusInfo.class);
                 if (Info.isSuccess()) {
                     iv_icon_unfold.setVisibility(View.VISIBLE);
-                    rlv_click.setVisibility(View.VISIBLE);
                     //添加明星自己为第一个
                     mRows = Info.getRows();
                     if (Constans.STATUS_STAR == ((int) SpUtil.getParam(SpConstant.SP_STATUS, -1))) {
@@ -499,34 +485,12 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         MyLogger.jLog().i("EventNotifyStarInfo() 注销");
     }
 
-    //图集
-    @OnClick(R.id.ll_photos)
-    public void goPhotos(View view) {
-        mIntent.putExtra("starId", mStarId);
-        mIntent.setClass(MyApplication.getInstance(), PhotosAlbumActivity.class);
-        startActivity(mIntent);
-    }
-
     //后援团
     @OnClick(R.id.ll_hyt)
     public void goHouYuanTuan(View view) {
         mIntent.putExtra("starId", mStarId);
         mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
         startActivity(mIntent);
-    }
-
-    //跳转微博
-    @OnClick(R.id.iv_weib)
-    public void click(View iv_weib) {
-        Intent intent = new Intent(mContext, TestWebViewActivity.class);
-        intent.putExtra("url", mRowsBean.getWeiboUrl());
-        startActivity(intent);
-    }
-
-    //跳转音乐播放
-    @OnClick(R.id.iv_player)
-    public void clickToPlayer(View iv_player) {
-        startActivity(new Intent(mContext, PlayerListActivity.class));
     }
 
     @Override

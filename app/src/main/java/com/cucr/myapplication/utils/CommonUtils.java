@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 
@@ -66,6 +67,15 @@ public class CommonUtils {
 
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+
+    public static int dip2px( float dpValue) {
+        final float scale = MyApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 

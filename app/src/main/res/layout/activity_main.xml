@@ -23,7 +23,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1px"
         android:background="#ccc"
         />
 
@@ -42,7 +42,6 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:button="@null"
-            android:checked="true"
             android:drawableTop="@drawable/home_selector"
             android:gravity="center_horizontal"
             android:text="首页"
@@ -71,6 +70,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:button="@null"
+            android:checked="true"
             android:drawableTop="@drawable/star_selector"
             android:gravity="center_horizontal"
             android:text="明星"

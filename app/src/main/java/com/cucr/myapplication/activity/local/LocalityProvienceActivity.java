@@ -7,7 +7,6 @@ import android.widget.ListView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
-import com.cucr.myapplication.activity.fuli.DingDanActivity;
 import com.cucr.myapplication.activity.hyt.CreatHytActivity;
 import com.cucr.myapplication.activity.hyt.YyhdActivity_3;
 import com.cucr.myapplication.activity.journey.AddJourneyActivity;
@@ -39,9 +38,7 @@ public class LocalityProvienceActivity extends BaseActivity {
         actives.put("FaBuHuoDongActivity", FaBuHuoDongActivity.class);*/
         //预约详情
         actives.put("YuYueCatgoryActivity", YuYueCatgoryActivity.class);
-        //订单地区
-        actives.put("DingDanActivity", DingDanActivity.class);
-        //添加行程
+         //添加行程
         actives.put("AddJourneyActivity", AddJourneyActivity.class);
         //创建后援团
         actives.put("CreatHytActivity", CreatHytActivity.class);

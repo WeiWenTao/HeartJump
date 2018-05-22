@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical" android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+    >
 
     <RelativeLayout
         android:id="@+id/rl_head"
@@ -9,7 +12,6 @@
         android:layout_height="48dp"
         android:background="@color/bar_color"
         >
-
 
         <ImageView
             android:id="@+id/iv_base_back"
@@ -19,20 +21,20 @@
         <TextView
             android:id="@+id/tv_title"
             style="@style/TitleStyle"
-            android:textColor="@color/title_color"
             android:text="我的私信"
+            android:textColor="@color/title_color"
             />
 
         <ImageView
-            android:visibility="gone"
-            android:onClick="members"
             android:id="@+id/iv_member"
             android:layout_width="38dp"
-            android:padding="@dimen/dp_10"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:onClick="members"
+            android:padding="@dimen/dp_10"
             android:src="@drawable/team_details"
+            android:visibility="gone"
             />
 
     </RelativeLayout>
@@ -41,6 +43,7 @@
         android:id="@+id/conversationlist"
         android:name="io.rong.imkit.fragment.ConversationListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>

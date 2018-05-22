@@ -302,7 +302,7 @@ public class PublishActivity extends Activity {
 
     private void initHead() {
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
     }
 
     //返回键

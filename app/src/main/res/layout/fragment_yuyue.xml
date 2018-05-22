@@ -12,7 +12,7 @@
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue_black"
+        android:background="@color/white"
         >
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
             android:text="预约艺人"
-            android:textColor="@color/pink"
+            android:textColor="@color/title_color"
             android:textSize="@dimen/sp_18"
             />
 
@@ -47,8 +47,11 @@
             android:paddingBottom="13dp"
             android:paddingLeft="18dp"
             android:paddingTop="10dp"
-            android:src="@drawable/icon_msg"
+            android:src="@drawable/icon_message"
             />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
+
     </RelativeLayout>
 
     <LinearLayout

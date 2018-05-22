@@ -100,7 +100,6 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
 
     public void watchSearch() {
         edit_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
             @Override
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {

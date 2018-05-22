@@ -284,8 +284,6 @@
             android:launchMode="standard"
             >
         </activity>
-        <activity android:name=".activity.fuli.DuiHuanCatgoryActivity">
-        </activity>
         <activity android:name=".activity.dongtai.DongTaiActivity">
         </activity>
         <activity android:name=".activity.dongtai.DongTaiCatgoryActivity">
@@ -293,11 +291,6 @@
         <activity android:name=".activity.user.PersonalMainPagerActivity">
         </activity>
         <activity android:name=".activity.BaseActivity">
-        </activity>
-        <activity
-            android:name=".activity.fuli.DingDanActivity"
-            android:launchMode="singleTask"
-            >
         </activity>
         <activity android:name=".activity.journey.MyJourneyActivity">
         </activity>
@@ -465,10 +458,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.PlayerActivity">
-        </activity>
-        <activity android:name=".activity.PlayerListActivity">
-        </activity>
         <activity android:name=".activity.fansCatgory.FansQActivity">
         </activity>
         <activity android:name=".activity.fansCatgory.ShuJuActivity">

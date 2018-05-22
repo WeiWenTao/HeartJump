@@ -1,6 +1,8 @@
 package com.cucr.myapplication.activity.news;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -19,19 +22,24 @@ import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.comment.XingWenCommentActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiImageView;
 import com.vanniktech.emoji.EmojiPopup;
@@ -43,6 +51,8 @@ import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
@@ -83,6 +93,30 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     @ViewInject(R.id.tv_givecount)
     private TextView tv_givecount;
 
+    //弹幕1
+    @ViewInject(R.id.ll_dm_1)
+    private LinearLayout ll_dm1;
+
+    //弹幕头像1
+    @ViewInject(R.id.iv_dm_1)
+    private ImageView iv_dm1;
+
+    //弹幕文字1
+    @ViewInject(R.id.tv_dm_1)
+    private TextView tv_dm1;
+
+    //弹幕2
+    @ViewInject(R.id.ll_dm_2)
+    private LinearLayout ll_dm2;
+
+    //弹幕头像2
+    @ViewInject(R.id.iv_dm_2)
+    private ImageView iv_dm2;
+
+    //弹幕文字2
+    @ViewInject(R.id.tv_dm_2)
+    private TextView tv_dm2;
+
     private Intent mIntent;
     //emoji表情
     private EmojiPopup emojiPopup;
@@ -92,10 +126,48 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     private DialogShareStyle mDialog;
     private MyWaitDialog mWaitDialog;
     private DialogShareStyle mShareDialog;
+    private int dmCount;
+    private Handler mHandler;
+    private ObjectAnimator mRa1;
+    private boolean isFinish;
+    private ObjectAnimator mRa2;
+    private List<FtCommentInfo.RowsBean> mDmRows;
+    private FtCommentCore mCommentCore;
+
 
     @Override
     protected void initChild() {
         initView();
+        initDm();
+        mCommentCore = new FtCommentCore();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCommentCore.queryFtComment(rowsBean.getId(), -1, 1, 20, new OnCommonListener() {
+                    @Override
+                    public void onRequestSuccess(Response<String> response) {
+                        FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                        if (ftCommentInfo.isSuccess()) {
+//------------------------------------------评论弹幕-------------------------------------------------
+                            mDmRows = ftCommentInfo.getRows();
+                            if (ftCommentInfo.getTotal() != 0) {
+                                //开启弹幕1
+                                tv_dm1.setText(CommonUtils.unicode2String(mDmRows.get(0).getComment()));
+                                ImageLoader.getInstance().displayImage(mDmRows.get(0).getUser().getUserHeadPortrait(), iv_dm1, MyApplication.getImageLoaderOptions());
+                                starDm1();
+                                if (mDmRows.size() > 1) {
+                                    //开启弹幕2
+                                    starDm2();
+                                }
+                            }
+//--------------------------------------------------------------------------------------------------
+                        } else {
+                            ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                        }
+                    }
+                });
+            }
+        }, 2000);
     }
 
     @Override
@@ -134,6 +206,67 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         web_content.setWebViewClient(new WebViewClient());
         web_content.loadDataWithBaseURL(null, sHead + rowsBean.getContent() + "</body></html>", "text/html", "UTF-8", null);
 
+    }
+
+    //弹幕
+    private void initDm() {
+
+        mHandler = new Handler();
+        mRa1 = ObjectAnimator.ofFloat(ll_dm1, "translationY", 0, -600);
+        mRa1.setDuration(4000);
+        mRa1.setInterpolator(new AccelerateInterpolator());
+
+        mRa2 = ObjectAnimator.ofFloat(ll_dm2, "translationY", 0, -600);
+        mRa2.setDuration(4000);
+        mRa2.setInterpolator(new AccelerateInterpolator());
+
+    }
+
+    //设置弹幕 1
+    private void starDm1() {
+        ll_dm1.setVisibility(View.VISIBLE);
+        mRa1.setRepeatCount((int) (mDmRows.size() - 0.1 / 2));
+        mRa1.start();
+        mHandler.post(new Runnable() {
+            public void run() {
+                if (dmCount < mDmRows.size()) {
+                    mHandler.postDelayed(this, 3950);
+                    tv_dm1.setText(CommonUtils.unicode2String(mDmRows.get(dmCount).getComment()));
+                    ImageLoader.getInstance().displayImage(mDmRows.get(dmCount).getUser().getUserHeadPortrait(), iv_dm1, MyApplication.getImageLoaderOptions());
+                    dmCount++;
+                } else {
+                    ll_dm1.clearAnimation();
+                    ll_dm1.setVisibility(View.GONE);
+                    isFinish = true;
+                }
+            }
+        });
+    }
+
+    //设置弹幕2
+    private void starDm2() {
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                ll_dm2.setVisibility(View.VISIBLE);
+                mRa2.setRepeatCount(mDmRows.size() / 2 - 1);
+                mRa2.start();
+            }
+        }, 2000);
+
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                if (dmCount < mDmRows.size()) {
+                    mHandler.postDelayed(this, 3950);
+                    tv_dm2.setText(CommonUtils.unicode2String(mDmRows.get(dmCount).getComment()));
+                    ImageLoader.getInstance().displayImage(mDmRows.get(dmCount).getUser().getUserHeadPortrait(), iv_dm2, MyApplication.getImageLoaderOptions());
+                    dmCount++;
+                } else {
+                    ll_dm2.clearAnimation();
+                    ll_dm2.setVisibility(View.GONE);
+                    isFinish = true;
+                }
+            }
+        }, 2000);
     }
 
     //emoji表情
@@ -273,6 +406,8 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
                         CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                         if (commonRebackMsg.isSuccess()) {
                             ToastUtils.showToast("评论成功!");
+                            //添加一条评论弹幕
+                            addDM(et_comment.getText().toString().trim());
                             //查询一遍
                             et_comment.setText("");
                             emojiPopup.dismiss();
@@ -300,5 +435,15 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
                         mWaitDialog.dismiss();
                     }
                 });
+    }
+
+    private void addDM(String trim) {
+        mDmRows.add(dmCount, new FtCommentInfo.RowsBean(trim, new FtCommentInfo.RowsBean.UserBean((String) SpUtil.getParam(SpConstant.SP_USERHEAD, ""))));
+        if (isFinish) {
+            tv_dm1.setText(CommonUtils.unicode2String(trim));
+            ll_dm1.setVisibility(View.VISIBLE);
+            mRa1.setRepeatCount(0);
+            mRa1.start();
+        }
     }
 }
