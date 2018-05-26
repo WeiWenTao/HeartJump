@@ -54,6 +54,7 @@ public class FragmentFuLi extends BaseFragment implements RequersCallBackListene
 
     @Override
     protected void initView(View childView) {
+
         page = 1;
         rows = 10;
         mGson = new Gson();
@@ -63,6 +64,8 @@ public class FragmentFuLi extends BaseFragment implements RequersCallBackListene
         initRLV();
         onRefresh();
     }
+
+
 
     @Override
     public int getContentLayoutRes() {

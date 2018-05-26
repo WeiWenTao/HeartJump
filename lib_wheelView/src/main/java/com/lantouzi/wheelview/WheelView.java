@@ -70,7 +70,7 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 	private int mMaxSelectableIndex = Integer.MAX_VALUE;
 
 	//设置额外的颜色和字体
-	private int firstColor = Color.parseColor("#f68d89"), secondCorlor = Color.parseColor("#999999"), thirdColor = Color.parseColor("#999999");
+	private int firstColor = Color.parseColor("#ff4f49"), secondCorlor = Color.parseColor("#999999"), thirdColor = Color.parseColor("#999999");
 	private float centerTextSize, normalTextSize;
 
 	public WheelView(Context context) {

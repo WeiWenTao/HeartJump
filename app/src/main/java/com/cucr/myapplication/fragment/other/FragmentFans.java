@@ -26,7 +26,6 @@ import com.cucr.myapplication.activity.fansCatgory.HytActivity;
 import com.cucr.myapplication.activity.fansCatgory.JourneyActivity;
 import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
 import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
-import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
@@ -157,6 +156,12 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         super.onCreate(savedInstanceState);
         MyLogger.jLog().i("EventNotifyStarInfo() 注册");
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     @Override
@@ -485,14 +490,6 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         MyLogger.jLog().i("EventNotifyStarInfo() 注销");
     }
 
-    //后援团
-    @OnClick(R.id.ll_hyt)
-    public void goHouYuanTuan(View view) {
-        mIntent.putExtra("starId", mStarId);
-        mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
-        startActivity(mIntent);
-    }
-
     @Override
     public void onRefresh() {
         isRefresh = true;
@@ -630,7 +627,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @Override
     public void onClickjourney() {
         Intent intent = new Intent(mContext, JourneyActivity.class);
-        intent.putExtra("starId", mStarId);
+        intent.putExtra("data", mRowsBean);
         startActivity(intent);
     }
 
@@ -638,7 +635,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @Override
     public void onClickAbout_one() {
         Intent intent = new Intent(mContext, AboutActivity.class);
-        intent.putExtra("starId", mStarId);
+        intent.putExtra("data", mRowsBean);
         startActivity(intent);
     }
 
@@ -646,7 +643,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @Override
     public void onClickAbout() {
         Intent intent = new Intent(mContext, AboutActivity.class);
-        intent.putExtra("starId", mStarId);
+        intent.putExtra("data", mRowsBean);
         startActivity(intent);
     }
 
@@ -663,6 +660,14 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     public void onClickWeiBo() {
         Intent intent = new Intent(mContext, TestWebViewActivity.class);
         intent.putExtra("url", mRowsBean.getWeiboUrl());
+        startActivity(intent);
+    }
+
+    //贴吧
+    @Override
+    public void onClickTieBa() {
+        Intent intent = new Intent(mContext, TestWebViewActivity.class);
+        intent.putExtra("url", mRowsBean.getTiebaUrl());
         startActivity(intent);
     }
 }

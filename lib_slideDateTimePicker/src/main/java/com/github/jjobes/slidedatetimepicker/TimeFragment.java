@@ -106,7 +106,7 @@ public class TimeFragment extends Fragment {
 
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
 
-        View v = localInflater.inflate(R.layout.fragment_time, container, false);
+        View v = localInflater.inflate(R.layout.item_pro, container, false);
 
         mTimePicker = (TimePicker) v.findViewById(R.id.timePicker);
         // block keyboard popping up on touch

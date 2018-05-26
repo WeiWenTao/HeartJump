@@ -337,4 +337,11 @@ public class HttpContans {
 
     //福利banner查询
     public static final String ADDRESS_FULI_BANNER = HOST + "/interface/mobileBannerAction/welfareBanner";
+
+    //新闻详情
+    public static final String ADDRESS_NEWS_CATGORY = HOST + "/interface/newsShare/newsDetail?contentId=";
+
+    //明星简介查询
+    public static final String ADDRESS_STAR_DESCRIBE = HOST + "/interface/mobileStartAction/queryIntroduce";
+
 }

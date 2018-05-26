@@ -1,33 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     >
+
+    <com.cucr.myapplication.widget.refresh.RefreshLayout
+        android:id="@+id/swipe_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+        <com.cucr.myapplication.widget.scroll.ObservableScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rl_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="272.5dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bd_beijing"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/dp_10"
+                        android:background="@drawable/white_bg_r5dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="29"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            >
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_head2"
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/rc_icon_admin_hover"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_name2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_5"
+                                android:text="明星姓名"
+                                android:textColor="@color/color_333"
+                                android:textSize="@dimen/sp_15"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_num2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_3"
+                                android:text="心跳值 12345"
+                                android:textColor="@color/xtred"
+                                android:textSize="@dimen/sp_12"
+                                />
+
+                            <ImageView
+                                android:id="@+id/iv_dabang_second"
+                                android:layout_width="45dp"
+                                android:layout_height="24.5dp"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/dp_8"
+                                android:src="@drawable/icon_award"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="42"
+                            android:background="@drawable/bd_yinying"
+                            android:orientation="vertical"
+                            >
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="29"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            >
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_head3"
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/rc_icon_admin_hover"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_name3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_5"
+                                android:text="明星姓名"
+                                android:textColor="@color/color_333"
+                                android:textSize="@dimen/sp_15"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_num3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_3"
+                                android:text="心跳值 12345"
+                                android:textColor="@color/xtred"
+                                android:textSize="@dimen/sp_12"
+                                />
+
+                            <ImageView
+                                android:id="@+id/iv_dabang_third"
+                                android:layout_width="45dp"
+                                android:layout_height="24.5dp"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/dp_8"
+                                android:src="@drawable/icon_award"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--这个布局 设置二三名头衔-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="175dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/dp_10"
+                        android:orientation="horizontal"
+                        >
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="29"
+                            android:gravity="center_horizontal"
+                            >
+
+                            <ImageView
+                                android:layout_width="68dp"
+                                android:layout_height="@dimen/dp_17"
+                                android:src="@drawable/bd_disanming"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="42"
+                            ></RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="29"
+                            android:gravity="center_horizontal"
+                            >
+
+                            <ImageView
+                                android:layout_width="68dp"
+                                android:layout_height="@dimen/dp_17"
+                                android:src="@drawable/bd_dierming"
+                                />
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="133dp"
+                        android:layout_height="185dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/white_bg_r5dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        >
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_head1"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/rc_icon_admin_hover"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_name1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="明星姓名"
+                            android:textColor="@color/color_333"
+                            android:textSize="@dimen/sp_15"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_num1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_3"
+                            android:text="心跳值 12345"
+                            android:textColor="@color/xtred"
+                            android:textSize="@dimen/sp_12"
+                            />
+
+                        <ImageView
+                            android:id="@+id/iv_dabang_first"
+                            android:layout_width="45dp"
+                            android:layout_height="24.5dp"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/dp_8"
+                            android:src="@drawable/icon_award"
+                            />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="19dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="181dp"
+                        android:src="@drawable/bd_diyiming"
+                        />
+
+                </RelativeLayout>
+
+                <com.cucr.myapplication.widget.listview.ListViewForScrollView
+                    android:id="@+id/lv_dabang"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:dividerHeight="1px"
+                    ></com.cucr.myapplication.widget.listview.ListViewForScrollView>
+
+                <LinearLayout
+                    android:id="@+id/ll_footview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    >
+
+                    <ProgressBar
+                        android:id="@+id/pb_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminateDrawable="@drawable/progressbar_refresh"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="正在加载..."
+                        android:textColor="@color/xtred"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.cucr.myapplication.widget.scroll.ObservableScrollView>
+
+    </com.cucr.myapplication.widget.refresh.RefreshLayout>
 
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/actionBarHight"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/white"
+        android:background="#00000000"
+        android:paddingTop="@dimen/rc_dimen_size_24"
         >
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_13"
-            android:text="心跳榜"
-            android:textColor="@color/title_color"
+            android:text="心跳榜单"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_18"
             />
-
 
         <ImageView
             android:id="@+id/iv_header_msg"
@@ -46,20 +348,4 @@
 
     </RelativeLayout>
 
-    <com.cucr.myapplication.widget.refresh.RefreshLayout
-        android:id="@+id/swipe_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        >
-
-        <ListView
-            android:id="@+id/lv_dabang"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="1px"
-            ></ListView>
-
-    </com.cucr.myapplication.widget.refresh.RefreshLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -2,12 +2,18 @@ package com.cucr.myapplication.fragment.DaBang;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -23,10 +29,13 @@ import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.dabang.BangDanCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogDaBangStyle;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
+import com.cucr.myapplication.widget.scroll.ObservableScrollView;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -34,7 +43,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.List;
 
@@ -42,11 +50,25 @@ import java.util.List;
  * Created by 911 on 2017/6/22.
  */
 
-public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.ClickconfirmListener, RefreshLayout.OnLoadListener, SwipeRefreshLayout.OnRefreshListener {
+public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.ClickconfirmListener, RefreshLayout.OnLoadListener, SwipeRefreshLayout.OnRefreshListener, ObservableScrollView.ScrollViewListener {
+
+    @ViewInject(R.id.tv_title)
+    private TextView tv_title;
+
+    @ViewInject(R.id.rl_banner)
+    private RelativeLayout rl_banner;
+
+    @ViewInject(R.id.scrollview)
+    private ObservableScrollView scrollView;
+
+    @ViewInject(R.id.head)
+    private RelativeLayout head;
+
+    @ViewInject(R.id.line)
+    private View line;
 
     private BangDanCore mCore;
     private DaBangAdapter mAdapter;
-    private View headView;
     private DialogDaBangStyle mDialog;
     private int starId;
     private BangDanInfo.RowsBean mRowsBean1;
@@ -54,9 +76,12 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     private BangDanInfo.RowsBean mRowsBean3;
     private int page;
     private int rows;
-    private RefreshLayout mMyRefreshListView;
+    private RefreshLayout slv;
     private Intent mIntent;
     private Context dialogContext;
+    private int height;
+    private boolean canRefresh;
+    private View child;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,8 +89,39 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         EventBus.getDefault().register(this);
     }
 
+    private void initListeners() {
+        line.setVisibility(View.GONE);
+        ViewTreeObserver vto = rl_banner.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                head.getViewTreeObserver().removeGlobalOnLayoutListener(
+                        this);
+                height = rl_banner.getHeight() - CommonUtils.dip2px(68);
+                scrollView.setScrollViewListener(DaBangFragment.this);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
+
     @Override
     protected void initView(View childView) {
+        child = childView;
+        Window window = getActivity().getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+        ViewUtils.inject(this, childView);
+        initListeners();
+        canRefresh = true;      //第一次进页面可以刷新
         dialogContext = childView.getContext();
         childView.findViewById(R.id.iv_header_msg).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +129,6 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
                 startActivity(new Intent(mContext, MessageActivity.class));
             }
         });
-        UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         //如果是企业用户
        /* if (((int) SpUtil.getParam(SpConstant.SP_STATUS, -1)) == Constans.STATUS_QIYE) {
             //跳转企业用户看的明星主页
@@ -83,20 +137,23 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
             //其他用户跳转粉丝看的主页
             mIntent = new Intent(MyApplication.getInstance(), StarPagerForFans.class);
         }*/
+
         mIntent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mMyRefreshListView = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
+        slv = (RefreshLayout) childView.findViewById(R.id.swipe_layout);
         ListView lv_dabang = (ListView) childView.findViewById(R.id.lv_dabang);
-        mMyRefreshListView.setOnLoadListener(this);
-        mMyRefreshListView.setOnRefreshListener(this);
+        slv.setOnLoadListener(this);
+        slv.setOnRefreshListener(this);
+        slv.setProgressViewOffset(true, 100, 300);
         page = 1;
         rows = 15;
-        headView = View.inflate(mContext, R.layout.head_dabang, null);
-        ViewUtils.inject(this, headView);
+
+//        headView = View.inflate(mContext, R.layout.head_dabang, null);
+//        ViewUtils.inject(this, headView);
+//        lv_dabang.addHeaderView(headView);
 
         mCore = new BangDanCore(mContext);
 
-        lv_dabang.addHeaderView(headView);
         mAdapter = new DaBangAdapter();
         lv_dabang.setAdapter(mAdapter);
         mAdapter.setOnClick(new DaBangAdapter.OnClick() {
@@ -126,15 +183,15 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         mRowsBean2 = rows.get(1);
         mRowsBean3 = rows.get(2);
 
-        ImageView userHead1 = (ImageView) headView.findViewById(R.id.iv_head1);
-        ImageView userHead2 = (ImageView) headView.findViewById(R.id.iv_head2);
-        ImageView userHead3 = (ImageView) headView.findViewById(R.id.iv_head3);
-        TextView tv_name1 = (TextView) headView.findViewById(R.id.tv_name1);
-        TextView tv_name2 = (TextView) headView.findViewById(R.id.tv_name2);
-        TextView tv_name3 = (TextView) headView.findViewById(R.id.tv_name3);
-        TextView tv_num1 = (TextView) headView.findViewById(R.id.tv_num1);
-        TextView tv_num2 = (TextView) headView.findViewById(R.id.tv_num2);
-        TextView tv_num3 = (TextView) headView.findViewById(R.id.tv_num3);
+        ImageView userHead1 = (ImageView) child.findViewById(R.id.iv_head1);
+        ImageView userHead2 = (ImageView) child.findViewById(R.id.iv_head2);
+        ImageView userHead3 = (ImageView) child.findViewById(R.id.iv_head3);
+        TextView tv_name1 = (TextView) child.findViewById(R.id.tv_name1);
+        TextView tv_name2 = (TextView) child.findViewById(R.id.tv_name2);
+        TextView tv_name3 = (TextView) child.findViewById(R.id.tv_name3);
+        TextView tv_num1 = (TextView) child.findViewById(R.id.tv_num1);
+        TextView tv_num2 = (TextView) child.findViewById(R.id.tv_num2);
+        TextView tv_num3 = (TextView) child.findViewById(R.id.tv_num3);
 
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean1.getUserHeadPortrait(), userHead1, MyApplication.getImageLoaderOptions());
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean2.getUserHeadPortrait(), userHead2, MyApplication.getImageLoaderOptions());
@@ -144,9 +201,9 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
         tv_name2.setText(mRowsBean2.getRealName());
         tv_name3.setText(mRowsBean3.getRealName());
 
-        tv_num1.setText(mRowsBean1.getUserMoney() + "");
-        tv_num2.setText(mRowsBean2.getUserMoney() + "");
-        tv_num3.setText(mRowsBean3.getUserMoney() + "");
+        tv_num1.setText("心跳值 " + mRowsBean1.getUserMoney());
+        tv_num2.setText("心跳值 " + mRowsBean2.getUserMoney() + "");
+        tv_num3.setText("心跳值 " + mRowsBean3.getUserMoney() + "");
     }
 
     @OnClick(R.id.iv_head3)
@@ -239,8 +296,8 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
 
     @Override
     public void onRefresh() {
-        if (!mMyRefreshListView.isRefreshing()) {
-            mMyRefreshListView.setRefreshing(true);
+        if (!slv.isRefreshing()) {
+            slv.setRefreshing(true);
         }
         page = 1;
         mCore.queryBangDanInfo(page, rows, new OnCommonListener() {
@@ -261,8 +318,8 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     //请求完成  如果还在加载  就停止加载(无网络情况)
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onFinish(EventRequestFinish event) {
-        mMyRefreshListView.setRefreshing(false);
-        mMyRefreshListView.setLoading(false);
+        slv.setRefreshing(false);
+        slv.setLoading(false);
     }
 
 
@@ -274,6 +331,7 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
             public void onRequestSuccess(Response<String> response) {
                 BangDanInfo bangDanInfo = mGson.fromJson(response.get(), BangDanInfo.class);
                 if (bangDanInfo.isSuccess()) {
+                    canRefresh = true;
                     mAdapter.addData(bangDanInfo.getRows());
                     if (rows > bangDanInfo.getRows().size()) {
                         ToastUtils.showEnd();
@@ -289,6 +347,30 @@ public class DaBangFragment extends BaseFragment implements DialogDaBangStyle.Cl
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+        // TODO Auto-generated method stub
+        if (canRefresh && scrollView.getScrollY() + scrollView.getHeight() - scrollView.getPaddingTop() - scrollView.getPaddingBottom() == scrollView.getChildAt(0).getHeight()) {
+            canRefresh = false;
+            onLoad();
+        }
+        if (y <= 0) {   //设置标题的背景颜色
+            head.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));
+            line.setVisibility(View.GONE);
+            tv_title.setTextColor(getResources().getColor(R.color.white));
+        } else if (y > 0 && y <= height) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
+            float scale = (float) y / height;
+            float alpha = (255 * scale);
+            line.setVisibility(View.GONE);
+            tv_title.setTextColor(Color.rgb(255 - ((int) alpha), 255 - ((int) alpha), 255 - ((int) alpha)));
+            head.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+        } else {    //滑动到banner下面设置普通颜色
+            head.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
+            line.setVisibility(View.VISIBLE);
+            tv_title.setTextColor(getResources().getColor(R.color.title_color));
+        }
     }
 
 }

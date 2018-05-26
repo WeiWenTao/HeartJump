@@ -203,7 +203,7 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     public void onLoadMore() {
         isRefresh = false;
         page++;
-        rlv_stars.onLoadingMore();
+//        rlv_stars.onLoadingMore();
         mCore.querStarByName(rows, page, mCode, this);
     }
 

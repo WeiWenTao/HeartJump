@@ -22,7 +22,6 @@ import com.cucr.myapplication.activity.fansCatgory.HytActivity;
 import com.cucr.myapplication.activity.fansCatgory.JourneyActivity;
 import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
 import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
-import com.cucr.myapplication.activity.hyt.HYTActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
@@ -383,14 +382,6 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
-    //后援团
-    @OnClick(R.id.ll_hyt)
-    public void goHouYuanTuan(View view) {
-        mIntent.putExtra("starId", mStarId);
-        mIntent.setClass(MyApplication.getInstance(), HYTActivity.class);
-        startActivity(mIntent);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -452,7 +443,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @Override
     public void onClickjourney() {
         Intent intent = new Intent(MyApplication.getInstance(), JourneyActivity.class);
-        intent.putExtra("starId", mStarId);
+        intent.putExtra("data", mData);
         startActivity(intent);
     }
 
@@ -460,7 +451,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @Override
     public void onClickAbout_one() {
         Intent intent = new Intent(MyApplication.getInstance(), AboutActivity.class);
-        intent.putExtra("starId", mStarId);
+        intent.putExtra("data", mData);
         startActivity(intent);
     }
 
@@ -468,7 +459,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @Override
     public void onClickAbout() {
         Intent intent = new Intent(MyApplication.getInstance(), AboutActivity.class);
-        intent.putExtra("starId", mStarId);
+        intent.putExtra("data", mData);
         startActivity(intent);
     }
 
@@ -485,6 +476,14 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     public void onClickWeiBo() {
         Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         intent.putExtra("url", mData.getWeiboUrl());
+        startActivity(intent);
+    }
+
+    //贴吧
+    @Override
+    public void onClickTieBa() {
+        Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
+        intent.putExtra("url", mData.getTiebaUrl());
         startActivity(intent);
     }
 

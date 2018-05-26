@@ -54,7 +54,7 @@ public class DaBangAdapter extends BaseAdapter {
 
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getUserHeadPortrait(), userHead, MyApplication.getImageLoaderOptions());
         tv_name.setText(rowsBean.getRealName());
-        tv_xingbi.setText(rowsBean.getUserMoney() + "");
+        tv_xingbi.setText(rowsBean.getUserMoney()+"");
         tv_ranking.setText(position + 4 + "");
 
         ll_dabang.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,7 @@ public class DaBangAdapter extends BaseAdapter {
     }
 
     public void addData(List<BangDanInfo.RowsBean> rows) {
-        if (rows==null){
+        if (rows == null) {
             return;
         }
         this.rows.addAll(rows);
@@ -94,6 +94,7 @@ public class DaBangAdapter extends BaseAdapter {
 
     public interface OnClick {
         void daBang(BangDanInfo.RowsBean rowsBean);
+
         void clickStar(int starId);
     }
 

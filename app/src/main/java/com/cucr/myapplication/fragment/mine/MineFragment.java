@@ -51,7 +51,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,13 +111,12 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
         map = new HashMap<>();
         map.put(Conversation.ConversationType.PRIVATE.getName(), false);
         map.put(Conversation.ConversationType.GROUP.getName(), false);
-        UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         queryInfos();
         initRlv();
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
+
 
     private void initRlv() {
         rlv.setLayoutManager(new GridLayoutManager(MyApplication.getInstance(), 4));
@@ -139,6 +137,8 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
         super.onResume();
         queryInfos();
         mAdapter.getDatas();
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
     }
 
     //查询用户信息

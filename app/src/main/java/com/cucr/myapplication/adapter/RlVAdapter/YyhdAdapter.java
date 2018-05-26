@@ -35,13 +35,8 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == Constans.TYPE_HEADER) {
-            View headerView = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_yyhd_head, parent, false);
-            return new YyhdHeaderHolder(headerView);
-        } else {
             View itemView = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_yyhd, parent, false);
             return new YyhdItemHolder(itemView);
-        }
     }
 
     public void setData(List<YyhdInfos.RowsBean> rows) {
@@ -56,16 +51,6 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof YyhdHeaderHolder) {
-            ((YyhdHeaderHolder) holder).ll_creat_yyhd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnClickItems != null) {
-                        mOnClickItems.OnCLickHeader();
-                    }
-                }
-            });
-        } else if (holder instanceof YyhdItemHolder) {
             final YyhdInfos.RowsBean rowsBean = rows.get(position - 1);
             //头像
             ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
@@ -137,17 +122,12 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
-        }
+
     }
 
     @Override
     public int getItemCount() {
-        return rows == null ? 1 : rows.size() + 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position == 0 ? Constans.TYPE_HEADER : Constans.TYPE_ITEM;
+        return rows == null ? 0 : rows.size() ;
     }
 
     public class YyhdItemHolder extends RecyclerView.ViewHolder {
@@ -176,15 +156,6 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public class YyhdHeaderHolder extends RecyclerView.ViewHolder {
-        private LinearLayout ll_creat_yyhd;
-
-        public YyhdHeaderHolder(View itemView) {
-            super(itemView);
-            ll_creat_yyhd = (LinearLayout) itemView.findViewById(R.id.ll_creat_yyhd);
-        }
-    }
-
     private OnClickItems mOnClickItems;
 
     public void setOnClickItems(OnClickItems onClickItems) {
@@ -193,7 +164,5 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnClickItems {
         void onClickItem(YyhdInfos.RowsBean rowsBean);
-
-        void OnCLickHeader();
     }
 }

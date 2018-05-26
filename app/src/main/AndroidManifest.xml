@@ -376,8 +376,6 @@
         </activity>
         <activity android:name=".activity.picWall.PicWallCatgoryActivity">
         </activity>
-        <activity android:name=".activity.hyt.HYTActivity">
-        </activity>
         <activity
             android:name=".activity.hyt.CreatHytActivity"
             android:launchMode="singleTask"

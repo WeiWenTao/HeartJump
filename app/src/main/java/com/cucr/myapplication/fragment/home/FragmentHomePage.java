@@ -39,8 +39,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
-import org.zackratos.ultimatebar.UltimateBar;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +67,6 @@ public class FragmentHomePage extends BaseFragment implements OnItemClickListene
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
-        UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         mCore = new QueryBannerCore();
         getBannerInfo();
         initIndicator();

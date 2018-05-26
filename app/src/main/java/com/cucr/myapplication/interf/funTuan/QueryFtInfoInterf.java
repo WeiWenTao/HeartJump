@@ -9,17 +9,20 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 
 public interface QueryFtInfoInterf {
     //查询粉团(新闻)文章
-    void queryFtInfo(int strId,int dataType,int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
+    void queryFtInfo(int strId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
+
+    //根据排序查询粉团(新闻)文章
+    void queryFtInfo(int sortType, int strId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
 
     //查询单条粉团(新闻)文章
     void querySignleFtInfo(String ftId, RequersCallBackListener listener);
 
     //查询新闻关注文章
-    void queryFtInfo(boolean focus,int strId,int dataType,int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
+    void queryFtInfo(boolean focus, int strId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener);
 
     void ftGoods(int contentId, OnCommonListener listener);
 
-    void toComment(int contentId,int commentId,String content, RequersCallBackListener listener);
+    void toComment(int contentId, int commentId, String content, RequersCallBackListener listener);
 
     void queryGift(OnCommonListener listener);
 

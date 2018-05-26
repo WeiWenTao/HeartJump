@@ -56,7 +56,6 @@
             >
 
             <RelativeLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
@@ -255,7 +254,7 @@
                         android:id="@+id/iv_idcard_posi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_5"
                         android:src="@drawable/idcard"
                         app:sriv_left_bottom_corner_radius="@dimen/dp_5"
                         app:sriv_left_top_corner_radius="@dimen/dp_5"
@@ -285,6 +284,7 @@
                         android:id="@+id/iv_idcard_nega"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dp_5"
                         android:src="@drawable/idcard_img"
                         app:sriv_left_bottom_corner_radius="@dimen/dp_5"
                         app:sriv_left_top_corner_radius="@dimen/dp_5"

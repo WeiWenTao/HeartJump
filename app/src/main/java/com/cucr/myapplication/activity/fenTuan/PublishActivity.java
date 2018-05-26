@@ -301,6 +301,8 @@ public class PublishActivity extends Activity {
     }
 
     private void initHead() {
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
     }
@@ -349,8 +351,8 @@ public class PublishActivity extends Activity {
                     ToastUtils.showToast("发布成功");
                     needRefresh = true;
                     Intent intent = getIntent();
-                    intent.putExtra("needRefresh",needRefresh);
-                    setResult(10,intent);
+                    intent.putExtra("needRefresh", needRefresh);
+                    setResult(10, intent);
                     finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
@@ -364,8 +366,8 @@ public class PublishActivity extends Activity {
                     ToastUtils.showToast("发布视频成功");
                     needRefresh = true;
                     Intent intent = getIntent();
-                    intent.putExtra("needRefresh",needRefresh);
-                    setResult(10,intent);
+                    intent.putExtra("needRefresh", needRefresh);
+                    setResult(10, intent);
                     finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());
@@ -379,8 +381,8 @@ public class PublishActivity extends Activity {
                     ToastUtils.showToast("发布成功");
                     MyLogger.jLog().i("发布text成功");
                     Intent intent = getIntent();
-                    intent.putExtra("needRefresh",needRefresh);
-                    setResult(10,intent);
+                    intent.putExtra("needRefresh", needRefresh);
+                    setResult(10, intent);
                     finish();
                 } else {
                     ToastUtils.showToast(rzResult.getMsg());

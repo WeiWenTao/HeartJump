@@ -41,7 +41,6 @@ public class Fragment_star_xingcheng extends Fragment {
     private WheelView mWheelview;
     private MultiStateView multiStateView;
     private RecyclerView mRlv_journey;
-    private RecyclerView rlv_test;
     private Context mContext;
     private QueryJourneyList mCore;
     private Gson mGson;
@@ -102,10 +101,8 @@ public class Fragment_star_xingcheng extends Fragment {
                     List<String> obj = starScheduleLIst.getObj();
                     mWheelview.setItems(obj);
                     if (obj != null && obj.size() > 0) {
-                        rlv_test.setVisibility(View.GONE);
                         queryJourneyByTime(0);
                     } else {
-                        rlv_test.setVisibility(View.VISIBLE);
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         return;
                     }
@@ -120,7 +117,6 @@ public class Fragment_star_xingcheng extends Fragment {
 
     private void initView() {
         mRlv_journey = (RecyclerView) view.findViewById(R.id.rlv_journey);
-        rlv_test = (RecyclerView) view.findViewById(R.id.rlv_test);
         mWheelview = (WheelView) view.findViewById(R.id.wheelview);
         multiStateView = (MultiStateView) view.findViewById(R.id.multiStateView);
         //设置单位（没啥用，设置属性的时候才有用 ）
@@ -136,11 +132,6 @@ public class Fragment_star_xingcheng extends Fragment {
         mRlv_journey.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new RlvPersonalJourneyAdapter(mContext, mRows);
         mRlv_journey.setAdapter(mAdapter);
-
-        rlv_test.setLayoutManager(new LinearLayoutManager(mContext));
-        rlv_test.setAdapter(mAdapter);
-
-
         mWheelview.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onWheelItemChanged(WheelView wheelView, int position) {

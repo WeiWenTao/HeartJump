@@ -299,7 +299,6 @@ public class PayCenterActivity_new extends BaseActivity implements RadioGroup.On
                             MyLogger.jLog().i("123:" + orderInfo);
                             Map<String, String> result = alipay.payV2(orderInfo, true);
                             Log.i("msp", result.toString());
-
                             Message msg = new Message();
                             msg.what = 1;
                             msg.obj = result;

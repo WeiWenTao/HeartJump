@@ -3,6 +3,8 @@ package com.cucr.myapplication.activity.fansCatgory;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -16,7 +18,11 @@ import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.Locale;
@@ -24,6 +30,13 @@ import java.util.Locale;
 import io.rong.imlib.model.Conversation;
 
 public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoadListener, HytAdapter.OnClickItems, RequersCallBackListener {
+
+    @ViewInject(R.id.iv_fabu)
+    private ImageView iv_fabu;
+
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     private Intent mIntent;
     private HytCore mCore;
@@ -53,6 +66,7 @@ public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoa
         mGson = MyApplication.getGson();
         mCore = new HytCore();
         startId = getIntent().getIntExtra("starId", -1);
+        iv_fabu.setVisibility(startId != -1 ? View.VISIBLE : View.GONE);
 //        mMyWaitDialog = new MyWaitDialog(rootView.getContext(), R.style.MyWaitDialog);
         mIntent = new Intent(MyApplication.getInstance(), CreatHytActivity.class);
         mIntent.putExtra("starId", startId);
@@ -74,14 +88,11 @@ public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoa
         }
     }
 
-    //点击条目
-    @Override
-    public void onClickItem(int position) {
+    //点击创建
+    @OnClick(R.id.iv_fabu)
+    public void onClickCreat(View view) {
         //创建后援团
-        if (position == 0) {
-            startActivity(mIntent);
-            return;
-        }
+        startActivity(mIntent);
     }
 
     //点击加入
@@ -157,7 +168,12 @@ public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoa
         HytListInfos infos = mGson.fromJson(response.get(), HytListInfos.class);
         if (infos.isSuccess()) {
             if (isRefresh) {
-                mAdapter.setData(infos.getRows());
+                if (infos.getTotal() == 0) {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                } else {
+                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    mAdapter.setData(infos.getRows());
+                }
             } else {
                 mAdapter.addData(infos.getRows());
             }
@@ -173,11 +189,17 @@ public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoa
 
     @Override
     public void onRequestStar(int what) {
+        if (needShowLoading) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            needShowLoading = false;
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -187,6 +209,9 @@ public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoa
             case Constans.TYPE_TWO:
                 if (mRlv_hyt.isRefreshing()) {
                     mRlv_hyt.getSwipeRefreshLayout().setRefreshing(false);
+                }
+                if (mRlv_hyt.isLoadingMore()) {
+                    mRlv_hyt.stopLoadingMore();
                 }
                 break;
         }

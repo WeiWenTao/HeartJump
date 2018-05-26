@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_works_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《作品》"
+            android:textColor="@color/color_666"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_works_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@id/tv_works_name"
+            android:text="2016-06-09"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_12"
+            />
+
+        <TextView
+            android:id="@+id/tv_works_detial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_works_name"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="作品简介简介作品简介简介作品简介简介作品简介简介"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_12"
+            />
+    </RelativeLayout>
+
+    <include layout="@layout/horizontal_line_for15dp"/>
+
+</RelativeLayout>

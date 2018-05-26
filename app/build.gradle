@@ -80,6 +80,10 @@ android {
         daoPackage 'com.cucr.myapplication.gen'
         targetGenDir 'src/main/java'
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -220,4 +224,5 @@ dependencies {
 
     //音乐播放器
     compile 'com.cleveroad:play-widget:1.0.0'
+
 }

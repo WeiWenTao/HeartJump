@@ -3,7 +3,9 @@ package com.cucr.myapplication.activity.fansCatgory;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -22,11 +24,21 @@ import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ItemDecoration.SpaceItemDecoration;
 import com.cucr.myapplication.widget.dialog.DialogYyhd;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;
 
 public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, SwipeRecyclerView.OnLoadListener, YyhdAdapter.OnClickItems, RequersCallBackListener {
+
+    @ViewInject(R.id.iv_fabu)
+    private ImageView iv_fabu;
+
+    //状态布局
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     private YyhdAdapter mAdapter;
     private Intent mIntent;
@@ -51,8 +63,9 @@ public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, 
 
     private void init() {
         page = 1;
-        rows = 2;
+        rows = 8;
         starId = getIntent().getIntExtra("starId", -1);
+        iv_fabu.setVisibility(starId != -1 ? View.VISIBLE : View.GONE);
         mCore = new HytCore();
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -102,7 +115,12 @@ public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, 
                 List<YyhdInfos.RowsBean> infos = activeInfo.getRows();
                 //是刷新还是加载
                 if (isRefresh) {
-                    mAdapter.setData(infos);
+                    if (activeInfo.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        mAdapter.setData(activeInfo.getRows());
+                    }
                 } else { //加载数据
                     mAdapter.addData(infos);
                 }
@@ -167,8 +185,8 @@ public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, 
     }
 
 
-    @Override
-    public void OnCLickHeader() {
+    @OnClick(R.id.iv_fabu)
+    public void OnCLickCreat(View view) {
         mDialog.show();
     }
 }

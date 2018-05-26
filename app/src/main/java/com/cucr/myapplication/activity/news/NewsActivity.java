@@ -204,6 +204,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
 
 //      web_content.loadDataWithBaseURL(null, rowsBean.getContent(), "text/html" , "utf-8", null);
         web_content.setWebViewClient(new WebViewClient());
+//        HttpContans.ADDRESS_NEWS_CATGORY + rowsBean.getId()
         web_content.loadDataWithBaseURL(null, sHead + rowsBean.getContent() + "</body></html>", "text/html", "UTF-8", null);
 
     }
@@ -264,6 +265,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
                     ll_dm2.clearAnimation();
                     ll_dm2.setVisibility(View.GONE);
                     isFinish = true;
+                    ToastUtils.showToast("评论弹幕2播放完了！");
                 }
             }
         }, 2000);

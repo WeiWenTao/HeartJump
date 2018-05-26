@@ -73,6 +73,33 @@ public class QueryFtInfoCore implements QueryFtInfoInterf {
         mQueue.add(Constans.TYPE_ONE, request, callback);
     }
 
+    @Override
+    public void queryFtInfo(int sortType, int starId, int dataType, int queryUserId, boolean queryMine, int page, int rows, RequersCallBackListener listener) {
+        ftQuerylistener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_QUERY_FT_INFO, RequestMethod.POST);
+        // 添加普通参数。
+        if (starId != -1) {
+            request.add("startId", starId);
+        }
+
+        if (queryUserId != -1) {
+            request.add("queryUserId", queryUserId);
+        }
+
+        request.add("userId", ((int) SpUtil.getParam(SpConstant.USER_ID, -1)))
+                .add("sortType", sortType)
+                .add("dataType", dataType)
+                .add("page", page)
+                .add("rows", rows)
+                .add("queryMine", queryMine)    //false查询所有人 ， true查询自己发的；
+                .add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(context, request.getParamKeyValues()));
+      /*  //缓存主键 在这里用sign代替  保证全局唯一  否则会被其他相同数据覆盖
+        request.setCacheKey(HttpContans.ADDRESS_QUERY_FT_INFO);
+        //没有缓存才去请求网络
+        request.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);*/
+        mQueue.add(Constans.TYPE_ONE, request, callback);
+    }
+
     //查询单条粉团信息
     @Override
     public void querySignleFtInfo(String ftId, RequersCallBackListener listener) {

@@ -70,6 +70,15 @@ public class StarListInfos implements Serializable {
         private int isfollow;
         private int startCost;
         private String weiboUrl;
+        private String tiebaUrl;
+
+        public String getTiebaUrl() {
+            return tiebaUrl;
+        }
+
+        public void setTiebaUrl(String tiebaUrl) {
+            this.tiebaUrl = tiebaUrl;
+        }
 
         public String getWeiboUrl() {
             return weiboUrl;

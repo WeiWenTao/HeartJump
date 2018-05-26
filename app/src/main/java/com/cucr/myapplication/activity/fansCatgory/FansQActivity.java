@@ -132,6 +132,7 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
     private ObjectAnimator mAni_open;
     private ObjectAnimator mAni_close;
     private boolean isOpened;
+    private int sortType;
 
 
     @Override
@@ -142,20 +143,18 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         initRlV();
         inipopWindow();
         initInfos();
-        onRefresh();
         initSort();
+        onRefresh();
     }
 
     private void initSort() {
+        //默认人气排序
+        sortType = 1;
         int hight = CommonUtils.dip2px(40);
         mAni_open = ObjectAnimator.ofFloat(view, "translationY", 0, hight);
-
         mAni_close = ObjectAnimator.ofFloat(view, "translationY", hight, 0);
-
         mAni_open.setDuration(300);
-
         mAni_close.setDuration(300);
-
         mAni_open.addListener(this);
         mAni_close.addListener(this);
     }
@@ -370,15 +369,15 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         isRefresh = true;
         page = 1;
         rlv_fentuan.getSwipeRefreshLayout().setRefreshing(true);
-        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, this);
+        queryCore.queryFtInfo(sortType, starId, dataType, -1, false, page, rows, this);
     }
 
     @Override
     public void onLoadMore() {
         isRefresh = false;
         page++;
-        rlv_fentuan.onLoadingMore();
-        queryCore.queryFtInfo(starId, dataType, -1, false, page, rows, this);
+//        rlv_fentuan.onLoadingMore();
+        queryCore.queryFtInfo(sortType, starId, dataType, -1, false, page, rows, this);
     }
 
     //打赏框
@@ -678,16 +677,24 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         }
     }
 
+    //人气排序
     @OnClick(R.id.tv_sort_hot)
     private void sortByHot(View view) {
+        sortType = 1;
         tv_sort_hot.setTextColor(getResources().getColor(R.color.xtred));
         tv_sort_new.setTextColor(getResources().getColor(R.color.color_999));
+        needShowLoading = true;
+        onRefresh();
     }
 
+    //时间排序
     @OnClick(R.id.tv_sort_new)
     private void sortByNew(View view) {
+        sortType = 0;
         tv_sort_hot.setTextColor(getResources().getColor(R.color.color_999));
         tv_sort_new.setTextColor(getResources().getColor(R.color.xtred));
+        needShowLoading = true;
+        onRefresh();
     }
 
     @Override

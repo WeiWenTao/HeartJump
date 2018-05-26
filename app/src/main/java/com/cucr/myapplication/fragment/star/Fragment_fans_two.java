@@ -64,12 +64,21 @@ public class Fragment_fans_two extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.ll_tieba)
+    public void clickTieBa(View view) {
+        if (mOnClickCatgoryTwo != null) {
+            mOnClickCatgoryTwo.onClickTieBa();
+        }
+    }
+
     public interface OnClickCatgoryTwo {
         void onClickAbout();
 
         void onClickYyzc();
 
         void onClickWeiBo();
+
+        void onClickTieBa();
 
     }
 
