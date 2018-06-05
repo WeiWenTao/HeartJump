@@ -15,6 +15,7 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogProgress;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Binary;
@@ -42,6 +43,7 @@ public class FtPublishCore implements FenTuanInterf {
     private DialogProgress dialog_progress;
     private OnUpLoadListener listener;
     private int type;
+    private MyWaitDialog mWaitDialog;
     /**
      * 请求队列。
      */
@@ -50,6 +52,7 @@ public class FtPublishCore implements FenTuanInterf {
     public FtPublishCore(Activity activity) {
         this.activity = activity;
         dialog_progress = new DialogProgress(activity, R.style.BirthdayStyleTheme);
+        mWaitDialog = new MyWaitDialog(activity, R.style.MyWaitDialog);
         //点击屏幕外部和返回键不响应
         files = new ArrayList<>();
         mQueue = NoHttp.newRequestQueue();
@@ -113,7 +116,6 @@ public class FtPublishCore implements FenTuanInterf {
                 dialog_progress.show();
                 dialog_progress.setProgress(0);
             }
-
         }
 
         @Override
@@ -152,6 +154,9 @@ public class FtPublishCore implements FenTuanInterf {
     private OnResponseListener<String> callback = new OnResponseListener<String>() {
         @Override
         public void onStart(int what) {
+            if (type != 2) {
+                mWaitDialog.show();
+            }
         }
 
         @Override
@@ -186,7 +191,9 @@ public class FtPublishCore implements FenTuanInterf {
 
         @Override
         public void onFinish(int what) {
-
+            if (type != 2) {
+                mWaitDialog.dismiss();
+            }
         }
     };
 

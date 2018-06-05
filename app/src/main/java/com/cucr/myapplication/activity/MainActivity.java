@@ -71,6 +71,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //设置状态栏字体颜色
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 //        UltimateBar ultimateBar = new UltimateBar(this);
@@ -87,9 +88,25 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         DisplayMetrics dm = new DisplayMetrics();
         // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
         // MI 6        :DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
+
+        //锤子 pro     ：[1080x2070],density=2.5,densityDpi=400
+        //              DisplayMetrics{density=2.5, width=1080, height=2070, scaledDensity=2.5, xdpi=403.411, ydpi=403.411}
+
+        //小米6       ：[1080x1920],density=3.0,densityDpi=480
+        //            ：DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
+
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);
+
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
+        getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+        int width = mDisplayMetrics.widthPixels;
+        int height = mDisplayMetrics.heightPixels;
+        float density = mDisplayMetrics.density;
+        int densityDpi = mDisplayMetrics.densityDpi;
+        MyLogger.jLog().i("Screen Ratio: ["+width+"x"+height+"],density="+density+",densityDpi="+densityDpi);
+        MyLogger.jLog().i("Screen mDisplayMetrics: "+mDisplayMetrics);
     }
 
     private void initUMcount() {
@@ -144,6 +161,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         RongIM.setGroupInfoProvider(this, true);
         RongIM.setGroupUserInfoProvider(this, true);
     }
+
 
     //============================聊天服务器回调=======================
     @Override

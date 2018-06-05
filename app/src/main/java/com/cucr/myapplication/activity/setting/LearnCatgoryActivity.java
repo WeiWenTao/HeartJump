@@ -29,22 +29,22 @@ public class LearnCatgoryActivity extends BaseActivity {
         int type = getIntent().getIntExtra("type", -1);
         switch (type) {
             case 1:
-                initTitle("认证教程");
+                initTitle("打赏教程");
                 iv.setImageResource(R.drawable.learning1);
                 break;
 
             case 2:
-                initTitle("预约教程");
+                initTitle("招募教程");
                 iv.setImageResource(R.drawable.learning2);
                 break;
 
             case 3:
-                initTitle("打赏教程");
+                initTitle("认证教程");
                 iv.setImageResource(R.drawable.learning3);
                 break;
 
             case 4:
-                initTitle("招募教程");
+                initTitle("预约教程");
                 iv.setImageResource(R.drawable.learning4);
                 break;
         }

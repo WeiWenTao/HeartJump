@@ -22,10 +22,32 @@
             >
 
             <TextView
+                android:id="@+id/tv_lable_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名："
+                android:textColor="@color/color_666"
+                android:textSize="@dimen/sp_14"
+                />
+
+            <TextView
                 android:id="@+id/tv_star_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="明星姓名"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/tv_lable_name"
+
+                android:textColor="@color/color_666"
+                android:textSize="@dimen/sp_14"
+                />
+
+            <TextView
+                android:id="@+id/tv_label_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_lable_name"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="性别："
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_14"
                 />
@@ -34,9 +56,10 @@
                 android:id="@+id/tv_star_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:layout_toRightOf="@+id/tv_star_name"
-                android:text="男"
+                android:layout_alignBottom="@id/tv_label_gender"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@+id/tv_label_gender"
+
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_14"
                 />
@@ -45,7 +68,7 @@
                 android:id="@+id/tv_lab_hight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_star_name"
+                android:layout_below="@id/tv_label_gender"
                 android:layout_marginTop="@dimen/dp_5"
                 android:text="身高："
                 android:textColor="@color/color_666"
@@ -59,7 +82,7 @@
                 android:layout_alignBottom="@+id/tv_lab_hight"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_toRightOf="@+id/tv_lab_hight"
-                android:text="176cm"
+
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_14"
                 />
@@ -82,7 +105,7 @@
                 android:layout_alignBottom="@+id/tv_lab_blood"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_toRightOf="@+id/tv_lab_blood"
-                android:text="B"
+
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_14"
                 />
@@ -105,22 +128,10 @@
                 android:layout_alignBottom="@+id/tv_lab_bir"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_toRightOf="@+id/tv_lab_bir"
-                android:text="2018-05-15"
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_14"
                 />
 
-
-            <TextView
-                android:id="@+id/tv_lab_jianjie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_star_bir"
-                android:layout_marginTop="@dimen/dp_5"
-                android:text="简介："
-                android:textColor="@color/color_666"
-                android:textSize="@dimen/sp_14"
-                />
 
             <TextView
                 android:id="@+id/tv_star_detail"
@@ -128,15 +139,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_lab_bir"
                 android:layout_marginBottom="@dimen/dp_50"
-                android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_5"
-                android:layout_toRightOf="@+id/tv_lab_jianjie"
                 android:lineSpacingExtra="@dimen/dp_5"
-                android:text="简介说简介说明简介说明简介说明简介说明简介说明简介说明简介说明明"
+                android:text="简介：  简介说简介说明简介说明简介说明简介说明简介说明简介说明简介说明明"
                 android:textColor="@color/color_666"
                 android:textSize="@dimen/sp_14"
                 />
-
 
         </RelativeLayout>
 

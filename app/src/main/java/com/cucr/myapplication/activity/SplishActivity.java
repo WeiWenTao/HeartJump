@@ -3,9 +3,11 @@ package com.cucr.myapplication.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -13,26 +15,32 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.app.SplishInfo;
 import com.cucr.myapplication.bean.eventBus.EventChageAccount;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.AppCore;
+import com.cucr.myapplication.listener.DownLoadListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.ZipUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class SplishActivity extends Activity implements RequersCallBackListener {
+public class SplishActivity extends Activity implements RequersCallBackListener, DownLoadListener {
 
     private ImageView mIv_bg;
+    private AppCore mCore;
+    private File mFile;
+    private String mVideoPagePic;   //服务器splishImg版本
+    private String mParam;          //app splishImg版本
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +49,18 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
         EventBus.getDefault().register(this);
 //        UltimateBar ultimateBar = new UltimateBar(this);
 //        ultimateBar.setImmersionBar();
-
-
+        initPermission();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initViews();
-        initPermission();
+
+        mFile = new File(Constans.SPLISH_FOLDER + Constans.SPLISH_IMG);
+        if (mFile.exists()) {
+            MyLogger.jLog().i("splish———— 存在，文件路径：" + mFile.getAbsolutePath());
+            mIv_bg.setImageURI(Uri.fromFile(mFile));
+        } else {
+            MyLogger.jLog().i("splish———— 不存在！！！：" + Constans.SPLISH_FOLDER + Constans.SPLISH_IMG);
+        }
+        mParam = (String) SpUtil.getParam(SpConstant.SP_SPLISH_IMG, "");
 
     }
 
@@ -56,8 +71,8 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
         String str1 = df1.format(now);
 
         mIv_bg = (ImageView) findViewById(R.id.iv_bg);
-        AppCore core = new AppCore();
-        core.querySplish(str1, this);
+        mCore = new AppCore();
+        mCore.querySplish(str1, this);
     }
 
     private void initPermission() {
@@ -109,7 +124,6 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
         }
     };
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -149,8 +163,11 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
 //        boolean fromCache = response.isFromCache();
         SplishInfo splishInfo = MyApplication.getGson().fromJson(response.get(), SplishInfo.class);
         if (splishInfo.isSuccess()) {
-            ImageLoader.getInstance().displayImage(splishInfo.getObj().getFileUrl(), mIv_bg);
-//            ToastUtils.showToast("获取到了图片:" + fromCache);
+            mVideoPagePic = splishInfo.getObj().getVideoPagePic();
+            if (!mFile.exists() || TextUtils.isEmpty(mParam) || !mVideoPagePic.equals(mParam)) {
+                mCore.saveImgs(splishInfo.getObj().getFileUrl(), Constans.SPLISH_FOLDER, Constans.SPLISH_IMG, false, true, this);
+                MyLogger.jLog().i("splish————需要重新下载了");
+            }
         } else {
             ToastUtils.showToast(splishInfo.getMsg());
         }
@@ -169,5 +186,12 @@ public class SplishActivity extends Activity implements RequersCallBackListener 
     @Override
     public void onRequestFinish(int what) {
 
+    }
+
+    @Override
+    public void onFinish(int what, String filePath) {
+        MyLogger.jLog().i("splish————下载完成 文件路径:" + filePath);
+        SpUtil.setParam(SpConstant.SP_SPLISH_IMG, mVideoPagePic);
+//        mIv_bg.setImageURI(Uri.fromFile(new File(filePath + Constans.SPLISH_IMG)));
     }
 }

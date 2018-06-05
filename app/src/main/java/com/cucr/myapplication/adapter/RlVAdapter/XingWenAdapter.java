@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.news.NewsActivity;
+import com.cucr.myapplication.activity.news.VideoNewsActivity;
 import com.cucr.myapplication.activity.photos.PhotoActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
@@ -106,8 +106,9 @@ public class XingWenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Tp1_Holder) holder).ll_item_video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mIntent.setClass(context, TestWebViewActivity.class);
-                    mIntent.putExtra("url", rowsBean.getLocationUrl());
+                    //不和图片跳转同一个是因为 图片显示的是texview
+                    mIntent.setClass(context, VideoNewsActivity.class);
+//                    mIntent.putExtra("url", rowsBean.getLocationUrl());
                     mIntent.putExtra("data", rowsBean);
                     context.startActivity(mIntent);
                 }

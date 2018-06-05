@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
@@ -28,9 +28,10 @@ import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
 import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
+import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
-import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.StarXingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
@@ -78,6 +79,10 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     //点击显示下拉菜单
     @ViewInject(R.id.ll_show_stars)
     private LinearLayout ll_show_stars;
+
+    //明星频道
+    @ViewInject(R.id.rlv_catgory)
+    private RelativeLayout rlv_catgory;
 
     //vp指示器1
     @ViewInject(R.id.iv_dot1)
@@ -148,7 +153,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     private boolean needShowLoading;
     private QueryFtInfoCore mNewsCore;
     private boolean isRefresh;
-    private XingWenAdapter newsAdapter;
+    private StarXingWenAdapter newsAdapter;
     private List<Fragment> mDataList;
 
     @Override
@@ -194,14 +199,14 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     }
 
     private void initNewsInfo() {
-        newsAdapter = new XingWenAdapter();
+        newsAdapter = new StarXingWenAdapter();
         newsPage = 1;
         newsRows = 20;
         needShowLoading = true;
         //分割线
-        DividerItemDecoration decor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        decor.setDrawable(getResources().getDrawable(R.drawable.divider_bg));
-        rlv_news.getRecyclerView().addItemDecoration(decor);
+//        DividerItemDecoration decor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+//        decor.setDrawable(getResources().getDrawable(R.drawable.divider_bg));
+//        rlv_news.getRecyclerView().addItemDecoration(decor);
         rlv_news.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         rlv_news.setAdapter(newsAdapter);
         rlv_news.setOnLoadListener(this);
@@ -217,11 +222,11 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
                 StarListInfos starInfos = mGson.fromJson(response.get(), StarListInfos.class);
                 if (starInfos.isSuccess()) {
                     mRowsBean = starInfos.getRows().get(0);
-                    tv_fans.setText("粉丝 " + mRowsBean.getFansCount());
+                    tv_fans.setText("粉丝 " + (mRowsBean.getFansCount() == null ? "0" : mRowsBean.getFansCount()));
                     tv_starname.setText(mRowsBean.getRealName());
                     tv_star_title.setText(mRowsBean.getRealName());
-
                     ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
+                    rlv_catgory.setVisibility(View.VISIBLE);
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
                 }
@@ -480,7 +485,13 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     //预约提示框
     @OnClick(R.id.tv_yuyue)
     public void toYuYue(View view) {
-        ToastUtils.showToast("企业用户才能预约明星哟,赶快去认证吧!");
+        if (CommonUtils.isQiYe()) {
+            Intent intent = new Intent(MyApplication.getInstance(), YuYueCatgoryActivity.class);
+            intent.putExtra("data", mRowsBean);
+            startActivity(intent);
+        } else {
+            ToastUtils.showToast("企业用户才能预约哦，赶快去认证吧");
+        }
     }
 
     @Override
@@ -495,11 +506,13 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         isRefresh = true;
         newsPage = 1;
         mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
-
     }
 
     @Override
     public void onLoadMore() {
+        if (mStarId == 0) {
+            return;
+        }
         isRefresh = false;
         newsPage++;
         rlv_news.onLoadingMore();

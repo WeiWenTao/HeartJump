@@ -249,6 +249,8 @@
         </activity>
         <activity android:name=".activity.news.NewsActivity">
         </activity>
+        <activity android:name=".activity.news.VideoNewsActivity">
+        </activity>
         <activity
             android:name=".activity.video.VideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -469,6 +471,8 @@
         <activity android:name=".activity.fansCatgory.YyzcActivity">
         </activity>
         <activity android:name=".activity.fuli.HuoDongActivity">
+        </activity>
+        <activity android:name=".activity.TempActivity">
         </activity>
     </application>
 

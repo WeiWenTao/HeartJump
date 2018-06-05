@@ -74,7 +74,7 @@ public class CommonUtils {
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
 
-    public static int dip2px( float dpValue) {
+    public static int dip2px(float dpValue) {
         final float scale = MyApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
@@ -517,7 +517,6 @@ public class CommonUtils {
         return string.toString();
     }
 
-
     /**
      * unicode 转字符串   直接设置给控件
      */
@@ -641,13 +640,13 @@ public class CommonUtils {
     //判断小星星数目
 
     public static int getStarCount(Integer i) {
-        if (i <= 12) {
+        if (i <= 5) {
             i = 1;
-        } else if (i > 12 && i <= 20) {
+        } else if (i > 5 && i <= 10) {
             i = 2;
-        } else if (i > 20 && i <= 28) {
+        } else if (i > 10 && i <= 17) {
             i = 3;
-        } else if (i > 28 && i <= 37) {
+        } else if (i > 17 && i <= 23) {
             i = 4;
         } else {
             i = 5;
@@ -665,5 +664,10 @@ public class CommonUtils {
         } else {
             return 0;
         }
+    }
+
+    public static int getUserId() {
+        int userId = (int) SpUtil.getParam(SpConstant.USER_ID, -1);
+        return userId;
     }
 }

@@ -44,9 +44,11 @@ public class DialogShareTo extends Dialog implements View.OnClickListener {
 
         TextView tv_share = (TextView) findViewById(R.id.tv_share);
         TextView cancel = (TextView) findViewById(R.id.cancel);
+        TextView tv_report = (TextView) findViewById(R.id.tv_report);
 
         tv_share.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        tv_report.setOnClickListener(this);
 
     }
 
@@ -57,6 +59,13 @@ public class DialogShareTo extends Dialog implements View.OnClickListener {
             case R.id.tv_share:
                 if (mOnClickBt != null) {
                     mOnClickBt.clickShareTo();
+                }
+                dismiss();
+                break;
+
+            case R.id.tv_report:
+                if (mOnClickBt != null) {
+                    mOnClickBt.clickReportTo();
                 }
                 dismiss();
                 break;
@@ -75,5 +84,7 @@ public class DialogShareTo extends Dialog implements View.OnClickListener {
 
     public interface OnClickShareTo {
         void clickShareTo();
+
+        void clickReportTo();
     }
 }

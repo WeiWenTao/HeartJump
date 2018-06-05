@@ -11,6 +11,8 @@ public class SpConstant {
     public static final String SP_QIYE_NAME = "qiyeName";
     public static final String SP_QIYE_CONTACT = "qiyeContact";
 
+    public static final String SP_SPLISH_IMG = "splishImg";
+
     //用户头像
     public static final String SP_USERHEAD = "userHead";
 

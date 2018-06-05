@@ -19,7 +19,9 @@ import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.PromissUtils;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.ZipUtil;
 import com.cucr.myapplication.widget.dialog.DialogCreatHyt;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -71,7 +73,6 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
     @ViewInject(R.id.tv_local)
     private TextView tv_local;
 
-
     private PictureSelectionModel mPictureSelectionModel;
     private ImageView tempView;
     private String coverPath;
@@ -116,9 +117,15 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
     //点击选择地区
     @OnClick(R.id.rlv_local)
     public void clickLocal(View view) {
-        mIntent.putExtra("needShow", false);
-        mIntent.putExtra("className", "CreatHytActivity");
-        startActivity(mIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    , Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        } else {
+            ZipUtil.initData();
+            mIntent.putExtra("needShow", false);
+            mIntent.putExtra("className", "CreatHytActivity");
+            startActivity(mIntent);
+        }
     }
 
     //相册属性配置
@@ -173,6 +180,7 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
             String provience = locationData.getName();
             address = provience + "  " + city;
             tv_local.setText(address);
+            et_idcard.requestFocus();
         }
 
     }
@@ -187,7 +195,7 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
         ViewId = v.getId();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }else {
+        } else {
             mPictureSelectionModel.forResult(ViewId);
         }
     }
@@ -201,9 +209,23 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
                 if (writeAccepted) {
                     mPictureSelectionModel.forResult(ViewId);
                 } else {
+                    PromissUtils.showDialogTipUserGoToAppSettting(this, "存储");
                     ToastUtils.showToast(getResources().getString(R.string.request_permission));
                 }
                 break;
+
+            case 3:
+                writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
+                    ZipUtil.initData();
+                    Intent intent = new Intent(this, LocalityProvienceActivity.class);
+                    intent.putExtra("needShow", false);
+                    intent.putExtra("className", "CreatHytActivity");
+                    startActivity(intent);
+                } else {
+                    PromissUtils.showDialogTipUserGoToAppSettting(this, "存储");
+                    ToastUtils.showToast(getResources().getString(R.string.request_permission));
+                }
         }
     }
 
@@ -215,7 +237,7 @@ public class CreatHytActivity extends BaseActivity implements View.OnClickListen
         phoneNum = et_phone.getText().toString();
         emali = et_email.getText().toString();
         idCard = et_idcard.getText().toString();
-        boolean empty = CommonUtils.isEmpty(coverPath, idCardPosiPath, idCardNegaPath, hytName,
+        boolean empty = CommonUtils.isEmpty(coverPath, hytName,
                 creatBody, phoneNum, emali, idCard, address);
         //检查信息是否完善
         if (empty) {

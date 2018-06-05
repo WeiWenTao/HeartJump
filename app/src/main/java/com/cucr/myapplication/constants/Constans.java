@@ -36,14 +36,14 @@ public class Constans {
     public static final int TYPE_TEN = 10;
     public static final int TYPE_ELEVEN = 11;
     public static final int TYPE_TWEVEN = 12;
-    public static final int TYPE_THIRTEEN  = 13;
-    public static final int TYPE_FOURTEEN  = 14;
-    public static final int TYPE_FIFTEEN  = 15;
-    public static final int TYPE_SIXTEEN  = 16;
-    public static final int TYPE_SEVENTEEN  = 17;
-    public static final int TYPE_EIGHTEEN  = 18;
-    public static final int TYPE_NINETEEN  = 19;
-    public static final int TYPE_TWENTY  = 20;
+    public static final int TYPE_THIRTEEN = 13;
+    public static final int TYPE_FOURTEEN = 14;
+    public static final int TYPE_FIFTEEN = 15;
+    public static final int TYPE_SIXTEEN = 16;
+    public static final int TYPE_SEVENTEEN = 17;
+    public static final int TYPE_EIGHTEEN = 18;
+    public static final int TYPE_NINETEEN = 19;
+    public static final int TYPE_TWENTY = 20;
 
     public static final int TYPE_TEXT = 0;
 
@@ -52,6 +52,8 @@ public class Constans {
     public static final int TYPE_VIDEO = 2;
 
     public static final int TYPE_ALBUM = 3;
+
+    public static final int TYPE_NEWS_HEAD = 999;
 
     public static final int TYPE_OTHER = -1;
 
@@ -109,4 +111,10 @@ public class Constans {
 
     //礼物类型 火箭
     public static final int GIFT_ROCKET = 4;
+
+    //splish 文件名
+    public static final String SPLISH_IMG = "splish.png";
+
+    //splish 文件夹
+    public static final String SPLISH_FOLDER = Environment.getExternalStorageDirectory().getAbsolutePath() + "/splishImgs/";
 }

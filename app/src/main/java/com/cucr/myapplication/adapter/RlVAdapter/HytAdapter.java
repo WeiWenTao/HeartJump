@@ -34,8 +34,7 @@ public class HytAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
-        final HytListInfos.RowsBean rowsBean = rows.get(position - 1);
+        final HytListInfos.RowsBean rowsBean = rows.get(position);
         ((HytItemHolder) holder).tv_hyt_name.setText(rowsBean.getName());
         ((HytItemHolder) holder).tv_hyt_peoples.setText(rowsBean.getGroupOfNumber() + "人热聊中");
         //0表示未加入

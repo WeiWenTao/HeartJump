@@ -3,6 +3,7 @@ package com.cucr.myapplication.activity.fuli;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cucr.myapplication.R;
@@ -65,8 +66,6 @@ public class FragmentFuLi extends BaseFragment implements RequersCallBackListene
         onRefresh();
     }
 
-
-
     @Override
     public int getContentLayoutRes() {
         return R.layout.fragment_fuli;
@@ -86,12 +85,16 @@ public class FragmentFuLi extends BaseFragment implements RequersCallBackListene
         rlv_fuli.setOnLoadListener(this);
         activeAdapter.setOnItemListener(new FuLiAdapter.OnItemListener() {
             @Override
-            public void OnItemClick(View view, int activeId, String title) {
+            public void OnItemClick(View view, int activeId, String title, String url,String picUrl) {
                 //跳转到福利活动详情
-                mIntent.putExtra("url", HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FULI_ACTIVE_DETIAL
-                        + "?activeId=" + activeId + "&userId=" + SpUtil.getParam(SpConstant.USER_ID, -1));
+                if (TextUtils.isEmpty(url)) {
+                    url = HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FULI_ACTIVE_DETIAL
+                            + "?activeId=" + activeId + "&userId=" + SpUtil.getParam(SpConstant.USER_ID, -1);
+                }
+                mIntent.putExtra("url", url);
                 mIntent.putExtra("activeId", activeId);
                 mIntent.putExtra("activeTitle", title);
+                mIntent.putExtra("activePic", picUrl);
                 startActivity(mIntent);
             }
         });

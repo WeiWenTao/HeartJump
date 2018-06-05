@@ -149,7 +149,7 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
 
     private void initSort() {
         //默认人气排序
-        sortType = 1;
+        sortType = 0;
         int hight = CommonUtils.dip2px(40);
         mAni_open = ObjectAnimator.ofFloat(view, "translationY", 0, hight);
         mAni_close = ObjectAnimator.ofFloat(view, "translationY", hight, 0);
@@ -331,11 +331,13 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 3 && resultCode == 10) {
             //发布成功  再次查询
             onRefresh();
             rlv_fentuan.getRecyclerView().smoothScrollToPosition(0);
         }
+
         if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
             SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
             if (mRowsBean == null) {
@@ -464,7 +466,7 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
     //分享
     @Override
     public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
-        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
+        mDialog.setData(new ShareEntity(rowsBean.getContent(), getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
     }
 
     //弹出打赏框
@@ -684,6 +686,7 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         tv_sort_hot.setTextColor(getResources().getColor(R.color.xtred));
         tv_sort_new.setTextColor(getResources().getColor(R.color.color_999));
         needShowLoading = true;
+        mAni_close.start();
         onRefresh();
     }
 
@@ -694,6 +697,7 @@ public class FansQActivity extends BaseActivity implements FtAdapter.OnClickBt, 
         tv_sort_hot.setTextColor(getResources().getColor(R.color.color_999));
         tv_sort_new.setTextColor(getResources().getColor(R.color.xtred));
         needShowLoading = true;
+        mAni_close.start();
         onRefresh();
     }
 

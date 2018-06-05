@@ -91,7 +91,6 @@ public class PicWallCore implements PicturesWall {
             binary.setUploadListener(i, mOnUploadListener);
             files.add(binary);
         }
-        MyLogger.jLog().i("filesSize:" + files.size());
         request.add("pic", files);
         mQueue.add(Constans.TYPE_TWO, request, callback);
     }

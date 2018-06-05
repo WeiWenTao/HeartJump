@@ -25,7 +25,7 @@ import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
-import com.cucr.myapplication.adapter.RlVAdapter.XingWenAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.StarXingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventDaBangStarPagerId;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
@@ -85,6 +85,10 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @ViewInject(R.id.tv_starname)
     private TextView tv_starname;
 
+    //顶部预约
+    @ViewInject(R.id.tv_yuyue_)
+    private TextView tv_yuyue_;
+
     //标题姓名
     @ViewInject(R.id.tv_base_title)
     private TextView tv_base_title;
@@ -97,6 +101,10 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @ViewInject(R.id.tv_focus_forqiye)
     private TextView tv_focus_forqiye;
 
+    //fans关注
+    @ViewInject(R.id.tv_focus)
+    private TextView tv_focus;
+
     //礼物动画
     @ViewInject(R.id.iv_gift)
     private ImageView iv_gift;
@@ -104,7 +112,6 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     //企业看的
     @ViewInject(R.id.ll_qiye_look)
     private LinearLayout ll_qiye_look;
-
 
     //新闻列表
     @ViewInject(R.id.rlv_xingwen)
@@ -124,9 +131,10 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     private int page;
     private int rows;
     private boolean isRefresh;
-    private XingWenAdapter newsAdapter;
+    private StarXingWenAdapter newsAdapter;
     private boolean needShowLoading;
     private QueryFtInfoCore mNewsCore;
+    private boolean canLoad;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,15 +150,18 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         ViewUtils.inject(this);
         //确定身份 企业用户才显示预约栏
         ll_qiye_look.setVisibility(CommonUtils.isQiYe() ? View.VISIBLE : View.GONE);
+        tv_yuyue_.setVisibility(CommonUtils.isQiYe() ? View.GONE : View.VISIBLE);
+        tv_focus.setVisibility(CommonUtils.isQiYe() ? View.GONE : View.VISIBLE);
+
         mCore = new FocusCore();
         mNewsCore = new QueryFtInfoCore();
         mGson = new Gson();
         mStarCore = new QueryStarListCore();
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        initNewsInfo();
         getDatas();
         initCatgory();
-        initNewsInfo();
     }
 
     private void initCatgory() {
@@ -166,7 +177,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     }
 
     private void initNewsInfo() {
-        newsAdapter = new XingWenAdapter();
+        newsAdapter = new StarXingWenAdapter();
         page = 1;
         rows = 20;
         needShowLoading = true;
@@ -215,6 +226,35 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
 
     }
 
+    //fans关注
+    @OnClick(R.id.tv_focus)
+    public void focusForFans(View view) {
+        //是否已经关注该明星
+        if (mData.getIsfollow() == 1) {
+            ToastUtils.showToast("已取消关注！");
+            mData.setIsfollow(0);
+            tv_focus.setText("加关注");
+            tv_focus.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_yellow_bg));
+
+            mCore.cancaleFocus(mStarId, new OnCommonListener() {
+                @Override
+                public void onRequestSuccess(Response<String> response) {
+                    ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                    if (reBackMsg.isSuccess()) {
+                    } else {
+                        ToastUtils.showToast(reBackMsg.getMsg());
+                    }
+                }
+            });
+        } else {
+            mCore.toFocus(mStarId);
+            mData.setIsfollow(1);
+            tv_focus.setText("已关注");
+            tv_focus.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_yellow_bg_));
+        }
+
+    }
+
     //跳转预约界面
     @OnClick(R.id.tv_yuyue)
     public void goYuYue(View view) {
@@ -224,7 +264,6 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     }
 
     public void getDatas() {
-
         //获取数据
         mStarId = getIntent().getIntExtra("starId", -1);
         //发送明星id到明星主页
@@ -237,11 +276,17 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
                 if (starInfos.isSuccess()) {
                     mData = starInfos.getRows().get(0);
                     //并初始化
-                    tv_fans.setText("粉丝 " + mData.getFansCount());
+                    tv_fans.setText("粉丝 " + (mData.getFansCount() == null ? "0" : mData.getFansCount()));
                     tv_starname.setText(mData.getRealName());
                     tv_base_title.setText(mData.getRealName());
                     tv_focus_forqiye.setText(mData.getIsfollow() == 1 ? "已关注" : "关注");
-
+                    if (mData.getIsfollow() == 0) {
+                        tv_focus.setText("加关注");
+                        tv_focus.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_yellow_bg));
+                    } else {
+                        tv_focus.setText("已关注");
+                        tv_focus.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_yellow_bg_));
+                    }
                     ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mData.getUserPicCover(), backdrop, MyApplication.getImageLoaderOptions());
                 } else {
                     ToastUtils.showToast(starInfos.getErrorMsg());
@@ -512,15 +557,18 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
 
     @Override
     public void onLoadMore() {
-        isRefresh = false;
-        page++;
-        rlv_news.onLoadingMore();
-        mNewsCore.queryFtInfo(mStarId, 0, -1, false, page, rows, this);
+        if (canLoad) {
+            isRefresh = false;
+            page++;
+            rlv_news.onLoadingMore();
+            mNewsCore.queryFtInfo(mStarId, 0, -1, false, page, rows, this);
+        }
     }
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
         QueryFtInfos newsInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
+        canLoad = true;
         if (newsInfos.isSuccess()) {
             if (isRefresh) {
                 if (newsInfos.getTotal() == 0) {
@@ -571,6 +619,18 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     public void refres(View view) {
         needShowLoading = true;
         onRefresh();
+    }
+
+    //预约提示框
+    @OnClick(R.id.tv_yuyue_)
+    public void toYuYue(View view) {
+        if (CommonUtils.isQiYe()) {
+            Intent intent = new Intent(MyApplication.getInstance(), YuYueCatgoryActivity.class);
+            intent.putExtra("data", mData);
+            startActivity(intent);
+        } else {
+            ToastUtils.showToast("企业用户才能预约哦，赶快去认证吧");
+        }
     }
 
 }

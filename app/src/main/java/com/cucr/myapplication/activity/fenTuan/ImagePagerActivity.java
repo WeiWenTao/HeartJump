@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.adapter.PagerAdapter.ImgPagerAdapter;
+import com.cucr.myapplication.adapter.PagerAdapter.ImgPagerAdapter_forSingle;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 
@@ -33,17 +34,21 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
     private void initData() {
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(Color.BLACK, 100);
-        boolean formCatgory = getIntent().getBooleanExtra("formCatgory", false);
-        if (formCatgory) {
-            attrFileList_sign = (List<SignleFtInfo.ObjBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
-        } else {
-            attrFileList = (List<QueryFtInfos.RowsBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
-        }
+
         mPosition = getIntent().getIntExtra("position", -1);
         mPager = (ViewPager) findViewById(R.id.pager);
         mTv_marks = (TextView) findViewById(R.id.marks);
+
+        boolean formCatgory = getIntent().getBooleanExtra("formCatgory", false);
+        if (formCatgory) {
+            attrFileList_sign = (List<SignleFtInfo.ObjBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
+            mPager.setAdapter(new ImgPagerAdapter_forSingle(this, attrFileList_sign));
+        } else {
+            attrFileList = (List<QueryFtInfos.RowsBean.AttrFileListBean>) getIntent().getSerializableExtra("imgs");
+            mPager.setAdapter(new ImgPagerAdapter(this, attrFileList));
+        }
+
         mPager.addOnPageChangeListener(this);
-        mPager.setAdapter(new ImgPagerAdapter(this, attrFileList));
         mPager.setCurrentItem(mPosition);
     }
 
@@ -54,7 +59,13 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
 
     @Override
     public void onPageSelected(int position) {
-        mTv_marks.setText(position + 1 + "/" + attrFileList.size());
+        int i;
+        if (attrFileList != null) {
+            i = attrFileList.size();
+        } else {
+            i = attrFileList_sign.size();
+        }
+        mTv_marks.setText(position + 1 + "/" + i);
     }
 
     @Override

@@ -239,8 +239,9 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
         } else if (what == Constans.TYPE_TWO) {
             CommonRebackMsg msg = MyApplication.getGson().fromJson(response.get(), CommonRebackMsg.class);
             if (msg.isSuccess()) {
-                ToastUtils.showToast("图集上传成功,可在<我的图集>界面查看审核状态");
+                ToastUtils.showToast("图集上传成功！");
                 mLocalMedia.clear();
+                onRefresh();
             } else {
                 ToastUtils.showToast(msg.getMsg());
             }

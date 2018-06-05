@@ -23,10 +23,10 @@
         android:layout_marginRight="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
         android:scaleType="centerCrop"
-        app:sriv_left_bottom_corner_radius="@dimen/dp_8"
-        app:sriv_left_top_corner_radius="@dimen/dp_8"
-        app:sriv_right_bottom_corner_radius="@dimen/dp_8"
-        app:sriv_right_top_corner_radius="@dimen/dp_8"
+        app:sriv_left_bottom_corner_radius="@dimen/dp_3"
+        app:sriv_left_top_corner_radius="@dimen/dp_3"
+        app:sriv_right_bottom_corner_radius="@dimen/dp_3"
+        app:sriv_right_top_corner_radius="@dimen/dp_3"
         />
 
     <TextView

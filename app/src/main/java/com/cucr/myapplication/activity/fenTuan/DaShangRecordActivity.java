@@ -43,6 +43,8 @@ public class DaShangRecordActivity extends FragmentActivity {
     }
 
     private void initBar() {
+        //设置状态栏字体颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         UltimateBar ultimateBar = new UltimateBar(this);
         ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
     }

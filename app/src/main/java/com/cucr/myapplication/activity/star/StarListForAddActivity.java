@@ -31,6 +31,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -93,6 +94,7 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
     private boolean isShow = true;
     private QueryFocus mFocusCore;
     private HomeStarsCatgorysAdapter mAdapter;
+    private MyWaitDialog mWaitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,7 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
     }
 
     private void initRlv() {
+        mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         drawer_rcv.setLayoutManager(new GridLayoutManager(MyApplication.getInstance(), 4));
         mAdapter = new HomeStarsCatgorysAdapter();
         drawer_rcv.setAdapter(mAdapter);
@@ -161,7 +164,7 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
 
             @Override
             public void onRequestStar(int what) {
-
+                mWaitDialog.show();
             }
 
             @Override
@@ -171,7 +174,7 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
 
             @Override
             public void onRequestFinish(int what) {
-
+                mWaitDialog.dismiss();
             }
         });
     }

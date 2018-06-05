@@ -85,7 +85,7 @@ public class DesicrbeFragment extends Fragment implements RequersCallBackListene
         starHight.setText(mStarDesrc.getObj().getHeight());
         starBlood.setText(mStarDesrc.getObj().getBlood());
         starBir.setText(mStarDesrc.getObj().getBirthday().substring(0, 10));
-        starDetail.setText(mStarDesrc.getObj().getPlain());
+        starDetail.setText("简介：   " + mStarDesrc.getObj().getPlain());
     }
 
     @Override

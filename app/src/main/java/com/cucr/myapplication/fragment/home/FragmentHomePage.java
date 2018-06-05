@@ -63,7 +63,6 @@ public class FragmentHomePage extends BaseFragment implements OnItemClickListene
     private HomeBannerInfo mHomeBannerInfo;
     private List<FragmentInfos> mDataList;
 
-
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
@@ -183,6 +182,7 @@ public class FragmentHomePage extends BaseFragment implements OnItemClickListene
         HomeBannerInfo.ObjBean objBean = mHomeBannerInfo.getObj().get(position);
         Intent intent = new Intent(MyApplication.getInstance(), TestWebViewActivity.class);
         intent.putExtra("url", objBean.getLocationUrl());
+        intent.putExtra("bannerPic", objBean.getFileUrl());
         intent.putExtra("bannershare", objBean.getId());
         startActivity(intent);
     }

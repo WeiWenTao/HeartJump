@@ -110,13 +110,13 @@
             />
 
         <ImageView
-            android:id="@+id/iv_sort"
+            android:id="@+id/iv_more"
             android:layout_width="41dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
-            android:src="@drawable/share"
+            android:src="@drawable/more"
             />
 
     </RelativeLayout>

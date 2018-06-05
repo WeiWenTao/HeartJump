@@ -23,6 +23,7 @@ public class LoadUserInfos {
     private String companyName;
     private String companyConcat;
     private String passWord;
+
     public String getPassWord() {
         return this.passWord;
     }

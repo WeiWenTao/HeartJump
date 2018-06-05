@@ -46,7 +46,6 @@
                 android:layout_alignParentRight="true"
                 android:padding="@dimen/dp_15"
                 android:src="@drawable/more"
-                android:visibility="gone"
                 />
 
             <include layout="@layout/horizontal_line_for_eee"/>

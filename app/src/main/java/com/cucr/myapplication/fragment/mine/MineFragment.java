@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
 import com.cucr.myapplication.activity.fenTuan.DsDuiHuanActivity;
 import com.cucr.myapplication.activity.fuli.PiaoWuActivity;
@@ -19,7 +20,6 @@ import com.cucr.myapplication.activity.myHomePager.MineFansActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
 import com.cucr.myapplication.activity.pay.TxRecordActivity;
 import com.cucr.myapplication.activity.picWall.MyPicWallActivity;
-import com.cucr.myapplication.activity.setting.InvateActivity;
 import com.cucr.myapplication.activity.setting.LearnningActivity;
 import com.cucr.myapplication.activity.setting.MyActivesActivity;
 import com.cucr.myapplication.activity.setting.MyRequiresActivity;
@@ -301,7 +301,13 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
 
             //邀请有礼
             case 5:
-                mIntent.setClass(mContext, InvateActivity.class);
+//                mIntent.setClass(mContext, InvateActivity.class);
+//                mContext.startActivity(mIntent);
+
+                mIntent.setClass(mContext, TestWebViewActivity.class);
+                mIntent.putExtra("url", HttpContans.ADDRESS_CHOU_JIANG + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+                mIntent.putExtra("title", "邀请有礼");
+                mIntent.putExtra("choujiang", 1);
                 mContext.startActivity(mIntent);
                 break;
 

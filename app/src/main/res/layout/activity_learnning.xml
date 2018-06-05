@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cucr.myapplication.activity.setting.LearnningActivity"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.setting.LearnningActivity"
     >
 
     <include layout="@layout/activity_base_title"/>
@@ -20,8 +20,8 @@
 
         <TextView
             style="@style/My_tv"
+            android:text="1、如何打赏礼物？"
             android:textColor="@color/color_333"
-            android:text="1、如何认证？"
             />
 
         <ImageView
@@ -30,6 +30,7 @@
 
         <include layout="@layout/horizontal_line_for_ccc"
             />
+
     </RelativeLayout>
 
 
@@ -42,8 +43,8 @@
 
         <TextView
             style="@style/My_tv"
+            android:text="2、如何招募全网明星？"
             android:textColor="@color/color_333"
-            android:text="2、如何预约明星？"
             />
 
         <ImageView
@@ -53,7 +54,6 @@
         <include layout="@layout/horizontal_line_for_ccc"
             />
     </RelativeLayout>
-
 
 
     <RelativeLayout
@@ -65,8 +65,8 @@
 
         <TextView
             style="@style/My_tv"
+            android:text="3、如何认证？"
             android:textColor="@color/color_333"
-            android:text="3、如何打赏礼物？"
             />
 
         <ImageView
@@ -78,7 +78,6 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rl_learn_zm"
         android:layout_width="match_parent"
@@ -88,8 +87,8 @@
 
         <TextView
             style="@style/My_tv"
+            android:text="4、如何预约明星？"
             android:textColor="@color/color_333"
-            android:text="4、如何招募全网明星？"
             />
 
         <ImageView

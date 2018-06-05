@@ -141,7 +141,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
                 CommonRebackMsg reBackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
                 MyLogger.jLog().i("reBackMsg" + reBackMsg);
 //                if (reBackMsg.isSuccess()) {
-                    mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
+                mPerfirmPayResulterfirmDialog.setDialog("交易成功", false);
 //                } else {
 //                    mAmount = 0.0;
 //                    mPerfirmPayResulterfirmDialog.setDialog("交易失败", false);
@@ -161,7 +161,7 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
     @Override
     protected void initChild() {
         EventBus.getDefault().register(this);
-        initTitle("充值中心");
+        initTitle("我要支持");
         mActiveId = getIntent().getIntExtra("activeId", -1);
         moneys = new HashMap<>();
         mWaitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
@@ -295,14 +295,14 @@ public class YyhdPayActivity extends BaseActivity implements RadioGroup.OnChecke
 
 
     private void initRBS() {
-        moneys.put(R.id.rg1_rb1, 1.0);
-        moneys.put(R.id.rg1_rb2, 5.20);
-        moneys.put(R.id.rg1_rb3, 13.14);
-        moneys.put(R.id.rg1_rb4, 99.0);
+        moneys.put(R.id.rg1_rb1, 0.52);
+        moneys.put(R.id.rg1_rb2, 1.0);
+        moneys.put(R.id.rg1_rb3, 2.40);
+        moneys.put(R.id.rg1_rb4, 5.20);
 
-        moneys.put(R.id.rg2_rb1, 520.0);
-        moneys.put(R.id.rg2_rb2, 666.0);
-        moneys.put(R.id.rg2_rb3, 888.0);
+        moneys.put(R.id.rg2_rb1, 13.14);
+        moneys.put(R.id.rg2_rb2, 99.0);
+        moneys.put(R.id.rg2_rb3, 520.0);
         moneys.put(R.id.rg2_rb4, 1314.0);
 
     }

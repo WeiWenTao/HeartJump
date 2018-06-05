@@ -50,8 +50,8 @@ public class HytCore implements HytInterf {
                 .add("city", address);
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
 
-        request.add("idCardPic1", new FileBinary(new File(positivePic), positivePic.substring(positivePic.lastIndexOf("/"))));
-        request.add("idCardPic2", new FileBinary(new File(negativePic), negativePic.substring(negativePic.lastIndexOf("/"))));
+//        request.add("idCardPic1", new FileBinary(new File(positivePic), positivePic.substring(positivePic.lastIndexOf("/"))));
+//        request.add("idCardPic2", new FileBinary(new File(negativePic), negativePic.substring(negativePic.lastIndexOf("/"))));
         request.add("picUrl", new FileBinary(new File(coverPic), coverPic.substring(coverPic.lastIndexOf("/"))));
 
         mQueue.add(Constans.TYPE_ONE, request, listener);

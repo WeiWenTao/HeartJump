@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
@@ -20,6 +21,7 @@ import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
@@ -46,12 +48,16 @@ public class HuoDongActivity extends BaseActivity implements SwipeRecyclerView.O
     //活动列表
     @ViewInject(R.id.rlv_actives)
     private SwipeRecyclerView rlv_actives;
+
     //状态布局
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
 
+    //活动发布按钮
+    @ViewInject(R.id.iv_fabu)
+    private ImageView iv_fabu;
+
     private boolean needShowLoading;
-    private View mView;
     private Context mContext;
     private HuoDongCore mCore;
     private int page;
@@ -65,6 +71,7 @@ public class HuoDongActivity extends BaseActivity implements SwipeRecyclerView.O
     private boolean isRefresh;
 
     private void initRLV() {
+        iv_fabu.setVisibility(CommonUtils.isQiYe() ? View.VISIBLE : View.GONE);
         mContext = MyApplication.getInstance();
         mCore = new HuoDongCore();
         mGson = MyApplication.getGson();

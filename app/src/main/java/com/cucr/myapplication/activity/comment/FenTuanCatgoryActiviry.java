@@ -47,6 +47,7 @@ import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.DeleteCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
@@ -211,6 +212,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private boolean isFinish;
     private ObjectAnimator mRa2;
     private List<FtCommentInfo.RowsBean> mDmRows;
+    private AppCore appCore;
+    private View mLvHead;
 
 
     @Override
@@ -226,35 +229,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         setUpEmojiPopup();
         initGiftAndBackPack();
         initDm();
-
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mCommentCore.queryFtComment(Integer.parseInt(mDataId), -1, 1, 20, new OnCommonListener() {
-                    @Override
-                    public void onRequestSuccess(Response<String> response) {
-                        FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
-                        if (ftCommentInfo.isSuccess()) {
-//------------------------------------------评论弹幕-------------------------------------------------
-                            mDmRows = ftCommentInfo.getRows();
-                            if (ftCommentInfo.getTotal() != 0) {
-                                //开启弹幕1
-                                tv_dm1.setText(CommonUtils.unicode2String(mDmRows.get(0).getComment()));
-                                ImageLoader.getInstance().displayImage(mDmRows.get(0).getUser().getUserHeadPortrait(), iv_dm1, MyApplication.getImageLoaderOptions());
-                                starDm1();
-                                if (mDmRows.size() > 1) {
-                                    //开启弹幕2
-                                    starDm2();
-                                }
-                            }
-//--------------------------------------------------------------------------------------------------
-                        } else {
-                            ToastUtils.showToast(ftCommentInfo.getErrorMsg());
-                        }
-                    }
-                });
-            }
-        }, 2000);
     }
 
     //弹幕
@@ -321,6 +295,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     private void initDialog() {
         mDelCore = new DeleteCore();
+        appCore = new AppCore();
         mDialog = new DialogShareDelPics(this, R.style.MyDialogStyle);
         waitDialog = new MyWaitDialog(this, R.style.MyWaitDialog);
         Window dialogWindow = mDialog.getWindow();
@@ -344,6 +319,8 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     private void queryHeadInfo() {
         mDataId = getIntent().getStringExtra("dataId");
         queryCore.querySignleFtInfo(mDataId, this);
+        initLV();
+        onRefresh();
     }
 
     //查询道具信息
@@ -428,10 +405,10 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     }
 
     private void initLV() {
-        View lvHead = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
+        mLvHead = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
         initPopWindow();
-        initLvHeader(lvHead);
-        lv_ft_catgory.addHeaderView(lvHead, null, true);
+
+        lv_ft_catgory.addHeaderView(mLvHead, null, true);
         lv_ft_catgory.setHeaderDividersEnabled(false);
         mAdapter = new FtCatgoryAadapter(MyApplication.getInstance());
         mAdapter.setClickGoodsListener(this);
@@ -653,6 +630,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         if (isFinish) {
             tv_dm1.setText(CommonUtils.unicode2String(s));
             ll_dm1.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage((String) SpUtil.getParam(SpConstant.SP_USERHEAD, ""), iv_dm1);
             mRa1.setRepeatCount(0);
             mRa1.start();
         }
@@ -971,12 +949,26 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                     allRows.addAll(mRows);
                     mAdapter.setData(mRows);
 //------------------------------------------评论弹幕-------------------------------------------------
-
-//--------------------------------------------------------------------------------------------------
-                    if (mIsFormConmmomd) {
+                    if (page == 1 && !isFinish) {
+                        mDmRows = ftCommentInfo.getRows();
+                        if (ftCommentInfo.getTotal() != 0) {
+                            //开启弹幕1
+                            tv_dm1.setText(CommonUtils.unicode2String(mDmRows.get(0).getComment()));
+                            ImageLoader.getInstance().displayImage(mDmRows.get(0).getUser().getUserHeadPortrait(), iv_dm1, MyApplication.getImageLoaderOptions());
+                            starDm1();
+                            if (mDmRows.size() > 1) {
+                                //开启弹幕2
+                                starDm2();
+                            }
+                        } else {
+                            isFinish = true;
+                        }
+                    }
+//------------------------todo 点击评论跳转--------------------------------------------------------------------------
+                   /* if (mIsFormConmmomd) {
                         lv_ft_catgory.smoothScrollToPositionFromTop(1, 75, 500);
                         mIsFormConmmomd = false;
-                    }
+                    }*/
                 } else {
                     ToastUtils.showToast(ftCommentInfo.getErrorMsg());
                 }
@@ -1022,13 +1014,9 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
             if (signleFtInfo.isSuccess()) {
                 mRowsBean = signleFtInfo.getObj();
                 mHasPicture = mRowsBean.getAttrFileList().size() > 0;
-                if (mRowsBean.getCreateUserId() == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
-                    iv_more.setVisibility(View.VISIBLE);
-                }
                 upDataInfo(false);
-                initLV();
+                initLvHeader(mLvHead);
                 queryCore.ftRead(mRowsBean.getId() + "");
-                onRefresh();
             } else {
                 ToastUtils.showToast(signleFtInfo.getMsg());
             }
@@ -1039,6 +1027,14 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                 mIntent.putExtra("delete", true);
                 setResult(999, mIntent);
                 finish();
+            } else {
+                ToastUtils.showToast(msg.getMsg());
+            }
+            //举报回调
+        } else if (what == Constans.TYPE_THREE) {
+            CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+            if (msg.isSuccess()) {
+                ToastUtils.showToast("我们收到您的举报啦");
             } else {
                 ToastUtils.showToast(msg.getMsg());
             }
@@ -1072,7 +1068,13 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     @Override
     public void clickShare() {
-        mShareDialog.setData(new ShareEntity("", "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
+        String url;
+        if (mRowsBean.getType() == Constans.TYPE_TEXT) {
+            url = "";
+        } else {
+            url = mRowsBean.getAttrFileList().get(0).getFileUrl();
+        }
+        mShareDialog.setData(new ShareEntity(mRowsBean.getContent(), getResources().getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, url));
     }
 
     @OnClick(R.id.iv_more)
@@ -1092,6 +1094,24 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
     @Override
     public void clickShareTo() {
         mDialog.dismiss();
-        mShareDialog.setData(new ShareEntity(getResources().getString(R.string.share_title), "", HttpContans.ADDRESS_FT_SHARE + mDataId, ""));
+        String url;
+        if (mRowsBean.getType() == Constans.TYPE_TEXT) {
+            url = "";
+        } else {
+            url = mRowsBean.getAttrFileList().get(0).getFileUrl();
+        }
+        mShareDialog.setData(new ShareEntity(mRowsBean.getContent(), getResources().getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, url));
+    }
+
+    //点击举报1
+    @Override
+    public void clickReport() {
+        appCore.report(2, mDataId, mRowsBean.getCreateUserId(), this);
+    }
+
+    //点击举报2
+    @Override
+    public void clickReportTo() {
+        appCore.report(2, mDataId, mRowsBean.getCreateUserId(), this);
     }
 }

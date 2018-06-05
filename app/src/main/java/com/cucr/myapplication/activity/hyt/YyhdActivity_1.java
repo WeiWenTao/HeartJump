@@ -133,6 +133,9 @@ public class YyhdActivity_1 extends BaseActivity implements DialogBirthdayStyle.
         mYear = date.getYear() + "";
         mMon = (date.getMonth() + (isChange ? 1 : 2)) + "";
         mDay = date.getDay() + "";
+        if (mDay.length() != 2) {
+            mDay = "0" + mDay;
+        }
         endTime = mYear + "-" + mMon + "-" + mDay;
         tv_yyhd_time.setText(endTime);
         et_content.requestFocus();
@@ -150,7 +153,7 @@ public class YyhdActivity_1 extends BaseActivity implements DialogBirthdayStyle.
         String activeName = et_yyhd_name.getText().toString();
         String content = et_content.getText().toString();
 
-        if (CommonUtils.isEmpty(activeName,endTime,content,mPicPath)) {
+        if (CommonUtils.isEmpty(activeName, endTime, content, mPicPath)) {
             ToastUtils.showToast("请完善信息哦");
             return;
         }

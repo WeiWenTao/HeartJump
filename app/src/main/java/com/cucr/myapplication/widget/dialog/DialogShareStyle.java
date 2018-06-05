@@ -48,6 +48,12 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
     private final WaitDialog mDialog;
     private UMWeb mWeb;
 
+    //图片分享
+    public void sharePic(ShareEntity entity) {
+        UMImage image = new UMImage(mActivity, entity.getImgURL());//网络图片
+    }
+
+
     //粉团的分享
     public void setData(ShareEntity entity) {
         this.entity = entity;
@@ -59,12 +65,16 @@ public class DialogShareStyle extends Dialog implements View.OnClickListener {
         }
 //        mWeb.setDescription(entity.getDescribe());
 //        mWeb.setTitle(entity.getTitle());
+        if (TextUtils.isEmpty(entity.getTitle())) {
+            mWeb.setTitle(MyApplication.getInstance().getString(R.string.share_title));
+        } else {
+            mWeb.setTitle(entity.getTitle());
+        }
         if (TextUtils.isEmpty(entity.getDescribe())) {
             mWeb.setDescription(MyApplication.getInstance().getString(R.string.share_desirc));
         } else {
             mWeb.setDescription(entity.getDescribe());
         }
-        mWeb.setTitle(entity.getTitle());
         show();
     }
 

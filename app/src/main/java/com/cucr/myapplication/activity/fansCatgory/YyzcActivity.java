@@ -27,6 +27,7 @@ import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;
@@ -130,7 +131,6 @@ public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, 
                 } else {
                     mRlv_yyhd.complete();
                 }
-
             } else {
                 ToastUtils.showToast(activeInfo.getErrorMsg());
             }
@@ -139,19 +139,30 @@ public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, 
 
     @Override
     public void onRequestStar(int what) {
-
+        if (what == Constans.TYPE_SEVEN) {
+            if (needShowLoading) {
+                multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+                needShowLoading = false;
+            }
+        }
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (isRefresh && response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
     public void onRequestFinish(int what) {
-
-        if (mRlv_yyhd.getSwipeRefreshLayout().isRefreshing()) {
-            mRlv_yyhd.getSwipeRefreshLayout().setRefreshing(false);
+        if (what == Constans.TYPE_SEVEN) {
+            if (mRlv_yyhd.getSwipeRefreshLayout().isRefreshing()) {
+                mRlv_yyhd.getSwipeRefreshLayout().setRefreshing(false);
+            }
+            if (mRlv_yyhd.isLoadingMore()) {
+                mRlv_yyhd.stopLoadingMore();
+            }
         }
     }
 

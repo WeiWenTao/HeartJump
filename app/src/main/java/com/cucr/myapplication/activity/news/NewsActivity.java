@@ -25,6 +25,7 @@ import com.cucr.myapplication.bean.app.CommonRebackMsg;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
@@ -177,6 +178,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
 
 
     private void initView() {
+        isFinish = true;
         mShareDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
         Window window1 = mShareDialog.getWindow();
         window1.setGravity(Gravity.BOTTOM);
@@ -265,7 +267,6 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
                     ll_dm2.clearAnimation();
                     ll_dm2.setVisibility(View.GONE);
                     isFinish = true;
-                    ToastUtils.showToast("评论弹幕2播放完了！");
                 }
             }
         }, 2000);
@@ -280,7 +281,11 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
     //点击分享
     @OnClick(R.id.iv_news_share)
     public void clickShare(View view) {
-        mShareDialog.setData(new ShareEntity("追爱豆,领红包,尽在心跳互娱", rowsBean.getTitle(), HttpContans.ADDRESS_NEWS_SHARE + rowsBean.getId(), ""));
+        String url = "";
+        if (rowsBean.getType() != Constans.TYPE_TEXT) {
+            url = HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(0).getFileUrl();
+        }
+        mShareDialog.setData(new ShareEntity(rowsBean.getTitle(), "追爱豆,领红包,尽在心跳互娱", HttpContans.ADDRESS_NEWS_SHARE + rowsBean.getId(), url));
     }
 
     private void setUpEmojiPopup() {
@@ -443,6 +448,7 @@ public class NewsActivity extends BaseActivity implements View.OnFocusChangeList
         mDmRows.add(dmCount, new FtCommentInfo.RowsBean(trim, new FtCommentInfo.RowsBean.UserBean((String) SpUtil.getParam(SpConstant.SP_USERHEAD, ""))));
         if (isFinish) {
             tv_dm1.setText(CommonUtils.unicode2String(trim));
+            ImageLoader.getInstance().displayImage((String) SpUtil.getParam(SpConstant.SP_USERHEAD, ""), iv_dm1);
             ll_dm1.setVisibility(View.VISIBLE);
             mRa1.setRepeatCount(0);
             mRa1.start();

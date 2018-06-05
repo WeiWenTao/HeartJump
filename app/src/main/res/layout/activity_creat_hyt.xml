@@ -227,6 +227,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="@dimen/dp_10"
@@ -249,7 +250,6 @@
                         android:textSize="@dimen/sp_16"
                         />
 
-
                     <com.joooonho.SelectableRoundedImageView
                         android:id="@+id/iv_idcard_posi"
                         android:layout_width="match_parent"
@@ -261,6 +261,7 @@
                         app:sriv_right_bottom_corner_radius="@dimen/dp_5"
                         app:sriv_right_top_corner_radius="@dimen/dp_5"
                         />
+
                 </RelativeLayout>
 
 
@@ -302,7 +303,7 @@
                 android:layout_height="@dimen/dp_40"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/dp_40"
-                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_50"
                 android:background="@drawable/shape_immediately_pay_bg"
                 android:gravity="center"
                 android:text="提交审核"

@@ -3,7 +3,9 @@ package com.cucr.myapplication.activity;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -14,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
 import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.widget.dialog.DialogShareStyle;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -34,22 +37,35 @@ public class TestWebViewActivity extends BaseActivity {
     private ImageView iv_news_share;
 
     private DialogShareStyle mShareDialog;
-    private QueryFtInfos.RowsBean mRowsBean;
     private int mBannerId;
     private int activeId;
     private String activeTitle;
+    private int choujiang;
+    private String mPicUrl;
+    private String mBannerPic;
+    private String fuliBanner;
+    private String mUrl;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initChild() {
-        initTitle("详情");
+
         initDialog();
-        String url = getIntent().getStringExtra("url");
+        mUrl = getIntent().getStringExtra("url");
+        String title = getIntent().getStringExtra("title");
+        if (TextUtils.isEmpty(title)) {
+            initTitle("详情");
+        } else {
+            initTitle(title);
+        }
         mBannerId = getIntent().getIntExtra("bannershare", -1);
         activeId = getIntent().getIntExtra("activeId", -1);
         activeTitle = getIntent().getStringExtra("activeTitle");
-        mRowsBean = (QueryFtInfos.RowsBean) getIntent().getSerializableExtra("data");
-        if (mBannerId != -1 || activeId != -1 || activeTitle != null || mRowsBean != null) {
+        choujiang = getIntent().getIntExtra("choujiang", -1);
+        mPicUrl = getIntent().getStringExtra("activePic");
+        mBannerPic = getIntent().getStringExtra("bannerPic");
+        fuliBanner = getIntent().getStringExtra("fuliBanner");
+        if (mBannerId != -1 || activeId != -1 || activeTitle != null || fuliBanner != null || choujiang != -1) {
             iv_news_share.setVisibility(View.VISIBLE);
         }
 //        url = "https://weibo.com/yangmiblog?topnav=1&wvr=6&topsug=1&is_hot=1";
@@ -104,7 +120,7 @@ public class TestWebViewActivity extends BaseActivity {
                 MyLogger.jLog().i("开始加载 url:" + url);
             }
         });
-        wv.loadUrl(url);
+        wv.loadUrl(mUrl);
     }
 
     private void initDialog() {
@@ -119,16 +135,27 @@ public class TestWebViewActivity extends BaseActivity {
         return R.layout.activity_test_web_view;
     }
 
-
     //点击分享
     @OnClick(R.id.iv_news_share)
     public void clickShare(View view) {
-        if (mRowsBean != null) {
-            mShareDialog.setData(new ShareEntity("追爱豆,领红包,尽在心跳互娱", mRowsBean.getTitle(), HttpContans.ADDRESS_NEWS_SHARE + mRowsBean.getId(), ""));
-        } else if (mBannerId != -1) {
-            mShareDialog.setData(new ShareEntity("追爱豆,领红包,尽在心跳互娱", "明星守护神", HttpContans.ADDRESS_BANNER_SHARE + mBannerId, ""));
-        } else if (activeId != -1) {
-            mShareDialog.setData(new ShareEntity("追爱豆,领红包,尽在心跳互娱", activeTitle, HttpContans.ADDRESS_FULI_HUOD_SHARE + activeId, ""));
+        if (mBannerId != -1) {//banner分享
+            mShareDialog.setData(new ShareEntity("明星守护神", "追爱豆,领红包,尽在心跳互娱", HttpContans.ADDRESS_BANNER_SHARE + mBannerId, mBannerPic));
+        } else if (activeId != -1) {//活动分享
+            mShareDialog.setData(new ShareEntity(activeTitle, "追爱豆,领红包,尽在心跳互娱", HttpContans.ADDRESS_FULI_HUOD_SHARE + activeId, mPicUrl));
+        } else if (fuliBanner != null) {//活动Banner分享
+            mShareDialog.setData(new ShareEntity("心跳互娱后援招募", "在线兼职，时薪20，追爱豆能赚钱！", HttpContans.ADDRESS_RECRUIT_SHARE, fuliBanner));
+        } else if (choujiang != -1) {//抽奖分享
+            mShareDialog.setData(new ShareEntity("我在心跳互娱抽到大奖啦！哈哈哈", "iPhoneX、演唱会门票，视频会员……超级福利中奖百分百", HttpContans.ADDRESS_CHOU_JIANG_SHARE + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)), ""));
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //这是一个监听用的按键的方法，keyCode 监听用户的动作，如果是按了返回键，同时Webview要返回的话，WebView执行回退操作，因为mWebView.canGoBack()返回的是一个Boolean类型，所以我们把它返回为true
+        if (keyCode == KeyEvent.KEYCODE_BACK && wv.canGoBack()) {
+            wv.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -25,16 +25,16 @@
         <!-- imlib config begin -->
 
         <!--线上-->
-        <!--<meta-data-->
-            <!--android:name="RONG_CLOUD_APP_KEY"-->
-            <!--android:value="e0x9wycfe40dq"-->
-            <!--/>-->
+        <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="e0x9wycfe40dq"
+            />
 
         <!--线下-->
-        <meta-data
-        android:name="RONG_CLOUD_APP_KEY"
-        android:value="25wehl3u2s7vw"
-        />
+        <!--<meta-data-->
+        <!--android:name="RONG_CLOUD_APP_KEY"-->
+        <!--android:value="25wehl3u2s7vw"-->
+        <!--/>-->
 
         <service
             android:name="io.rong.imlib.ipc.RongService"

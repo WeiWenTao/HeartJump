@@ -13,8 +13,8 @@ android {
         useLibrary 'org.apache.http.legacy'
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.5"
 
 //        这两句 解决重复依赖bug
         multiDexEnabled true
@@ -44,7 +44,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }

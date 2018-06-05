@@ -18,10 +18,11 @@ public class HttpContans {
     public static final String LOGO_ADDRESS = HttpContans.HOST + "/static/512.png";
 
     //线上环境
-//    public static final String HOST = "http://www.cucrxt.com";
+    public static final String HOST = "http://www.cucrxt.com";
 
     //测试环境
-    public static final String HOST = "http://192.168.1.147:8080";
+//    public static final String HOST = "http://192.168.1.147:8080";
+//    public static final String HOST = "http://192.168.1.149:8080";
 
     //splish
     public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";
@@ -227,6 +228,9 @@ public class HttpContans {
     //意见反馈
     public static final String ADDRESS_APP_ADVICE = HOST + "/interface/user/addIdea";
 
+    //意见反馈
+    public static final String ADDRESS_APP_REPORT = HOST + "/interface/mobileUserReport/reportRecord";
+
     //图集上传
     public static final String ADDRESS_PIC_UPLOAD = HOST + "/interface/mobileStartAtlasAction/upAtlas";
 
@@ -343,5 +347,20 @@ public class HttpContans {
 
     //明星简介查询
     public static final String ADDRESS_STAR_DESCRIBE = HOST + "/interface/mobileStartAction/queryIntroduce";
+
+    //抽奖分享
+    public static final String ADDRESS_CHOU_JIANG_SHARE = HOST + "/interface/newsShare/completeShare?userId=";
+
+    //抽奖
+    public static final String ADDRESS_CHOU_JIANG = HOST + "/interface/newsShare/complete?userId=";
+
+    //在线商城
+    public static final String ADDRESS_SHOPPING = HOST + "/interface/newsShare/mallList";
+
+    //后援会招募
+    public static final String ADDRESS_RECRUIT = HOST + "/interface/newsShare/recruiting";
+
+    //后援会招募分享
+    public static final String ADDRESS_RECRUIT_SHARE = HOST + "/interface/newsShare/recruitingNew";
 
 }

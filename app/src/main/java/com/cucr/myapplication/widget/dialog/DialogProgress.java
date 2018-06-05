@@ -49,7 +49,11 @@ public class DialogProgress extends Dialog {
         }
         mPb.setProgress(progress);
         mTv_progress.setText("已上传: "+progress +" / 100");
-
+        if (progress == 100){
+            mTv_title.setText("解析中,请稍后...");
+        }else {
+            mTv_title.setText("正在上传...");
+        }
     }
 
 }

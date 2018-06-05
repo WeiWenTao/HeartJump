@@ -92,7 +92,7 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
             ToastUtils.showToast("还没有填写金额哟");
             return;
         }
-        mCore.TxRequest(account, name, amount + "0", this);
+        mCore.TxRequest(account, name, amount + "00", this);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
     @Override
     public void afterTextChanged(Editable s) {
         if (!TextUtils.isEmpty(s) && Integer.parseInt(s.toString()) > 0) {
-            double i = Double.parseDouble(s.toString());
+            double i = Double.parseDouble(s.toString() + "0");
             bt_confirm.setText("兑换成" + CommonUtils.getTxMoney(i) + "元,确认提现");
         } else {
             bt_confirm.setText("请输入金额");
@@ -152,12 +152,17 @@ public class XbTxActivity extends BaseActivity implements RequersCallBackListene
         if (reBackMsg.isSuccess()) {
             Double money = Double.parseDouble(reBackMsg.getMsg());
             if (money != 0) {
-                money = money / 10;
+                money = money / 100;
                 str = (money + "").split("\\.")[0];
             }
-            tv_have.setText("可提现数量" + str + "0");
+            tv_have.setText("可提现数量" + str + "00");
         } else {
             ToastUtils.showToast(reBackMsg.getMsg());
         }
+    }
+
+    @OnClick(R.id.tv_zero)
+    public void clickZero(View view) {
+        et_xb.setSelection(et_xb.getText().length());
     }
 }

@@ -34,9 +34,7 @@ public class DialogShareDelPics extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_share_del);
-
         initView();
-
     }
 
     private void initView() {
@@ -46,10 +44,12 @@ public class DialogShareDelPics extends Dialog implements View.OnClickListener {
         TextView tv_del = (TextView) findViewById(R.id.tv_del);
         TextView tv_share = (TextView) findViewById(R.id.tv_share);
         TextView cancel = (TextView) findViewById(R.id.cancel);
+        TextView tv_report = (TextView) findViewById(R.id.tv_report);
 
         tv_del.setOnClickListener(this);
         tv_share.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        tv_report.setOnClickListener(this);
 
     }
 
@@ -60,6 +60,13 @@ public class DialogShareDelPics extends Dialog implements View.OnClickListener {
             case R.id.tv_del:
                 if (mOnClickBt != null) {
                     mOnClickBt.clickDel();
+                }
+                dismiss();
+                break;
+
+            case R.id.tv_report:
+                if (mOnClickBt != null) {
+                    mOnClickBt.clickReport();
                 }
                 dismiss();
                 break;
@@ -87,5 +94,7 @@ public class DialogShareDelPics extends Dialog implements View.OnClickListener {
         void clickDel();
 
         void clickShare();
+
+        void clickReport();
     }
 }

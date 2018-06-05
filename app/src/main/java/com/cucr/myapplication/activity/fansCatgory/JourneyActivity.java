@@ -75,7 +75,7 @@ public class JourneyActivity extends BaseActivity {
         mMData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mMData.getUserPicCover(), iv_cover, MyApplication.getImageLoaderOptions());
         tv_starname.setText(mMData.getRealName());
-        tv_fans.setText("粉丝 " + mMData.getFansCount());
+        tv_fans.setText("粉丝 " + (mMData.getFansCount() == null ? "0" : mMData.getFansCount()));
 
         mCore = new QueryJourneyList();
         mGson = new Gson();
@@ -155,7 +155,6 @@ public class JourneyActivity extends BaseActivity {
                 StarJourneyList starJourneys = mGson.fromJson(response.get(), StarJourneyList.class);
                 if (starJourneys.isSuccess()) {
                     mRows = starJourneys.getRows();
-                    MyLogger.jLog().i("mRows:" + mRows.toString());
                     mAdapter.setData(mRows);
                 } else {
                     ToastUtils.showToast(mContext, starJourneys.getErrorMsg());

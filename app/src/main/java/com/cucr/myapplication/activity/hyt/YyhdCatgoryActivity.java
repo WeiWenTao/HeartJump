@@ -104,6 +104,14 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
     @ViewInject(R.id.cv)
     private CountdownView cv;
 
+    //活动已结束
+    @ViewInject(R.id.tv_end)
+    private TextView tv_end;
+
+    //活动倒计时
+    @ViewInject(R.id.ll_ondo)
+    private LinearLayout ll_ondo;
+
     private HytCore mCore;
     private int page;
     private int rows;
@@ -131,7 +139,12 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
         mId = mRowsBean.getId();
         try {
             long differTime = DataUtils.getDifferTime(mRowsBean.getEndTime());
-            cv.start(differTime);
+            if (differTime <= 0) {
+                tv_end.setVisibility(View.VISIBLE);
+                ll_ondo.setVisibility(View.GONE);
+            } else {
+                cv.start(differTime);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -174,6 +187,7 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
             progress = 0;
         } else {
             progress = signUpAmount * 100.0 / totalMoney;
+            progress = (double) Math.round(progress * 100) / 100;
         }
         tv_total_progress.setText("/¥" + totalMoney);
         tv_percent.setText(progress + "%");
@@ -186,10 +200,10 @@ public class YyhdCatgoryActivity extends BaseActivity implements RequersCallBack
             pb_yhhd_progress.setProgress((int) progress);
         }
         //后援团信息
-        YyhdInfos.RowsBean.HytInfoBean hytInfo = mRowsBean.getHytInfo();
-        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + hytInfo.getPicUrl(),
+        YyhdInfos.RowsBean.CreateUserBean createUser = mRowsBean.getCreateUser();
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + createUser.getUserHeadPortrait(),
                 iv_head, MyApplication.getImageLoaderOptions());
-        tv_hyt_name.setText(hytInfo.getName());
+        tv_hyt_name.setText(createUser.getName());
         tv_comments.setText(mRowsBean.getCommentCount() + "");
         tv_give_count.setText(mRowsBean.getGiveUpCount() + "");
         mIsgood = mRowsBean.getIsGiveUp() == 1;

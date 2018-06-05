@@ -135,7 +135,6 @@ public class StarListForQiYeAdapter extends RecyclerView.Adapter<StarListForQiYe
         //是否关注  0：未关注      1：已关注
         final int isfollow = rowsBean.getIsfollow();
 
-        MyLogger.jLog().i("position:" + position + ",isfollow" + isfollow);
         if (isfollow == 0) {
             holder.tv_focus.setText("加关注");
             holder.tv_focus.setTextColor(resources.getColor(R.color.white));

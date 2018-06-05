@@ -54,25 +54,24 @@
         >
 
         <TextView
-            android:id="@+id/tv_sort_hot"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="人气"
-            android:textColor="@color/xtred"
-            />
-
-        <TextView
             android:id="@+id/tv_sort_new"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="最新"
-            android:textColor="@color/color_999"
+            android:textColor="@color/xtred"
             />
 
+        <TextView
+            android:id="@+id/tv_sort_hot"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="人气"
+            android:textColor="@color/color_999"
+            />
 
     </LinearLayout>
 

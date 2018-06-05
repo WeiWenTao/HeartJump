@@ -90,7 +90,7 @@ public class HytMemberListActivity extends BaseActivity implements DialogDelMemb
         HytMembers hytMembers = mGson.fromJson(response.get(), HytMembers.class);
         if (hytMembers.isSuccess()) {
             if (isRefresh) {
-                if (hytMembers.getRows().get(0).getUser().getId() == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
+                if (hytMembers.getRows().size() != 0 && hytMembers.getRows().get(0).getUser().getId() == ((int) SpUtil.getParam(SpConstant.USER_ID, -1))) {
                     iv_member.setVisibility(View.VISIBLE);
                 }
                 mAdapter.setData(hytMembers.getRows());

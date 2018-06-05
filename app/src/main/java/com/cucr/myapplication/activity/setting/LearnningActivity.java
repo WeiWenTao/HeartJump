@@ -16,31 +16,32 @@ public class LearnningActivity extends BaseActivity {
     protected void initChild() {
         initTitle("新手教程");
         mIntent = new Intent();
-        mIntent.setClass(MyApplication.getInstance(),LearnCatgoryActivity.class);
+        mIntent.setClass(MyApplication.getInstance(), LearnCatgoryActivity.class);
     }
 
     @Override
     protected int getChildRes() {
         return R.layout.activity_learnning;
     }
+
     //认证教程
     @OnClick(R.id.rl_learn_rz)
     public void click3(View view) {
-        mIntent.putExtra("type",1);
+        mIntent.putExtra("type", 1);
         startActivity(mIntent);
     }
 
     //预约教程
     @OnClick(R.id.rl_learn_yy)
     public void click1(View view) {
-        mIntent.putExtra("type",2);
+        mIntent.putExtra("type", 2);
         startActivity(mIntent);
     }
 
     //打赏教程
     @OnClick(R.id.rl_learn_ds)
     public void click2(View view) {
-        mIntent.putExtra("type",3);
+        mIntent.putExtra("type", 3);
         startActivity(mIntent);
     }
 
@@ -48,7 +49,7 @@ public class LearnningActivity extends BaseActivity {
     //招募教程
     @OnClick(R.id.rl_learn_zm)
     public void click4(View view) {
-        mIntent.putExtra("type",4);
+        mIntent.putExtra("type", 4);
         startActivity(mIntent);
     }
 

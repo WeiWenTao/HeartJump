@@ -35,7 +35,6 @@
             android:layout_alignParentRight="true"
             android:padding="@dimen/dp_15"
             android:src="@drawable/more"
-            android:visibility="gone"
             />
 
     </RelativeLayout>
@@ -252,5 +251,86 @@
         android:layout_centerInParent="true"
         android:visibility="gone"
         />
+
+    <LinearLayout
+        android:id="@+id/ll_dm_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_dm_1"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/tank"
+            >
+
+            <TextView
+                android:id="@+id/tv_dm_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxEms="13"
+                android:maxLines="3"
+                android:text="这是评论"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/sp_13"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dm_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_dm_2"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/tank"
+            >
+
+            <TextView
+                android:id="@+id/tv_dm_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxEms="13"
+                android:maxLines="3"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/sp_13"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

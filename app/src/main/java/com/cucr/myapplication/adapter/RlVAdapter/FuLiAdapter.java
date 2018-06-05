@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
+import com.cucr.myapplication.activity.TempActivity;
+import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
 import com.cucr.myapplication.activity.fuli.HuoDongActivity;
 import com.cucr.myapplication.app.MyApplication;
@@ -18,6 +20,8 @@ import com.cucr.myapplication.bean.Home.HomeBannerInfo;
 import com.cucr.myapplication.bean.fuli.ActiveInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.constants.SpConstant;
+import com.cucr.myapplication.utils.SpUtil;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -84,7 +88,7 @@ public class FuLiAdapter extends RecyclerView.Adapter implements View.OnClickLis
                 @Override
                 public void onClick(View v) {
                     if (onItemListener != null) {
-                        onItemListener.OnItemClick(v, bean.getId(), bean.getActiveName());
+                        onItemListener.OnItemClick(v, bean.getId(), bean.getActiveName(), bean.getLocationUrl(), HttpContans.IMAGE_HOST + bean.getPicUrl());
                     }
                 }
             });
@@ -102,18 +106,19 @@ public class FuLiAdapter extends RecyclerView.Adapter implements View.OnClickLis
 //            String locationUrl = rowsBean.getLocationUrl();
 
         } else if (holder instanceof FuLiHeader) {
-            if (obj == null) {
-                return;
+            if (obj != null && obj.size() != 0) {
+                ImageLoader.getInstance().displayImage(obj.get(0).getFileUrl(),
+                        ((FuLiHeader) holder).iv_banner,
+                        MyApplication.getImageLoaderOptions());
             }
+
             mIntent = new Intent();
             mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ImageLoader.getInstance().displayImage(obj.get(0).getFileUrl(),
-                    ((FuLiHeader) holder).iv_banner,
-                    MyApplication.getImageLoaderOptions());
             ((FuLiHeader) holder).ll_zxsc.setOnClickListener(this);
             ((FuLiHeader) holder).ll_fxcj.setOnClickListener(this);
             ((FuLiHeader) holder).ll_qyhd.setOnClickListener(this);
             ((FuLiHeader) holder).ll_zcyy.setOnClickListener(this);
+            ((FuLiHeader) holder).iv_banner.setOnClickListener(this);
         }
     }
 
@@ -131,11 +136,17 @@ public class FuLiAdapter extends RecyclerView.Adapter implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_zxsc:
-//                mIntent.setClass(mContext, HuoDongActivity.class);
+                mIntent.setClass(mContext, TempActivity.class);
+//                mIntent.setClass(mContext, TestWebViewActivity.class);
+                mIntent.putExtra("url", HttpContans.ADDRESS_SHOPPING);
+                mIntent.putExtra("title", "在线商城");
                 break;
 
             case R.id.ll_fxcj:
-//                mIntent.setClass(mContext, HuoDongActivity.class);
+                mIntent.setClass(mContext, TestWebViewActivity.class);
+                mIntent.putExtra("url", HttpContans.ADDRESS_CHOU_JIANG + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+                mIntent.putExtra("title", "福利抽奖");
+                mIntent.putExtra("choujiang", 1);
                 break;
 
             case R.id.ll_qyhd:
@@ -144,6 +155,13 @@ public class FuLiAdapter extends RecyclerView.Adapter implements View.OnClickLis
 
             case R.id.ll_zcyy:
                 mIntent.setClass(mContext, YyzcActivity.class);
+                break;
+
+            case R.id.iv_banner:
+                mIntent.setClass(mContext, TestWebViewActivity.class);
+                mIntent.putExtra("url", HttpContans.ADDRESS_RECRUIT);
+                mIntent.putExtra("title", "后援招募");
+                mIntent.putExtra("fuliBanner", obj.get(0).getFileUrl());
                 break;
         }
         mContext.startActivity(mIntent);
@@ -193,7 +211,7 @@ public class FuLiAdapter extends RecyclerView.Adapter implements View.OnClickLis
 
 
     public interface OnItemListener {
-        void OnItemClick(View view, int activeId, String title);
+        void OnItemClick(View view, int activeId, String title, String url, String picUrl);
     }
 
     public void setOnItemListener(OnItemListener onItemListener) {

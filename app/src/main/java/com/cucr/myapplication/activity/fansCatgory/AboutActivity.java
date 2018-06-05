@@ -63,7 +63,7 @@ public class AboutActivity extends BaseActivity {
         mMData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mMData.getUserPicCover(), iv_cover, MyApplication.getImageLoaderOptions());
         tv_starname.setText(mMData.getRealName());
-        tv_fans.setText("粉丝 " + mMData.getFansCount());
+        tv_fans.setText("粉丝 " + (mMData.getFansCount() == null ? "0" : mMData.getFansCount()));
 
         mFragmentList = new ArrayList<>();
         titles = new ArrayList<>();

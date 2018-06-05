@@ -33,6 +33,7 @@ import com.cucr.myapplication.gen.LoadUserInfosDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.PromissUtils;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.ZipUtil;
@@ -347,6 +348,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                 if (writeAccepted) {
                     openCameraOrAblum(false);
                 } else {
+                    PromissUtils.showDialogTipUserGoToAppSettting(this, "存储");
                     ToastUtils.showToast(getResources().getString(R.string.request_permission));
                 }
                 break;
@@ -357,6 +359,8 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                 if (writeAccepted) {
                     openCameraOrAblum(true);
                 } else {
+                    PromissUtils.showDialogTipUserGoToAppSettting(this, "相机");
+//                    PromissUtils.showDialogTipUserGoToAppSettting(this, "");
                     ToastUtils.showToast(getResources().getString(R.string.request_permission));
                 }
                 break;
@@ -371,6 +375,7 @@ public class PersonalInfoActivity extends BaseActivity implements DialogPhoto.On
                     intent.putExtra("className", "PersonalInfoActivity");
                     startActivity(intent);
                 } else {
+                    PromissUtils.showDialogTipUserGoToAppSettting(this, "存储");
                     ToastUtils.showToast(getResources().getString(R.string.request_permission));
                 }
                 break;

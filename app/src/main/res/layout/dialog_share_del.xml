@@ -27,10 +27,32 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.1dp"
+            android:layout_height="1px"
             android:layout_marginLeft="@dimen/dp_15"
             android:layout_marginRight="@dimen/dp_15"
             android:background="#99cccccc"
+            />
+
+        <TextView
+            android:id="@+id/tv_report"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_above="@+id/line"
+            android:background="@drawable/setting_mid_selector"
+            android:gravity="center"
+            android:text="举 报"
+            android:textColor="@color/color_333"
+            android:textSize="17sp"
+            android:visibility="gone"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:background="#99cccccc"
+            android:visibility="gone"
             />
 
         <TextView

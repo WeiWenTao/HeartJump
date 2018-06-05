@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -19,12 +21,15 @@ import com.cucr.myapplication.adapter.PagerAdapter.MyPicWall;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.user.PicWallCore;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.dialog.DialogShareTo;
 import com.cucr.myapplication.widget.goodAnimation.PeriscopeLayout;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -35,7 +40,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
-public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItemClick, Animation.AnimationListener {
+public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItemClick, Animation.AnimationListener, DialogShareTo.OnClickShareTo {
 
     //    @ViewInject(R.id.rlv_pics)
     //    RecyclerView rlv_pics;
@@ -64,7 +69,8 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     @ViewInject(R.id.ll_good)
     private LinearLayout ll_good;
 
-    private int prePosition;
+    private DialogShareTo mShareToDialog;
+    private DialogShareStyle mShareDialog;
     private PicWallInfo mData;
     private int mPosotion;
     private PicWallCore mCore;
@@ -85,9 +91,23 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
 //        ultimateBar.setColorBar(getResources().getColor(R.color.zise), 0);
 
         initBar();
+        initDialog();
         init();
         upData();
 
+    }
+
+    private void initDialog() {
+        mShareToDialog = new DialogShareTo(this, R.style.MyDialogStyle);
+        Window shareWindow = mShareToDialog.getWindow();
+        shareWindow.setGravity(Gravity.BOTTOM);
+        shareWindow.setWindowAnimations(R.style.BottomDialog_Animation);
+        mShareToDialog.setOnClickBt(this);
+
+        mShareDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
+        Window window = mShareDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
     }
 
     private void initBar() {
@@ -278,5 +298,22 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     @OnClick(R.id.tv_username)
     public void goPersonalToo(View view) {
         startActivity(mIntent);
+    }
+
+    //显示更多
+    @OnClick(R.id.iv_more)
+    public void showMore(View view) {
+        mShareToDialog.show();
+    }
+
+    @Override
+    public void clickShareTo() {
+        mShareToDialog.dismiss();
+        mShareDialog.setData(new ShareEntity(getString(R.string.share_desirc), getString(R.string.share_title), "http://www.baidu.com", mData.getRows().get(mPosotion).getPicUrl()));
+    }
+
+    @Override
+    public void clickReportTo() {
+
     }
 }

@@ -35,8 +35,8 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_yyhd, parent, false);
-            return new YyhdItemHolder(itemView);
+        View itemView = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.item_yyhd, parent, false);
+        return new YyhdItemHolder(itemView);
     }
 
     public void setData(List<YyhdInfos.RowsBean> rows) {
@@ -51,83 +51,83 @@ public class YyhdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            final YyhdInfos.RowsBean rowsBean = rows.get(position - 1);
-            //头像
-            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
-                            rowsBean.getCreateUser().getUserHeadPortrait(),
-                    ((YyhdItemHolder) holder).iv_headpic, MyApplication.getImageLoaderOptions());
-            //封面
-            ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
-                            rowsBean.getPicUrl(),
-                    ((YyhdItemHolder) holder).iv_yyhd_cover, MyApplication.getImageLoaderOptions());
-            //后援团名称
-            ((YyhdItemHolder) holder).tv_hyt_name.setText(rowsBean.getHytInfo().getName());
-            //活动名称
-            ((YyhdItemHolder) holder).tv_yyhd_name.setText(rowsBean.getActiveName());
-            //剩余天数
+        final YyhdInfos.RowsBean rowsBean = rows.get(position);
+        //头像
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
+                        rowsBean.getCreateUser().getUserHeadPortrait(),
+                ((YyhdItemHolder) holder).iv_headpic, MyApplication.getImageLoaderOptions());
+        //封面
+        ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST +
+                        rowsBean.getPicUrl(),
+                ((YyhdItemHolder) holder).iv_yyhd_cover, MyApplication.getImageLoaderOptions());
+        //后援团名称
+        ((YyhdItemHolder) holder).tv_hyt_name.setText(rowsBean.getCreateUser().getName());
+        //活动名称
+        ((YyhdItemHolder) holder).tv_yyhd_name.setText(rowsBean.getActiveName());
+        //剩余天数
 
-            //状态  0:进行中
-            if (rowsBean.getDoingStatu() == 0) {
-                ((YyhdItemHolder) holder).tv_yyhd_status.setText("进行中");
-                int shengYu = 0;
-                try {
-                    String endTime = rowsBean.getEndTime();
-                    Date parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
-                    Date date1 = new Date();
-                    shengYu = DataUtils.differentDays(date1, parse);
-                } catch (ParseException e) {
-                    MyLogger.jLog().i("日期解析错误");
+        //状态  0:进行中
+        if (rowsBean.getDoingStatu() == 0) {
+            ((YyhdItemHolder) holder).tv_yyhd_status.setText("进行中");
+            int shengYu = 0;
+            try {
+                String endTime = rowsBean.getEndTime();
+                Date parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
+                Date date1 = new Date();
+                shengYu = DataUtils.differentDays(date1, parse);
+            } catch (ParseException e) {
+                MyLogger.jLog().i("日期解析错误");
+            }
+            ((YyhdItemHolder) holder).tv_residue.setText("距离活动结束" + shengYu + "天");
+            ((YyhdItemHolder) holder).tv_yyhd_status.setBackgroundResource(R.drawable.corner_left_top_sel);
+
+        } else {
+            ((YyhdItemHolder) holder).tv_yyhd_status.setText("已结束");
+            ((YyhdItemHolder) holder).tv_residue.setText("活动已结束");
+            ((YyhdItemHolder) holder).tv_yyhd_status.setBackgroundResource(R.drawable.corner_left_top_nor);
+        }
+        switch (rowsBean.getActiveType()) {
+
+            case Constans.TYPE_ONE:
+                YyhdInfos.RowsBean.SysHytActiveOpenscreenBean active_1 = rowsBean.getSysHytActiveOpenscreen();
+                mAmount = active_1.getAmount();
+                break;
+
+            case Constans.TYPE_TWO:
+                YyhdInfos.RowsBean.SysHytActiveBigpadBean active_2 = rowsBean.getSysHytActiveBigpad();
+                mAmount = active_2.getYyje();
+                break;
+
+            case Constans.TYPE_THREE:
+                YyhdInfos.RowsBean.SysHytActiveZcBean active_3 = rowsBean.getSysHytActiveZc();
+                mAmount = active_3.getAmount();
+                break;
+
+        }
+        double signUpAmount = rowsBean.getSignUpAmount();//当前金额
+        if (signUpAmount == 0) {
+            mProgress = 0;
+        } else {
+            mProgress = (int) (signUpAmount / mAmount * 100);
+        }
+
+        ((YyhdItemHolder) holder).pb_yhhd_progress.setProgress(mProgress);
+        ((YyhdItemHolder) holder).tv_progress.setText(mProgress + "%");
+
+        ((YyhdItemHolder) holder).ll_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickItems != null) {
+                    mOnClickItems.onClickItem(rowsBean);
                 }
-                ((YyhdItemHolder) holder).tv_residue.setText("距离活动结束" + shengYu + "天");
-                ((YyhdItemHolder) holder).tv_yyhd_status.setBackgroundResource(R.drawable.corner_left_top_sel);
-
-            } else {
-                ((YyhdItemHolder) holder).tv_yyhd_status.setText("已结束");
-                ((YyhdItemHolder) holder).tv_residue.setText("活动已结束");
-                ((YyhdItemHolder) holder).tv_yyhd_status.setBackgroundResource(R.drawable.corner_left_top_nor);
             }
-            switch (rowsBean.getActiveType()) {
-
-                case Constans.TYPE_ONE:
-                    YyhdInfos.RowsBean.SysHytActiveOpenscreenBean active_1 = rowsBean.getSysHytActiveOpenscreen();
-                    mAmount = active_1.getAmount();
-                    break;
-
-                case Constans.TYPE_TWO:
-                    YyhdInfos.RowsBean.SysHytActiveBigpadBean active_2 = rowsBean.getSysHytActiveBigpad();
-                    mAmount = active_2.getYyje();
-                    break;
-
-                case Constans.TYPE_THREE:
-                    YyhdInfos.RowsBean.SysHytActiveZcBean active_3 = rowsBean.getSysHytActiveZc();
-                    mAmount = active_3.getAmount();
-                    break;
-
-            }
-            double signUpAmount = rowsBean.getSignUpAmount();//当前金额
-            if (signUpAmount == 0) {
-                mProgress = 0;
-            } else {
-                mProgress = (int) (signUpAmount / mAmount * 100);
-            }
-
-            ((YyhdItemHolder) holder).pb_yhhd_progress.setProgress(mProgress);
-            ((YyhdItemHolder) holder).tv_progress.setText(mProgress + "%");
-
-            ((YyhdItemHolder) holder).ll_item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnClickItems != null) {
-                        mOnClickItems.onClickItem(rowsBean);
-                    }
-                }
-            });
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return rows == null ? 0 : rows.size() ;
+        return rows == null ? 0 : rows.size();
     }
 
     public class YyhdItemHolder extends RecyclerView.ViewHolder {
