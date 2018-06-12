@@ -9,7 +9,7 @@
     >
 
     <LinearLayout
-        android:id="@+id/ll_fansq"
+        android:id="@+id/ll_xingwen"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -20,13 +20,13 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="24dp"
-            android:src="@drawable/s_fentuan"
+            android:src="@drawable/s_xingwen"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="fans圈"
+            android:text="星闻"
             android:textColor="@color/color_666"
             android:textSize="11sp"
             />
@@ -34,13 +34,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_shuju"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
+        android:visibility="gone"
         >
 
         <ImageView

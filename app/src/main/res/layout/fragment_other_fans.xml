@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/rlv_continer"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -247,5 +248,53 @@
         android:layout_centerInParent="true"
         android:visibility="gone"
         />
+
+    <toan.android.floatingactionmenu.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        app:fab_addButtonColorNormal="@color/xtred"
+        app:fab_addButtonColorPressed="@color/xtred"
+        app:fab_addButtonPlusIconColor="@color/xtred"
+        app:fab_addButtonSize="mini"
+        app:fab_addButtonStrokeVisible="false"
+        app:fab_animationScroll="scale"
+        app:fab_labelStyle="@style/menu_labels_style"
+        app:fab_menuIcon="@drawable/icon_add_ft"
+        >
+
+        <toan.android.floatingactionmenu.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white1"
+            app:fab_icon="@drawable/fb_pic"
+            app:fab_size="normal"
+            app:fab_stroke_visible="false"
+            app:fab_title="照片"
+            />
+
+        <toan.android.floatingactionmenu.FloatingActionButton
+            android:id="@+id/action_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/xtred"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white1"
+            app:fab_icon="@drawable/fb_vd"
+            app:fab_size="normal"
+            app:fab_stroke_visible="false"
+            app:fab_title="视频"
+            />
+
+    </toan.android.floatingactionmenu.FloatingActionsMenu>
+
 
 </RelativeLayout>

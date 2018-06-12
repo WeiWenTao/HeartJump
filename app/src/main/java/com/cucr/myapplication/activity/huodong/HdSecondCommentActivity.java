@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,11 +23,14 @@ import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.fuLi.HuoDongCore;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogReportTo;
 import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -51,7 +56,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class HdSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+public class HdSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, DialogReportTo.OnClickShareTo, RequersCallBackListener {
 
     //root_view
     @ViewInject(R.id.root_view)
@@ -106,24 +111,38 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
     private EmojiPopup emojiPopup;
     private int page;
     private int rows;
+    private int dataId;
+    private int creatUserId;
     private FtAllCommentAadapter mAdapter;
-
+    private DialogReportTo mDialogReportTo;
+    private AppCore mCore;
 
     @Override
     protected void initChild() {
         EventBus.getDefault().register(this);
-        initTitle("全部评论");
         page = 1;
         rows = 10;
         initDatas();
         initViews();
         onRefresh();
+        initDialog();
+    }
+
+    private void initDialog() {
+        mCore = new AppCore();
+        mDialogReportTo = new DialogReportTo(this, R.style.MyDialogStyle);
+        Window shareWindow = mDialogReportTo.getWindow();
+        shareWindow.setGravity(Gravity.BOTTOM);
+        shareWindow.setWindowAnimations(R.style.BottomDialog_Animation);
+        mDialogReportTo.setOnClickBt(this);
 
     }
 
     private void initDatas() {
         hdCore = new HuoDongCore();
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
+        dataId = mRowsBean.getId();
+        creatUserId = mRowsBean.getUser().getId();
         ref.setOnRefreshListener(this);
         ref.setOnLoadListener(this);
         upDataInfo(false);
@@ -349,6 +368,13 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
     }
 
     @Override
+    public void clickitems(int dataId, int userId) {
+        this.dataId = dataId;
+        this.creatUserId = userId;
+        mDialogReportTo.show();
+    }
+
+    @Override
     protected void onStop() {
         if (emojiPopup != null) {
             emojiPopup.dismiss();
@@ -438,5 +464,40 @@ public class HdSecondCommentActivity extends BaseActivity implements View.OnFocu
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick(R.id.iv_more)
+    public void clickShowDialo(View view) {
+        mDialogReportTo.show();
+    }
+
+    @Override
+    public void clickReportTo() {
+        mCore.report(3, dataId + "", creatUserId, this);
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+        if (msg.isSuccess()) {
+            ToastUtils.showToast("我们收到您的举报啦");
+        } else {
+            ToastUtils.showToast(msg.getMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
     }
 }

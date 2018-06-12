@@ -49,7 +49,6 @@ public abstract class BaseActivity extends Activity {
     //获取子类布局
     protected abstract int getChildRes();
 
-
     //初始化标题
     public void initTitle(String title) {
         tv_title.setText(title);

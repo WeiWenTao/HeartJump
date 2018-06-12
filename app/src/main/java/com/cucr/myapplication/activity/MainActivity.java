@@ -95,6 +95,9 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         //小米6       ：[1080x1920],density=3.0,densityDpi=480
         //            ：DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
 
+        //小米6X      ：[1080x2030],density=2.75,densityDpi=440
+        //            ：DisplayMetrics{density=2.75, width=1080, height=2030, scaledDensity=2.75, xdpi=403.411, ydpi=403.411}
+
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);

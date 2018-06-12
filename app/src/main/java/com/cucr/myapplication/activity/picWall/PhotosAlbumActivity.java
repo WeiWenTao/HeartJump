@@ -280,4 +280,10 @@ public class PhotosAlbumActivity extends Activity implements DialogSort.OnClickB
             mWaitDialog.dismiss();
         }
     }
+
+    //空白页面处理
+    @OnClick(R.id.tv_creat)
+    public void clickCreat(View view){
+        mPictureModel.forResult(PictureConfig.CHOOSE_REQUEST);
+    }
 }

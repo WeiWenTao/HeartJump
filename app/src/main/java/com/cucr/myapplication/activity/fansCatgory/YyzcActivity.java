@@ -200,4 +200,10 @@ public class YyzcActivity extends BaseActivity implements DialogYyhd.OnClickBt, 
     public void OnCLickCreat(View view) {
         mDialog.show();
     }
+
+    //空白页面处理
+    @OnClick(R.id.tv_creat)
+    public void clickCreat(View view){
+        mDialog.show();
+    }
 }

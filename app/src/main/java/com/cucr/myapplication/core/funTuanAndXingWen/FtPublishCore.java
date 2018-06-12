@@ -60,6 +60,7 @@ public class FtPublishCore implements FenTuanInterf {
 
     @Override
     public void publishFtInfo(int starId, final int type, String content, List<LocalMedia> mData, final OnUpLoadListener listener) {
+        MyLogger.jLog().i("content:" + content);
         this.listener = listener;
         this.type = type;
         Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_PUBLISH_FT_INFO, RequestMethod.POST);
@@ -68,6 +69,7 @@ public class FtPublishCore implements FenTuanInterf {
                 .add("startId", starId)
                 .add("type", type)
                 .add("content", content);
+//                .add("content", CommonUtils.string2Unicode(content));
         request.add(SpConstant.SIGN, EncodingUtils.getEdcodingSReslut(MyApplication.getInstance(), request.getParamKeyValues()));
 
         //文字

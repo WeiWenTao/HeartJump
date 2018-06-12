@@ -4,23 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     >
 
     <ImageView
-        android:layout_width="95dp"
-        android:layout_height="58dp"
+        android:layout_width="60dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="75dp"
         android:src="@drawable/empty_xingcheng"
         />
 
     <TextView
-        android:layout_marginBottom="200dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
         android:layout_marginTop="@dimen/dp_20"
         android:gravity="center"
-        android:text="爱豆还没有添加行程哦 !"
+        android:text="爱豆暂时还没有添加行程哦 !"
         android:textColor="@color/color_666"
         android:textSize="@dimen/dp_15"
         />

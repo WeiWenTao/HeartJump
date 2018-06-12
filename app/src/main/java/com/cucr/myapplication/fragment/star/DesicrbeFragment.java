@@ -14,9 +14,11 @@ import com.cucr.myapplication.bean.star.StarDesrc;
 import com.cucr.myapplication.core.star.StarInfoCore;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.stateLayout.MultiStateView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.Response;
 
 /**
@@ -42,6 +44,9 @@ public class DesicrbeFragment extends Fragment implements RequersCallBackListene
 
     @ViewInject(R.id.tv_star_detail)
     private TextView starDetail;
+
+    @ViewInject(R.id.multiStateView)
+    private MultiStateView multiStateView;
 
     private View view;
     private Gson mGson;
@@ -71,8 +76,8 @@ public class DesicrbeFragment extends Fragment implements RequersCallBackListene
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
         mStarDesrc = mGson.fromJson(response.get(), StarDesrc.class);
-
         if (mStarDesrc.isSuccess()) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
             setView();
         } else {
             ToastUtils.showToast(mStarDesrc.getMsg());
@@ -90,16 +95,18 @@ public class DesicrbeFragment extends Fragment implements RequersCallBackListene
 
     @Override
     public void onRequestStar(int what) {
-
+        multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
     }
 
     @Override
     public void onRequestError(int what, Response<String> response) {
-
+        if (response.getException() instanceof NetworkError) {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
     public void onRequestFinish(int what) {
-
+        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
     }
 }

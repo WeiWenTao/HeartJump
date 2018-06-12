@@ -110,6 +110,15 @@ public class FtCatgoryAadapter extends BaseAdapter {
                 }
             }
         });
+
+        tv_comment_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickItem(mRowsBean, position);
+                }
+            }
+        });
         ll_good.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -458,8 +458,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.fansCatgory.FansQActivity">
-        </activity>
         <activity android:name=".activity.fansCatgory.ShuJuActivity">
         </activity>
         <activity android:name=".activity.fansCatgory.HytActivity">
@@ -473,6 +471,8 @@
         <activity android:name=".activity.fuli.HuoDongActivity">
         </activity>
         <activity android:name=".activity.TempActivity">
+        </activity>
+        <activity android:name=".activity.fansCatgory.XingWenActivity">
         </activity>
     </application>
 

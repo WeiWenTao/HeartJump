@@ -123,11 +123,6 @@ public class BindTelActivity extends BaseActivity implements RequersCallBackList
         }
         String phone_num = et_tel.getText().toString().trim();
 
-        if (!phone_num.matches(Constans.PHONE_REGEX)) {
-            ToastUtils.showToast(this, "手机号有误哦");
-            return;
-        }
-
         downTimer.start();
 
         mRegistCore.getYzm(this, phone_num, new OnGetYzmListener() {

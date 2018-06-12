@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 /**
  * 图片显示Layout
  * Created by cucr on 2017/12/19.
@@ -52,7 +54,7 @@ public class FlowImageLayout extends ViewGroup {
 
     public void initView() {
         for (int i = 0; i < MAX_IMAGE_NUM; i++) {
-            ImageView imageView = new ImageView(getContext());
+            GifImageView imageView = new GifImageView(getContext());
             imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             final int WHICH_ITEM = i;
@@ -134,10 +136,10 @@ public class FlowImageLayout extends ViewGroup {
     }
 
     private void resetImageLayout() {
-        List<ImageView> list = new ArrayList<ImageView>();
+        List<GifImageView> list = new ArrayList<GifImageView>();
         int childNum = getChildCount();
         for (int i = 0; i < childNum; i++) {
-            ImageView imageView = (ImageView) getChildAt(i);
+            GifImageView imageView = (GifImageView) getChildAt(i);
             if (i < imageNum) {
                 imageView.setVisibility(View.VISIBLE);
                 list.add(imageView);
@@ -187,7 +189,7 @@ public class FlowImageLayout extends ViewGroup {
     }
 
     public interface OnImageLayoutFinishListener {
-        void layoutFinish(List<ImageView> images);
+        void layoutFinish(List<GifImageView> images);
     }
 
     public interface OnItemClick{

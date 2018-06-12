@@ -276,7 +276,6 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
         mRa2 = ObjectAnimator.ofFloat(ll_dm2, "translationY", 0, -600);
         mRa2.setDuration(4000);
         mRa2.setInterpolator(new AccelerateInterpolator());
-
     }
 
     //设置弹幕 1
@@ -615,7 +614,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
                             //查询一遍
                             onRefresh();
                             //添加一条评论弹幕
-                            addDM(et_comment.getText().toString().trim());
+                            addDM(CommonUtils.string2Unicode(et_comment.getText().toString().trim()));
                             et_comment.setText("");
                             emojiPopup.dismiss();
                             CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);
@@ -965,7 +964,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
                     allRows.clear();
                     allRows.addAll(mRows);
                     mAdapter.setData(mRows);
-                    if (page == 1 && !isFinish) {
+                    if (page == 1) {
                         mDmRows = ftCommentInfo.getRows();
                         if (ftCommentInfo.getTotal() != 0) {
                             //开启弹幕1

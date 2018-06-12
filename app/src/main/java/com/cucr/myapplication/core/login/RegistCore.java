@@ -65,7 +65,6 @@ public class RegistCore implements Regist {
                     .add("password", psw) // 密码。
                     // 设置取消标志。
                     .setCancelSign(flag);
-
             mQueue.add(REQUEST_REGIST, request, responseListener);
         } else {
             Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_FORGET_PSW, RequestMethod.POST);
@@ -169,8 +168,8 @@ public class RegistCore implements Regist {
                 if (registListener != null) {
                     registListener.onRegistFailed();
                 }
-            }else if ( what == Constans.TYPE_TWO){
-                thirdLinstener.onRequestError(what,response);
+            } else if (what == Constans.TYPE_TWO) {
+                thirdLinstener.onRequestError(what, response);
             }
         }
 

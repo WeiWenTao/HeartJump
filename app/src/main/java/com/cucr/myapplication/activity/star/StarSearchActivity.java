@@ -224,9 +224,10 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     @Override
     public void onFocusClick(StarListInfos.RowsBean rowsBean) {
         if (rowsBean.getIsfollow() == 0) {
-            EventBus.getDefault().post(new EventOnClickFocus());
-            mFCore.toFocus(rowsBean.getId());
             rowsBean.setIsfollow(1);
+            mFCore.toFocus(rowsBean.getId());
+            EventBus.getDefault().post(new EventOnClickFocus());
+            EventBus.getDefault().post(new EventNotifyStarInfo());
         } else {
             this.rowsBean = rowsBean;
             mDialogCanaleFocusStyle.show();
@@ -239,16 +240,15 @@ public class StarSearchActivity extends Activity implements RequersCallBackListe
     public void clickConfirm() {
         ToastUtils.showToast("已取消关注！");
         rowsBean.setIsfollow(0);
-        EventBus.getDefault().post(new EventNotifyStarInfo());
-        EventBus.getDefault().post(new EventOnClickCancleFocus());
         mAdapter.notifyDataSetChanged();
         mDialogCanaleFocusStyle.dismiss();
-
         mFCore.cancaleFocus(rowsBean.getId(), new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
                 ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
                 if (reBackMsg.isSuccess()) {
+                    EventBus.getDefault().post(new EventNotifyStarInfo());
+                    EventBus.getDefault().post(new EventOnClickCancleFocus());
                 } else {
                     ToastUtils.showToast(reBackMsg.getMsg());
                 }

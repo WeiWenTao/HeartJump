@@ -17,7 +17,7 @@ public class Constans {
     public static final int STATUS_QIYE = 3;    //企业
     public static final int STATUS_COMMON_USER = 4;//普通用户
 
-    public static final int TYPE_HEADER = 1; //头部
+    public static final int TYPE_HEADER = 555; //头部
     public static final int TYPE_ITEM = 2;   //条目
     public static final int TYPE_FOOTER = 3;   //脚部
 
@@ -83,7 +83,7 @@ public class Constans {
     public static final String TABLENAME_DISTRICT = "district";
 
     //电话号码正则
-    public static final String PHONE_REGEX = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+//    public static final String PHONE_REGEX = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
 
     //用户名正则
     public static final String USERNAME_REGEX = "[~!/@#$%^&*()\\\\-_=+\\\\|[{}];:\\'\\\",<.>/?]+";
@@ -115,6 +115,10 @@ public class Constans {
     //splish 文件名
     public static final String SPLISH_IMG = "splish.png";
 
-    //splish 文件夹
+    //splish开屏 文件夹
     public static final String SPLISH_FOLDER = Environment.getExternalStorageDirectory().getAbsolutePath() + "/splishImgs/";
+
+    //图片墙文件夹
+    public static final String PICWALL_FOLDER = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xthyPics/";
+
 }

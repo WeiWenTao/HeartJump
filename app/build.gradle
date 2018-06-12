@@ -222,7 +222,7 @@ dependencies {
     //粉团点赞动画需要
     compile 'com.daasuu:EasingInterpolator:1.0.0'
 
-    //音乐播放器
-    compile 'com.cleveroad:play-widget:1.0.0'
+    //动图
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
 
 }

@@ -357,7 +357,6 @@ public class NewLoadActivity extends Activity implements RequersCallBackListener
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 UMShareAPI.get(this).release();
-
             } else {
 //                        跳转关注界面
                 Intent intent = new Intent(MyApplication.getInstance(), StarListForAddActivity.class);

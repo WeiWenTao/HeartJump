@@ -214,7 +214,7 @@ public class YuYueCatgoryActivity extends FragmentActivity {
         mData = (StarListInfos.RowsBean) getIntent().getSerializableExtra("data");
         mCore = new YuYueCore();
         UltimateBar ultimateBar = new UltimateBar(this);
-        ultimateBar.setColorBar(getResources().getColor(R.color.blue_black), 0);
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
         mGson = new Gson();
     }
 

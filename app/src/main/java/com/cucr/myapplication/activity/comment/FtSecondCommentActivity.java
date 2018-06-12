@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Px;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,6 +23,7 @@ import com.cucr.myapplication.bean.eventBus.EventRequestFinish;
 import com.cucr.myapplication.bean.fenTuan.FtCommentInfo;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtCommentCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
 import com.cucr.myapplication.listener.OnCommonListener;
@@ -28,6 +31,7 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogReportTo;
 import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.RefreshLayout;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -53,7 +57,7 @@ import java.util.List;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
-public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+public class FtSecondCommentActivity extends BaseActivity implements View.OnFocusChangeListener, FtAllCommentAadapter.OnClickCommentGoods, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener, DialogReportTo.OnClickShareTo, RequersCallBackListener {
 
     //root_view
     @ViewInject(R.id.root_view)
@@ -94,7 +98,6 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     @ViewInject(R.id.ref)
     private RefreshLayout ref;
 
-
     private FtCommentInfo.RowsBean mRowsBean;
     private QueryFtInfoCore queryCore;
     private Integer giveNum;
@@ -104,16 +107,32 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
     private int rows;
     private FtCommentCore mCommentCore;
     private FtAllCommentAadapter mAdapter;
+    private DialogReportTo mDialogReportTo;
+    private AppCore mCore;
+    private int dataId;
+    private int creatUserId;
+    private FtCommentInfo mFtCommentInfo;
 
     @Override
     protected void initChild() {
+
         EventBus.getDefault().register(this);
-        initTitle("全部评论");
         page = 1;
         rows = 15;
         initDatas();
         initViews();
         onRefresh();
+        initDialog();
+
+    }
+
+    private void initDialog() {
+        mCore = new AppCore();
+        mDialogReportTo = new DialogReportTo(this, R.style.MyDialogStyle);
+        Window shareWindow = mDialogReportTo.getWindow();
+        shareWindow.setGravity(Gravity.BOTTOM);
+        shareWindow.setWindowAnimations(R.style.BottomDialog_Animation);
+        mDialogReportTo.setOnClickBt(this);
 
     }
 
@@ -121,6 +140,8 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         mCommentCore = new FtCommentCore();
         queryCore = new QueryFtInfoCore();
         mRowsBean = (FtCommentInfo.RowsBean) getIntent().getSerializableExtra("mRows");
+        dataId = mRowsBean.getId();
+        creatUserId = mRowsBean.getUser().getId();
         ref.setOnRefreshListener(this);
         ref.setOnLoadListener(this);
         upDataInfo(false);
@@ -406,13 +427,13 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         mCommentCore.queryFtComment(mRowsBean.getContentId(), mRowsBean.getId(), page, rows, new OnCommonListener() {
             @Override
             public void onRequestSuccess(Response<String> response) {
-                FtCommentInfo ftCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
-                if (ftCommentInfo.isSuccess()) {
-                    List<FtCommentInfo.RowsBean> rows = ftCommentInfo.getRows();
+                mFtCommentInfo = mGson.fromJson(response.get(), FtCommentInfo.class);
+                if (mFtCommentInfo.isSuccess()) {
+                    List<FtCommentInfo.RowsBean> rows = mFtCommentInfo.getRows();
                     mAdapter.setData(rows);
-                    tv_comment_count.setText(ftCommentInfo.getTotal() + "");
+                    tv_comment_count.setText(mFtCommentInfo.getTotal() + "");
                 } else {
-                    ToastUtils.showToast(ftCommentInfo.getErrorMsg());
+                    ToastUtils.showToast(mFtCommentInfo.getErrorMsg());
                 }
                 lv_all_comment.setSelection(0);
             }
@@ -454,4 +475,47 @@ public class FtSecondCommentActivity extends BaseActivity implements View.OnFocu
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+    @OnClick(R.id.iv_more)
+    public void clickShowDialo(View view) {
+        mDialogReportTo.show();
+    }
+
+    @Override
+    public void clickReportTo() {
+        mCore.report(3, dataId + "", creatUserId, this);
+    }
+
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+        if (msg.isSuccess()) {
+            ToastUtils.showToast("我们收到您的举报啦");
+        } else {
+            ToastUtils.showToast(msg.getMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
+    }
+
+    @Override
+    public void clickitems(int dataId, int userId) {
+        this.dataId = dataId;
+        this.creatUserId = userId;
+        mDialogReportTo.show();
+    }
+
 }

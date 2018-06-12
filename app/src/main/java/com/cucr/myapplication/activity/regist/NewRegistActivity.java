@@ -13,7 +13,6 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.login.ReBackMsg;
-import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.login.LoginCore;
@@ -42,27 +41,27 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
 
     //电话号码
     @ViewInject(R.id.et_phone_num)
-    EditText et_phone_num;
+    private EditText et_phone_num;
 
     //验证码
     @ViewInject(R.id.et_yanzhengm)
-    EditText et_yanzhengm;
+    private EditText et_yanzhengm;
 
     //获取验证码
     @ViewInject(R.id.tv_get_yanzhengm)
-    TextView tv_get_yanzhengm;
+    private TextView tv_get_yanzhengm;
 
     //设置密码
     @ViewInject(R.id.et_set_psw)
-    EditText et_set_psw;
+    private EditText et_set_psw;
 
     //心跳条款
     @ViewInject(R.id.ll_rules)
-    LinearLayout ll_rules;
+    private LinearLayout ll_rules;
 
     //用户行为
     @ViewInject(R.id.tv_action)
-    TextView tv_action;
+    private TextView tv_action;
 
     //注册核心
     private RegistCore mRegistCore;
@@ -74,7 +73,7 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
     private boolean runningThree;
 
     //验证码倒计时
-    private CountDownTimer downTimer = new CountDownTimer(60 * 1000, 1000) {
+    private CountDownTimer downTimer = new CountDownTimer(5 * 1000, 1000) {
         @Override
         public void onTick(long l) {
             runningThree = true;
@@ -164,17 +163,17 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
     }
 
     //获取验证码
+    @OnClick(R.id.tv_get_yanzhengm)
+    public void clickGetYzm_(View view) {
+        clickGetYzm(view);
+    }
+
     @OnClick(R.id.ll_getyzm)
     public void clickGetYzm(View view) {
         if (runningThree) {
             return;
         }
         String phone_num = et_phone_num.getText().toString().trim();
-
-        if (!phone_num.matches(Constans.PHONE_REGEX)) {
-            ToastUtils.showToast(this, "手机号有误哦");
-            return;
-        }
 
         downTimer.start();
 
@@ -186,7 +185,6 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
                     //success = false 密码错误
                     // 显示服务器返回的错误信息
                     ToastUtils.showToast(yzmInfo.getMsg());
-                } else {
                 }
             }
 

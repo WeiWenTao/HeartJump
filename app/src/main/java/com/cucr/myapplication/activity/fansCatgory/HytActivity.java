@@ -216,4 +216,12 @@ public class HytActivity extends BaseActivity implements SwipeRecyclerView.OnLoa
                 break;
         }
     }
+
+
+    //空白页面处理
+    @OnClick(R.id.tv_creat)
+    public void clickCreat(View view){
+        //创建后援团
+        startActivity(mIntent);
+    }
 }

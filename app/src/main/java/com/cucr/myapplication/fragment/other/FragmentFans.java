@@ -3,6 +3,7 @@ package com.cucr.myapplication.fragment.other;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,50 +11,77 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
 import com.cucr.myapplication.activity.TestWebViewActivity;
+import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fansCatgory.AboutActivity;
-import com.cucr.myapplication.activity.fansCatgory.FansQActivity;
 import com.cucr.myapplication.activity.fansCatgory.HytActivity;
 import com.cucr.myapplication.activity.fansCatgory.JourneyActivity;
 import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
+import com.cucr.myapplication.activity.fansCatgory.XingWenActivity;
 import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
+import com.cucr.myapplication.activity.fenTuan.PublishActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
 import com.cucr.myapplication.activity.star.StarListForAddActivity;
+import com.cucr.myapplication.activity.star.StarPagerActivity;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
+import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter_forstar;
 import com.cucr.myapplication.adapter.RlVAdapter.StarListAdapter;
-import com.cucr.myapplication.adapter.RlVAdapter.StarXingWenAdapter;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.EventContentId;
+import com.cucr.myapplication.bean.eventBus.EventDsSuccess;
+import com.cucr.myapplication.bean.eventBus.EventDuiHuanSuccess;
 import com.cucr.myapplication.bean.eventBus.EventNotifyStarInfo;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
+import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
+import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
+import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.BaseFragment;
 import com.cucr.myapplication.fragment.star.Fragment_fans_one;
 import com.cucr.myapplication.fragment.star.Fragment_fans_two;
+import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
+import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -69,16 +97,22 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import toan.android.floatingactionmenu.FloatingActionsMenu;
+
 /**
  * Created by cucr on 2017/8/31.
  * 粉丝看的
  */
 
-public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLoadListener, RequersCallBackListener, ViewPager.OnPageChangeListener, Fragment_fans_one.OnClickCatgoryOne, Fragment_fans_two.OnClickCatgoryTwo {
+public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLoadListener, RequersCallBackListener, ViewPager.OnPageChangeListener, Fragment_fans_one.OnClickCatgoryOne, Fragment_fans_two.OnClickCatgoryTwo, FtAdapter_forstar.OnClickBt {
 
     //点击显示下拉菜单
     @ViewInject(R.id.ll_show_stars)
     private LinearLayout ll_show_stars;
+
+    //主容器
+    @ViewInject(R.id.rlv_continer)
+    private RelativeLayout rlv_continer;
 
     //明星频道
     @ViewInject(R.id.rlv_catgory)
@@ -136,6 +170,9 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @ViewInject(R.id.vp_catgory)
     private ViewPager vp_catgory;
 
+    @ViewInject(R.id.multiple_actions)
+    private FloatingActionsMenu mFam;
+
     //是否需要显示
     private boolean isShow = true;
     private StarListAdapter mAdapter;
@@ -153,13 +190,30 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     private boolean needShowLoading;
     private QueryFtInfoCore mNewsCore;
     private boolean isRefresh;
-    private StarXingWenAdapter newsAdapter;
+    private FtAdapter_forstar newsAdapter;
     private List<Fragment> mDataList;
+    private LayoutInflater layoutInflater;
+    private DaShangPagerAdapter mDaShangPagerAdapter;
+    private DialogShareStyle mDialog;
+    private PayCenterCore mPayCenterCore;
+
+    //礼物
+    @ViewInject(R.id.tv_gift)
+    private TextView gift;
+
+    //背包
+    @ViewInject(R.id.tv_backpack)
+    private TextView backpack;
+
+    //礼物和背包 ViewPager
+    @ViewInject(R.id.vp_dahsnag)
+    private NoScrollPager vp_dahsnag;
+    private boolean canLoad;
+    private int sortType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLogger.jLog().i("EventNotifyStarInfo() 注册");
         EventBus.getDefault().register(this);
     }
 
@@ -172,18 +226,149 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     @Override
     protected void initView(View childView) {
         ViewUtils.inject(this, childView);
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
+
         mStarCore = new QueryStarListCore();
         mCore = new QueryFocus();
         mNewsCore = new QueryFtInfoCore();
+        mPayCenterCore = new PayCenterCore();
+        drawer_rcv.setLayoutManager(new GridLayoutManager(mContext, 4));
+        mAdapter = new StarListAdapter(mContext);
         mIntent = new Intent();
+        this.layoutInflater = inflater;
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        UltimateBar ultimateBar = new UltimateBar(getActivity());
-        ultimateBar.setColorBar(getResources().getColor(R.color.white), 0);
-        initRlv();
-        initCatgory();
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
+
+        mFam.attachToRecyclerView(rlv_news.getRecyclerView());
         queryMsg();
+        initRlv();
+        inipopWindow();
+        initInfos();
+        initDialog();
+        initCatgory();
         mAdapter.setPosition(0);
         initNewsInfo();
+    }
+
+
+    //礼物
+    @OnClick(R.id.tv_gift)
+    public void gift(View view) {
+        vp_dahsnag.setCurrentItem(0);
+        gift.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setBackgroundColor(getResources().getColor(R.color.zise));
+        gift.setTextColor(getResources().getColor(R.color.xtred));
+        backpack.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    //背包
+    @OnClick(R.id.tv_backpack)
+    public void backpack(View view) {
+        vp_dahsnag.setCurrentItem(1);
+        backpack.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setBackgroundColor(getResources().getColor(R.color.zise));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+
+    //点击发布图片
+    @OnClick(R.id.action_a)
+    public void clickA(View view) {
+        mFam.collapse();
+        Intent intent = new Intent(mContext, PublishActivity.class);
+        intent.putExtra("type", Constans.TYPE_PICTURE);
+        intent.putExtra("starId", mStarId);
+        startActivityForResult(intent, 3);
+    }
+
+    //点击发布视频
+    @OnClick(R.id.action_b)
+    public void clickB(View view) {
+        mFam.collapse();
+        Intent intent = new Intent(mContext, PublishActivity.class);
+        intent.putExtra("type", Constans.TYPE_VIDEO);
+        intent.putExtra("starId", mStarId);
+        startActivityForResult(intent, 3);
+    }
+
+    //兑换成功
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void eventData(EventDuiHuanSuccess event) {
+        if (mDaShangPagerAdapter == null) {
+            mDaShangPagerAdapter = new DaShangPagerAdapter();
+        }
+        queryBackpack();
+    }
+
+    private void initInfos() {
+        if (mDaShangPagerAdapter == null) {
+            mDaShangPagerAdapter = new DaShangPagerAdapter();
+        }
+        //查询用户余额
+        mPayCenterCore.queryUserMoney(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                if (reBackMsg.isSuccess()) {
+                    mDaShangPagerAdapter.setUserMoney(Double.parseDouble(reBackMsg.getMsg()));
+                } else {
+                    ToastUtils.showToast(reBackMsg.getMsg());
+                }
+            }
+        });
+
+        //查询虚拟道具信息
+        mNewsCore.queryGift(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtGiftsInfo ftGiftsInfo = mGson.fromJson(response.get(), FtGiftsInfo.class);
+                if (ftGiftsInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setGiftInfos(ftGiftsInfo);
+                } else {
+                    ToastUtils.showToast(ftGiftsInfo.getErrorMsg());
+                }
+            }
+        });
+        queryBackpack();
+    }
+
+    private void queryBackpack() {
+        //查询背包信息
+        mNewsCore.queryBackpackInfo(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtBackpackInfo ftBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
+                if (ftBackpackInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setBackpackInfos(ftBackpackInfo);
+                } else {
+                    ToastUtils.showToast(ftBackpackInfo.getMsg());
+                }
+            }
+        });
+    }
+
+    private void initDialog() {
+        mDialog = new DialogShareStyle(getActivity(), R.style.MyDialogStyle);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
+    }
+
+    private void inipopWindow() {
+        if (popWindow == null) {
+            View view = layoutInflater.inflate(R.layout.popupwindow_dashang, null);
+            ViewUtils.inject(this, view);
+            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        }
+        popWindow.setAnimationStyle(R.style.AnimationFade);
+        popWindow.setFocusable(true);
+        popWindow.setOutsideTouchable(true);
+        popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        vp_dahsnag.setAdapter(mDaShangPagerAdapter);
     }
 
     private void initCatgory() {
@@ -199,7 +384,8 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     }
 
     private void initNewsInfo() {
-        newsAdapter = new StarXingWenAdapter();
+        newsAdapter = new FtAdapter_forstar(getActivity());
+        newsAdapter.setOnClickBt(this);
         newsPage = 1;
         newsRows = 20;
         needShowLoading = true;
@@ -210,7 +396,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         rlv_news.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
         rlv_news.setAdapter(newsAdapter);
         rlv_news.setOnLoadListener(this);
-        rlv_news.onLoadingMore();
+//        rlv_news.onLoadingMore();
     }
 
 
@@ -302,8 +488,6 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     }
 
     private void initRlv() {
-        drawer_rcv.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mAdapter = new StarListAdapter(mContext);
         mAdapter.setOnClick(new StarListAdapter.OnClick() {
             @Override
             public void onClickPosition(View view, int position) {
@@ -505,7 +689,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
     public void onRefresh() {
         isRefresh = true;
         newsPage = 1;
-        mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
+        mNewsCore.queryFtInfo(sortType, mStarId, 1, -1, false, newsPage, newsRows, this);
     }
 
     @Override
@@ -516,35 +700,49 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         isRefresh = false;
         newsPage++;
         rlv_news.onLoadingMore();
-        mNewsCore.queryFtInfo(mStarId, 0, -1, false, newsPage, newsRows, this);
+        mNewsCore.queryFtInfo(sortType, mStarId, 1, -1, false, newsPage, newsRows, this);
     }
+
+    private QueryFtInfos mQueryFtInfos;
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        QueryFtInfos newsInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
-        if (newsInfos.isSuccess()) {
-            if (isRefresh) {
-                if (newsInfos.getTotal() == 0) {
-                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        if (what == Constans.TYPE_ONE) {
+            QueryFtInfos infos = mGson.fromJson(response.get(), QueryFtInfos.class);
+            if (infos.isSuccess()) {
+                if (isRefresh) {
+                    if (infos.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        mQueryFtInfos = infos;
+                        newsAdapter.setData(infos);
+                        rlv_news.getRecyclerView().smoothScrollToPosition(0);
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
+                    canLoad = true;
                 } else {
-                    newsAdapter.setData(newsInfos);
-                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    if (infos != null && mQueryFtInfos != null) {
+                        mQueryFtInfos.getRows().addAll(infos.getRows());
+                        newsAdapter.addData(infos.getRows());
+                    }
+
+                    if (infos.getTotal() <= (newsPage - 1) * newsRows) {
+                        rlv_news.onNoMore("没有更多了");
+                    } else {
+                        rlv_news.complete();
+                    }
                 }
             } else {
-                newsAdapter.addData(newsInfos.getRows());
+                ToastUtils.showToast(infos.getErrorMsg());
             }
-            if (newsInfos.getTotal() <= page * rows) {
-                rlv_news.onNoMore("没有更多了");
-            } else {
-                rlv_news.complete();
-            }
-        } else {
-            ToastUtils.showToast(newsInfos.getErrorMsg());
         }
     }
 
     @Override
     public void onRequestStar(int what) {
+        if (isRefresh) {
+            rlv_news.getSwipeRefreshLayout().setRefreshing(true);
+        }
         if (needShowLoading && isRefresh) {
             multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
             needShowLoading = false;
@@ -604,10 +802,10 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         vp_catgory.setCurrentItem(1);
     }
 
-    //粉丝圈
+    //星闻
     @Override
-    public void onClickFanQ() {
-        Intent intent = new Intent(mContext, FansQActivity.class);
+    public void onClickXingWen() {
+        Intent intent = new Intent(mContext, XingWenActivity.class);
         intent.putExtra("starId", mStarId);
         startActivity(intent);
     }
@@ -683,4 +881,148 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
         intent.putExtra("url", mRowsBean.getTiebaUrl());
         startActivity(intent);
     }
+
+    private int giveNum;
+
+    @Override
+    public void onClickGoods(int position, QueryFtInfos.RowsBean rowsBean, ShineButton sib) {
+        if (rowsBean.isIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (rowsBean.isIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        newsAdapter.notifyDataSetChanged();
+
+        mNewsCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (commonRebackMsg.isSuccess()) {
+
+                } else {
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
+    }
+
+    @Override
+    public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
+        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
+    }
+
+    private PopupWindow popWindow;
+
+    //弹出打赏框
+    @Override
+    public void onClickDaShang(int contentId, int position) {
+        popWindow.showAtLocation(rlv_continer, Gravity.BOTTOM, 0, 0);
+        //可以考虑用eventbus传值
+        EventBus.getDefault().postSticky(new EventContentId(contentId, position));
+    }
+
+    //打赏详情
+    @Override
+    public void onClickDsRecored(int contentId) {
+        Intent intent = new Intent(mContext, DaShangCatgoryActivity.class);
+        intent.putExtra("contentId", contentId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickUser(int userId, boolean isStar) {
+        if (isStar) {
+            mIntent = new Intent(mContext, StarPagerActivity.class);
+            mIntent.putExtra("starId", userId);
+        } else {
+            mIntent = new Intent(mContext, PersonalMainPagerActivity.class);
+            mIntent.putExtra("userId", userId);
+        }
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
+    }
+
+    private int position = -1;
+
+    @Override
+    public void onClickVideoCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanVideoCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
+    }
+
+    @Override
+    public void onClickFansq() {
+//        needShowLoading = true;
+        sortType = 0;
+        onRefresh();
+    }
+
+    @Override
+    public void onClickHot() {
+//        needShowLoading = true;
+        sortType = 1;
+        onRefresh();
+    }
+
+    //打赏成功后打赏人数增加
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshDsRecord(EventDsSuccess event) {
+        QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(event.getPosition());
+        rowsBean.setDssl(rowsBean.getDssl() + 1);
+        newsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3 && resultCode == 10) {
+            //发布成功  再次查询
+            onRefresh();
+            rlv_news.getRecyclerView().smoothScrollToPosition(0);
+        }
+        if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
+            SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
+            if (mRowsBean == null) {
+                return;
+            }
+            final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
+            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
+            rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
+            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+            newsAdapter.notifyDataSetChanged();
+        } else if (requestCode == Constans.REQUEST_CODE && resultCode == 999) {
+            boolean delete = data.getBooleanExtra("delete", false);
+            if (delete) {
+//                mAdapter.delData(position);
+                onRefresh();
+            }
+        }
+    }
+
 }

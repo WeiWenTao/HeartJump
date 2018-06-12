@@ -71,7 +71,8 @@ public class FtAllCommentAadapter extends BaseAdapter {
         EmojiTextView tv_comment_content = cvh.getView(R.id.tv_comment_content, EmojiTextView.class);
         LinearLayout ll_comment_more = cvh.getView(R.id.ll_comment_more, LinearLayout.class);
         LinearLayout rl_good = cvh.getView(R.id.rl_good, LinearLayout.class);
-        cvh.getView(R.id.ll_item, LinearLayout.class).setBackgroundColor(Color.parseColor("#f6f6f6"));
+        LinearLayout ll_item = cvh.getView(R.id.ll_item, LinearLayout.class);
+        ll_item.setBackgroundColor(Color.parseColor("#f6f6f6"));
 
 
         //设置点击监听
@@ -110,6 +111,15 @@ public class FtAllCommentAadapter extends BaseAdapter {
             }
         });
 
+        ll_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickGoodsListener != null) {
+                    clickGoodsListener.clickitems(childListBean.getId(), childListBean.getUser().getId());
+                }
+            }
+        });
+
         //隐藏二级评论
         ll_comment_more.setVisibility(View.GONE);
 
@@ -141,5 +151,7 @@ public class FtAllCommentAadapter extends BaseAdapter {
         void clickGoods(FtCommentInfo.RowsBean childListBean, ShineButton view);
 
         void clickUser(int userId);
+
+        void clickitems(int dataId,int userId);
     }
 }

@@ -3,39 +3,59 @@ package com.cucr.myapplication.activity.star;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.TestWebViewActivity;
+import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
+import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.activity.fansCatgory.AboutActivity;
-import com.cucr.myapplication.activity.fansCatgory.FansQActivity;
 import com.cucr.myapplication.activity.fansCatgory.HytActivity;
 import com.cucr.myapplication.activity.fansCatgory.JourneyActivity;
 import com.cucr.myapplication.activity.fansCatgory.ShuJuActivity;
+import com.cucr.myapplication.activity.fansCatgory.XingWenActivity;
 import com.cucr.myapplication.activity.fansCatgory.YyzcActivity;
+import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
 import com.cucr.myapplication.activity.picWall.PhotosAlbumActivity;
+import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
 import com.cucr.myapplication.activity.yuyue.YuYueCatgoryActivity;
 import com.cucr.myapplication.adapter.PagerAdapter.CommonPagerAdapter;
-import com.cucr.myapplication.adapter.RlVAdapter.StarXingWenAdapter;
+import com.cucr.myapplication.adapter.PagerAdapter.DaShangPagerAdapter;
+import com.cucr.myapplication.adapter.RlVAdapter.FtAdapter_forstar;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.eventBus.EventContentId;
 import com.cucr.myapplication.bean.eventBus.EventDaBangStarPagerId;
 import com.cucr.myapplication.bean.eventBus.EventRewardGifts;
+import com.cucr.myapplication.bean.fenTuan.FtBackpackInfo;
+import com.cucr.myapplication.bean.fenTuan.FtGiftsInfo;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.bean.fenTuan.SignleFtInfo;
 import com.cucr.myapplication.bean.login.ReBackMsg;
+import com.cucr.myapplication.bean.share.ShareEntity;
 import com.cucr.myapplication.bean.starList.StarListInfos;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.core.focus.FocusCore;
 import com.cucr.myapplication.core.funTuanAndXingWen.QueryFtInfoCore;
+import com.cucr.myapplication.core.pay.PayCenterCore;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.Fragment_fans_one;
 import com.cucr.myapplication.fragment.star.Fragment_fans_two;
@@ -44,8 +64,11 @@ import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.widget.dialog.DialogShareStyle;
+import com.cucr.myapplication.widget.ftGiveUp.ShineButton;
 import com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView;
 import com.cucr.myapplication.widget.stateLayout.MultiStateView;
+import com.cucr.myapplication.widget.viewpager.NoScrollPager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -63,7 +86,11 @@ import org.zackratos.ultimatebar.UltimateBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarPagerActivity extends FragmentActivity implements RequersCallBackListener, Fragment_fans_one.OnClickCatgoryOne, Fragment_fans_two.OnClickCatgoryTwo, ViewPager.OnPageChangeListener, SwipeRecyclerView.OnLoadListener {
+public class StarPagerActivity extends FragmentActivity implements RequersCallBackListener, Fragment_fans_one.OnClickCatgoryOne, Fragment_fans_two.OnClickCatgoryTwo, ViewPager.OnPageChangeListener, SwipeRecyclerView.OnLoadListener, FtAdapter_forstar.OnClickBt {
+
+    //主容器
+    @ViewInject(R.id.rl_continer)
+    private RelativeLayout rl_continer;
 
     //vp指示器1
     @ViewInject(R.id.iv_dot1)
@@ -121,6 +148,18 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
 
+    //礼物和背包 ViewPager
+    @ViewInject(R.id.vp_dahsnag)
+    private NoScrollPager vp_dahsnag;
+
+    //礼物
+    @ViewInject(R.id.tv_gift)
+    private TextView gift;
+
+    //背包
+    @ViewInject(R.id.tv_backpack)
+    private TextView backpack;
+
     private StarListInfos.RowsBean mData;
     private FocusCore mCore;
     private Gson mGson;
@@ -131,10 +170,13 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     private int page;
     private int rows;
     private boolean isRefresh;
-    private StarXingWenAdapter newsAdapter;
+    private FtAdapter_forstar mAdapter;
     private boolean needShowLoading;
     private QueryFtInfoCore mNewsCore;
     private boolean canLoad;
+    private DaShangPagerAdapter mDaShangPagerAdapter;
+    private PayCenterCore mPayCenterCore;
+    private int sortType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -159,10 +201,108 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         mStarCore = new QueryStarListCore();
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
+        mPayCenterCore = new PayCenterCore();
+
         initNewsInfo();
         getDatas();
+        initDialog();
+        initPop();
+        initInfos();
         initCatgory();
     }
+
+    private void initInfos() {
+        if (mDaShangPagerAdapter == null) {
+            mDaShangPagerAdapter = new DaShangPagerAdapter();
+        }
+        //查询用户余额
+        mPayCenterCore.queryUserMoney(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                ReBackMsg reBackMsg = mGson.fromJson(response.get(), ReBackMsg.class);
+                if (reBackMsg.isSuccess()) {
+                    mDaShangPagerAdapter.setUserMoney(Double.parseDouble(reBackMsg.getMsg()));
+                } else {
+                    ToastUtils.showToast(reBackMsg.getMsg());
+                }
+            }
+        });
+
+        //查询虚拟道具信息
+        mNewsCore.queryGift(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtGiftsInfo ftGiftsInfo = mGson.fromJson(response.get(), FtGiftsInfo.class);
+                if (ftGiftsInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setGiftInfos(ftGiftsInfo);
+                } else {
+                    ToastUtils.showToast(ftGiftsInfo.getErrorMsg());
+                }
+            }
+        });
+        queryBackpack();
+    }
+
+    private void queryBackpack() {
+        //查询背包信息
+        mNewsCore.queryBackpackInfo(new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                FtBackpackInfo ftBackpackInfo = mGson.fromJson(response.get(), FtBackpackInfo.class);
+                if (ftBackpackInfo.isSuccess()) {
+                    mDaShangPagerAdapter.setBackpackInfos(ftBackpackInfo);
+                } else {
+                    ToastUtils.showToast(ftBackpackInfo.getMsg());
+                }
+            }
+        });
+    }
+
+
+    //礼物
+    @OnClick(R.id.tv_gift)
+    public void gift(View view) {
+        vp_dahsnag.setCurrentItem(0);
+        gift.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setBackgroundColor(getResources().getColor(R.color.zise));
+        gift.setTextColor(getResources().getColor(R.color.xtred));
+        backpack.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    //背包
+    @OnClick(R.id.tv_backpack)
+    public void backpack(View view) {
+        vp_dahsnag.setCurrentItem(1);
+        backpack.setBackgroundDrawable(getResources().getDrawable(R.drawable.reward_btn_bg));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setBackgroundColor(getResources().getColor(R.color.zise));
+        backpack.setTextColor(getResources().getColor(R.color.xtred));
+        gift.setTextColor(getResources().getColor(R.color.zongse));
+    }
+
+    private void initPop() {
+        if (popWindow == null) {
+            View view = LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.popupwindow_dashang, null);
+            ViewUtils.inject(this, view);
+            popWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        }
+        popWindow.setAnimationStyle(R.style.AnimationFade);
+        popWindow.setFocusable(true);
+        popWindow.setOutsideTouchable(true);
+        popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        vp_dahsnag.setAdapter(mDaShangPagerAdapter);
+    }
+
+    private void initDialog() {
+        mDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
+    }
+
 
     private void initCatgory() {
         mDataList = new ArrayList<>();
@@ -177,16 +317,17 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     }
 
     private void initNewsInfo() {
-        newsAdapter = new StarXingWenAdapter();
+        mAdapter = new FtAdapter_forstar(this);
+        mAdapter.setOnClickBt(this);
         page = 1;
         rows = 20;
         needShowLoading = true;
         //分割线
         DividerItemDecoration decor = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         decor.setDrawable(getResources().getDrawable(R.drawable.divider_bg));
-        rlv_news.getRecyclerView().addItemDecoration(decor);
+//        rlv_news.getRecyclerView().addItemDecoration(decor);
         rlv_news.getRecyclerView().setLayoutManager(new LinearLayoutManager(MyApplication.getInstance()));
-        rlv_news.setAdapter(newsAdapter);
+        rlv_news.setAdapter(mAdapter);
         rlv_news.setOnLoadListener(this);
         rlv_news.onLoadingMore();
     }
@@ -421,10 +562,35 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     }
 
 
+    private int position;
+    private QueryFtInfos mQueryFtInfos;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3 && resultCode == 10) {
+            //发布成功  再次查询
+            onRefresh();
+            rlv_news.getRecyclerView().smoothScrollToPosition(0);
+        }
+        if (requestCode == Constans.REQUEST_CODE && resultCode == Constans.RESULT_CODE) {
+            SignleFtInfo.ObjBean mRowsBean = (SignleFtInfo.ObjBean) data.getSerializableExtra("rowsBean");
+            if (mRowsBean == null) {
+                return;
+            }
+            final QueryFtInfos.RowsBean rowsBean = mQueryFtInfos.getRows().get(position);
+            rowsBean.setGiveUpCount(mRowsBean.getGiveUpCount());
+            rowsBean.setIsGiveUp(mRowsBean.isIsGiveUp());
+            rowsBean.setCommentCount(mRowsBean.getCommentCount());
+            mAdapter.notifyDataSetChanged();
+        } else if (requestCode == Constans.REQUEST_CODE && resultCode == 999) {
+            boolean delete = data.getBooleanExtra("delete", false);
+            if (delete) {
+//                mAdapter.delData(position);
+                onRefresh();
+            }
+        }
     }
 
     @Override
@@ -452,10 +618,10 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         vp_catgory.setCurrentItem(1);
     }
 
-    //粉丝圈
+    //星闻
     @Override
-    public void onClickFanQ() {
-        Intent intent = new Intent(MyApplication.getInstance(), FansQActivity.class);
+    public void onClickXingWen() {
+        Intent intent = new Intent(MyApplication.getInstance(), XingWenActivity.class);
         intent.putExtra("starId", mStarId);
         startActivity(intent);
     }
@@ -551,7 +717,7 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
     public void onRefresh() {
         isRefresh = true;
         page = 1;
-        mNewsCore.queryFtInfo(mStarId, 0, -1, false, page, rows, this);
+        mNewsCore.queryFtInfo(sortType, mStarId, 1, -1, false, page, rows, this);
 
     }
 
@@ -561,32 +727,39 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
             isRefresh = false;
             page++;
             rlv_news.onLoadingMore();
-            mNewsCore.queryFtInfo(mStarId, 0, -1, false, page, rows, this);
+            mNewsCore.queryFtInfo(sortType, mStarId, 1, -1, false, page, rows, this);
         }
     }
 
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
-        QueryFtInfos newsInfos = mGson.fromJson(response.get(), QueryFtInfos.class);
-        canLoad = true;
-        if (newsInfos.isSuccess()) {
-            if (isRefresh) {
-                if (newsInfos.getTotal() == 0) {
-                    multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        if (what == Constans.TYPE_ONE) {
+            canLoad = true;
+            QueryFtInfos infos = mGson.fromJson(response.get(), QueryFtInfos.class);
+            if (infos.isSuccess()) {
+                if (isRefresh) {
+                    if (infos.getTotal() == 0) {
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                    } else {
+                        mQueryFtInfos = infos;
+                        mAdapter.setData(infos);
+                        rlv_news.getRecyclerView().smoothScrollToPosition(0);
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    }
                 } else {
-                    newsAdapter.setData(newsInfos);
-                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                    if (infos != null) {
+                        mQueryFtInfos.getRows().addAll(infos.getRows());
+                        mAdapter.addData(infos.getRows());
+                    }
+                }
+                if (infos.getTotal() <= page * rows) {
+                    rlv_news.onNoMore("没有更多了");
+                } else {
+                    rlv_news.complete();
                 }
             } else {
-                newsAdapter.addData(newsInfos.getRows());
+                ToastUtils.showToast(infos.getErrorMsg());
             }
-            if (newsInfos.getTotal() <= page * rows) {
-                rlv_news.onNoMore("没有更多了");
-            } else {
-                rlv_news.complete();
-            }
-        } else {
-            ToastUtils.showToast(newsInfos.getErrorMsg());
         }
     }
 
@@ -633,4 +806,109 @@ public class StarPagerActivity extends FragmentActivity implements RequersCallBa
         }
     }
 
+    private int giveNum;
+
+    @Override
+    public void onClickGoods(int position, QueryFtInfos.RowsBean rowsBean, ShineButton sib) {
+        if (rowsBean.isIsGiveUp()) {
+            sib.setChecked(false, true);
+            sib.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.icon_good_under));
+        } else {
+            sib.setChecked(true, true);
+        }
+
+        if (rowsBean.isIsGiveUp()) {
+            giveNum = rowsBean.getGiveUpCount() - 1;
+            rowsBean.setIsGiveUp(false);
+            rowsBean.setGiveUpCount(giveNum);
+        } else {
+            giveNum = rowsBean.getGiveUpCount() + 1;
+            rowsBean.setIsGiveUp(true);
+            rowsBean.setGiveUpCount(giveNum);
+        }
+        mAdapter.notifyDataSetChanged();
+
+        mNewsCore.ftGoods(rowsBean.getId(), new OnCommonListener() {
+            @Override
+            public void onRequestSuccess(Response<String> response) {
+                CommonRebackMsg commonRebackMsg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+                if (commonRebackMsg.isSuccess()) {
+
+                } else {
+//                    ToastUtils.showToast(commonRebackMsg.getMsg());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClickCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
+    }
+
+    private DialogShareStyle mDialog;
+
+    @Override
+    public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
+        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
+    }
+
+    private PopupWindow popWindow;
+
+    @Override
+    public void onClickDaShang(int contentId, int position) {
+        popWindow.showAtLocation(rl_continer, Gravity.BOTTOM, 0, 0);
+        //可以考虑用eventbus传值
+        EventBus.getDefault().postSticky(new EventContentId(contentId, position));
+    }
+
+    @Override
+    public void onClickDsRecored(int contentId) {
+        Intent intent = new Intent(MyApplication.getInstance(), DaShangCatgoryActivity.class);
+        intent.putExtra("contentId", contentId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickUser(int userId, boolean isStar) {
+        if (isStar) {
+            mIntent = new Intent(MyApplication.getInstance(), StarPagerActivity.class);
+            mIntent.putExtra("starId", userId);
+        } else {
+            mIntent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+            mIntent.putExtra("userId", userId);
+        }
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
+    }
+
+    @Override
+    public void onClickVideoCommends(int position, QueryFtInfos.RowsBean rowsBean, boolean hasPicture, boolean formCommond) {
+        this.position = position;
+        Intent intent = new Intent(MyApplication.getInstance(), FenTuanVideoCatgoryActiviry.class);
+        intent.putExtra("hasPicture", hasPicture);
+        intent.putExtra("dataId", rowsBean.getId() + "");
+        intent.putExtra("isFormConmmomd", formCommond);
+        startActivityForResult(intent, Constans.REQUEST_CODE);
+    }
+
+    @Override
+    public void onClickFansq() {
+        needShowLoading = true;
+        sortType = 0;
+        onRefresh();
+    }
+
+    @Override
+    public void onClickHot() {
+        needShowLoading = true;
+        sortType = 1;
+        onRefresh();
+    }
 }

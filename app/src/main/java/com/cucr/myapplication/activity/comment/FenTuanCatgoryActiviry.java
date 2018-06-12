@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.fenTuan.DaShangCatgoryActivity;
@@ -89,6 +90,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 import static com.cucr.myapplication.widget.swipeRlv.SwipeItemLayout.TAG;
 
@@ -222,9 +225,13 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         rows = 15;
         allRows = new ArrayList<>();
         mRows = new ArrayList<>();
+        mDaShangPagerAdapter = new DaShangPagerAdapter();
+        mPayCenterCore = new PayCenterCore();
+
         initDialog();
         initData();
         queryHeadInfo();
+        initPopWindow();
         //阅读量
         setUpEmojiPopup();
         initGiftAndBackPack();
@@ -325,8 +332,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     //查询道具信息
     private void initGiftAndBackPack() {
-        mDaShangPagerAdapter = new DaShangPagerAdapter();
-        mPayCenterCore = new PayCenterCore();
         //查询用户余额
         mPayCenterCore.queryUserMoney(new OnCommonListener() {
             @Override
@@ -406,8 +411,6 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
     private void initLV() {
         mLvHead = View.inflate(MyApplication.getInstance(), R.layout.item_ft_catgory_header, null);
-        initPopWindow();
-
         lv_ft_catgory.addHeaderView(mLvHead, null, true);
         lv_ft_catgory.setHeaderDividersEnabled(false);
         mAdapter = new FtCatgoryAadapter(MyApplication.getInstance());
@@ -460,6 +463,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
 
         //设置数据
         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getUserHeadPortrait(), iv_pic, MyApplication.getImageLoaderOptions());
+
         tv_neckname.setText(mRowsBean.getCreateUserName());
         tv_time_form.setText(mRowsBean.getCreaetTime());
         tv_lookcount.setText(mRowsBean.getReadCount() + "");
@@ -495,9 +499,11 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         image_layout.setSingleImageSize(640, 400);
         image_layout.loadImage(mRowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
             @Override
-            public void layoutFinish(List<ImageView> images) {
+            public void layoutFinish(List<GifImageView> images) {
                 for (int i = 0; i < mRowsBean.getAttrFileList().size(); i++) {
-                    ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + mRowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
+                    Glide.with(MyApplication.getInstance()).load(HttpContans.IMAGE_HOST + mRowsBean.getAttrFileList().get(i).getFileUrl())
+                            .apply(MyApplication.getGlideOptions())
+                            .into(images.get(i));
                 }
             }
         });
@@ -592,7 +598,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
                             //查询一遍
                             onRefresh();
                             //添加一条评论弹幕
-                            addDM(et_comment.getText().toString().trim());
+                            addDM(CommonUtils.string2Unicode(et_comment.getText().toString().trim()));
                             et_comment.setText("");
                             emojiPopup.dismiss();
                             CommonUtils.hideKeyBorad(MyApplication.getInstance(), rootview, true);

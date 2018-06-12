@@ -49,10 +49,10 @@ public class Fragment_fans_one extends BaseFragment {
         return false;
     }
 
-    @OnClick(R.id.ll_fansq)
-    public void fansQ(View view) {
+    @OnClick(R.id.ll_xingwen)
+    public void xingWen(View view) {
         if (mOnClickCatgoryOne != null) {
-            mOnClickCatgoryOne.onClickFanQ();
+            mOnClickCatgoryOne.onClickXingWen();
         }
     }
 
@@ -93,7 +93,7 @@ public class Fragment_fans_one extends BaseFragment {
 
     public interface OnClickCatgoryOne {
 
-        void onClickFanQ();
+        void onClickXingWen();
 
         void onClickShuJu();
 

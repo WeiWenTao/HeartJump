@@ -1,6 +1,9 @@
 package com.cucr.myapplication.activity.hyt;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -11,15 +14,17 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.BaseActivity;
 import com.cucr.myapplication.activity.local.LocalityProvienceActivity;
 import com.cucr.myapplication.app.MyApplication;
+import com.cucr.myapplication.bean.app.CommonRebackMsg;
+import com.cucr.myapplication.bean.setting.BirthdayDate;
+import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.hyt.HytCore;
 import com.cucr.myapplication.dao.CityDao;
 import com.cucr.myapplication.listener.RequersCallBackListener;
-import com.cucr.myapplication.bean.app.CommonRebackMsg;
-import com.cucr.myapplication.bean.setting.BirthdayDate;
-import com.cucr.myapplication.bean.setting.LocationData;
 import com.cucr.myapplication.utils.CommonUtils;
+import com.cucr.myapplication.utils.PromissUtils;
 import com.cucr.myapplication.utils.ToastUtils;
+import com.cucr.myapplication.utils.ZipUtil;
 import com.cucr.myapplication.widget.dialog.DialogBirthdayStyle;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -136,9 +141,38 @@ public class YyhdActivity_3 extends BaseActivity implements DialogBirthdayStyle.
     //选择城市
     @OnClick(R.id.rlv_select_loacl)
     public void setCity(View view) {
-        mIntent.putExtra("needShow", false);
-        mIntent.putExtra("className", "YyhdActivity_3");
-        startActivity(mIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    , Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        } else {
+            ZipUtil.initData();
+            Intent intent = new Intent(this, LocalityProvienceActivity.class);
+            mIntent.putExtra("needShow", false);
+            mIntent.putExtra("className", "YyhdActivity_3");
+            startActivity(mIntent);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        boolean writeAccepted = false;
+        switch (requestCode) {
+            //内存写入权限
+            case 3:
+                writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
+                    ZipUtil.initData();
+                    Intent intent = new Intent(this, LocalityProvienceActivity.class);
+                    intent.putExtra("needShow", false);
+                    intent.putExtra("className", "YyhdActivity_3");
+                    startActivity(intent);
+                } else {
+                    PromissUtils.showDialogTipUserGoToAppSettting(this, "存储");
+                    ToastUtils.showToast(getResources().getString(R.string.request_permission));
+                }
+                break;
+        }
     }
 
     @Override

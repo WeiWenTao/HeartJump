@@ -1,7 +1,9 @@
 package com.cucr.myapplication.activity.picWall;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.user.PersonalMainPagerActivity;
@@ -21,15 +24,18 @@ import com.cucr.myapplication.adapter.PagerAdapter.MyPicWall;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.PicWall.PicWallInfo;
 import com.cucr.myapplication.bean.app.CommonRebackMsg;
-import com.cucr.myapplication.bean.share.ShareEntity;
+import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.constants.HttpContans;
+import com.cucr.myapplication.core.AppCore;
 import com.cucr.myapplication.core.user.PicWallCore;
+import com.cucr.myapplication.listener.DownLoadListener;
 import com.cucr.myapplication.listener.OnCommonListener;
+import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
+import com.cucr.myapplication.utils.PromissUtils;
 import com.cucr.myapplication.utils.ToastUtils;
-import com.cucr.myapplication.widget.dialog.DialogShareStyle;
-import com.cucr.myapplication.widget.dialog.DialogShareTo;
+import com.cucr.myapplication.widget.dialog.DialogSaveTo;
 import com.cucr.myapplication.widget.goodAnimation.PeriscopeLayout;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -40,7 +46,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
-public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItemClick, Animation.AnimationListener, DialogShareTo.OnClickShareTo {
+public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItemClick, Animation.AnimationListener, DialogSaveTo.OnClickSaveTo, RequersCallBackListener, DownLoadListener {
 
     //    @ViewInject(R.id.rlv_pics)
     //    RecyclerView rlv_pics;
@@ -69,8 +75,7 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     @ViewInject(R.id.ll_good)
     private LinearLayout ll_good;
 
-    private DialogShareTo mShareToDialog;
-    private DialogShareStyle mShareDialog;
+    private DialogSaveTo mSaveToDialog;
     private PicWallInfo mData;
     private int mPosotion;
     private PicWallCore mCore;
@@ -81,6 +86,8 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     private TranslateAnimation mFootShow;
     private TranslateAnimation mHeadHide;
     private TranslateAnimation mFootHide;
+    private AppCore mAppCore;
+    private PicWallInfo.RowsBean mRowsBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,16 +105,11 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     }
 
     private void initDialog() {
-        mShareToDialog = new DialogShareTo(this, R.style.MyDialogStyle);
-        Window shareWindow = mShareToDialog.getWindow();
+        mSaveToDialog = new DialogSaveTo(this, R.style.MyDialogStyle);
+        Window shareWindow = mSaveToDialog.getWindow();
         shareWindow.setGravity(Gravity.BOTTOM);
         shareWindow.setWindowAnimations(R.style.BottomDialog_Animation);
-        mShareToDialog.setOnClickBt(this);
-
-        mShareDialog = new DialogShareStyle(this, R.style.MyDialogStyle);
-        Window window = mShareDialog.getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        window.setWindowAnimations(R.style.BottomDialog_Animation); //添加动画
+        mSaveToDialog.setOnClickBt(this);
     }
 
     private void initBar() {
@@ -126,10 +128,12 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
 
     private void init() {
         mCore = new PicWallCore();
+        mAppCore = new AppCore();
         mGson = MyApplication.getGson();
         mData = (PicWallInfo) getIntent().getSerializableExtra("data");
         mPosotion = getIntent().getIntExtra("posotion", 0);
         mIntent = new Intent(MyApplication.getInstance(), PersonalMainPagerActivity.class);
+        mRowsBean = mData.getRows().get(mPosotion);
         initAni();
         MyPicWall adapter = new MyPicWall(mData);
         adapter.setOnItemClick(this);
@@ -148,12 +152,12 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
                 if (state == ViewPager.SCROLL_STATE_SETTLING) {
-                    PicWallInfo.RowsBean rowsBean = mData.getRows().get(mPosotion);
-                    rowsBean.setGiveUpCount(rowsBean.getGiveUpCount() + count);
+                    mRowsBean = mData.getRows().get(mPosotion);
+                    mRowsBean.setGiveUpCount(mRowsBean.getGiveUpCount() + count);
                     if (count == 0) {
                         return;
                     }
-                    giveUp(count, rowsBean.getId());
+                    giveUp(count, mRowsBean.getId());
                     count = 0;
                 }
             }
@@ -303,17 +307,64 @@ public class PicWallCatgoryActivity extends Activity implements MyPicWall.OnItem
     //显示更多
     @OnClick(R.id.iv_more)
     public void showMore(View view) {
-        mShareToDialog.show();
+        mSaveToDialog.show();
     }
 
+    //保存
     @Override
-    public void clickShareTo() {
-        mShareToDialog.dismiss();
-        mShareDialog.setData(new ShareEntity(getString(R.string.share_desirc), getString(R.string.share_title), "http://www.baidu.com", mData.getRows().get(mPosotion).getPicUrl()));
+    public void clickSaveTo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            mAppCore.saveImgs(mRowsBean.getPicUrl(), Constans.PICWALL_FOLDER, "xthy" + mRowsBean.getId() + ".png", true, false, this);
+        }
     }
 
+    //申请权限回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        boolean writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        if (writeAccepted) {
+            mAppCore.saveImgs(mRowsBean.getPicUrl(), Constans.PICWALL_FOLDER, "xthy" + mRowsBean.getId() + ".png", true, false, this);
+        } else {
+            PromissUtils.showDialogTipUserGoToAppSettting(this, "存储");
+            ToastUtils.showToast(getResources().getString(R.string.request_permission));
+        }
+    }
+
+    //举报
     @Override
     public void clickReportTo() {
+        mAppCore.report(1, mRowsBean.getId() + "", mRowsBean.getUser().getId(), this);
+    }
 
+    @Override
+    public void onRequestSuccess(int what, Response<String> response) {
+        CommonRebackMsg msg = mGson.fromJson(response.get(), CommonRebackMsg.class);
+        if (msg.isSuccess()) {
+            ToastUtils.showToast("我们收到您的举报啦");
+        } else {
+            ToastUtils.showToast(msg.getMsg());
+        }
+    }
+
+    @Override
+    public void onRequestStar(int what) {
+
+    }
+
+    @Override
+    public void onRequestError(int what, Response<String> response) {
+
+    }
+
+    @Override
+    public void onRequestFinish(int what) {
+
+    }
+
+    @Override
+    public void onFinish(int what, String filePath) {
+        Toast.makeText(MyApplication.getInstance(), "图片已保存在" + Constans.PICWALL_FOLDER, Toast.LENGTH_LONG).show();
     }
 }

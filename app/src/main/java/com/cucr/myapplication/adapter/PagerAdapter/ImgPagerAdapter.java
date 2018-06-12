@@ -8,10 +8,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.cucr.myapplication.app.MyApplication;
-import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.bean.fenTuan.QueryFtInfos;
+import com.cucr.myapplication.constants.HttpContans;
 import com.cucr.myapplication.widget.photoView.PhotoView;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class ImgPagerAdapter extends PagerAdapter {
 //                .build();//
 //        ImageLoader.getInstance().displayImage(url, view, options);
 
-        ImageLoader.getInstance().displayImage(url, view, MyApplication.getImageLoaderOptions());
+//        ImageLoader.getInstance().displayImage(url, view, MyApplication.getImageLoaderOptions());
         Glide.with(context).load(url)
                 .apply(MyApplication.getGlideOptions())
                 .into(view);

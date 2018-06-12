@@ -31,6 +31,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.Serializable;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 /**
  * Created by 911 on 2017/6/27.
  */
@@ -260,7 +262,7 @@ public class FtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((Tp2_Holder) holder).iv_tag.setVisibility(isStar ? View.VISIBLE : View.INVISIBLE);
             ((Tp2_Holder) holder).image_layout.loadImage(rowsBean.getAttrFileList().size(), new FlowImageLayout.OnImageLayoutFinishListener() {
                 @Override
-                public void layoutFinish(List<ImageView> images) {
+                public void layoutFinish(List<GifImageView> images) {
                     for (int i = 0; i < rowsBean.getAttrFileList().size(); i++) {
                         ImageLoader.getInstance().displayImage(HttpContans.IMAGE_HOST + rowsBean.getAttrFileList().get(i).getFileUrl(), images.get(i), MyApplication.getImageLoaderOptions());
                     }
