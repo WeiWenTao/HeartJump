@@ -132,7 +132,7 @@ public class FtAdapter_forstar extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (TextUtils.isEmpty(mRowsBean.getContent())) {                 //文字内容
                 ((Tp1_Holder) holder).tv_content.setVisibility(View.GONE);
             } else {
-                ((Tp1_Holder) holder).tv_content.setText(mRowsBean.getContent());
+                ((Tp1_Holder) holder).tv_content.setText(CommonUtils.unicode2String(mRowsBean.getContent()));
             }
 
             ((Tp1_Holder) holder).tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
@@ -286,7 +286,7 @@ public class FtAdapter_forstar extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((Tp2_Holder) holder).image_layout.setVerticalSpacing(3);
             ((Tp2_Holder) holder).image_layout.setSingleImageSize(640, 400);
 
-            ((Tp2_Holder) holder).tv_content.setText(mRowsBean.getContent());    //文字内容
+            ((Tp2_Holder) holder).tv_content.setText(CommonUtils.unicode2String(mRowsBean.getContent()));    //文字内容
             ((Tp2_Holder) holder).tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
             if (TextUtils.isEmpty(mRowsBean.getContent())) {
                 ((Tp2_Holder) holder).tv_content.setVisibility(View.GONE);
@@ -432,7 +432,8 @@ public class FtAdapter_forstar extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((Tp3_Holder) holder).tv_neckname.setText(mRowsBean.getCreateUserName());    //昵称
             ((Tp3_Holder) holder).tv_forminfo.setText(mRowsBean.getCreaetTime());    //时间和来源
             ((Tp3_Holder) holder).tv_read.setText(mRowsBean.getReadCount() + "");    //阅读量
-            ((Tp3_Holder) holder).tv_content.setText(mRowsBean.getContent());    //文字内容
+            String content = mRowsBean.getContent();
+            ((Tp3_Holder) holder).tv_content.setText(CommonUtils.unicode2String(content));    //文字内容
             ((Tp3_Holder) holder).tv_session.setText(mRowsBean.getCommentCount() + "");    //评论数量
             ((Tp3_Holder) holder).tv_favorite.setText(mRowsBean.getGiveUpCount() + "");    //点赞数量
             if (mRowsBean.isIsGiveUp()) {

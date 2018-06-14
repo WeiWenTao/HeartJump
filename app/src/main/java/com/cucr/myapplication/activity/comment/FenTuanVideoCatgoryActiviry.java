@@ -1138,7 +1138,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
 
     @Override
     public void clickShare() {
-        mShareDialog.setData(new ShareEntity(mRowsBean.getContent(), getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, mRowsBean.getAttrFileList().get(0).getVideoPagePic()));
+        mShareDialog.setData(new ShareEntity(CommonUtils.unicode2String(mRowsBean.getContent()), getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, mRowsBean.getAttrFileList().get(0).getVideoPagePic()));
     }
 
     @OnClick(R.id.iv_more)
@@ -1158,7 +1158,7 @@ public class FenTuanVideoCatgoryActiviry extends Activity implements View.OnFocu
     @Override
     public void clickShareTo() {
         mDialog.dismiss();
-        mShareDialog.setData(new ShareEntity(mRowsBean.getContent(), getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, mRowsBean.getAttrFileList().get(0).getVideoPagePic()));
+        mShareDialog.setData(new ShareEntity(CommonUtils.unicode2String(mRowsBean.getContent()), getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, mRowsBean.getAttrFileList().get(0).getVideoPagePic()));
     }
 
     //点击举报1

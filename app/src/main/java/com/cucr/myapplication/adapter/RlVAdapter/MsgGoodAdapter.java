@@ -15,6 +15,7 @@ import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.MsgBean.MsgInfo;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -79,7 +80,7 @@ public class MsgGoodAdapter extends RecyclerView.Adapter<MsgGoodAdapter.MyHolder
         holder.tv_name.setText(receiverUser.getName());             //原文作者姓名
         holder.tv_neckname.setText(sendUser.getName() + " 赞了你");     //点赞人姓名
         holder.tv_time.setText(rowsBean.getCreateTime());       //创建时间
-        holder.tv_content.setText(((String) map.get("title")));         //原文内容
+        holder.tv_content.setText(CommonUtils.unicode2String((String) map.get("title")));         //原文内容
 
         //跳转粉团详情界面
         holder.ll_dynamic.setOnClickListener(new View.OnClickListener() {

@@ -32,9 +32,9 @@
 
         <!--线下-->
         <!--<meta-data-->
-        <!--android:name="RONG_CLOUD_APP_KEY"-->
-        <!--android:value="25wehl3u2s7vw"-->
-        <!--/>-->
+            <!--android:name="RONG_CLOUD_APP_KEY"-->
+            <!--android:value="25wehl3u2s7vw"-->
+            <!--/>-->
 
         <service
             android:name="io.rong.imlib.ipc.RongService"

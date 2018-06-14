@@ -157,7 +157,6 @@ public class SplishActivity extends Activity implements RequersCallBackListener,
         }
     }
 
-
     @Override
     public void onRequestSuccess(int what, Response<String> response) {
 //        boolean fromCache = response.isFromCache();

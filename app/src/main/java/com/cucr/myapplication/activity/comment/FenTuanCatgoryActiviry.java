@@ -467,7 +467,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         tv_neckname.setText(mRowsBean.getCreateUserName());
         tv_time_form.setText(mRowsBean.getCreaetTime());
         tv_lookcount.setText(mRowsBean.getReadCount() + "");
-        tv_content.setText(mRowsBean.getContent());
+        tv_content.setText(CommonUtils.unicode2String(mRowsBean.getContent()));
         mTv_all_comment.setText(mRowsBean.getCommentCount() == 0 ? "暂无评论" : "全部评论");
         tv_dashang.setText(mRowsBean.getDssl() + "人打赏了道具");
         tv_dashang.setOnClickListener(new View.OnClickListener() {
@@ -1080,7 +1080,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         } else {
             url = mRowsBean.getAttrFileList().get(0).getFileUrl();
         }
-        mShareDialog.setData(new ShareEntity(mRowsBean.getContent(), getResources().getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, url));
+        mShareDialog.setData(new ShareEntity(CommonUtils.unicode2String(mRowsBean.getContent()), getResources().getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, url));
     }
 
     @OnClick(R.id.iv_more)
@@ -1106,7 +1106,7 @@ public class FenTuanCatgoryActiviry extends BaseActivity implements View.OnFocus
         } else {
             url = mRowsBean.getAttrFileList().get(0).getFileUrl();
         }
-        mShareDialog.setData(new ShareEntity(mRowsBean.getContent(), getResources().getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, url));
+        mShareDialog.setData(new ShareEntity(CommonUtils.unicode2String(mRowsBean.getContent()), getResources().getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + mDataId, url));
     }
 
     //点击举报1

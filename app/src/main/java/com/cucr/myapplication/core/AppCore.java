@@ -62,6 +62,13 @@ public class AppCore {
         mQueue.add(Constans.TYPE_ONE, request, responseListener);
     }
 
+    //查询版本信息
+    public void closure(RequersCallBackListener listener) {
+        mListener = listener;
+        Request<String> request = NoHttp.createStringRequest(HttpContans.IMAGE_HOST + HttpContans.ADDRESS_APP_CLOSURE, RequestMethod.POST);
+        mQueue.add(Constans.TYPE_FIVE, request, responseListener);
+    }
+
     //意见反馈
     public void sendAdvise(String advice, RequersCallBackListener listener) {
         mListener = listener;

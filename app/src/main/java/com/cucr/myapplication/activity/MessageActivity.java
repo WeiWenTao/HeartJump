@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cucr.myapplication.R;
@@ -25,6 +26,7 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
     private List<Fragment> mFragmentList;
     private List<String> titles;
     private Fragment mConversationListFragment;
+    private ViewPager mVp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,25 @@ public class MessageActivity extends FragmentActivity implements View.OnClickLis
         titles.add("点赞");
         mFragmentList.add(new CommendFragment());
         mFragmentList.add(new GoodsFragment());
-        ViewPager vp = (ViewPager) findViewById(R.id.vp_msg);
-        vp.setAdapter(new CommonPagerAdapter(getSupportFragmentManager(), mFragmentList, titles));
-        tl_tab.setupWithViewPager(vp);
+        mVp = (ViewPager) findViewById(R.id.vp_msg);
+        mVp.setAdapter(new CommonPagerAdapter(getSupportFragmentManager(), mFragmentList, titles));
+        tl_tab.setupWithViewPager(mVp);
+        getPushInfo();
+    }
+
+    private void getPushInfo() {
+        String type = getIntent().getStringExtra("type");
+        if (!TextUtils.isEmpty(type)) {
+            switch (type) {
+                case "4":
+                    mVp.setCurrentItem(0);
+                    break;
+
+                case "5":
+                    mVp.setCurrentItem(1);
+                    break;
+            }
+        }
     }
 
     //跳转客服

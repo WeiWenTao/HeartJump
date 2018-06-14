@@ -21,6 +21,7 @@ import com.cucr.myapplication.bean.RZ.RzResult;
 import com.cucr.myapplication.constants.Constans;
 import com.cucr.myapplication.core.funTuanAndXingWen.FtPublishCore;
 import com.cucr.myapplication.listener.OnUpLoadListener;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.DialogPublishStyle;
@@ -343,7 +344,7 @@ public class PublishActivity extends Activity {
 
 //        photoUpload();
 
-        core.publishFtInfo(starId, fileType, et_publish.getText().toString(), mData, new OnUpLoadListener() {
+        core.publishFtInfo(starId, fileType, CommonUtils.string2Unicode(et_publish.getText().toString()), mData, new OnUpLoadListener() {
             @Override
             public void OnUpLoadPicListener(Response<String> response) {
                 RzResult rzResult = new Gson().fromJson(response.get(), RzResult.class);

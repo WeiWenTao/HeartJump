@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.cucr.myapplication.R;
-import com.cucr.myapplication.activity.MainActivity;
+import com.cucr.myapplication.activity.regist.NewLoadActivity;
 import com.cucr.myapplication.app.MyApplication;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class GuidePagerAdapter extends PagerAdapter {
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MyApplication.getInstance(), MainActivity.class);
+                    Intent intent = new Intent(MyApplication.getInstance(), NewLoadActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     MyApplication.getInstance().startActivity(intent);
                 }

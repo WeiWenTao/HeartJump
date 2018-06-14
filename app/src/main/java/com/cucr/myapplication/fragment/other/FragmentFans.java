@@ -929,7 +929,7 @@ public class FragmentFans extends BaseFragment implements SwipeRecyclerView.OnLo
 
     @Override
     public void onClickshare(QueryFtInfos.RowsBean rowsBean, String imgUrl) {
-        mDialog.setData(new ShareEntity(getString(R.string.share_title), rowsBean.getContent(), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
+        mDialog.setData(new ShareEntity(CommonUtils.unicode2String(rowsBean.getContent()), getString(R.string.share_title), HttpContans.ADDRESS_FT_SHARE + rowsBean.getId(), imgUrl));
     }
 
     private PopupWindow popWindow;

@@ -145,9 +145,7 @@ public class RecommendStarListFragemnt extends Fragment implements StarListForQi
 
     //查询明星列表品
     private void queryStar() {
-        if (!swipe_refresh_layout.isRefreshing()) {
-            swipe_refresh_layout.setRefreshing(true);
-        }
+        swipe_refresh_layout.setRefreshing(true);
         page = 1;
         mCore.queryStar(1, page, rows, -1, null, null, new RequersCallBackListener() {
             @Override
@@ -174,7 +172,7 @@ public class RecommendStarListFragemnt extends Fragment implements StarListForQi
 
             @Override
             public void onRequestFinish(int what) {
-
+                swipe_refresh_layout.setRefreshing(false);
             }
         });
     }

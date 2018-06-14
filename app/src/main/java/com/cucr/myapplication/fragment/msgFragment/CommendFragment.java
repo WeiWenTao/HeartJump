@@ -71,7 +71,6 @@ public class CommendFragment extends Fragment implements RequersCallBackListener
     @ViewInject(R.id.multiStateView)
     private MultiStateView multiStateView;
 
-
     private View rootView;
     private Gson mGson;
     private MsgCommendAdapter mAdapter;

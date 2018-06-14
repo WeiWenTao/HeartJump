@@ -21,7 +21,6 @@ import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.eventBus.EventHomeStarsCatgory;
 import com.cucr.myapplication.bean.starList.FocusInfo;
 import com.cucr.myapplication.bean.starList.StarListKey;
-import com.cucr.myapplication.constants.SpConstant;
 import com.cucr.myapplication.core.starListAndJourney.QueryFocus;
 import com.cucr.myapplication.core.starListAndJourney.QueryStarListCore;
 import com.cucr.myapplication.fragment.star.AllStarListFragemnt;
@@ -29,7 +28,6 @@ import com.cucr.myapplication.fragment.star.RecommendStarListFragemnt;
 import com.cucr.myapplication.listener.OnCommonListener;
 import com.cucr.myapplication.listener.RequersCallBackListener;
 import com.cucr.myapplication.utils.CommonUtils;
-import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.widget.dialog.MyWaitDialog;
 import com.google.gson.Gson;
@@ -86,7 +84,6 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
     //类别
     @ViewInject(R.id.drawer_rcv)
     private RecyclerView drawer_rcv;
-
 
     private Gson mGson;
     private List<Fragment> mFragmentslist;
@@ -151,8 +148,6 @@ public class StarListForAddActivity extends Activity implements OnCommonListener
                 if (Info.isSuccess()) {
                     if (Info.getRows().size() > 0) {     //有关注明星
                         startActivity(new Intent(MyApplication.getInstance(), MainActivity.class));
-                        //登录之后保存登录数据  下次登录判断是否第一次登录
-                        SpUtil.setParam(SpConstant.HAS_LOAD, true);
                         finish();
                     } else {
                         ToastUtils.showToast("至少要关注一位明星哦");

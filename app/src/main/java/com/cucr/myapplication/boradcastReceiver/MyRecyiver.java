@@ -73,6 +73,7 @@ public class MyRecyiver extends BroadcastReceiver {
             // 在这里可以自己写代码去定义用户点击后的行为
             Intent i = new Intent(context, MainActivity.class); // 自定义打开的界面
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra("extra", extra);
             context.startActivity(i);
         } else {
             Log.d("onReceive", "Unhandled intent - " + intent.getAction());

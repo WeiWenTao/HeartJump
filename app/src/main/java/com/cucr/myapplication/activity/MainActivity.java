@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -41,6 +42,8 @@ import com.cucr.myapplication.utils.MyLogger;
 import com.cucr.myapplication.utils.SpUtil;
 import com.cucr.myapplication.utils.ToastUtils;
 import com.cucr.myapplication.utils.upDataUtils.DownLoadApk;
+import com.cucr.myapplication.widget.dialog.NewMansDialog;
+import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -49,6 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.GroupUserInfo;
@@ -66,6 +70,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private GroupUserInfo mGroupUserInfo;
     private ChatCore mChatCore;
     private String mId;
+    private Gson mGson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 //        UltimateBar ultimateBar = new UltimateBar(this);
 //        ultimateBar.setColorBar(getResources().getColor(R.color.white), 255);
+        mGson = MyApplication.getGson();
         initUMcount();
         initIM();
         qucryCore = new QueryPersonalMsgCore();
@@ -85,6 +91,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         initFragment(4);
         initRadioGroup();
         CheckUpData();    //检查更新
+        getPushInfo();
         DisplayMetrics dm = new DisplayMetrics();
         // MI NOTE LET : DisplayMetrics{density=2.75, width=1080, height=1920, scaledDensity=2.75, xdpi=386.366, ydpi=387.047}
         // MI 6        :DisplayMetrics{density=3.0, width=1080, height=1920, scaledDensity=3.0, xdpi=428.625, ydpi=427.789}
@@ -101,15 +108,25 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         String s = "屏幕的分辨率为：" + dm.widthPixels + "*" + dm.heightPixels;
         MyLogger.jLog().i(s);
-
         DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
         getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
         int width = mDisplayMetrics.widthPixels;
         int height = mDisplayMetrics.heightPixels;
         float density = mDisplayMetrics.density;
         int densityDpi = mDisplayMetrics.densityDpi;
-        MyLogger.jLog().i("Screen Ratio: ["+width+"x"+height+"],density="+density+",densityDpi="+densityDpi);
-        MyLogger.jLog().i("Screen mDisplayMetrics: "+mDisplayMetrics);
+        MyLogger.jLog().i("Screen Ratio: [" + width + "x" + height + "],density=" + density + ",densityDpi=" + densityDpi);
+        MyLogger.jLog().i("Screen mDisplayMetrics: " + mDisplayMetrics);
+    }
+
+    private void getPushInfo() {
+        String extra = getIntent().getStringExtra("extra");
+        if (!TextUtils.isEmpty(extra)) {
+            Map map = mGson.fromJson(extra, Map.class);
+            String type = (String) map.get("type");
+            Intent intent = new Intent(MyApplication.getInstance(), MessageActivity.class);
+            intent.putExtra("type", type);
+            startActivity(intent);
+        }
     }
 
     private void initUMcount() {
@@ -119,6 +136,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     private void CheckUpData() {
         AppCore core = new AppCore();
+        core.closure(this);
         core.queryCode(this);
     }
 
@@ -279,10 +297,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             ToastUtils.showToast("再按一次就要退出啦");
             firstTime = secondTime;
         } else {
-
             //登出
             MobclickAgent.onProfileSignOff();
-
             Intent intent = new Intent(MyApplication.getInstance(), SplishActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -337,14 +353,18 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     public void onRequestSuccess(int what, Response<String> response) {
         switch (what) {
             case Constans.TYPE_ONE:
-                AppInfo appInfo = MyApplication.getGson().fromJson(response.get(), AppInfo.class);
+                AppInfo appInfo = mGson.fromJson(response.get(), AppInfo.class);
                 if (AppUtils.getVersionCode(MyApplication.getInstance()) < appInfo.getExtra1()) {
                     normalUpdate("心跳互娱有新版本了 V", appInfo);
+                } else if (!(boolean) SpUtil.getParam(SpConstant.HAS_LOAD, false)) {
+
+                    NewMansDialog dialog = new NewMansDialog(this, R.style.MyDialogStyle);
+                    dialog.show();
                 }
                 break;
 
             case Constans.TYPE_TWO:
-                IMPersonalInfo info = MyApplication.getGson().fromJson(response.get().toString(), IMPersonalInfo.class);
+                IMPersonalInfo info = mGson.fromJson(response.get().toString(), IMPersonalInfo.class);
                 if (info.isSuccess()) {
                     IMPersonalInfo.ObjBean obj = info.getObj();
                     if (obj != null) {
@@ -356,7 +376,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                 break;
 
             case Constans.TYPE_THREE:
-                IMHytInfo groupInfo = MyApplication.getGson().fromJson(response.get().toString(), IMHytInfo.class);
+                IMHytInfo groupInfo = mGson.fromJson(response.get().toString(), IMHytInfo.class);
                 if (groupInfo.isSuccess()) {
                     IMHytInfo.ObjBean objBean = groupInfo.getObj();
                     if (objBean != null) {
@@ -390,7 +410,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     //重新获取Token监听
     @Override
     public void onRequestSuccess(Response<String> response) {
-        TokenMsg commonRebackMsg = MyApplication.getGson().fromJson(response.get(), TokenMsg.class);
+        TokenMsg commonRebackMsg = mGson.fromJson(response.get(), TokenMsg.class);
         if (commonRebackMsg.isSuccess()) {
             SpUtil.setParam(SpConstant.TOKEN, commonRebackMsg.getMsg());
             mChatCore.connect(commonRebackMsg.getMsg(), this);

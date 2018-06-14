@@ -228,8 +228,11 @@ public class HttpContans {
     //意见反馈
     public static final String ADDRESS_APP_ADVICE = HOST + "/interface/user/addIdea";
 
-    //意见反馈
+    //举报
     public static final String ADDRESS_APP_REPORT = HOST + "/interface/mobileUserReport/reportRecord";
+
+    //封号
+    public static final String ADDRESS_APP_CLOSURE = HOST + "/interface/user/checkFh";
 
     //图集上传
     public static final String ADDRESS_PIC_UPLOAD = HOST + "/interface/mobileStartAtlasAction/upAtlas";

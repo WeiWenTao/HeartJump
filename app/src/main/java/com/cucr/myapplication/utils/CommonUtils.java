@@ -45,7 +45,6 @@ import java.util.regex.PatternSyntaxException;
  */
 
 public class CommonUtils {
-
     /**
      * 判断手机网络
      */
@@ -346,7 +345,6 @@ public class CommonUtils {
 
     private static AnimationListener mAnimationListener;
 
-
     public static String getDiverID(Context context) {
         String serial = Build.SERIAL;
         return serial;
@@ -365,7 +363,6 @@ public class CommonUtils {
         Calendar pre = Calendar.getInstance();
         Date predate = new Date(System.currentTimeMillis());
         pre.setTime(predate);
-
         // 设定的时刻
         Calendar cal = Calendar.getInstance();
         Date date = null;
@@ -461,7 +458,6 @@ public class CommonUtils {
         return timeStr;
     }
 
-
     public static String unitFormat(int i) {
         String retStr = null;
         if (i >= 0 && i < 10)
@@ -473,6 +469,11 @@ public class CommonUtils {
 
 
     public static String unicode2String(String unicode) {
+        //如果不是unicode码则原样返回
+        if (unicode.indexOf("\\u") == -1) {
+            return unicode;
+        }
+
         StringBuffer string = new StringBuffer();
         String[] hex = unicode.split("\\\\u");
         String[] mineHex = unicode.split("\\\\");

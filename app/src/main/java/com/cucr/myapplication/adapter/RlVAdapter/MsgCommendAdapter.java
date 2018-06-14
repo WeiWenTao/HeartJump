@@ -15,6 +15,7 @@ import com.cucr.myapplication.activity.comment.FenTuanCatgoryActiviry;
 import com.cucr.myapplication.activity.comment.FenTuanVideoCatgoryActiviry;
 import com.cucr.myapplication.app.MyApplication;
 import com.cucr.myapplication.bean.MsgBean.MsgInfo;
+import com.cucr.myapplication.utils.CommonUtils;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -78,7 +79,7 @@ public class MsgCommendAdapter extends RecyclerView.Adapter<MsgCommendAdapter.My
         final String commentParentId = (String) map.get("commentParentId");
         holder.tv_commend.setText(((String) map.get("info")));  //评论内容
         final String flag = (String) map.get("flag");                 //文本类型
-        holder.tv_content.setText(((String) map.get("title")));         //原文内容
+        holder.tv_content.setText(CommonUtils.unicode2String((String) map.get("title")));         //原文内容
         holder.tv_name.setText(receiverUser.getName());             //原文作者姓名
         holder.tv_neckname.setText(sendUser.getName());     //评论人姓名
         holder.tv_time.setText(rowsBean.getCreateTime());       //创建时间
