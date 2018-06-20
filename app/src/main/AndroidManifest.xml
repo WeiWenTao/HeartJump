@@ -323,7 +323,10 @@
         </activity>
         <activity android:name=".activity.comment.FtSecondCommentActivity">
         </activity>
-        <activity android:name=".activity.setting.InvateActivity">
+        <activity
+            android:name=".activity.setting.InvateActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
         </activity>
         <activity
             android:name=".activity.regist.NewLoadActivity"
@@ -366,6 +369,8 @@
             android:launchMode="singleTop"
             android:theme="@style/StartTheme"
             >
+
+            <!-- TODO -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -473,6 +478,11 @@
         <activity android:name=".activity.TempActivity">
         </activity>
         <activity android:name=".activity.fansCatgory.XingWenActivity">
+        </activity>
+        <activity
+            android:name=".activity.setting.PickAiDouActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
         </activity>
     </application>
 

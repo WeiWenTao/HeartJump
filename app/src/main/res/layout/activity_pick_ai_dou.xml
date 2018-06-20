@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.cucr.myapplication.activity.setting.PickAiDouActivity"
+    >
+
+    <RelativeLayout
+        android:id="@+id/comment_head"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBarHight"
+        android:background="@color/white"
+        >
+
+        <ImageView
+            android:id="@+id/iv_base_back"
+            style="@style/IconBackStyle"
+            />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="260dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_bg_13"
+            android:gravity="center"
+            android:hint="搜索爱豆"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textColor="#3b3241"
+            android:textColorHint="#3b3241"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <include layout="@layout/horizontal_line_for_eee"/>
+
+    </RelativeLayout>
+
+    <com.cucr.myapplication.widget.stateLayout.MultiStateView
+        android:id="@+id/multiStateView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:msv_animateViewChanges="true"
+        app:msv_emptyView="@layout/empty_search"
+        app:msv_errorView="@layout/error_view"
+        app:msv_loadingView="@layout/loading_view"
+        >
+
+        <com.cucr.myapplication.widget.refresh.swipeRecyclerView.SwipeRecyclerView
+            android:id="@+id/rlv_stars"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            />
+    </com.cucr.myapplication.widget.stateLayout.MultiStateView>
+
+
+
+</LinearLayout>

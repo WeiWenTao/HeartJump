@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.cucr.myapplication.R;
 import com.cucr.myapplication.activity.MessageActivity;
-import com.cucr.myapplication.activity.TestWebViewActivity;
 import com.cucr.myapplication.activity.dongtai.DongTaiActivity;
 import com.cucr.myapplication.activity.fenTuan.DsDuiHuanActivity;
 import com.cucr.myapplication.activity.fuli.PiaoWuActivity;
@@ -20,6 +19,7 @@ import com.cucr.myapplication.activity.myHomePager.MineFansActivity;
 import com.cucr.myapplication.activity.pay.PayCenterActivity_new;
 import com.cucr.myapplication.activity.pay.TxRecordActivity;
 import com.cucr.myapplication.activity.picWall.MyPicWallActivity;
+import com.cucr.myapplication.activity.setting.InvateActivity;
 import com.cucr.myapplication.activity.setting.LearnningActivity;
 import com.cucr.myapplication.activity.setting.MyActivesActivity;
 import com.cucr.myapplication.activity.setting.MyRequiresActivity;
@@ -51,6 +51,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.zackratos.ultimatebar.UltimateBar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,6 +107,8 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
     protected void initView(View childView) {
         EventBus.getDefault().register(this);
         ViewUtils.inject(this, childView);
+        UltimateBar ultimateBar = new UltimateBar(getActivity());
+        ultimateBar.setImmersionBar();
         mUserCore = new UserCore();
         mQucryCore = new QueryPersonalMsgCore();
         map = new HashMap<>();
@@ -116,7 +119,6 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
         mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
-
 
     private void initRlv() {
         rlv.setLayoutManager(new GridLayoutManager(MyApplication.getInstance(), 4));
@@ -137,8 +139,8 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
         super.onResume();
         queryInfos();
         mAdapter.getDatas();
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
+        getActivity().getWindow().getDecorView().
+                setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     //查询用户信息
@@ -301,14 +303,14 @@ public class MineFragment extends BaseFragment implements MineAdapter.OnClickIte
 
             //邀请有礼
             case 5:
-//                mIntent.setClass(mContext, InvateActivity.class);
-//                mContext.startActivity(mIntent);
-
-                mIntent.setClass(mContext, TestWebViewActivity.class);
-                mIntent.putExtra("url", HttpContans.ADDRESS_CHOU_JIANG + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
-                mIntent.putExtra("title", "邀请有礼");
-                mIntent.putExtra("choujiang", 1);
+                mIntent.setClass(mContext, InvateActivity.class);
                 mContext.startActivity(mIntent);
+
+//                mIntent.setClass(mContext, TestWebViewActivity.class);
+//                mIntent.putExtra("url", HttpContans.ADDRESS_CHOU_JIANG + ((int) SpUtil.getParam(SpConstant.USER_ID, -1)));
+//                mIntent.putExtra("title", "邀请有礼");
+//                mIntent.putExtra("choujiang", 1);
+//                mContext.startActivity(mIntent);
                 break;
 
             //新手教程

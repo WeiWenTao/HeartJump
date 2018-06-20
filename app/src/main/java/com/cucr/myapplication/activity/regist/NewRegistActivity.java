@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -73,7 +74,7 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
     private boolean runningThree;
 
     //验证码倒计时
-    private CountDownTimer downTimer = new CountDownTimer(5 * 1000, 1000) {
+    private CountDownTimer downTimer = new CountDownTimer(60 * 1000, 1000) {
         @Override
         public void onTick(long l) {
             runningThree = true;
@@ -174,9 +175,11 @@ public class NewRegistActivity extends Activity implements RequersCallBackListen
             return;
         }
         String phone_num = et_phone_num.getText().toString().trim();
-
+        if (TextUtils.isEmpty(phone_num)) {
+            ToastUtils.showToast("请填入手机号哦");
+            return;
+        }
         downTimer.start();
-
         mRegistCore.getYzm(this, phone_num, new OnGetYzmListener() {
             @Override
             public void onSuccess(Response<String> response) {

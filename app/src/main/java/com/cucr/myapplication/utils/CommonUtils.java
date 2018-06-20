@@ -469,14 +469,21 @@ public class CommonUtils {
 
 
     public static String unicode2String(String unicode) {
+
         //如果不是unicode码则原样返回
         if (unicode.indexOf("\\u") == -1) {
             return unicode;
         }
 
+//        if (!unicode.startsWith("\\u")) {
+//            unicode = unicode.substring(unicode.indexOf("\\u"))
+//        }
+
+
         StringBuffer string = new StringBuffer();
         String[] hex = unicode.split("\\\\u");
         String[] mineHex = unicode.split("\\\\");
+
         for (int i = 0; i < hex.length; i++) {
             if ("".equals(hex[i])) {
                 continue;
@@ -496,8 +503,12 @@ public class CommonUtils {
                         //前面
                         string.append(hex[i].substring(0, index < 0 ? 0 : index));
                         //自己
-                        int data = Integer.parseInt(hex[i].substring(index, 4), 16);// 追加成string
-                        string.append((char) data);
+                        try {
+                            int data = Integer.parseInt(hex[i].substring(index, 4), 16);// 追加成string
+                            string.append((char) data);
+                        } catch (Exception e) {
+                            string.append(hex[i]);
+                        }
                         //后面
                         string.append(hex[i].substring(index + 4, hex[i].length()));
                     } else {

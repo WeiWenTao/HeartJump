@@ -61,11 +61,9 @@ public class SplishActivity extends Activity implements RequersCallBackListener,
             MyLogger.jLog().i("splish———— 不存在！！！：" + Constans.SPLISH_FOLDER + Constans.SPLISH_IMG);
         }
         mParam = (String) SpUtil.getParam(SpConstant.SP_SPLISH_IMG, "");
-
     }
 
     private void initViews() {
-
         Date now = new Date();
         DateFormat df1 = DateFormat.getDateInstance(); //格式化后的时间格式：2016-2-19
         String str1 = df1.format(now);
@@ -112,7 +110,6 @@ public class SplishActivity extends Activity implements RequersCallBackListener,
 //            }
             MyLogger.jLog().i("timmer:" + l);
         }
-
 
         @Override
         public void onFinish() {

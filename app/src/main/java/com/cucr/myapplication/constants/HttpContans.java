@@ -21,8 +21,8 @@ public class HttpContans {
     public static final String HOST = "http://www.cucrxt.com";
 
     //测试环境
-//    public static final String HOST = "http://192.168.1.147:8080";
-//    public static final String HOST = "http://192.168.1.149:8080";
+//    public static final String HOST = "http://192.168.10.147:8080";
+//    public static final String HOST = "http://192.168.10.149:8080";
 
     //splish
     public static final String ADDRESS_SPLISH = HOST + "/interface/mobileMainAdvertisementAction/main";
@@ -365,5 +365,17 @@ public class HttpContans {
 
     //后援会招募分享
     public static final String ADDRESS_RECRUIT_SHARE = HOST + "/interface/newsShare/recruitingNew";
+
+    //邀请码查询
+    public static final String ADDRESS_INVATECODE_QUERY = HOST + "/interface/invitationCodeAction/starFirst";
+
+    //填写邀请码
+    public static final String ADDRESS_PUT_INVATECODE = HOST + "/interface/invitationCodeAction/invitationCode";
+
+    //邀请码明星搜索
+    public static final String ADDRESS_INVATE_SEACH = HOST + "/interface/invitationCodeAction/starSearch";
+
+    //邀请码明星搜索
+    public static final String ADDRESS_INVATE_LINK = HOST + "/interface/newsShare/inviteCode?";
 
 }
